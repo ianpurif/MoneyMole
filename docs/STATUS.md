@@ -7,7 +7,7 @@ M2 recovery utilities and M3 wallet/security work proceeded independently as BUI
 ## Current wallet migration
 
 1AM is the primary wallet. The client adapter and UI migration are complete.
-Twenty-eight unit tests, four production-browser tests, lint, typecheck, build and
+Thirty unit tests, five production-browser tests, lint, typecheck, build and
 offline checks passed. Provider fixtures are synthetic; the owner now confirms real 1AM authorization for Wallet A in Chrome and Wallet B
 in Brave, both on Preprod with DUST. Issuer deployment is confirmed; no issuance or payment has been observed.
 Every meaningful logical change is committed locally; nothing was pushed.
@@ -44,7 +44,7 @@ Crypto on this desktop; mobile/browser performance is unmeasured.
 Windows Docker Compose started the pinned proof image on loopback and TCP was
 reachable. The service checked and generated fund/claim/issue circuit proofs using
 synthetic fixtures, then was stopped. No sealed transaction or ledger-validity test ran.
-No live payment, deployment or receiver spend was observed. Real extension connections
+The issuer is now deployed; no live payment or receiver spend was observed. Real extension connections
 and DUST readiness are owner-reported in docs/evidence/wallet-readiness.json.
 
 ## Blockers and next actions
@@ -108,3 +108,15 @@ is false. See `deployments/preprod/test-asset-issuer.json`. Reuse this issuer.
 The owner's browser last reported submitted; its encrypted record still needs
 reconciliation. Next implementation: separate fixed-supply issuance approval.
 No payment or receiver spend has occurred; full M1 remains incomplete.
+
+## Issuance approval handoff
+The existing issuer is verified by `npm run verify:issuer`. Separate issuance
+preparation, explicit approval, persistent unknown-outcome protection, indexer
+confirmation and wallet balance synchronization are implemented. Thirty unit
+tests, five production-browser tests, lint, typecheck, production build, offline
+checks and local proving passed. A complete synthetic issuance transaction was
+proved and serialization-tested; this does not establish real issuance or payment.
+See docs/evidence/issuer-issuance-checks.json. The trusted project-local proof
+service is running on loopback 6300 for the next action. Next: Chrome / Wallet A,
+unlock the same issuer, prepare issuance and approve 1,000,000 non-redeemable
+Preprod test units in 1AM. No token issuance was executed by the agent.

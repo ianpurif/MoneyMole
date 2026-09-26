@@ -363,9 +363,16 @@
           "path": "docs/evidence/issuer-deployment-ui.json",
           "sha256": "20f1025d1c651b99e71917f361b8c658a9594b98228f7af6c7238a4480cb5746",
           "observedAt": "2026-09-26T10:07:03.617Z"
+        },
+        {
+          "result": "partial",
+          "scope": "real_issuer_deployment_not_payment_escrow",
+          "path": "deployments/preprod/test-asset-issuer.json",
+          "sha256": "82ee0b0012804a5349c0975114cf49f2a19b94680247280449d77ad6e2622562",
+          "observedAt": "2026-09-26T10:28:42.779Z"
         }
       ],
-      "note": "Issuer browser preparation, explicit approval and recovery UI implemented. Local-only evidence does not verify deployment; owner signing and real chain observations remain pending."
+      "note": "Separate issuer deployment verified against the real Preprod indexer and local verifier. Payment escrow deployment and full payment acceptance remain pending."
     },
     {
       "id": "L1-DOCS",

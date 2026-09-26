@@ -1,0 +1,149 @@
+{
+  "observedAt": "2026-09-26T10:28:42.779Z",
+  "scope": "confirmed_real_issuer_deployment_and_local_issuance_preparation_only",
+  "liveIssuer": {
+    "scope": "real_preprod_issuer_deployment_only",
+    "result": "passed",
+    "observedAt": "2026-09-26T10:26:09.311Z",
+    "address": "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635",
+    "transactionId": "003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886",
+    "block": {
+      "height": 2716656,
+      "hash": "01592d09d225cce9d7e0f57b7bc8d598cbd68a7d7eab9e64169abcc6c2911d7c"
+    },
+    "verifierMatches": true,
+    "issued": false,
+    "deploymentRecordSha256": "82ee0b0012804a5349c0975114cf49f2a19b94680247280449d77ad6e2622562",
+    "limitations": [
+      "Not payment escrow deployment, receiver credit or spendability",
+      "Official indexer observation; private browser recovery checked separately"
+    ]
+  },
+  "localProof": {
+    "scope": "local_circuit_constraint_check_and_proof_generation_synthetic_only",
+    "result": "passed",
+    "observedAt": "2026-09-26T10:22:23.424Z",
+    "checks": [
+      {
+        "circuit": "fund",
+        "constraintCheck": "passed",
+        "proofGeneration": "passed",
+        "proofBytes": 4508
+      },
+      {
+        "circuit": "claim",
+        "constraintCheck": "passed",
+        "proofGeneration": "passed",
+        "proofBytes": 4508
+      },
+      {
+        "circuit": "issue",
+        "constraintCheck": "passed",
+        "proofGeneration": "passed",
+        "proofBytes": 4508
+      }
+    ],
+    "issuerTransaction": {
+      "transactionProofGeneration": "passed",
+      "proofTransactionRoundTrip": "passed",
+      "scope": "synthetic_unbalanced_transaction_not_sealed_or_submitted"
+    },
+    "subjects": [
+      {
+        "path": "scripts/product/test-proving.mjs",
+        "sha256": "11e4a83230c1d10081dd83f6946e0e706640bf577ca2f4fc6a45c166046944d9"
+      },
+      {
+        "path": "tests/contracts/runtime.mjs",
+        "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+      },
+      {
+        "path": "contracts/private-payments.compact",
+        "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+      },
+      {
+        "path": "contracts/issuance/test-asset.compact",
+        "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+      },
+      {
+        "path": "compose.yaml",
+        "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+      }
+    ],
+    "limitations": [
+      "Not a sealed transaction or independent proof verification",
+      "No ledger-qualified input",
+      "No wallet balance, network submission or receiver spend"
+    ]
+  },
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "command": "npm run lint",
+      "exit": 0
+    },
+    {
+      "command": "npm run build",
+      "exit": 0
+    },
+    {
+      "command": "npm run test:unit",
+      "exit": 0,
+      "tests": 30
+    },
+    {
+      "command": "npm run test:browser",
+      "exit": 0,
+      "tests": 5
+    },
+    {
+      "command": "npm run check:offline",
+      "exit": 0
+    },
+    {
+      "command": "npm run verify:issuer",
+      "exit": 0
+    }
+  ],
+  "localProverCors": {
+    "origin": "http://127.0.0.1:3000",
+    "preflight": 200,
+    "allowed": true
+  },
+  "livePublicStateDecode": "contract, Zswap and ledger parameters decoded successfully",
+  "subjects": [
+    {
+      "path": "src/lib/midnight/issuer-issuance.ts",
+      "sha256": "4808e7214f442ea3cf55357d9b1ec60f27867df5e83aa2296a4f129dfd60ca43"
+    },
+    {
+      "path": "src/lib/midnight/issuer-deployment.ts",
+      "sha256": "8540049e52283da3a9f4c3a5cc42540632d0ae9f3090a217dddfa7b5235c2d3a"
+    },
+    {
+      "path": "src/components/issuance-setup.tsx",
+      "sha256": "e14425fcb4c4726b85b756564d9dcef12860cf39f0bcec3aec876ec8b81a91a4"
+    },
+    {
+      "path": "tests/contracts/issuer-transaction.mjs",
+      "sha256": "826814dcebf1594ce828b1963b5e6dbc97449842b50a25e0e40e2ce7df308bd1"
+    },
+    {
+      "path": "tests/unit/issuance-recovery.test.ts",
+      "sha256": "2cc15f8b2d1d119900c3e6dbadf5922aea2035211bb17f79d88196afb2af4607"
+    },
+    {
+      "path": "scripts/verify-issuer.mjs",
+      "sha256": "f3062c75f2548c73e6996d2452e77ab361d6a63ed2ae2c3b1f3d8f47be5c5253"
+    }
+  ],
+  "limitations": [
+    "No real issuance approval or submission yet",
+    "Local transaction proof uses synthetic authority and recipient; not live payment acceptance",
+    "Browser fixture suite covers deployment preparation and shell, not actual extension issuance",
+    "No escrow deployment, funded payment, receiver credit or spendability"
+  ]
+}
