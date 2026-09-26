@@ -110,6 +110,10 @@ public `PROOF_SERVER_PORT=6300` setting. `npm run services:*` resolves process e
 then `.env.local`, then `.env` and passes the same validated port to Compose.
 The app pins Preprod endpoints in source; unused NEXT_PUBLIC variables do not
 configure wallet authority or contract selection. Select the escrow in the browser.
+This host's ignored WSL launcher sets `MONEYMOLE_CODEX_WINDOWS=1` when reusing the
+installed Windows Codex CLI. The read-only diagnostics translate the workspace
+path with wslpath before inspecting effective project configuration. Native Linux
+clients leave this flag unset. This does not change global configuration or trust.
 
 In WSL, `bash .local/run.sh npm run <command>` selects the verified project-local runtime. The helper is ignored host state, not a portable installation. Windows Docker Compose is installed; Ubuntu's plugin is absent. Use `docker compose --file compose.yaml up -d proof-server` and `docker compose --file compose.yaml stop proof-server` from this repository in PowerShell. No wallet data is passed through these commands. Build before test:browser.
 

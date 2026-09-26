@@ -1,7 +1,15 @@
 import { spawn } from "node:child_process";
-import { ROOT } from "./lib.mjs";
+import { ROOT, run } from "./lib.mjs";
 /** Read-only JSONL session; never starts a model turn, writes config or calls an MCP tool. */
 export async function withCodexSession(callback) {
+  // A WSL host may deliberately reuse its installed Windows desktop CLI.
+  // That process needs a Windows cwd for config/read; it cannot resolve /mnt/c.
+  let clientRoot = ROOT;
+  if (process.platform === "linux" && process.env.MONEYMOLE_CODEX_WINDOWS === "1") {
+    const translated = run("wslpath", ["-w", ROOT]);
+    if (!translated.ok || !translated.stdout.trim()) throw new Error("Cannot resolve the configured Windows client workspace");
+    clientRoot = translated.stdout.trim();
+  }
   const child = spawn("codex", ["app-server"], { cwd: ROOT, stdio: ["pipe", "pipe", "pipe"], shell: false });
   let nextId = 1, buffer = "", bytes = 0, ended = false;
   const pending = new Map();
@@ -10,6 +18,7 @@ export async function withCodexSession(callback) {
   const allowed = new Set(["initialize", "config/read", "model/list", "mcpServerStatus/list"]);
   const request = (method, params) => new Promise((resolve, reject) => {
     if (!allowed.has(method) || ended) return reject(new Error("Unsupported read-only method or closed session"));
+    if (method === "config/read" && params.cwd === ROOT) params = { ...params, cwd: clientRoot };
     const id = nextId++; pending.set(id, { resolve, reject });
     child.stdin.write(JSON.stringify({ id, method, params }) + "\n");
   });
