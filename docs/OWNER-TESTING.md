@@ -1,7 +1,9 @@
-# Owner-run final acceptance
+# Local verification and owner wallet acceptance
 
-The coding pass intentionally did not run app/E2E tests. This procedure exercises
-the implementation; it is not a statement that any step has passed.
+The prior coding pass intentionally did not run app/E2E tests. The current owner
+directive authorizes autonomous local setup and every local verification layer;
+only genuine manual wallet actions and observations remain owner-operated. This
+procedure exercises the implementation; it is not a statement that a step passed.
 Use the pinned tooling and exact compiled build. No push is required.
 
 ## Preparation and approvals

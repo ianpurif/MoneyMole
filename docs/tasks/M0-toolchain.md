@@ -1,8 +1,8 @@
 # M0 — Resolve and validate the foundation
 
-State: tooling/dependency implementation is present. Historical Codex account routing and Midnight MCP discovery gates remain blocked. The latest owner directive defers all app/E2E verification to the owner.
+State: tooling/dependency implementation is present. Historical Codex account routing and Midnight MCP discovery gates remain blocked. The latest owner directive authorizes full autonomous local setup and verification.
 
-The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
+The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -35,7 +35,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 6. Check Midnight MCP from the trusted client and record its actual tool listing. Do not send source secrets. A published endpoint is not a working connection.
 
 ## Commands — repository root
-Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
+Entry points are implemented. Run all local commands under the current owner authorization. Missing real wallet inputs remain blocked; complete independent checks.
 
 ```sh
 npm run bootstrap

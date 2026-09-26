@@ -1,7 +1,7 @@
 # Acceptance matrix
 
 The implementation is complete, but final live acceptance is not observed. The
-owner will run the app/E2E matrix; no suites ran in the latest coding pass. The pure amount,
+agent now runs all automatable checks; real wallet approvals remain manual. The pure amount,
 requirement-validation and attestation-integrity tests are utility tests, not
 payment acceptance. `tests/unit` is the installed Vitest execution layer;
 `tests/boilerplate` can run on Node 22 without npm dependencies.

@@ -1,12 +1,12 @@
 # Build MoneyMole — Private Payments
 
-## Current owner directive — complete implementation first
-Finish the complete application, contract adapters, recovery, UI and operator
-tooling before returning for live verification. M1 is now an acceptance gate,
-not a coding stop. Implement the candidate protocol with explicit unverified
-acceptance status. The owner handles final app/E2E testing; do not run those suites
-or live actions during this pass. TypeScript checking and artifact compilation
-may establish buildability only. Do not equate coding completion with live proof.
+## Current owner directive — complete local setup and verification
+Take ownership of Node/NVM, dependencies, `.env.local`, Docker/prover and app
+startup. Run every available local verification layer and read-only chain check,
+fix failures and continue until only genuine manual actions remain. This replaces
+the prior coding-only hold. M1 remains a real acceptance gate; local tests cannot
+substitute for independent-wallet settlement. Wallet authorization, deployment,
+issuance and live transactions retain their explicit owner approval boundary.
 
 ## Application stack and privacy boundary
 
@@ -41,8 +41,8 @@ eligibility basis; original organizer materials were not independently supplied.
 ## Start from the actual state
 
 Read `AGENTS.md`, `PLANS.md`, `docs/STATUS.md` and this file. The implementation is now
-present; use `docs/OWNER-TESTING.md` for the owner's final verification handoff. Inspect files and any Git
-diff without discarding changes. When verification is authorized again, run the following from the repository root:
+present; use `docs/OWNER-TESTING.md` for real-wallet acceptance. Inspect files and any Git
+diff without discarding changes. Local verification is authorized; run from the repository root:
 
 ```sh
 npm run check:offline
@@ -155,14 +155,14 @@ and actual generated outputs, not just directory names.
 
 ## Final acceptance and handoff
 
-The owner will execute the complete matrix in `docs/TESTING.md` after this coding
-pass; do not run app/E2E testing during the handoff. At least one real claim must use
+Execute all automatable checks in `docs/TESTING.md`; leave only necessary wallet
+actions and owner observations for the handoff. At least one real claim must use
 an independently connected receiver and an unavailable sender browser. Confirm
 value conservation, receiver spendability, failure of copied/tampered/concurrent
 claims and absence of unintended disclosed fields in inspected public data.
 A successful SDK test does not prove 1AM integration; report any extension limit.
 
-For final owner-run verification, run compilation, artifact validation, lint,
+For local verification, run compilation, artifact validation, lint,
 typechecks, all relevant test layers and production build. Inspect actual authorized remote pipeline results separately;
 a workflow definition is not a successful run. Record deployment network, address,
 transaction, observed finality and source/build/toolchain hashes. Update every

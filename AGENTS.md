@@ -1,13 +1,15 @@
 # Private Payments: repository operating rules
 
-## Current owner directive — implementation first
-Complete every remaining coding task without stopping at live milestone gates.
-The owner will perform final app/E2E testing. Do not run app tests, proving trials,
-browser automation or live transactions during this implementation pass. Static
-TypeScript checking and required artifact compilation are build work, not claims
-of acceptance. Keep all unobserved acceptance states pending. This directive
-supersedes the earlier implementation hold at the M1 live gate. Commit each logical
-change locally; do not push. All private data and transaction approval rules remain.
+## Current owner directive — autonomous local setup and verification
+Own the local Node/NVM, dependency, environment, Docker/prover and application
+setup. Configure `.env.local` directly with real local/test settings. Run all
+available compilation, artifact, lint, type, unit, contract, integration, proving,
+browser, build, requirements and read-only issuer checks; fix failures and continue.
+This supersedes the previous coding-only testing hold. Complete all automatable
+work before returning for a necessary manual wallet action. Local fixtures do not
+establish real payment acceptance. Never invent credentials or evidence. Keep
+unobserved acceptance pending. Commit each logical change locally; do not push.
+Deployment, issuance and live transactions still require explicit owner approval.
 
 ## Application stack and privacy boundary
 
@@ -51,7 +53,7 @@ eligibility and irreversible changes require the owner's explicit action.
 ## Execution
 Use Node 22, npm and one genuine lockfile. Linux/WSL2 is the toolchain target.
 Read the command table in `docs/RUNBOOK.md`. Normally start with `npm run check:offline`,
-`npm run doctor`, then M0; the current owner testing handoff takes precedence. `npm run verify:boilerplate` is preparation only;
+`npm run doctor`, then M0. `npm run verify:boilerplate` is preparation only;
 `npm run verify:product` requires real product evidence. Exit 2 means blocked, not passed.
 After three equivalent failures, change the hypothesis or record a blocker.
 

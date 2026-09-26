@@ -1,8 +1,8 @@
 # M5 — Harden, verify and report technical readiness
 
-State: implementation and owner-run acceptance tooling are complete. The new source has not undergone app/E2E testing at the owner's request. Real acceptance, authorized remote CI, consented participation and qualification remain pending.
+State: implementation and owner-run acceptance tooling are complete. Current local verification is in progress under the latest owner authorization. Real acceptance, authorized remote CI, consented participation and qualification remain pending.
 
-The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
+The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -36,7 +36,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 7. Update README, USAGE, architecture, sources and remaining risks. Produce a technical acceptance report with exact commands/outcomes, hashes, evidence, blockers and next action.
 
 ## Commands — repository root
-Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
+Entry points are implemented. Run all local commands under the current owner authorization. Missing real wallet inputs remain blocked; complete independent checks.
 
 ```sh
 npm run compile:contracts

@@ -1,10 +1,10 @@
 # Current execution state
 
-Snapshot: 2026-09-26. **Implementation complete; owner acceptance pending.**
-The owner's latest instruction is to finish coding and leave final app/E2E testing
-to them. M1 is an acceptance gate, not a coding stop. No app, browser, unit,
-proving or live tests were run in this pass. Static TypeScript checking is
-recorded separately in the implementation evidence.
+Snapshot: 2026-09-26. **Autonomous local setup and verification in progress.**
+Active work: M0 environment repair and current implementation verification across
+M2–M5. The owner now authorizes all local setup, configuration and test layers,
+superseding the previous coding-only hold. Finish all automatable work before
+requesting manual wallet authorization. Real acceptance remains pending.
 
 ## Implemented
 
@@ -65,5 +65,6 @@ performed. Requested Codex routing/account and Midnight MCP discovery gates rema
 unresolved historical tooling limitations; no delegation or substitution occurred.
 
 All meaningful changes are committed locally. No push, deployment, issuance or
-live transaction was executed in this coding pass. Next agent: respect the owner's
-testing handoff; do not automatically start E2E or redo deployments.
+live transaction was executed in the prior coding pass. Next agent: complete local
+setup and all verification, then return only for necessary manual wallet actions.
+Preserve the existing issuer and never redo deployment merely to restart a session.

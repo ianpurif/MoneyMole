@@ -2,7 +2,7 @@
 
 State: the complete candidate funding/claim/qualification and wallet path is implemented. The separate issuer was deployed previously; use its durable record. All remaining real issuance, escrow, independent-wallet settlement, spendability and disclosure acceptance is owner-pending. No live testing ran during the implementation-first pass.
 
-The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
+The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -35,7 +35,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 6. Fund with wallet A, disconnect A, claim with independent B, verify exact asset/amount credit and a controlled B-originated spend. Run wrong-secret, double-claim, competing-claim and copied-proof/destination tests. Inspect actual public transcripts and chain data. A successful proof alone fails this gate.
 
 ## Commands — repository root
-Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
+Entry points are implemented. Run all local commands under the current owner authorization. Missing real wallet inputs remain blocked; complete independent checks.
 
 ```sh
 npm run compile:contracts

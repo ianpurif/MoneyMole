@@ -2,7 +2,7 @@
 
 State: browser deployment/recovery and read-only chain verification are implemented. The issuer is recorded; no payment escrow has yet been observed. New network actions require explicit owner approval and existing deployments must be reused.
 
-The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
+The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
 **Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -34,7 +34,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 5. Verify actual end-to-end funding and receiver spendability against the recorded deployment. Document retained addresses, compatibility/migration rules and local proving setup.
 
 ## Commands — repository root
-Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
+Entry points are implemented. Run all local commands under the current owner authorization. Missing real wallet inputs remain blocked; complete independent checks.
 
 ```sh
 npm run verify:deployment -- --record deployments/preprod/<address>.json

@@ -2,7 +2,7 @@
 
 State: implementation complete. 1AM, sender/receiver UI, client-only fragment capture, local QR, recovery, receipts and controlled spending are connected. Real extension/application acceptance for this revision is owner-pending.
 
-The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
+The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
 **Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -36,7 +36,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 7. Run separate browser contexts with actual extension authorization. A mocked extension may test UI errors but never satisfy real 1AM acceptance. Document exact owner action when the browser runner cannot control the extension.
 
 ## Commands — repository root
-Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
+Entry points are implemented. Run all local commands under the current owner authorization. Missing real wallet inputs remain blocked; complete independent checks.
 
 ```sh
 npm run dev
