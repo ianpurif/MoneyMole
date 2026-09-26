@@ -1,6 +1,8 @@
 # M5 — Harden, verify and report technical readiness
 
-State: not_started. Expected behavior below is not observed evidence.
+State: blocked on M1-M4 product acceptance. Local hardening, dependency locking and production checks progressed; CI source remains a fail-closed engineering workflow, not an observed remote run.
+
+Remaining expected behavior below is not observed evidence.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -12,9 +14,10 @@ Use Next.js App Router, TypeScript and Tailwind CSS for the single frontend/back
 application. HTTP APIs: `src/app/api/**/route.ts`; server-only modules:
 `src/lib/server/` with `import "server-only"`. Server Actions are limited to
 appropriate non-secret UI mutations. No Express, NestJS, Fastify or separate
-backend without a verified requirement and ADR. Lace authorization, claim secrets,
+backend without a verified requirement and ADR. 1AM authorization, claim secrets,
 private witnesses and private-state handling stay client-side and never enter
 Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
+
 ## Prerequisites
 M1–M4 product gates observed. External metadata, participant evidence, repository permissions and approval are independently owner-pending.
 
@@ -27,7 +30,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 1. Complete every applicable negative and recovery row in TESTING.md. Keep deterministic, integration, real proving and live Preprod reports separate. No empty or skipped suite passes. Repeat real independent-wallet acceptance after relevant changes.
 2. Complete disclosure/secret-leak review, production browser security checks and receiver spendability evidence. Assess residual timing, shape, fee, prover and compromised-client risks; narrow privacy claims to observations.
 3. Finish pinned CI Compact installation after M0 records verified installer metadata. CI must npm ci, compile real contracts, validate artifacts, lint, typecheck, run unit/contract/integration/browser tests and build on push/PR. Live network mutation must use a separate explicit owner-authorized procedure, not untrusted PR code.
-4. Inspect real remote pipeline results only when supplied/authorized. Record actual run identifier and source commit; a local workflow file is not a completed remote run. Inspect meaningful Git history read-only and propose messages; do not create commits automatically.
+4. Inspect real remote pipeline results only when supplied/authorized. Record actual run identifier and source commit; a local workflow file is not a completed remote run. Create concise local commits after each meaningful logical change; inspect history without rewriting it. Remote pushes require separate authorization.
 5. Validate only consented real owner-supplied participant records. The included signed-attestation integrity utility does not establish unique humans or re-query chain activity. Complete any required chain-backed adapter against exact SDK types; keep sensitive associations outside Git. Do not invent participation.
 6. Reconcile every requirement, conflict and external metadata field. Maintain proposal approval pending until supplied, Preprod for L6, 70 total real participants and conservative 30-commit target. Separate readiness from complete challenge qualification.
 7. Update README, USAGE, architecture, sources and remaining risks. Produce a technical acceptance report with exact commands/outcomes, hashes, evidence, blockers and next action.

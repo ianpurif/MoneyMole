@@ -30,13 +30,21 @@
       "level": "Preparation",
       "title": "Real pinned dependency graph",
       "owner": "engineer",
-      "status": "blocked",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Generate registry-resolved package-lock.json, run npm ci and record exact installed versions.",
       "commands": [
         "npm run bootstrap"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_progress_only_not_requirement_acceptance",
+          "path": "docs/evidence/M0-toolchain.json",
+          "sha256": "81ab8feed89b0583571775640e51c8ea96d82a13dd109a8133debe073eb8f4b6",
+          "observedAt": "2026-09-26T08:56:32.521Z"
+        }
+      ]
     },
     {
       "id": "PREP-SHELL",
@@ -80,119 +88,20 @@
       "level": "Preparation",
       "title": "Bounded fail-closed tooling",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred.",
       "commands": [
         "npm run check:offline"
       ],
-      "evidence": [
-        {
-          "result": "passed",
-          "scope": "dependency_free_utility_tests_and_missing_implementation_guards",
-          "command": "npm run check:offline; compile:contracts, compile:probe, verify:product and installer guards observed blocked",
-          "observedAt": "2026-09-26T03:05:21.008787+00:00",
-          "path": "docs/evidence/utility-acceptance.json",
-          "sha256": "5a7c12d3deb6216123e86def32e0ffd9f596eef1db8bd71b8155e3959a902517",
-          "subjects": [
-            {
-              "path": "package.json",
-              "sha256": "3bff0bdbdd7c6b91ce0b013cb1d934511f3b40f1a490f4ea454f96c6d82137eb"
-            },
-            {
-              "path": "scripts/bootstrap.mjs",
-              "sha256": "741e50ede373bc38b37ab4fb4006b8f6c488cff9a87ab3185f794fa902e507e1"
-            },
-            {
-              "path": "scripts/codex-doctor.mjs",
-              "sha256": "552bcff0f8a0a16988b7947cd64b59ef5553ac0a67e6fe1e5a7b205fee3b7984"
-            },
-            {
-              "path": "scripts/codex-session.mjs",
-              "sha256": "5476c2e314452e89c56063ae9d76a9c141e943bb492a1590146dd043a79282af"
-            },
-            {
-              "path": "scripts/compile.mjs",
-              "sha256": "19b7cea865e96f5646fe471fe141691f14f4e1ec4022d8818e67c08b555f3228"
-            },
-            {
-              "path": "scripts/doctor.mjs",
-              "sha256": "09072776a16338ab76252080ee22c32a3da1ab60494a812ff08bef76a3703f65"
-            },
-            {
-              "path": "scripts/history.mjs",
-              "sha256": "15a1e52eb554ebc68820ff6b9e2d76de24479386570f270cef1c3037b771091d"
-            },
-            {
-              "path": "scripts/install-compact.mjs",
-              "sha256": "25a3769d2fe91c765f1ac5870936c01bf32d41d60e481fd5facaa7cd7a57dd08"
-            },
-            {
-              "path": "scripts/lib.mjs",
-              "sha256": "2d99834dd6a4e8e945a332071bba11d93d80f28a9b1e1e9c51d6e7a24b8123c5"
-            },
-            {
-              "path": "scripts/mcp-doctor.mjs",
-              "sha256": "46932772df12de8893265e633cfefe9fc9546da2ffea08586b2b6712ee903a36"
-            },
-            {
-              "path": "scripts/offline.mjs",
-              "sha256": "378f836ce5ff191e84f00a2ffddf165d53af1144390833a7b553716f119d6ba8"
-            },
-            {
-              "path": "scripts/participants.mjs",
-              "sha256": "117c23c1315eb34a031e9979e44c2362a0375302a12daf6e10b5ef9137ac1269"
-            },
-            {
-              "path": "scripts/product.mjs",
-              "sha256": "aa2e8cf02f60607da158798dc3db43497cae25cc62f4a3324b02d789cefd6a67"
-            },
-            {
-              "path": "scripts/requirements.mjs",
-              "sha256": "eacb09fee16c3c029119f8c7cac1b1bea3f4dd848ac7dd77398bebbdc9931ce2"
-            },
-            {
-              "path": "scripts/services.mjs",
-              "sha256": "6497758ed6b53a420d4a77062a25435d955a0c2beef8bbf5ebcedc8ea5881931"
-            },
-            {
-              "path": "scripts/verify-boilerplate.mjs",
-              "sha256": "e01ef162dd88cdb8eadcf0ec41aee1db5b480ecf73b1576b8e04a3a95698c0b0"
-            },
-            {
-              "path": "src/domain/amount.ts",
-              "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
-            },
-            {
-              "path": "tests/boilerplate/amount.test.mjs",
-              "sha256": "56be81ef16d5046a10c6443c237123194321a4d85b65d5ea00a07461f5e5a089"
-            },
-            {
-              "path": "tests/boilerplate/participants.test.mjs",
-              "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
-            },
-            {
-              "path": "tests/boilerplate/requirements.test.mjs",
-              "sha256": "5247663c6f6b7f2f98e3074d7a7e4d3bf9fb18eec24865c0839a532cc1c64bcb"
-            },
-            {
-              "path": "tests/boilerplate/tooling.test.mjs",
-              "sha256": "09d50b718891681af0352bbf5510fe5083762ba7733f36bdda99830a3460fe9b"
-            },
-            {
-              "path": "toolchain.lock.json",
-              "sha256": "4b20e97fd21dc1b6705508571ba3f0135bf0d17b5f53bb5f980b21a561c87ce5"
-            }
-          ]
-        }
-      ]
+      "evidence": []
     },
     {
       "id": "CORE-CONSERVATION",
       "level": "Core gates",
       "title": "Real shielded conservation",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [],
       "acceptance": "Existing sender value is locked and exactly that value becomes receiver-spendable; claim never mints.",
       "commands": [
@@ -205,7 +114,7 @@
       "level": "Core gates",
       "title": "Independent receiver claim",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "CORE-CONSERVATION"
       ],
@@ -218,7 +127,7 @@
       "level": "Core gates",
       "title": "Disclosure and linkability audit",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "CORE-CONSERVATION"
       ],
@@ -231,7 +140,7 @@
       "level": "Core gates",
       "title": "Authorization and domain binding",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [],
       "acceptance": "Wrong secret, amount, asset, network, contract, nonce and destination substitution fail atomically.",
       "commands": [],
@@ -242,7 +151,7 @@
       "level": "Core gates",
       "title": "Replay and concurrent claims",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "CORE-AUTH"
       ],
@@ -255,7 +164,7 @@
       "level": "Core gates",
       "title": "Secret-bearing link and local QR",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "CORE-AUTH"
       ],
@@ -268,22 +177,40 @@
       "level": "Core gates",
       "title": "Encrypted recoverable local state",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Password/key handling, authenticated namespaces, reload/reconnect, corruption and migrations are tested.",
       "commands": [],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_progress_only_not_requirement_acceptance",
+          "path": "docs/evidence/M2-core.json",
+          "sha256": "4ed015ebfe041bf1dcc176c19e01b3e40f94ac6510612e3241ee14c20b4adb72",
+          "observedAt": "2026-09-26T08:56:32.521Z"
+        }
+      ],
+      "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1."
     },
     {
       "id": "CORE-TX",
       "level": "Core gates",
       "title": "Transaction and receipt truth",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Submission, inclusion, finality and wallet sync remain separate; imported receipts remain unverified until chain-bound.",
       "commands": [],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_progress_only_not_requirement_acceptance",
+          "path": "docs/evidence/M2-core.json",
+          "sha256": "4ed015ebfe041bf1dcc176c19e01b3e40f94ac6510612e3241ee14c20b4adb72",
+          "observedAt": "2026-09-26T08:56:32.521Z"
+        }
+      ],
+      "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1."
     },
     {
       "id": "CORE-FEES",
@@ -301,20 +228,35 @@
       "level": "Level 1",
       "title": "Node 22",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Node 22 toolchain observed; host Node is distinct from Midnight node version.",
       "commands": [
         "node --version"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "host_node_toolchain",
+          "command": "node --version; npm --version",
+          "path": "docs/evidence/node-runtime.json",
+          "sha256": "1fc99f68914d6c633079e65595f178dae0e9fea2cd378fb163efc58752c17d6f",
+          "observedAt": "2026-09-26T08:56:32.521Z",
+          "subjects": [
+            {
+              "path": ".nvmrc",
+              "sha256": "177d20030d4dcc37eae9ef92865ec54dadce60e8f19e9a34a5d4f37502195a36"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "L1-DOCKER",
       "level": "Level 1",
       "title": "Docker toolchain",
       "owner": "engineer",
-      "status": "blocked",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Docker engine, Compose and pinned local proof image run; browser reachability is checked.",
       "commands": [],
@@ -325,7 +267,7 @@
       "level": "Level 1",
       "title": "Payment-relevant Compact contract",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "CORE-CONSERVATION",
         "CORE-PRIVACY"
@@ -339,7 +281,7 @@
       "level": "Level 1",
       "title": "Passing contract tests",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -347,14 +289,22 @@
       "commands": [
         "npm run test:contracts"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_progress_only_not_requirement_acceptance",
+          "path": "docs/evidence/M1-feasibility.json",
+          "sha256": "56f26960b00d2ef84445ecd5cf42e1c0aaff901ec457a3f0f0155f648eab0b4a",
+          "observedAt": "2026-09-26T08:56:32.521Z"
+        }
+      ]
     },
     {
       "id": "L1-MANAGED",
       "level": "Level 1",
       "title": "Generated circuits and keys",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -363,14 +313,22 @@
         "npm run compile:contracts",
         "npm run verify:artifacts"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_progress_only_not_requirement_acceptance",
+          "path": "docs/evidence/M1-feasibility.json",
+          "sha256": "56f26960b00d2ef84445ecd5cf42e1c0aaff901ec457a3f0f0155f648eab0b4a",
+          "observedAt": "2026-09-26T08:56:32.521Z"
+        }
+      ]
     },
     {
       "id": "L1-DEPLOY",
       "level": "Level 1",
       "title": "Verified deployment address",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "L1-MANAGED"
       ],
@@ -383,7 +341,7 @@
       "level": "Level 1",
       "title": "Initial technical README",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -405,20 +363,21 @@
     {
       "id": "L2-WALLET",
       "level": "Level 2",
-      "title": "Lace connect and disconnect",
+      "title": "1AM connect and disconnect",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [],
-      "acceptance": "Actual installed Lace authorizes and disconnects in the frontend; no headless substitute counts.",
+      "acceptance": "Actual installed 1AM authorizes and disconnects in the frontend; no headless substitute counts.",
       "commands": [],
-      "evidence": []
+      "evidence": [],
+      "note": "Explicit client-only controls and synthetic tests implemented; actual extension authorization remains owner-pending. Local disconnect is not extension permission revocation."
     },
     {
       "id": "L2-CIRCUIT",
       "level": "Level 2",
       "title": "Real frontend circuit invocation",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "L2-WALLET",
         "L1-DEPLOY"
@@ -432,7 +391,7 @@
       "level": "Level 2",
       "title": "Observable documented privacy",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [
         "CORE-PRIVACY",
         "L2-CIRCUIT"
@@ -446,20 +405,21 @@
       "level": "Level 2",
       "title": "Persistent private state",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "implemented",
       "dependsOn": [
         "CORE-STATE"
       ],
       "acceptance": "Encrypted state survives reload and wallet reconnect without crossing namespaces.",
       "commands": [],
-      "evidence": []
+      "evidence": [],
+      "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1."
     },
     {
       "id": "L2-PREPROD",
       "level": "Level 2",
       "title": "Verified Preprod address",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "L1-DEPLOY"
       ],
@@ -576,7 +536,7 @@
       "level": "Level 4",
       "title": "Working Preprod MVP",
       "owner": "engineer",
-      "status": "not_started",
+      "status": "blocked",
       "dependsOn": [
         "L3-APP",
         "L2-PREPROD"
@@ -777,6 +737,21 @@
       "dependsOn": [],
       "acceptance": "Only record an actual supplied and checked application URL.",
       "commands": [],
+      "evidence": []
+    },
+    {
+      "id": "ARCH-STACK",
+      "level": "Preparation",
+      "title": "Single Next.js frontend/backend and client-only secrets",
+      "owner": "architect",
+      "status": "implemented",
+      "dependsOn": [],
+      "acceptance": "Next.js App Router, TypeScript, Tailwind; Route Handlers in src/app/api/**/route.ts; appropriate non-secret Server Actions; server-only modules in src/lib/server/. No separate backend without a verified requirement. 1AM authorization, claim secrets, private witnesses and private-state handling never enter Next.js APIs.",
+      "commands": [
+        "npm run check:offline",
+        "npm run lint",
+        "npm run build"
+      ],
       "evidence": []
     }
   ],

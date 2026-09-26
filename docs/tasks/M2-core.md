@@ -1,6 +1,8 @@
 # M2 — Complete contract, domain and encrypted state
 
-State: not_started. Expected behavior below is not observed evidence.
+State: partially implemented (requirement states remain authoritative). Encrypted local storage and transaction recovery guards have deterministic coverage; candidate compiled-contract cases pass. Protocol codec, full integration and funded recovery await the live M1 gate.
+
+Remaining expected behavior below is not observed evidence.
 
 **Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -12,9 +14,10 @@ Use Next.js App Router, TypeScript and Tailwind CSS for the single frontend/back
 application. HTTP APIs: `src/app/api/**/route.ts`; server-only modules:
 `src/lib/server/` with `import "server-only"`. Server Actions are limited to
 appropriate non-secret UI mutations. No Express, NestJS, Fastify or separate
-backend without a verified requirement and ADR. Lace authorization, claim secrets,
+backend without a verified requirement and ADR. 1AM authorization, claim secrets,
 private witnesses and private-state handling stay client-side and never enter
 Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
+
 ## Prerequisites
 M1 protocol validated before final cryptographic interfaces are frozen. Pure amount, storage and recovery work may proceed independently while M1 is blocked.
 

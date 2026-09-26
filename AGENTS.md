@@ -11,7 +11,7 @@ with validated inputs and authorization. Put server-only modules in
 No Express, NestJS, Fastify or separate backend service unless a verified technical
 requirement is recorded in an ADR. The trusted local proof service is a protocol
 tool, not a separate application backend. Add endpoints only for an actual need.
-Lace wallet authorization, claim secrets, private witnesses and private-state
+1AM wallet authorization, claim secrets, private witnesses and private-state
 handling remain client-side. Never pass these secrets to Next.js API routes,
 Server Actions, server components, server-rendered props, logs or telemetry.
 Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
@@ -31,8 +31,11 @@ secrets, coin openings, private state or wallet keys in logs, artifacts or MCP c
 Scope work to product engineering, developer tools, technical docs, tests and
 permitted technical evidence. Do not import unrelated activities from external material.
 
-No commits, history changes, author changes, global configuration edits or permission
-relaxation without explicit owner authorization. Preserve files on reruns. Never
+Create a Git commit after every meaningful codebase change with a clear, concise
+message. Keep logical changes separate; do not accumulate unrelated uncommitted
+work. This is standing owner authorization for local commits, not pushes. No history
+rewrites, author changes, global configuration edits or permission relaxation
+without explicit owner authorization. Preserve files on reruns. Never
 redeploy just because a session restarted. Wallet actions, funds, secrets, permissions,
 eligibility and irreversible changes require the owner's explicit action.
 
@@ -52,3 +55,13 @@ spawned workers; no worker may spawn another. Assign disjoint files and use the
 handoff contract in `PLANS.md`. Serialize compiling and proving. Architect alone
 updates shared requirements/status unless ownership is explicitly transferred.
 Return paths, checks with actual outcomes, evidence, risks and blockers, not full logs.
+
+## Owner policy (2026-09-26)
+
+1AM.xyz is the primary wallet. Do not silently fall back to Lace. Keep wallet
+authorization and all sensitive data client-side; never expose seed phrases,
+private keys, claim secrets, coin openings or private state in logs, APIs, artifacts
+or tool output. Deployment, asset issuance and every live transaction require
+explicit owner approval before execution. Connection/signing prompts are manual
+owner actions. Commit every meaningful codebase change separately with a clear,
+concise message; local commits are authorized, pushes and history rewrites are not.

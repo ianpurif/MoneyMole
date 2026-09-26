@@ -11,7 +11,7 @@ with validated inputs and authorization. Put server-only modules in
 No Express, NestJS, Fastify or separate backend service unless a verified technical
 requirement is recorded in an ADR. The trusted local proof service is a protocol
 tool, not a separate application backend. Add endpoints only for an actual need.
-Lace wallet authorization, claim secrets, private witnesses and private-state
+1AM wallet authorization, claim secrets, private witnesses and private-state
 handling remain client-side. Never pass these secrets to Next.js API routes,
 Server Actions, server components, server-rendered props, logs or telemetry.
 Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
@@ -25,7 +25,7 @@ commitment transfers funds.
 ## Boundaries
 
 ```text
-Browser: React UI + explicit Lace authorization
+Browser: React UI + explicit 1AM authorization
     -> integer-valued payment domain and separate transaction state machine
     -> Midnight.js adapter + unlocked encrypted local store
     -> trusted local prover / connected wallet
@@ -64,7 +64,8 @@ association. Nullifier uniqueness, membership soundness, root freshness and repl
 resistance need compiled tests. If roots are stateful, evaluate a bounded history
 rather than silently making old notes unclaimable when another note is inserted.
 
-This is deliberately not an invented Compact circuit listing. M1 must establish
+The candidate Compact implementation compiles and has synthetic runtime/proving
+coverage. M1 must still establish
 that coin selection, membership and all library effects preserve the claimed
 privacy before freezing the protocol. A compile-only witness probe lives separately.
 
@@ -129,3 +130,16 @@ ClaimOpening, VerifiedFunding, PreparedClaim and reconciliation error unions fro
 observed SDK types. Private fields must not be accepted by server components.
 Prefer small explicit adapters over a generic multi-chain framework.
 
+## Implemented foundation (2026-09-26)
+Client-only `src/lib/midnight/oneam.ts` uses connector 4.0.1 discovery, explicit
+connection, Preprod checks and local disconnect. `src/lib/private-state/` provides
+Web Crypto encryption and revision-checked IndexedDB; ADR 004 describes its limits.
+`src/domain/transaction.ts` guards local recovery transitions; it cannot certify
+chain observations. `src/lib/server/security.ts` owns the nonce CSP policy, applied
+by `src/proxy.ts` with dynamic rendering. No backend API or Server Action is needed
+yet; future non-secret endpoints must follow the Route Handler convention above.
+Compiled coin diagnostics reveal helper effects and exact pinned types; see
+`disclosure-audit.md`. The product protocol and claim codec remain gated by M1.
+
+
+Server Actions are currently unnecessary because every implemented wallet operation is local to the browser. Neither an API proxy for proving nor a server-side private-state provider is permitted. Public deployment metadata may later be served by a Route Handler only after real deployment records exist.

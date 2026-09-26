@@ -1,6 +1,8 @@
 # M1 — Prove real funded independent claiming
 
-State: not_started. Expected behavior below is not observed evidence.
+State: candidate payment and separate issuer compile; 13 generated-runtime cases and three local circuit proof generations pass on synthetic fixtures. The owner will prepare two wallets and chose a separately issued non-redeemable Preprod test asset. Live wallet readiness, concrete deployment approval, qualification, sealed transactions and spendability remain pending. See disclosure-audit.md.
+
+Remaining expected behavior below is not observed evidence.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -12,9 +14,10 @@ Use Next.js App Router, TypeScript and Tailwind CSS for the single frontend/back
 application. HTTP APIs: `src/app/api/**/route.ts`; server-only modules:
 `src/lib/server/` with `import "server-only"`. Server Actions are limited to
 appropriate non-secret UI mutations. No Express, NestJS, Fastify or separate
-backend without a verified requirement and ADR. Lace authorization, claim secrets,
+backend without a verified requirement and ADR. 1AM authorization, claim secrets,
 private witnesses and private-state handling stay client-side and never enter
 Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
+
 ## Prerequisites
 Installed compatible compiler/SDK and local prover; owner-authorized independent wallets with a supported shielded asset and sufficient DUST. Create minimal issuance separately if no suitable asset exists. Never mint during claim.
 
@@ -36,6 +39,7 @@ Run only after implementing their missing entry points. Do not treat the current
 
 ```sh
 npm run compile:contracts
+npm run compile:issuance
 npm run verify:artifacts
 npm run test:contracts
 npm run services:up

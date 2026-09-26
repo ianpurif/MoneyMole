@@ -11,7 +11,7 @@ with validated inputs and authorization. Put server-only modules in
 No Express, NestJS, Fastify or separate backend service unless a verified technical
 requirement is recorded in an ADR. The trusted local proof service is a protocol
 tool, not a separate application backend. Add endpoints only for an actual need.
-Lace wallet authorization, claim secrets, private witnesses and private-state
+1AM wallet authorization, claim secrets, private witnesses and private-state
 handling remain client-side. Never pass these secrets to Next.js API routes,
 Server Actions, server components, server-rendered props, logs or telemetry.
 Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
@@ -87,7 +87,7 @@ listed context. Expectations are not observations.
 | M0  | Resolve tooling, exact graph, installed APIs and Codex capabilities | `docs/tasks/M0-toolchain.md`   | Genuine lock + installed checks; supported model routing or explicit block |
 | M1  | Minimal real shielded funding-to-claim slice                        | `docs/tasks/M1-feasibility.md` | Independent receiver spendable coin, no replay, audited public transcript  |
 | M2  | Complete contracts, domain, persistence and negative cases          | `docs/tasks/M2-core.md`        | Conservation, binding, recovery and corruption tests                       |
-| M3  | Lace and responsive link/QR application                             | `docs/tasks/M3-wallet-ui.md`   | Real extension authorization and privacy-safe two-context flow             |
+| M3  | 1AM and responsive link/QR application                             | `docs/tasks/M3-wallet-ui.md`   | Real extension authorization and privacy-safe two-context flow             |
 | M4  | Preprod deployment, durable metadata and reconciliation             | `docs/tasks/M4-preprod.md`     | Chain-bound address, finality and wallet synchronization                   |
 | M5  | Hardening, regression, pipeline and technical evidence              | `docs/tasks/M5-acceptance.md`  | Product acceptance distinct from external qualification                    |
 
@@ -127,9 +127,11 @@ wallet. Never hand-edit generated material or discard funded-deployment history.
 
 ## Fail-closed command implementation
 
-`compile:contracts` requires `contracts/private-payments.compact` and currently
-blocks. Product command gates route to `scripts/product/*.mjs`, intentionally absent
-until implemented. Each new action exports `run(args)` and returns
+`compile:contracts` compiles the candidate `contracts/private-payments.compact`;
+`compile:issuance` compiles the separate fixed-supply test issuer. Artifact,
+generated-runtime and synthetic local-proving actions are implemented. Remaining
+product command gates route to `scripts/product/*.mjs` and block until implemented.
+Each new action exports `run(args)` and returns
 `{status: "passed", evidencePaths: [...]}` ONLY after its actual acceptance passes.
 Tests may use isolated mocks, but integration/proving/live acceptance may not count
 mock responses. Empty, skipped or unavailable suites must return nonzero.
@@ -145,7 +147,7 @@ Execute the complete matrix in `docs/TESTING.md`. At least one real claim must u
 an independently connected receiver and an unavailable sender browser. Confirm
 value conservation, receiver spendability, failure of copied/tampered/concurrent
 claims and absence of unintended disclosed fields in inspected public data.
-A successful SDK test does not prove Lace integration; report any extension limit.
+A successful SDK test does not prove 1AM integration; report any extension limit.
 
 Run compile, artifact validation, lint, typechecks, all relevant test layers and
 production build. Inspect actual authorized remote pipeline results separately;
@@ -154,10 +156,20 @@ transaction, observed finality and source/build/toolchain hashes. Update every
 relevant requirement with observed evidence and regenerate its readable report.
 
 Preserve owner-pending eligibility, repository metadata, supplied product references,
-meaningful commits and real-participant evidence. Do not create commits without
-authorization or fabricate participants. A wallet is not a unique human.
+meaningful commits and real-participant evidence. Create a concise local Git commit after each meaningful logical change; do not
+batch unrelated work or fabricate participants. A wallet is not a unique human.
 
 Finish with implemented behavior, observed checks by scope, exact blockers and
 owner actions, deployment evidence where real, residual privacy/security risks,
 and the next exact action. Do not claim complete challenge qualification when
 external requirements are pending.
+
+## Owner policy (2026-09-26)
+
+1AM.xyz is the primary wallet. Do not silently fall back to Lace. Keep wallet
+authorization and all sensitive data client-side; never expose seed phrases,
+private keys, claim secrets, coin openings or private state in logs, APIs, artifacts
+or tool output. Deployment, asset issuance and every live transaction require
+explicit owner approval before execution. Connection/signing prompts are manual
+owner actions. Commit every meaningful codebase change separately with a clear,
+concise message; local commits are authorized, pushes and history rewrites are not.

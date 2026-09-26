@@ -13,3 +13,10 @@ Inspect the installed compiler and runtime types first. Resolve one uncertain AP
 
 ## Stop boundary
 Do not expand product scope or perform ancillary activities. Escalate secrets, wallet actions, funding, permissions, eligibility and irreversible operations. Never fabricate evidence or report an unobserved delegation.
+
+## Application boundary
+Use Next.js App Router, TypeScript and Tailwind CSS for frontend and backend.
+HTTP APIs use `src/app/api/**/route.ts`; server-only modules use `src/lib/server/`.
+Server Actions accept only appropriate non-secret UI mutations. Keep 1AM authority,
+claim secrets, witnesses and private-state handling client-side; never send them
+to Next.js APIs. No separate backend framework/service without a verified requirement.

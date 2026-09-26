@@ -61,7 +61,7 @@ Bind the container only to loopback. Verify the actual browser's access to the
 configured prover, CORS, secure-context and local-network rules. A TCP listener
 proves neither service identity nor working zero-knowledge proofs. Do not invent a
 health route, use a permissive browser flag, or send witnesses to an arbitrary
-endpoint to bypass a connection error. M1/M3 must test the supported Lace prover
+endpoint to bypass a connection error. M1/M3 must test the supported 1AM prover
 configuration and distinguish wallet proving from application proving. [S8, S13]
 
 ## Evidence and claim language
@@ -77,5 +77,5 @@ Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
 Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
 Actions, and server-only modules in `src/lib/server/`. Follow
 `docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
-verified requirement; Lace authorization, claim secrets, private witnesses and
+verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.

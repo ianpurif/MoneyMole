@@ -62,5 +62,15 @@ Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
 Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
 Actions, and server-only modules in `src/lib/server/`. Follow
 `docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
-verified requirement; Lace authorization, claim secrets, private witnesses and
+verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.
+
+## Owner policy (2026-09-26)
+
+1AM.xyz is the primary wallet. Do not silently fall back to Lace. Keep wallet
+authorization and all sensitive data client-side; never expose seed phrases,
+private keys, claim secrets, coin openings or private state in logs, APIs, artifacts
+or tool output. Deployment, asset issuance and every live transaction require
+explicit owner approval before execution. Connection/signing prompts are manual
+owner actions. Commit every meaningful codebase change separately with a clear,
+concise message; local commits are authorized, pushes and history rewrites are not.

@@ -7,13 +7,13 @@ Codex execution workflow that builds the product from this starting state.
 
 > Read and execute BUILD.md.
 
-## Preparation status — read first
-Source files and dependency-free tooling are created. **Full preparation validation
-is blocked:** the build environment has no registry DNS access and no Codex, Docker
-or Compact installation. Therefore there is no genuine `package-lock.json`, installed
-Next/SDK graph, observed shell run, compiled circuit/key material, wallet connection,
-contract deployment or live payment. Exact manifest pins are candidate versions,
-not a tested compatible npm graph. No fake lockfile or successful transaction is supplied.
+## Current status — read first
+The genuine npm lockfile and installed Next/SDK graph are present. The application
+builds and provides explicit client-only 1AM connection controls. Encrypted local
+storage and transaction recovery guards have deterministic tests. Nonce-based CSP
+is checked against the production app. Compact diagnostics compile; they are never
+payment destinations. No product contract, funded link, claim, deployment or real
+wallet payment has been verified. M1 live feasibility remains the product gate.
 
 See `docs/PREPARATION-REPORT.md` for checks actually run and `docs/STATUS.md` for
 current blockers. A source or utility check passing is not product acceptance.
@@ -31,10 +31,9 @@ npm run verify:boilerplate
 npm run dev
 ```
 
-Bootstrap creates the missing **real** lockfile from the registry and installs with
-npm ci. It may expose incompatible candidate pins; M0 directs Codex to correct them
-using actual package metadata. Full verification remains blocked until tools/client
-capabilities and shell behavior are observed. After source preparation, the exact
+Bootstrap preserves the registry-resolved lockfile and installs with npm ci.
+Full preparation remains blocked on the required Codex model/MCP checks and WSL's
+missing Compose plugin; Windows Docker Compose was separately exercised. The exact
 Codex instruction above executes BUILD.md and continues through unblocked milestones.
 
 ## Intended product and privacy boundary
@@ -51,11 +50,14 @@ validate, not properties this shell establishes. See `docs/PRIVACY.md`.
 
 ## What is present
 A single Next App Router/TypeScript/Tailwind shell with a source-owned shadcn-style
-button; integer amount helpers and design-only ports; bounded fail-closed scripts;
+button; client-only 1AM discovery/connection; integer amount and recovery helpers;
+encrypted IndexedDB with authenticated namespaces and revision conflicts; bounded fail-closed scripts;
 three exact-model Codex agent definitions; four focused skills; six executable task
 cards; structured requirements/evidence states; threat model and gated architecture;
-local utility tests and future test/CI definitions. Product action entry points
-intentionally block until their actual implementations exist.
+local utility, storage, wallet-fixture and production-browser tests; candidate
+payment and separate test-issuer contracts with 13 generated-runtime cases and
+three local circuit proof generations. Remaining integration/deployment/live
+acceptance commands intentionally block until implemented. No payment is live.
 
 ## Context map
 - `BUILD.md`, `PLANS.md`, `AGENTS.md`: execution, ownership and resume protocol.
@@ -69,8 +71,8 @@ intentionally block until their actual implementations exist.
 Level 6 uses Preprod and 70 total real participants. Plan conservatively for 30
 meaningful owner commits pending source-conflict confirmation. Product eligibility,
 public repository metadata, supplied product references, remote pipeline runs and
-real participant evidence remain pending unless observed. No commits or history
-rewrites are performed automatically; a numeric count alone proves little.
+real participant evidence remain pending unless observed. Meaningful changes are committed separately under standing owner authorization.
+History rewrites and pushes require separate authorization; a numeric count alone proves little.
 
 ## Stack contract
 
@@ -78,5 +80,5 @@ Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
 Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
 Actions, and server-only modules in `src/lib/server/`. Follow
 `docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
-verified requirement; Lace authorization, claim secrets, private witnesses and
+verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.

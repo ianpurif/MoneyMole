@@ -1,39 +1,59 @@
 # Current execution state
 
-Snapshot: 2026-09-26. Active milestone: **M0 — tooling and dependency resolution**.
+Snapshot: 2026-09-26. Active milestone: **M1 — independent-wallet feasibility**.
+M0 tooling is installed; its Codex routing/MCP and WSL Compose gates remain blocked.
+M2 recovery utilities and M3 wallet/security work proceeded independently as BUILD permits.
 
-## Preparation completed at source level
-The Next.js shell, exact candidate package manifest, project Codex configuration,
-three agent definitions, four scoped skills, product-specific context, six task
-cards, machine-readable requirements, command gates, local utility tests and CI
-source have been written. Amount helpers are implemented; payment operations and
-private persistence are not. The Compact file is a compile-only, nonpayment probe.
+## Current wallet migration
 
-## Observed validation
-45 dependency-free utility tests passed with zero failures/skips. Domain-only types
-and 13 TS/TSX syntax checks also passed within their documented scope.
-See `docs/PREPARATION-REPORT.md` and its evidence files for actual command outcomes.
-Do not infer an observed build from source presence. No Codex delegation occurred.
+1AM is now the required primary wallet. The existing Lace adapter is being migrated;
+earlier wallet test evidence is historical and does not verify 1AM. No new real
+wallet authorization, deployment, issuance or transaction has occurred.
 
-## Blockers
-| Blocker | Consequence | Exact next action |
-|---|---|---|
-| Runtime registry/download DNS unavailable | No genuine package-lock.json or npm install | On an authorized connected host, run `npm run bootstrap`; correct only evidenced incompatible candidate pins. |
-| Docker and Compact absent | No compiled probe, contract, keys or real proving | Complete reviewed installer metadata in M0, install pinned tools and run doctor/compile checks. |
-| Codex absent | Installed schema, model account availability, agent discovery not validated | Open the trusted project in installed Codex and run the read-only doctor plus actual agent listing. |
-| MCP not connected here | Endpoint only configured | Inspect actual Midnight MCP connection/tool listing in the trusted client. |
-| Payment protocol not implemented | No funding, claim, deployment or receiver credit | Execute M1 after M0 tools; do not replace it with a simulation. |
-| No owner external evidence | Eligibility, URLs, commits and real participant counts pending | Request only the specific external fact when needed; continue independent engineering. |
+## Implemented
+- Next.js App Router is the frontend and backend; TypeScript and Tailwind. HTTP APIs
+  use `src/app/api/**/route.ts`, server-only code uses `src/lib/server/`, and Server
+  Actions are only for appropriate non-secret mutations. No separate backend service.
+- Genuine npm lockfile; installed SDK graph and exact connector types. ADR 005
+  records peer-resolution fixes and the project-local official Node/Compact runtimes.
+- Client-only 1AM discovery, explicit Preprod connection, DUST presence check,
+  account/network invalidation and local disconnect. No signing/submission actions.
+- Client-only AES-GCM/PBKDF2 IndexedDB, namespace authentication, revision conflicts,
+  explicit unlock/lock, encrypted export/import and corruption preservation. ADR 004
+  records limitations. Utilities are not yet connected to a funded product workflow.
+- Local transaction state guards persist uncertainty before submission and reject
+  blind retries. SDK-derived settlement observations are still required.
+- Server-only CSP policy, fresh per-request nonces and dynamic App Router rendering.
+- Commitment and shielded-I/O compiler diagnostics, generated outputs and initial
+  disclosure review. Diagnostics must never be deployed/funded. The candidate payment
+  contract and separate fixed-supply test issuer now compile, with 13 runtime cases
+  and three local constraint checks/proof generations on synthetic fixtures.
 
-## Recent decisions
-Single Next.js application, local trusted prover, Next.js Route Handlers for backend APIs, no central custody or separate backend by
-default. Sender-funded bearer direction only. Gate coin qualification, receiver
-discovery and disclosure before protocol freeze. Preserve honest missing-lock status
-instead of providing an invalid package-lock.json. Use Preprod and the supplied
-Level 1–6 targets; keep qualification separate from engineering.
+## Observed checks
+Registry resolution and npm ci passed. Offline utility tests passed. Unit tests,
+TypeScript, lint, production build and production-browser tests have passed within
+local scope; the preparation gate is blocked only on tooling/client availability,
+with its per-command results recorded in M0 evidence.
+Compiler 0.31.1 produced diagnostics, candidate payment/issuer contracts and keys. Exact devtools 0.5.1
+was archive/checksum verified locally. KDF benchmark: 225/216/226 ms in Node Web
+Crypto on this desktop; mobile/browser performance is unmeasured.
+Windows Docker Compose started the pinned proof image on loopback and TCP was
+reachable. The service checked and generated fund/claim/issue circuit proofs using
+synthetic fixtures, then was stopped. No sealed transaction or ledger-validity test ran.
+No live payment, deployment, actual extension authorization or receiver spend was observed.
 
-## Next exact action
-At repository root: `npm run check:offline`, then execute
-`docs/tasks/M0-toolchain.md`, beginning with `npm run bootstrap` on a connected host.
-The single agent instruction remains: **Read and execute BUILD.md.**
+## Blockers and next actions
+| Blocker | Exact next action |
+|---|---|
+| M1 needs actual wallet readiness | Owner agreed to prepare two independent 1AM Preprod wallets and selected separately issued non-redeemable test units. Open the local preparation page in each wallet profile, explicitly connect and report connection/DUST readiness only. No deployment or issuance approval has been given. |
+| Product feasibility still unverified | Continue M1 from the locally tested candidate with independent qualified-coin discovery and sealed-transaction validation; review concrete deployment/funding transactions with the owner before executing. Verify B credit and spend with A unavailable, replay and public effects. |
+| Installed Codex account listing lacks requested GPT-6 combinations | Owner/client resolves account capability discrepancy; do not silently substitute. No workers were spawned. |
+| Midnight MCP listing unavailable | Owner/client checks the configured documentation MCP connection. Direct primary-source research remains available. |
+| Ubuntu Docker lacks Compose plugin | Use the existing Windows Docker Compose for this host's service lifecycle, or owner installs the Linux plugin. Global config/permissions were not changed. |
+| M2/M3 remaining integration | Finalize codec, payment flows and funded-state recovery only after M1 validates the protocol. Keep payment actions disabled. |
+| M4/M5 live and external evidence | Reuse any future verified deployment. No deployment currently exists in project records. Owner supplies approvals, public metadata, remote runs and consented participation evidence. |
 
+## Resume
+Read BUILD.md and `docs/tasks/M1-feasibility.md`. Use `docs/USAGE.md` for the
+implemented 1AM preparation controls. Run targeted checks after changes; preserve
+current lockfile and evidence. Never infer product acceptance from diagnostics or mocks.

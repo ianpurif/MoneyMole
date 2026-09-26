@@ -1,11 +1,21 @@
 # Implemented usage
 
-## Preparation shell only
-After M0 resolves the real npm graph, run `npm run dev` from the repository root
-and open the local address printed by Next.js. The shell identifies preparation
-status and has a disabled payment button. It does not connect Lace, hold funds,
-create a link, show a balance, authorize a transaction or claim a payment.
-The shell's successful runtime execution is not yet observed in this environment.
+## Wallet preparation
+Use Node 22.16.0/npm 10.9.2 on Linux/WSL2, then run `npm ci` and `npm run dev`.
+On this host an ignored, project-local runtime was verified; the shortcut is
+`bash .local/run.sh npm run dev` from WSL. No global Node selection was changed.
+
+Click **Check for 1AM**, then **Connect 1AM**, and approve in the extension.
+The app requests Preprod, checks the returned network and shielded address, and
+reports whether DUST exists without claiming a transaction fee estimate. It keeps
+the connection and address only in browser memory. **Disconnect** clears that
+local session; revoke the site's permission in 1AM to revoke extension access.
+Account/network changes invalidate the session on the next check or window focus.
+
+Funding, sharing and claim actions remain disabled. The app does not hold funds,
+create links, display payment balances or submit transactions. Automated connector
+fixtures verify UI behavior only; a real owner-approved 1AM connection is pending.
+The encrypted storage utilities are tested but are not wired to live payment flows.
 
 Do not send assets to this source package. No deployed contract address exists in
 its records. Do not interpret the compile-only probe as a payment destination.
@@ -24,6 +34,10 @@ If the local proof port is occupied, inspect the listener and choose an explicit
 supported configuration. Do not terminate unrelated services. TCP availability
 alone is not a working proof. Current operations are in RUNBOOK.md.
 
-Replace this document's usage sections with actual implemented payment operations
-and observed troubleshooting only after those operations exist. Do not publish
-hypothetical buttons, balances, addresses or success states as working usage.
+Production browser checks require `npm run build` before `npm run test:browser`.
+Do not use `contracts/probes/` as deployment input: those files are diagnostics.
+
+The owner selected a separately issued non-redeemable Preprod test asset. The
+candidate issuer creates 1,000,000 atomic units once; proposed display precision is
+zero decimals. No deployment, issuance or funding transaction has been authorized
+or executed. Local proofs use synthetic fixtures and are not funds.

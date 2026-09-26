@@ -11,7 +11,7 @@ with validated inputs and authorization. Put server-only modules in
 No Express, NestJS, Fastify or separate backend service unless a verified technical
 requirement is recorded in an ADR. The trusted local proof service is a protocol
 tool, not a separate application backend. Add endpoints only for an actual need.
-Lace wallet authorization, claim secrets, private witnesses and private-state
+1AM wallet authorization, claim secrets, private witnesses and private-state
 handling remain client-side. Never pass these secrets to Next.js API routes,
 Server Actions, server components, server-rendered props, logs or telemetry.
 Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
@@ -19,7 +19,6 @@ Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
 
 Date: 2026-09-26. Status: Accepted for preparation.
 
-Use one Next.js App Router application and browser-side wallet/private-state adapters. Start without a database, custodial signer or extra backend. This minimizes components with access to secrets. A separate backend service requires evidence of necessity and a privacy review; it cannot receive plaintext openings.
+Use one Next.js App Router application and browser-side wallet/private-state adapters. Start without a database, custodial signer or separate backend service. This minimizes components with access to secrets. A separate backend service requires evidence of necessity and a privacy review; it cannot receive plaintext openings.
 
 Revisit only with new observed evidence; record the affected interfaces, tests and requirement states.
-

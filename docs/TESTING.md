@@ -2,13 +2,13 @@
 
 No live product case below has been executed during preparation. The pure amount,
 requirement-validation and attestation-integrity tests are utility tests, not
-payment acceptance. `tests/unit` is the future installed Vitest execution layer;
+payment acceptance. `tests/unit` is the installed Vitest execution layer;
 `tests/boilerplate` can run on Node 22 without npm dependencies.
 
 | ID | Scenario | Layers | Required observation |
 |---|---|---|---|
 | T01 | Actual value conservation | contract, proving, live | Sender/escrow/receiver shielded amounts reconcile; claim has no mint; DUST accounted separately. |
-| T02 | Independent receiver | live, actual Lace | Sender context unavailable; B obtains and spends the funded coin. |
+| T02 | Independent receiver | live, actual 1AM | Sender context unavailable; B obtains and spends the funded coin. |
 | T03 | Wrong secret | unit, contract, proving | Claim rejected; funded value remains unchanged. |
 | T04 | Tampered amount/asset | codec, contract, proving | No substituted color or amount can settle. |
 | T05 | Wrong network/contract | contract, live | Cross-domain and cross-deployment claim cannot consume a note. |
@@ -17,7 +17,7 @@ payment acceptance. `tests/unit` is the future installed Vitest execution layer;
 | T08 | Duplicate/concurrent claims | contract, live | At most one settlement and one receiver output; rejected competitor is not a success. |
 | T09 | Zero/negative/overflow/precision | unit, contract | Invalid amounts fail at the appropriate boundary; no float math. |
 | T10 | Insufficient asset or DUST | integration, live | Separate truthful readiness and recoverable failure; no false funded state. |
-| T11 | Rejected connection/signing | integration, actual Lace | No synthetic authorization; preserved local intent. |
+| T11 | Rejected connection/signing | integration, actual 1AM | No synthetic authorization; preserved local intent. |
 | T12 | Prover unavailable/wrong service | integration, proving, browser | Bounded error, no fallback to an arbitrary remote prover. |
 | T13 | Stale indexer/RPC disconnect | integration, live | Unknown/stale distinct from finalized and wallet-synced. |
 | T14 | Interrupted submission | integration, live | Reconcile original identifier; no blind re-fund or re-claim. |
@@ -38,7 +38,7 @@ exercise compiled circuits rather than a hand-written simulation of the rules.
 Integration tests exercise real adapter boundaries where available and label any
 isolated mocks. Real proving tests use actual generated keys and the trusted local
 service. Live Preprod acceptance additionally observes chain finality and wallet
-credit/spendability. A browser test with a mock wallet does not prove Lace works.
+credit/spendability. A browser test with a mock wallet does not prove 1AM works.
 
 Build product suite entry points under `scripts/product/` as specified in task cards.
 They must reject absent or empty test globs and skipped necessary cases. Record
@@ -57,5 +57,17 @@ Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
 Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
 Actions, and server-only modules in `src/lib/server/`. Follow
 `docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
-verified requirement; Lace authorization, claim secrets, private witnesses and
+verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.
+
+## Current deterministic and browser scope
+Unit tests now cover amount bounds, transaction recovery, native Web Crypto encryption, fake-indexeddb storage recovery/conflicts/corruption, and synthetic 1AM APIs. Browser tests use the production build and verify nonce CSP and an explicitly synthetic wallet flow. These do not establish real extension, proving or payment behavior.
+
+## Current contract and proving scope
+`test:contracts` runs 13 cases against generated Compact code, including exact
+output, altered bearer/coin/deployment, stale path, replay and separate issuance.
+`test:proving` sends synthetic preimages directly to the loopback proof service,
+checks circuit constraints and generates fund/claim/issue proofs. It records only
+outcomes and byte counts. It does not independently verify the returned proofs,
+construct a sealed transaction, establish native coin qualification or move funds.
+T01/T02/T05/T06/T07/T08/T19 still require the stronger observations in the matrix.

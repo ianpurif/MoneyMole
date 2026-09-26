@@ -1,6 +1,6 @@
 ---
 name: midnight-wallet
-description: Use when implementing or diagnosing Lace discovery, explicit connection, network selection, authorization, balances, proving or wallet synchronization.
+description: Use when implementing or diagnosing 1AM discovery, explicit connection, network selection, authorization, balances, proving or wallet synchronization.
 ---
 
 # Midnight Wallet
@@ -13,3 +13,10 @@ Inspect connector 4.0.1 and the installed wallet types; do not guess method name
 
 ## Stop boundary
 Do not expand product scope or perform ancillary activities. Escalate secrets, wallet actions, funding, permissions, eligibility and irreversible operations. Never fabricate evidence or report an unobserved delegation.
+
+## Application boundary
+Use Next.js App Router, TypeScript and Tailwind CSS for frontend and backend.
+HTTP APIs use `src/app/api/**/route.ts`; server-only modules use `src/lib/server/`.
+Server Actions accept only appropriate non-secret UI mutations. Keep 1AM authority,
+claim secrets, witnesses and private-state handling client-side; never send them
+to Next.js APIs. No separate backend framework/service without a verified requirement.
