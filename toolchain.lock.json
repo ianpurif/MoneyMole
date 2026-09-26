@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "reviewedAt": "2026-09-26",
-  "status": "source_reviewed_not_installed",
+  "status": "installed_local_checks_passed_live_feasibility_pending",
   "network": "preprod",
   "host": {
     "nodejs": "22.16.0",
@@ -27,44 +27,66 @@
     "@midnight-ntwrk/midnight-js-contracts": {
       "version": "4.1.1",
       "source": "S15",
-      "installed": false
+      "installed": true
     },
     "@midnight-ntwrk/midnight-js-types": {
       "version": "4.1.1",
       "source": "S15",
-      "installed": false
+      "installed": true
+    },
+    "@midnight-ntwrk/dapp-connector-api": {
+      "version": "4.0.1",
+      "source": "S23",
+      "installed": true
+    },
+    "@midnight-ntwrk/midnight-js-protocol": {
+      "version": "4.1.1",
+      "source": "installed package exports",
+      "installed": true
+    },
+    "@midnight-ntwrk/compact-runtime": {
+      "version": "0.16.0",
+      "source": "installed package metadata and local runtime/proving checks",
+      "installed": true
+    },
+    "@midnight-ntwrk/midnight-js-http-client-proof-provider": {
+      "version": "4.1.1",
+      "source": "installed package metadata and local runtime/proving checks",
+      "installed": true
     }
   },
   "pendingMappings": [
-    "Compact runtime and ledger packages exposed through the 4.1.1 protocol layer",
-    "Browser-compatible encrypted private-state provider",
-    "Compatible wallet connector package and exported types",
-    "Compatible testkit package and proving-provider entry points"
+    "Independent receiver coin qualification and wallet discovery need live M1 verification",
+    "Sealed transaction validity, copied-proof destination binding and cross-network replay remain pending"
   ],
   "proofServer": {
     "image": "midnightntwrk/proof-server:8.1.0",
-    "digest": null,
+    "digest": "sha256:801bbc0340e9e96f16735f77b523f23c7459e3359842f7c79c2c53f4e994d531",
     "containerPort": 6300,
     "hostBinding": "127.0.0.1",
-    "installed": false
+    "installed": true
   },
   "compactInstaller": {
     "releaseTag": "compact-v0.5.1",
-    "assetUrl": null,
-    "sha256": null,
-    "status": "owner_review_pending",
-    "reviewed": false,
-    "arguments": []
+    "assetUrl": "https://github.com/midnightntwrk/compact/releases/download/compact-v0.5.1/compact-installer.sh",
+    "sha256": "85e74a53ae4a67b31fa4d854f3b6ffb4c29f7c53e3372c5008b6a4729a8b4a73",
+    "status": "reviewed_not_executed_global_install_requires_owner",
+    "reviewed": true,
+    "arguments": [
+      "--no-modify-path"
+    ],
+    "archiveUrl": "https://github.com/midnightntwrk/compact/releases/download/compact-v0.5.1/compact-x86_64-unknown-linux-musl.tar.xz",
+    "archiveSha256": "684c6b3d2eef9484aabba7a0820c166ae5c169f3aecf28cbea2074840263ba66"
   },
   "packageGraph": {
     "manifest": "package.json",
     "lockfile": "package-lock.json",
-    "resolved": false,
-    "installed": false,
-    "reason": "Build runtime cannot resolve registry hosts; a genuine lockfile must be generated in M0."
+    "resolved": true,
+    "installed": true,
+    "reason": "Registry resolution and npm ci succeeded on WSL; see M0 evidence."
   },
   "codex": {
-    "installedClientVersion": null,
+    "installedClientVersion": "codex-cli 0.149.1",
     "publishedSchema": "https://learn.chatgpt.com/docs/config-schema.json",
     "installedSchemaValidated": false,
     "modelsValidatedForAccount": false,

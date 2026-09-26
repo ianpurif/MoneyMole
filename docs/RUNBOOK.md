@@ -39,11 +39,13 @@ handle and shut it down deliberately when done.
 | `build` | `next build` | Next production build; no simulated product acceptance. |
 | `test:unit` | `vitest run --project unit` | Installed Vitest deterministic suite; no empty test pass. |
 | `compile:probe` | `node scripts/compile.mjs --probe` | Compiler-only nonpayment witness probe; no product qualification. |
+| `compile:coin-probe` | `node scripts/compile.mjs --coin-probe` | M1 private shielded I/O compiler diagnostic; lacks authorization, never deploy/fund. |
 | `compile:contracts` | `node scripts/compile.mjs --product` | Actual payment contract compilation; missing implementation blocks. |
-| `verify:artifacts` | `node scripts/product.mjs artifacts` | M1 action verifies generated source/build/toolchain binding; currently blocked. |
-| `test:contracts` | `node scripts/product.mjs contracts` | M1 compiled-contract suite, currently blocked. |
+| `compile:issuance` | `node scripts/compile.mjs --issuance` | Separate fixed-supply test issuer; no deployment or mint transaction. |
+| `verify:artifacts` | `node scripts/product.mjs artifacts` | Checks all compiler output hashes, circuit keys/IR, source hashes and installed runtime compatibility. |
+| `test:contracts` | `node scripts/product.mjs contracts` | 13 synthetic cases execute actual generated contracts; no ledger settlement. |
 | `test:integration` | `node scripts/product.mjs integration` | M2 integration suite, currently blocked. |
-| `test:proving` | `node scripts/product.mjs proving` | Real local-prover suite, currently blocked. |
+| `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
 | `test:preprod` | `node scripts/product.mjs preprod` | Actual live Preprod suite; requires owner actions/funds; currently blocked. |
 | `verify:product` | `node scripts/product.mjs acceptance` | Actual product acceptance, not preparation; currently blocked. |
 | `test:browser` | `playwright test` | Playwright shell/local UI checks. Does not prove extension operation. |
@@ -86,5 +88,8 @@ Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
 Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
 Actions, and server-only modules in `src/lib/server/`. Follow
 `docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
-verified requirement; Lace authorization, claim secrets, private witnesses and
+verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.
+
+## This host
+In WSL, `bash .local/run.sh npm run <command>` selects the verified project-local runtime. The helper is ignored host state, not a portable installation. Windows Docker Compose is installed; Ubuntu's plugin is absent. Use `docker compose --file compose.yaml up -d proof-server` and `docker compose --file compose.yaml stop proof-server` from this repository in PowerShell. No wallet data is passed through these commands. Build before test:browser.

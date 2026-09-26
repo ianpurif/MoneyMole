@@ -1,0 +1,148 @@
+{
+  "scope": "local_toolchain_and_preparation_not_product",
+  "result": "blocked",
+  "observedAt": "2026-09-26T08:56:32.521Z",
+  "baselineGate": {
+    "scope": "complete_preparation_not_product_acceptance",
+    "observedAt": "2026-09-26T08:39:32.657Z",
+    "result": "blocked",
+    "checks": [
+      {
+        "name": "source and dependency-free utility checks",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "real lockfile with dependency entries",
+        "result": "present_requires_npm_ci"
+      },
+      {
+        "name": "npm ci",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "lint",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "typecheck",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "test:unit",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "build",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "test:browser",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "compile:probe",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "name": "doctor",
+        "result": "blocked",
+        "exit": 2
+      },
+      {
+        "name": "doctor:codex",
+        "result": "blocked",
+        "exit": 2
+      },
+      {
+        "name": "doctor:mcp",
+        "result": "blocked",
+        "exit": 2
+      }
+    ]
+  },
+  "followup": {
+    "observedAt": "2026-09-26T08:55:02.442Z",
+    "scope": "local_targeted_checks",
+    "checks": [
+      {
+        "command": "npm run test:contracts",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "command": "npm run test:unit",
+        "result": "passed",
+        "exit": 0
+      },
+      {
+        "command": "npm run check:offline",
+        "result": "passed",
+        "exit": 0
+      }
+    ],
+    "subjects": [
+      {
+        "path": "package.json",
+        "sha256": "f94e125b5f774cf0ae3c78ff5393e75a4c8d33e43088377914483ca4f3a2d9d6"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "2ccb2efb7ec03f6f68c94a7c9c915e313be7776a4f8219cba046d6fccb295903"
+      },
+      {
+        "path": "tests/contracts/runtime.mjs",
+        "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+      }
+    ]
+  },
+  "additionalObservedChecks": [
+    {
+      "command": "npm run lint",
+      "result": "passed"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "passed"
+    }
+  ],
+  "nodeVersion": "v22.16.0",
+  "npmVersion": "10.9.2",
+  "subjects": [
+    {
+      "path": "package.json",
+      "sha256": "f94e125b5f774cf0ae3c78ff5393e75a4c8d33e43088377914483ca4f3a2d9d6"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "2ccb2efb7ec03f6f68c94a7c9c915e313be7776a4f8219cba046d6fccb295903"
+    },
+    {
+      "path": "toolchain.lock.json",
+      "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+    },
+    {
+      "path": "scripts/compile.mjs",
+      "sha256": "6f20dac5faf6bcf66f2c26e0e9667b4d6533cef55944bbad4c816ef7cae34226"
+    },
+    {
+      "path": "scripts/offline.mjs",
+      "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+    }
+  ],
+  "caveat": "Baseline npm ci/build/browser checks preceded addition of direct contract runtime and proving dependencies. Followup runtime/proving/unit/lint/typecheck checks use the current graph. No claim that the final graph had a second full preparation run.",
+  "blockers": [
+    "Codex account listing lacks requested GPT-6 routing combinations",
+    "Configured Midnight MCP tool discovery unavailable",
+    "WSL Compose missing; Windows Compose service lifecycle separately observed"
+  ],
+  "windowsCompose": "Pinned local service started, used for synthetic proofs and stopped; no unrelated services changed",
+  "delegation": "No worker spawned; no model substitution"
+}

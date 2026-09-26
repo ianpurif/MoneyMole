@@ -10,6 +10,11 @@ try {
   checks.push({ name: "requirements graph and derived report", passed: renderRequirements(data) === readFileSync(at("docs/REQUIREMENTS.md"), "utf8") });
 } catch { checks.push({ name: "requirements graph and derived report", passed: false }); }
 const pkg = readJson("package.json");
+checks.push({ name: "single Next.js stack and no separate backend framework", passed:
+  ["next", "react", "react-dom", "server-only", "client-only"].every(name => !!pkg.dependencies[name]) &&
+  ["typescript", "tailwindcss", "@tailwindcss/postcss"].every(name => !!pkg.devDependencies[name]) &&
+  !["express", "fastify", "@nestjs/core"].some(name => name in pkg.dependencies || name in pkg.devDependencies) &&
+  has("src/app/layout.tsx") && !has("src/pages/api") && !has("pages/api") });
 checks.push({ name: "all manifest dependencies are exact candidates", passed: Object.values({ ...pkg.dependencies, ...pkg.devDependencies }).every(v => /^\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?$/.test(v)) });
 const files = [];
 function walk(dir) { for (const entry of readdirSync(dir, { withFileTypes: true })) { if (["node_modules", ".git", ".next", ".local", "reports", "private-evidence", "managed"].includes(entry.name)) continue; const p = join(dir, entry.name); if (entry.isDirectory()) walk(p); else files.push(p); } }

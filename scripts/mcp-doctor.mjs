@@ -1,4 +1,4 @@
-import { run, saveJson, blocked } from "./lib.mjs";
+import { run, saveJson, blocked, ROOT } from "./lib.mjs";
 import { withCodexSession, listPages } from "./codex-session.mjs";
 const endpoint = "https://midnight.mcp.kapa.ai";
 const report = { scope: "installed_client_observed_documentation_mcp_tool_listing", observedAt: new Date().toISOString(), endpoint, result: "blocked", toolInvocations: 0 };
@@ -6,7 +6,7 @@ if (!run("codex", ["--version"], { timeout: 5_000 }).ok) { report.reason = "Code
 else {
   try {
     await withCodexSession(async request => {
-      const config = (await request("config/read", { includeLayers: false })).config;
+      const config = (await request("config/read", { includeLayers: false, cwd: ROOT })).config;
       if (config?.mcp_servers?.midnight?.url !== endpoint) throw new Error("Effective endpoint mismatch");
       const servers = await listPages(request, "mcpServerStatus/list", { detail: "toolsAndAuthOnly" });
       const server = servers.find(s => s.name === "midnight");

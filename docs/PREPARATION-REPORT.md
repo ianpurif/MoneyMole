@@ -1,5 +1,9 @@
 # Preparation report
 
+Historical initial snapshot. Follow `STATUS.md` and `docs/evidence/M0-toolchain.json`
+for subsequent installation and execution results; statements below describe the
+original preparation run and are retained as historical evidence.
+
 Prepared 2026-09-26. **Overall preparation: BLOCKED.**
 
 Source files have been created. Full dependency installation, application runtime,

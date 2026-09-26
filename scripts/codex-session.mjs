@@ -20,7 +20,7 @@ export async function withCodexSession(callback) {
     buffer += chunk.toString(); let index;
     while ((index = buffer.indexOf("\n")) >= 0) {
       const line = buffer.slice(0, index); buffer = buffer.slice(index + 1);
-      try { const message = JSON.parse(line); const item = pending.get(message.id); if (item && !message.method) { pending.delete(message.id); message.error ? item.reject(new Error("Client rejected read-only request")) : item.resolve(message.result); } } catch { /* Malformed stdout is not success. */ }
+      try { const message = JSON.parse(line); const item = pending.get(message.id); if (item && !message.method) { pending.delete(message.id); if (message.error) item.reject(new Error("Client rejected read-only request")); else item.resolve(message.result); } } catch { /* Malformed stdout is not success. */ }
     }
   });
   try {

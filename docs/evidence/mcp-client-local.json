@@ -1,0 +1,8 @@
+{
+  "scope": "installed_client_observed_documentation_mcp_tool_listing",
+  "observedAt": "2026-09-26T08:31:54.329Z",
+  "endpoint": "https://midnight.mcp.kapa.ai",
+  "result": "blocked",
+  "toolInvocations": 0,
+  "reason": "Configured Midnight tool listing could not be observed; inspect trusted-client connection and installed protocol"
+}

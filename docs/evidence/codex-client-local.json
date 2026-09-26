@@ -1,0 +1,51 @@
+{
+  "observedAt": "2026-09-26T08:09:30.181Z",
+  "scope": "read_only_capabilities_plus_scoped_session_evidence",
+  "delegationPerformed": false,
+  "result": "blocked",
+  "requested": [
+    {
+      "role": "architect",
+      "model": "gpt-6-astra",
+      "effort": "medium"
+    },
+    {
+      "role": "engineer",
+      "model": "gpt-6-sol",
+      "effort": "high"
+    },
+    {
+      "role": "verifier",
+      "model": "gpt-6-luna",
+      "effort": "max"
+    }
+  ],
+  "clientVersion": "codex-cli 0.149.1",
+  "models": [
+    {
+      "role": "architect",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "available": false
+    },
+    {
+      "role": "engineer",
+      "model": "gpt-6-sol",
+      "effort": "high",
+      "available": false
+    },
+    {
+      "role": "verifier",
+      "model": "gpt-6-luna",
+      "effort": "max",
+      "available": false
+    }
+  ],
+  "effectiveConfiguration": {
+    "coordinatorMatches": true,
+    "workerLimitMatches": true,
+    "midnightEndpointMatches": true
+  },
+  "agentDiscovery": "unverified",
+  "reason": "Requested capabilities, loaded configuration or current observed custom-agent/schema evidence is missing"
+}
