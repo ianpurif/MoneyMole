@@ -71,3 +71,12 @@ meaningful owner commits pending source-conflict confirmation. Product eligibili
 public repository metadata, supplied product references, remote pipeline runs and
 real participant evidence remain pending unless observed. No commits or history
 rewrites are performed automatically; a numeric count alone proves little.
+
+## Stack contract
+
+Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
+Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
+Actions, and server-only modules in `src/lib/server/`. Follow
+`docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
+verified requirement; Lace authorization, claim secrets, private witnesses and
+private-state handling stay client-side and never enter Next.js API routes.

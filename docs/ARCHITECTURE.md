@@ -1,5 +1,22 @@
 # Architecture and feasibility gates
 
+## Application stack and privacy boundary
+
+Use **Next.js App Router for both frontend and backend**, **TypeScript**, and
+**Tailwind CSS**. Backend HTTP APIs belong in `src/app/api/**/route.ts` using Next.js
+Route Handlers. Use Server Actions only for appropriate non-secret UI mutations,
+with validated inputs and authorization. Put server-only modules in
+`src/lib/server/` and mark them with `import "server-only"`.
+
+No Express, NestJS, Fastify or separate backend service unless a verified technical
+requirement is recorded in an ADR. The trusted local proof service is a protocol
+tool, not a separate application backend. Add endpoints only for an actual need.
+Lace wallet authorization, claim secrets, private witnesses and private-state
+handling remain client-side. Never pass these secrets to Next.js API routes,
+Server Actions, server components, server-rendered props, logs or telemetry.
+Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
+
+
 Status: **proposed implementation architecture**, not a deployed payment protocol.
 Source-grounded SDK capabilities are in `SOURCES.md`; the construction below is an
 engineering hypothesis requiring M1 validation. Do not infer that a proof of a
@@ -18,7 +35,7 @@ Browser: React UI + explicit Lace authorization
 
 One Next.js App Router application. Public configuration may be server-readable;
 wallet, claim payload, encrypted state and witnesses remain in the browser/prover
-boundary. Next server code must not receive secrets. No extra backend or central
+boundary. Next server code must not receive secrets. No separate backend service or central
 DB at inception. The app has no signing key, custody or user account system.
 Source-owned UI components stay separate from SDK and private-state adapters.
 
@@ -94,7 +111,7 @@ Capture fragment data client-side, move it to the unlocked protected session/sto
 and immediately remove the address-bar copy without losing recovery. Use a compact
 versioned binary codec with strict size, integer, length and tag bounds; inspect
 QR payload lengths at actual accepted asset precision. Generate QR locally. A
-backend blob service is not justified unless measured size constraints require it;
+Next.js Route Handler for encrypted blob storage is not justified unless measured size constraints require it;
 then only ciphertext may leave the client and keys must remain in the fragment.
 
 ## Reliability and durable identity
@@ -111,3 +128,4 @@ and private-store ports do not implement payments. After M1, define FundingInten
 ClaimOpening, VerifiedFunding, PreparedClaim and reconciliation error unions from
 observed SDK types. Private fields must not be accepted by server components.
 Prefer small explicit adapters over a generic multi-chain framework.
+

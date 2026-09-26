@@ -26,7 +26,7 @@ Do not infer an observed build from source presence. No Codex delegation occurre
 | No owner external evidence | Eligibility, URLs, commits and real participant counts pending | Request only the specific external fact when needed; continue independent engineering. |
 
 ## Recent decisions
-Single Next.js application, local trusted prover, no central custody/backend by
+Single Next.js application, local trusted prover, Next.js Route Handlers for backend APIs, no central custody or separate backend by
 default. Sender-funded bearer direction only. Gate coin qualification, receiver
 discovery and disclosure before protocol freeze. Preserve honest missing-lock status
 instead of providing an invalid package-lock.json. Use Preprod and the supplied
@@ -36,3 +36,4 @@ Level 1–6 targets; keep qualification separate from engineering.
 At repository root: `npm run check:offline`, then execute
 `docs/tasks/M0-toolchain.md`, beginning with `npm run bootstrap` on a connected host.
 The single agent instruction remains: **Read and execute BUILD.md.**
+

@@ -1,5 +1,22 @@
 # Build MoneyMole — Private Payments
 
+## Application stack and privacy boundary
+
+Use **Next.js App Router for both frontend and backend**, **TypeScript**, and
+**Tailwind CSS**. Backend HTTP APIs belong in `src/app/api/**/route.ts` using Next.js
+Route Handlers. Use Server Actions only for appropriate non-secret UI mutations,
+with validated inputs and authorization. Put server-only modules in
+`src/lib/server/` and mark them with `import "server-only"`.
+
+No Express, NestJS, Fastify or separate backend service unless a verified technical
+requirement is recorded in an ADR. The trusted local proof service is a protocol
+tool, not a separate application backend. Add endpoints only for an actual need.
+Lace wallet authorization, claim secrets, private witnesses and private-state
+handling remain client-side. Never pass these secrets to Next.js API routes,
+Server Actions, server components, server-rendered props, logs or telemetry.
+Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
+
+
 ## Execute, do not re-plan
 
 Implement the product described here using the repository's existing preparation
@@ -85,7 +102,7 @@ advertise complete payments until the feasibility gate passes.
 Keep the single Next.js application, strict TypeScript, Tailwind and source-owned
 shadcn/ui components. Browser-side wallet and encrypted state operations feed typed
 domain logic and an SDK adapter; the proof service runs locally by default. No
-custodial signer, central account system, extra backend, external QR service or
+custodial signer, central account system, separate backend service, external QR service or
 AI dependency in the application. Add infrastructure only for a documented,
 verified necessity that preserves the privacy model.
 

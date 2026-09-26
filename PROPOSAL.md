@@ -37,3 +37,12 @@ Payroll / Splits is related but does not establish approval. The owner must supp
 organizer approval for this payment product. Do not change it into payroll software
 to imply approval. Level 6 remains Preprod with 70 total real participants; plan
 conservatively for 30 meaningful owner commits pending conflict confirmation.
+
+## Stack contract
+
+Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
+Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
+Actions, and server-only modules in `src/lib/server/`. Follow
+`docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
+verified requirement; Lace authorization, claim secrets, private witnesses and
+private-state handling stay client-side and never enter Next.js API routes.

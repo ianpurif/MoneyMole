@@ -1,5 +1,22 @@
 # Toolchain and environment
 
+## Application stack and privacy boundary
+
+Use **Next.js App Router for both frontend and backend**, **TypeScript**, and
+**Tailwind CSS**. Backend HTTP APIs belong in `src/app/api/**/route.ts` using Next.js
+Route Handlers. Use Server Actions only for appropriate non-secret UI mutations,
+with validated inputs and authorization. Put server-only modules in
+`src/lib/server/` and mark them with `import "server-only"`.
+
+No Express, NestJS, Fastify or separate backend service unless a verified technical
+requirement is recorded in an ADR. The trusted local proof service is a protocol
+tool, not a separate application backend. Add endpoints only for an actual need.
+Lace wallet authorization, claim secrets, private witnesses and private-state
+handling remain client-side. Never pass these secrets to Next.js API routes,
+Server Actions, server components, server-rendered props, logs or telemetry.
+Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
+
+
 ## Reviewed Preprod component set
 Primary source S7, checked 2026-09-26:
 

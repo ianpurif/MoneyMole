@@ -7,6 +7,14 @@ State: not_started. Expected behavior below is not observed evidence.
 ## Load context
 AGENTS.md, docs/STATUS.md, docs/TOOLCHAIN.md, docs/SOURCES.md, toolchain.lock.json
 
+## Stack constraints
+Use Next.js App Router, TypeScript and Tailwind CSS for the single frontend/backend
+application. HTTP APIs: `src/app/api/**/route.ts`; server-only modules:
+`src/lib/server/` with `import "server-only"`. Server Actions are limited to
+appropriate non-secret UI mutations. No Express, NestJS, Fastify or separate
+backend without a verified requirement and ADR. Lace authorization, claim secrets,
+private witnesses and private-state handling stay client-side and never enter
+Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
 ## Prerequisites
 An owner-authorized Linux/WSL2 host with registry access. Project configuration may require one-time trust. Preserve existing files and do not edit global Codex settings.
 

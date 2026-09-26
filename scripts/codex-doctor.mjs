@@ -1,4 +1,4 @@
-import { run, saveJson, blocked, readJson, has, hashFile } from "./lib.mjs";
+import { run, saveJson, blocked, readJson, has, hashFile, ROOT } from "./lib.mjs";
 import { withCodexSession, listPages } from "./codex-session.mjs";
 const requested = [{ role: "architect", model: "gpt-6-astra", effort: "medium" }, { role: "engineer", model: "gpt-6-sol", effort: "high" }, { role: "verifier", model: "gpt-6-luna", effort: "max" }];
 const installed = run("codex", ["--version"], { timeout: 5_000 });
@@ -8,7 +8,7 @@ else {
   report.clientVersion = installed.stdout.trim().slice(0, 100);
   try {
     await withCodexSession(async request => {
-      const config = (await request("config/read", { includeLayers: false })).config;
+      const config = (await request("config/read", { includeLayers: false, cwd: ROOT })).config;
       const models = await listPages(request, "model/list", { includeHidden: false });
       report.models = requested.map(r => ({ ...r, available: models.some(m => (m.model === r.model || m.id === r.model) && m.supportedReasoningEfforts?.some(e => e.reasoningEffort === r.effort)) }));
       report.effectiveConfiguration = {

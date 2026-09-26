@@ -7,6 +7,14 @@ State: not_started. Expected behavior below is not observed evidence.
 ## Load context
 docs/TESTING.md, docs/requirements.json, docs/PRIVACY.md, docs/RUNBOOK.md, docs/EVIDENCE.md, prior milestone evidence
 
+## Stack constraints
+Use Next.js App Router, TypeScript and Tailwind CSS for the single frontend/backend
+application. HTTP APIs: `src/app/api/**/route.ts`; server-only modules:
+`src/lib/server/` with `import "server-only"`. Server Actions are limited to
+appropriate non-secret UI mutations. No Express, NestJS, Fastify or separate
+backend without a verified requirement and ADR. Lace authorization, claim secrets,
+private witnesses and private-state handling stay client-side and never enter
+Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
 ## Prerequisites
 M1–M4 product gates observed. External metadata, participant evidence, repository permissions and approval are independently owner-pending.
 

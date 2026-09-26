@@ -55,3 +55,12 @@ entries must include command, scope, observedAt, a passed result, evidence-file 
 and SHA-256 digests of every source/config subject on which the result depends.
 Changing a subject invalidates the observation. Regenerate the readable report with
 `npm run requirements:report`, then `npm run requirements:check`.
+
+## Stack contract
+
+Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
+Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
+Actions, and server-only modules in `src/lib/server/`. Follow
+`docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
+verified requirement; Lace authorization, claim secrets, private witnesses and
+private-state handling stay client-side and never enter Next.js API routes.

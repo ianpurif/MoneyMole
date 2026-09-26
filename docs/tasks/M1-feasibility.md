@@ -7,6 +7,14 @@ State: not_started. Expected behavior below is not observed evidence.
 ## Load context
 docs/ARCHITECTURE.md, docs/PRIVACY.md, docs/PRODUCT.md, docs/SOURCES.md (S7–S15), .agents/skills/midnight-contracts/SKILL.md
 
+## Stack constraints
+Use Next.js App Router, TypeScript and Tailwind CSS for the single frontend/backend
+application. HTTP APIs: `src/app/api/**/route.ts`; server-only modules:
+`src/lib/server/` with `import "server-only"`. Server Actions are limited to
+appropriate non-secret UI mutations. No Express, NestJS, Fastify or separate
+backend without a verified requirement and ADR. Lace authorization, claim secrets,
+private witnesses and private-state handling stay client-side and never enter
+Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
 ## Prerequisites
 Installed compatible compiler/SDK and local prover; owner-authorized independent wallets with a supported shielded asset and sufficient DUST. Create minimal issuance separately if no suitable asset exists. Never mint during claim.
 
