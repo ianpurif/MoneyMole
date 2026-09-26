@@ -55,3 +55,9 @@ Keep failing encrypted records intact for recovery; never overwrite corruption w
 docs/evidence/M2-core.json, reports/ reviewed summaries, docs/adr/004-private-state.md
 
 Relevant IDs: CORE-STATE, CORE-TX, CORE-AUTH, CORE-REPLAY, L1-TESTS, L2-STATE. Update actual outcomes in `docs/STATUS.md`, then update the authoritative JSON and regenerate the report. Evidence must include code/toolchain subjects and scope.
+
+Local recovery follow-up: TransactionJournal now persists opaque intent and recovery
+state together in encrypted storage. Five integration tests cover response loss,
+competing tabs, pre-submit failure, acknowledgment-write failure and malformed
+records. Tests use fake IndexedDB and synthetic callbacks; no live submission or
+chain reconciliation is implemented. Restored states are explicitly unverified.

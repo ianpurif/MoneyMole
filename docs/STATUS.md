@@ -59,3 +59,9 @@ No live payment, deployment, actual extension authorization or receiver spend wa
 Read BUILD.md and `docs/tasks/M1-feasibility.md`. Use `docs/USAGE.md` for the
 implemented 1AM preparation controls. Run targeted checks after changes; preserve
 current lockfile and evidence. Never infer product acceptance from diagnostics or mocks.
+
+Local recovery follow-up: TransactionJournal now persists opaque intent and recovery
+state together in encrypted storage. Five integration tests cover response loss,
+competing tabs, pre-submit failure, acknowledgment-write failure and malformed
+records. Tests use fake IndexedDB and synthetic callbacks; no live submission or
+chain reconciliation is implemented. Restored states are explicitly unverified.

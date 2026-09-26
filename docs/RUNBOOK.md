@@ -44,7 +44,7 @@ handle and shut it down deliberately when done.
 | `compile:issuance` | `node scripts/compile.mjs --issuance` | Separate fixed-supply test issuer; no deployment or mint transaction. |
 | `verify:artifacts` | `node scripts/product.mjs artifacts` | Checks all compiler output hashes, circuit keys/IR, source hashes and installed runtime compatibility. |
 | `test:contracts` | `node scripts/product.mjs contracts` | 13 synthetic cases execute actual generated contracts; no ledger settlement. |
-| `test:integration` | `node scripts/product.mjs integration` | M2 integration suite, currently blocked. |
+| `test:integration` | `node scripts/product.mjs integration` | Encrypted journal/storage integration with fake IndexedDB and synthetic submission callbacks; no live payment acceptance. |
 | `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
 | `test:preprod` | `node scripts/product.mjs preprod` | Actual live Preprod suite; requires owner actions/funds; currently blocked. |
 | `verify:product` | `node scripts/product.mjs acceptance` | Actual product acceptance, not preparation; currently blocked. |
