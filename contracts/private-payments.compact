@@ -1,0 +1,62 @@
+// M1 candidate. Do not deploy/fund until real proving and disclosure review pass.
+pragma language_version 0.23;
+import CompactStandardLibrary;
+
+struct NotePreimage {
+  domain: Bytes<32>;
+  network: Bytes<32>;
+  deployment: ContractAddress;
+  coin: ShieldedCoinInfo;
+  authority: Bytes<32>;
+}
+
+export ledger supportedAsset: Bytes<32>;
+export ledger notes: MerkleTree<16, Bytes<32>>;
+export ledger spent: Set<Bytes<32>>;
+
+witness fundingCoin(): ShieldedCoinInfo;
+witness escrowCoin(): QualifiedShieldedCoinInfo;
+witness claimAuthority(): Bytes<32>;
+witness membership(note: Bytes<32>): MerkleTreePath<16, Bytes<32>>;
+
+constructor(asset: Bytes<32>) { supportedAsset = disclose(asset); }
+
+circuit noteCommitment(coin: ShieldedCoinInfo, authority: Bytes<32>): Bytes<32> {
+  return persistentHash<NotePreimage>(NotePreimage {
+    domain: pad(32, "moneymole/note/v1"),
+    network: pad(32, "preprod"),
+    deployment: kernel.self(),
+    coin: coin,
+    authority: authority
+  });
+}
+
+export circuit fund(): [] {
+  const coin = fundingCoin();
+  assert(coin.value > 0, "Zero payment");
+  assert(coin.color == supportedAsset, "Unsupported asset");
+  assert(!notes.isFull(), "Payment capacity reached");
+  const commitment = noteCommitment(coin, claimAuthority());
+  // The ledger must match an actual output addressed to this contract.
+  receiveShielded(disclose(coin));
+  notes.insert(disclose(commitment));
+}
+
+export circuit claim(): [] {
+  const qualified = escrowCoin();
+  const coin = ShieldedCoinInfo { nonce: qualified.nonce, color: qualified.color, value: qualified.value };
+  assert(coin.value > 0, "Zero payment");
+  assert(coin.color == supportedAsset, "Unsupported asset");
+  const authority = claimAuthority();
+  const commitment = noteCommitment(coin, authority);
+  const path = membership(commitment);
+  assert(path.leaf == commitment, "Wrong note opening");
+  assert(notes.checkRoot(disclose(merkleTreePathRoot<16, Bytes<32>>(path))), "Stale or invalid membership");
+  const nullifier = persistentHash<Vector<3, Bytes<32>>>([pad(32, "moneymole/spent/v1"), commitment, authority]);
+  assert(!spent.member(disclose(nullifier)), "Payment already claimed");
+  spent.insert(disclose(nullifier));
+  // No checkpoint: membership, replay prevention and existing coin spend are atomic.
+  // Authority comes from the private opening, never ownPublicKey alone.
+  const result = sendShielded(disclose(qualified), left<ZswapCoinPublicKey, ContractAddress>(ownPublicKey()), disclose(coin.value));
+  assert(!result.change.is_some, "Unexpected change");
+}

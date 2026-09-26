@@ -1,0 +1,20 @@
+// M1 compiler diagnostic ONLY. No authorization: NEVER DEPLOY OR FUND THIS PROBE.
+// Exercises private coin inputs and SDK output types before protocol construction.
+pragma language_version 0.23;
+import CompactStandardLibrary;
+witness incoming(): ShieldedCoinInfo;
+witness qualified(): QualifiedShieldedCoinInfo;
+
+export circuit probeReceive(): [] {
+  const coin = incoming();
+  assert(coin.value > 0, "Zero value");
+  // Acknowledge helper effects for inspection; this is not a privacy acceptance.
+  receiveShielded(disclose(coin));
+}
+
+export circuit probeSpend(): [] {
+  const coin = qualified();
+  assert(coin.value > 0, "Zero value");
+  const result = sendShielded(disclose(coin), left<ZswapCoinPublicKey, ContractAddress>(ownPublicKey()), disclose(coin.value));
+  assert(!result.change.is_some, "Unexpected change");
+}

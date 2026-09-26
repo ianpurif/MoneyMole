@@ -1,0 +1,274 @@
+{
+  "scope": "candidate_contract_compilation_runtime_and_local_proving_only",
+  "result": "blocked",
+  "observedAt": "2026-09-26T08:56:32.521Z",
+  "ownerDecisions": {
+    "twoIndependentWallets": "owner agreed to prepare",
+    "asset": "separately issued non-redeemable Preprod test asset",
+    "deploymentApproval": false,
+    "issuanceApproval": false
+  },
+  "compilation": [
+    {
+      "source": "contracts/private-payments.compact",
+      "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3",
+      "compiler": "0.31.1",
+      "result": "passed",
+      "outputs": [
+        {
+          "path": "managed/private-payments/compiler/contract-info.json",
+          "sha256": "99da668914d379c48993cd9b1694f37d4f2f48852b5e9b1e8ea05bddbc66dd1f"
+        },
+        {
+          "path": "managed/private-payments/contract/index.d.ts",
+          "sha256": "b228f3afb606092aee2da09eb39e55184df591f39e5a70a4d67c7b303b5c6cd6"
+        },
+        {
+          "path": "managed/private-payments/contract/index.js",
+          "sha256": "85a22e40a3317406639c7a55ab32b4c53eaf0a498fd284034e72829d172d15d8"
+        },
+        {
+          "path": "managed/private-payments/contract/index.js.map",
+          "sha256": "ce5988d455faa0d9b5f5a221e53d23392a69b0b3c25efb73a1bebdca543bcd83"
+        },
+        {
+          "path": "managed/private-payments/keys/claim.prover",
+          "sha256": "1b175f5f3084adcfa9c4e48853b7ee2a8ffb617c8eb0b25c97998d68672fd7a1"
+        },
+        {
+          "path": "managed/private-payments/keys/claim.verifier",
+          "sha256": "5795b79a9f6c22dfbf8446f1a71afe189e54245cb30fd7b158dc17bb8203dbd5"
+        },
+        {
+          "path": "managed/private-payments/keys/fund.prover",
+          "sha256": "3e798810d6209bee35db7d6ecf229dfc10fd5de986da6555024c50737af8af00"
+        },
+        {
+          "path": "managed/private-payments/keys/fund.verifier",
+          "sha256": "13ae385bb3a1ec00448efc76069413344c407ff9ae52c0ed1ff8721bc2605abb"
+        },
+        {
+          "path": "managed/private-payments/zkir/claim.bzkir",
+          "sha256": "2aaf206c43b228ddd195d8d421f7937e8facf437371022687273a4c316663285"
+        },
+        {
+          "path": "managed/private-payments/zkir/claim.zkir",
+          "sha256": "897be09ae8cd7cd1ef0d94783a86eaabea586dffa2f039a2e2453d3129c61e33"
+        },
+        {
+          "path": "managed/private-payments/zkir/fund.bzkir",
+          "sha256": "6c69332e8a63406c41cd0ed9b311da43fc04316473bf0a549c158da5adb24372"
+        },
+        {
+          "path": "managed/private-payments/zkir/fund.zkir",
+          "sha256": "8466ba47d0b07a3e3768bcbfd5fb5085651dcc43c56d0a0618c1b775f7867e35"
+        }
+      ]
+    },
+    {
+      "source": "contracts/issuance/test-asset.compact",
+      "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4",
+      "compiler": "0.31.1",
+      "result": "passed",
+      "outputs": [
+        {
+          "path": "managed/test-asset/compiler/contract-info.json",
+          "sha256": "a0010be90eafc5c50ba610d1630c161cdfba9c67393c8b358ac20585ab94b030"
+        },
+        {
+          "path": "managed/test-asset/contract/index.d.ts",
+          "sha256": "5715fcd6d281873766d932889b078df72c068989b01bd619a5228388dbe50f09"
+        },
+        {
+          "path": "managed/test-asset/contract/index.js",
+          "sha256": "e628b2681ac9d6d0ab9cac4db14183b00b7ccddce64b85c733f6f2cd11ad8d5a"
+        },
+        {
+          "path": "managed/test-asset/contract/index.js.map",
+          "sha256": "efe4cf0bdde9be7c442f7f84cfcc0652393ab9fae432e49328448ed2b5923229"
+        },
+        {
+          "path": "managed/test-asset/keys/issue.prover",
+          "sha256": "a714c0efa6ef3fae0bf2dd9d91f1750b7638c80df5669ae53601ad36b04999bf"
+        },
+        {
+          "path": "managed/test-asset/keys/issue.verifier",
+          "sha256": "d57c16af1b4a1d028611831e0bd4c5f3161fcfeb884cb9f7d4120b27b8039869"
+        },
+        {
+          "path": "managed/test-asset/zkir/issue.bzkir",
+          "sha256": "b0bf0d12c0809af4f3888a0e97f2bdfd4b355560687870ef09fb5c74427fd5e5"
+        },
+        {
+          "path": "managed/test-asset/zkir/issue.zkir",
+          "sha256": "a99c153a4595560649efdd6fe8fead6e6b715bb4ceda629c0b2b3e6b7944d032"
+        }
+      ]
+    }
+  ],
+  "runtime": {
+    "scope": "generated_runtime_synthetic_no_proof_no_ledger_settlement",
+    "observedAt": "2026-09-26T08:54:45.387Z",
+    "result": "passed",
+    "cases": [
+      {
+        "name": "fund inserts one note and a contract-directed Zswap output",
+        "result": "passed"
+      },
+      {
+        "name": "claim consumes exact coin and outputs exact value to caller",
+        "result": "passed"
+      },
+      {
+        "name": "replay rejected against updated state",
+        "result": "passed"
+      },
+      {
+        "name": "wrong bearer rejected even with original membership path",
+        "result": "passed"
+      },
+      {
+        "name": "changed amount rejected even with original membership path",
+        "result": "passed"
+      },
+      {
+        "name": "changed nonce rejected even with original membership path",
+        "result": "passed"
+      },
+      {
+        "name": "changed asset rejected even with original membership path",
+        "result": "passed"
+      },
+      {
+        "name": "another deployment rejected with original membership path",
+        "result": "passed"
+      },
+      {
+        "name": "zero funding rejected",
+        "result": "passed"
+      },
+      {
+        "name": "unsupported funding asset rejected",
+        "result": "passed"
+      },
+      {
+        "name": "stale path rejected after another deposit; refreshed path succeeds",
+        "result": "passed"
+      },
+      {
+        "name": "separate issuer rejects wrong authority",
+        "result": "passed"
+      },
+      {
+        "name": "separate issuer creates fixed supply once",
+        "result": "passed"
+      }
+    ],
+    "subjects": [
+      {
+        "path": "tests/contracts/runtime.mjs",
+        "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+      },
+      {
+        "path": "contracts/private-payments.compact",
+        "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+      },
+      {
+        "path": "contracts/issuance/test-asset.compact",
+        "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+      }
+    ],
+    "limitations": [
+      "No ledger-validity or coin qualification check",
+      "No cryptographic proof",
+      "No live wallet or concurrent transaction acceptance",
+      "No network replay or copied-proof destination validation"
+    ]
+  },
+  "proving": {
+    "scope": "local_circuit_constraint_check_and_proof_generation_synthetic_only",
+    "result": "passed",
+    "observedAt": "2026-09-26T08:51:27.741Z",
+    "checks": [
+      {
+        "circuit": "fund",
+        "constraintCheck": "passed",
+        "proofGeneration": "passed",
+        "proofBytes": 4508
+      },
+      {
+        "circuit": "claim",
+        "constraintCheck": "passed",
+        "proofGeneration": "passed",
+        "proofBytes": 4508
+      },
+      {
+        "circuit": "issue",
+        "constraintCheck": "passed",
+        "proofGeneration": "passed",
+        "proofBytes": 4508
+      }
+    ],
+    "subjects": [
+      {
+        "path": "scripts/product/test-proving.mjs",
+        "sha256": "1e5a59ceed089a42af3a4df97107418599334768941798fb74de03982f2bb1a6"
+      },
+      {
+        "path": "tests/contracts/runtime.mjs",
+        "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+      },
+      {
+        "path": "contracts/private-payments.compact",
+        "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+      },
+      {
+        "path": "contracts/issuance/test-asset.compact",
+        "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+      },
+      {
+        "path": "compose.yaml",
+        "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+      }
+    ],
+    "limitations": [
+      "Not a sealed transaction or independent proof verification",
+      "No ledger-qualified input",
+      "No wallet balance, network submission or receiver spend"
+    ]
+  },
+  "subjects": [
+    {
+      "path": "contracts/private-payments.compact",
+      "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+    },
+    {
+      "path": "contracts/issuance/test-asset.compact",
+      "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+    },
+    {
+      "path": "scripts/product/verify-artifacts.mjs",
+      "sha256": "63ed324eff8f2036b3c0df133bb0bbab43c7e175be0c9cab1b62bc3b500b104d"
+    },
+    {
+      "path": "scripts/product/test-contracts.mjs",
+      "sha256": "f6bee696f61c3d5198ca2f9e7831ec38ba28ec569e540b7e9b1e71ed3c10cfb2"
+    },
+    {
+      "path": "scripts/product/test-proving.mjs",
+      "sha256": "1e5a59ceed089a42af3a4df97107418599334768941798fb74de03982f2bb1a6"
+    },
+    {
+      "path": "tests/contracts/runtime.mjs",
+      "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+    }
+  ],
+  "blockers": [
+    "Actual Lace connections and DUST readiness pending",
+    "No approved deployment/issuance/funding",
+    "Independent native coin qualification not demonstrated",
+    "No sealed transaction or independent proof verification",
+    "No receiver credit/spendability, concurrent settlement, copied-proof destination or cross-network evidence"
+  ],
+  "livePaymentObserved": false
+}

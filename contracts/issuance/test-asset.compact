@@ -1,0 +1,20 @@
+// Separate fixed-supply, non-redeemable Preprod test asset. No minting in claim.
+// Deployment and test issuance require explicit owner transaction approval.
+pragma language_version 0.23;
+import CompactStandardLibrary;
+
+export ledger issued: Boolean;
+export ledger issuerCommitment: Bytes<32>;
+witness issuerAuthority(): Bytes<32>;
+witness mintNonce(): Bytes<32>;
+
+constructor() {
+  issuerCommitment = disclose(persistentHash<Vector<2, Bytes<32>>>([pad(32, "moneymole/issuer/v1"), issuerAuthority()]));
+}
+
+export circuit issue(): [] {
+  assert(!issued, "Test supply already issued");
+  assert(persistentHash<Vector<2, Bytes<32>>>([pad(32, "moneymole/issuer/v1"), issuerAuthority()]) == issuerCommitment, "Issuer authorization required");
+  issued = true;
+  mintShieldedToken(pad(32, "moneymole/test/v1"), 1000000, disclose(mintNonce()), left<ZswapCoinPublicKey, ContractAddress>(ownPublicKey()));
+}
