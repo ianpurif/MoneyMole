@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/api/artifacts/**": ["./managed/private-payments/keys/*", "./managed/private-payments/zkir/*", "./managed/test-asset/keys/*", "./managed/test-asset/zkir/*"],
+    "/api/build": ["./contracts/private-payments.compact", "./managed/private-payments/contract/index.js", "./toolchain.lock.json"],
+  },
   webpack(config) {
     config.experiments = { ...config.experiments, asyncWebAssembly: true };
     config.output.environment = { ...config.output.environment, asyncFunction: true };
