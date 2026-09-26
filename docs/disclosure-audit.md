@@ -54,3 +54,12 @@ membership/commitment/nullifier construction bound to deployment and asset; outp
 destination binding; actual proof and public transcript review; independent 1AM
 receiver credit and subsequent spend with the sender unavailable. No protocol
 encoding or sharing route is frozen while these gates are pending.
+
+## Local escrow qualification candidate
+The client-only feasibility helper reconstructs a contract-owned commitment from
+an opening locally, matches exactly one public contract/commitment/index observation,
+and asks ledger-v8 to construct an input against the supplied coin tree. It rejects
+missing/ambiguous observations, changed openings, invented indices and absent coins.
+The synthetic fixture must apply postBlockUpdate before constructing a spend input;
+the native runtime rejects an un-rehashed tree. These local cases do not authenticate
+an indexer, prove finality, check unspent status or demonstrate a live receiver spend.

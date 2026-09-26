@@ -59,3 +59,9 @@ If cross-wallet qualification/discovery or privacy fails, save a minimal sanitiz
 docs/evidence/M1-feasibility.json, docs/disclosure-audit.md, reviewed deployments/preprod/*.json; private wallet material only in .local/
 
 Relevant IDs: CORE-CONSERVATION, CORE-CLAIM, CORE-PRIVACY, CORE-AUTH, CORE-REPLAY, L1-CONTRACT, L1-MANAGED. Update actual outcomes in `docs/STATUS.md`, then update the authoritative JSON and regenerate the report. Evidence must include code/toolchain subjects and scope.
+
+Local M1 follow-up: three native ledger qualification cases now pass alongside the
+five recovery integration cases. Coin openings stay local; the candidate matches
+public output observations and validates the Merkle position using ledger-v8.
+Canonical Preprod observations, unspent status and independent wallet spendability
+remain unverified. See docs/disclosure-audit.md and the integration evidence.
