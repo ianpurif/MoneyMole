@@ -8,8 +8,8 @@ M2 recovery utilities and M3 wallet/security work proceeded independently as BUI
 
 1AM is the primary wallet. The client adapter and UI migration are complete.
 Twenty-eight unit tests, four production-browser tests, lint, typecheck, build and
-offline checks passed. Provider fixtures are synthetic; real 1AM authorization
-remains owner-pending. No deployment, issuance or transaction has occurred.
+offline checks passed. Provider fixtures are synthetic; the owner now confirms real 1AM authorization for Wallet A in Chrome and Wallet B
+in Brave, both on Preprod with DUST. No deployment, issuance or transaction has occurred.
 Every meaningful logical change is committed locally; nothing was pushed.
 
 ## Implemented
@@ -42,12 +42,13 @@ Crypto on this desktop; mobile/browser performance is unmeasured.
 Windows Docker Compose started the pinned proof image on loopback and TCP was
 reachable. The service checked and generated fund/claim/issue circuit proofs using
 synthetic fixtures, then was stopped. No sealed transaction or ledger-validity test ran.
-No live payment, deployment, actual extension authorization or receiver spend was observed.
+No live payment, deployment or receiver spend was observed. Real extension connections
+and DUST readiness are owner-reported in docs/evidence/wallet-readiness.json.
 
 ## Blockers and next actions
 | Blocker | Exact next action |
 |---|---|
-| M1 needs actual wallet readiness | Owner agreed to prepare two independent 1AM Preprod wallets and selected separately issued non-redeemable test units. Open the local preparation page in each wallet profile, explicitly connect and report connection/DUST readiness only. No deployment or issuance approval has been given. |
+| Wallet readiness reported | Wallet A (Chrome) and Wallet B (Brave) are connected to 1AM Preprod with DUST. Next: implement and review the concrete issuer deployment transaction; wallet signing remains manual. |
 | Product feasibility still unverified | Continue M1 from the locally tested candidate with independent qualified-coin discovery and sealed-transaction validation; review concrete deployment/funding transactions with the owner before executing. Verify B credit and spend with A unavailable, replay and public effects. |
 | Installed Codex account listing lacks requested GPT-6 combinations | Owner/client resolves account capability discrepancy; do not silently substitute. No workers were spawned. |
 | Midnight MCP listing unavailable | Owner/client checks the configured documentation MCP connection. Direct primary-source research remains available. |
@@ -77,3 +78,9 @@ action was executed. Next owner step: authorize 1AM connections in two independe
 Preprod wallet profiles and report only connection/DUST readiness. This is not
 approval to deploy, issue or transact. Protocol/UI finalization remains gated by
 live M1 evidence; local helper checks cannot replace that gate.
+
+## Live verification execution
+The owner has confirmed both independent wallets are ready. Continue implementation
+of the client transaction path; do not request the completed readiness step again.
+On-chain actions still require explicit owner approval in the wallet. Connection
+readiness does not establish payment or settlement.

@@ -1,0 +1,21 @@
+{
+  "scope": "owner_reported_real_1am_connections",
+  "observedAt": "2026-09-26T09:46:36.003Z",
+  "source": "owner chat report",
+  "network": "preprod",
+  "walletA": {
+    "browser": "Chrome",
+    "connected": true,
+    "dustAvailable": true
+  },
+  "walletB": {
+    "browser": "Brave",
+    "connected": true,
+    "dustAvailable": true
+  },
+  "limitations": [
+    "Owner report, not automated chain verification",
+    "No deployment, issuance or payment observed",
+    "No private wallet data collected"
+  ]
+}
