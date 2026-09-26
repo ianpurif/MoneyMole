@@ -1,5 +1,13 @@
 # Build MoneyMole — Private Payments
 
+## Current owner directive — complete implementation first
+Finish the complete application, contract adapters, recovery, UI and operator
+tooling before returning for live verification. M1 is now an acceptance gate,
+not a coding stop. Implement the candidate protocol with explicit unverified
+acceptance status. The owner handles final app/E2E testing; do not run those suites
+or live actions during this pass. TypeScript checking and artifact compilation
+may establish buildability only. Do not equate coding completion with live proof.
+
 ## Application stack and privacy boundary
 
 Use **Next.js App Router for both frontend and backend**, **TypeScript**, and

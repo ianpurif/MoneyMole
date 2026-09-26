@@ -1,5 +1,14 @@
 # Private Payments: repository operating rules
 
+## Current owner directive — implementation first
+Complete every remaining coding task without stopping at live milestone gates.
+The owner will perform final app/E2E testing. Do not run app tests, proving trials,
+browser automation or live transactions during this implementation pass. Static
+TypeScript checking and required artifact compilation are build work, not claims
+of acceptance. Keep all unobserved acceptance states pending. This directive
+supersedes the earlier implementation hold at the M1 live gate. Commit each logical
+change locally; do not push. All private data and transaction approval rules remain.
+
 ## Application stack and privacy boundary
 
 Use **Next.js App Router for both frontend and backend**, **TypeScript**, and

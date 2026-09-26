@@ -1,5 +1,10 @@
 # Current execution state
 
+Current instruction: finish all remaining implementation continuously. The owner
+will perform final E2E testing. Live M1 gates no longer block coding. Do not run
+app tests or network mutations in this pass; preserve the existing issuer and
+pending live acceptance. Static checking is allowed as implementation work.
+
 Snapshot: 2026-09-26. Active milestone: **M1 — independent-wallet feasibility**.
 M0 tooling is installed; its Codex routing/MCP gates remain blocked. WSL now reuses Docker Desktop Compose.
 M2 recovery utilities and M3 wallet/security work proceeded independently as BUILD permits.
