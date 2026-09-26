@@ -13,7 +13,7 @@ export interface EscrowOutputObservation {
 export function qualifyEscrowCoin(contract: string, opening: ShieldedCoinInfo, observations: readonly EscrowOutputObservation[], state: ZswapChainState): QualifiedShieldedCoinInfo {
   try {
     if (!/^[a-f0-9]{64}$/.test(contract) || !/^[a-f0-9]{64}$/.test(opening.nonce) ||
-        !/^[a-f0-9]{64}$/.test(opening.type) || opening.value <= 0n || opening.value > (1n << 64n) - 1n || observations.length > 4096) throw new Error();
+        !/^[a-f0-9]{64}$/.test(opening.type) || opening.value <= 0n || opening.value > (1n << 128n) - 1n || observations.length > 4096) throw new Error();
     const commitment = ZswapOutput.newContractOwned(opening, undefined, contract).commitment;
     const matches = observations.filter(o => o.contract === contract && o.commitment === commitment);
     const match = matches[0];

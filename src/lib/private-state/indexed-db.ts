@@ -112,6 +112,16 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
     bytes.fill(0);
     return JSON.stringify(e);
   }
+  async keys(): Promise<string[]> {
+    this.#key("list");
+    const prefix = `${namespaceId(this.#namespace)}/`;
+    return new Promise((resolve, reject) => {
+      const tx = this.#db.transaction("records", "readonly"), request = tx.objectStore("records").getAllKeys();
+      tx.oncomplete = () => resolve(request.result.filter((k): k is string => typeof k === "string" && k.startsWith(prefix) && k !== `${prefix}${CHECK}`).map(k => k.slice(prefix.length)));
+      tx.onerror = () => reject(new Error("Private record listing failed"));
+      tx.onabort = () => reject(new Error("Private record listing aborted"));
+    });
+  }
   async importEncrypted(record: string, text: string, password: string): Promise<number> {
     this.#key(record);
     if (text.length > 1_500_000) throw new Error("Encrypted import too large");
