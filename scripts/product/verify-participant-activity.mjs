@@ -6,7 +6,7 @@ import { transaction, verifyEscrow, eventKinds } from "./preprod-observer.mjs";
 /** Public chain checks supplement signed consent. Shielded actor identity remains privately attested. */
 export async function verifyParticipantActivity(records, manifest) {
   assert.equal(manifest.schemaVersion, 1); assert(Array.isArray(manifest.entries));
-  assert(records.length <= 1000 && manifest.entries.length <= 1000);
+  assert(records.length > 0 && records.length <= 1000 && manifest.entries.length <= 1000);
   const contracts = new Set(), observedTransactions = new Set();
   const entries = new Map();
   for (const entry of manifest.entries) {
