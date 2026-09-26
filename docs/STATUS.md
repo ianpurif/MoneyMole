@@ -85,3 +85,16 @@ The owner has confirmed both independent wallets are ready. Continue implementat
 of the client transaction path; the issuer approval UI is now available. Do not request the completed readiness step again.
 On-chain actions still require explicit owner approval in the wallet. Connection
 readiness does not establish payment or settlement.
+
+## Issuer approval handoff
+Production webpack build (including TypeScript), lint, 28 unit tests, five browser
+tests, artifact verification and offline checks passed. The browser deployment
+preparation/reload test uses a synthetic wallet and the actual compiled constructor;
+it is not real deployment evidence. The real Preprod v4 deployment query returned
+HTTP 200 without schema errors for a zero-address lookup.
+See docs/evidence/issuer-deployment-ui.json. The owner must now prepare/unlock and
+approve issuer deployment in Chrome with Wallet A. No tokens are issued by this
+action. Preserve the same browser record and reconcile unknown outcomes.
+After confirmation, record public deployment metadata and proceed to separately
+approved issuance, escrow deployment and the full two-wallet payment matrix.
+No core payment requirement was promoted to verified. Nothing was pushed.

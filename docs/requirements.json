@@ -356,7 +356,16 @@
       ],
       "acceptance": "Durable Preview or Preprod deployment record binds address, finality and build to observed chain data.",
       "commands": [],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_browser_preparation_not_live_deployment",
+          "path": "docs/evidence/issuer-deployment-ui.json",
+          "sha256": "20f1025d1c651b99e71917f361b8c658a9594b98228f7af6c7238a4480cb5746",
+          "observedAt": "2026-09-26T10:07:03.617Z"
+        }
+      ],
+      "note": "Issuer browser preparation, explicit approval and recovery UI implemented. Local-only evidence does not verify deployment; owner signing and real chain observations remain pending."
     },
     {
       "id": "L1-DOCS",

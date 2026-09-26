@@ -1,0 +1,78 @@
+{
+  "observedAt": "2026-09-26T10:07:03.617Z",
+  "scope": "local_browser_preparation_and_recovery_not_live_deployment",
+  "checks": [
+    {
+      "command": "npm run build",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run lint",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run test:unit",
+      "result": "passed",
+      "tests": 28,
+      "exit": 0
+    },
+    {
+      "command": "npm run test:browser",
+      "result": "passed",
+      "tests": 5,
+      "exit": 0
+    },
+    {
+      "command": "npm run verify:artifacts",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run check:offline",
+      "result": "passed",
+      "exit": 0
+    }
+  ],
+  "realNetworkObservation": {
+    "scope": "read_only_schema_and_connectivity",
+    "endpoint": "https://indexer.preprod.midnight.network/api/v4/graphql",
+    "http": 200,
+    "graphQLErrors": false,
+    "deploymentQueryAddress": "zero-address-only",
+    "deploymentObserved": false
+  },
+  "subjects": [
+    {
+      "path": "src/lib/midnight/issuer-deployment.ts",
+      "sha256": "3627505b8cecf2d200ee1c04d6a86ef11cc809851379cc97780dcbea7b95580b"
+    },
+    {
+      "path": "src/components/issuer-setup.tsx",
+      "sha256": "a15d83c3c3121c2f1f510b2a9055c9b08fc29dd66e11f5e9673f5b060e1ca9b2"
+    },
+    {
+      "path": "src/lib/private-state/indexed-db.ts",
+      "sha256": "4e79d601808ab5603e2fedab4d13361cc65350c42a93fadf28b2bdf8c3fdfbd8"
+    },
+    {
+      "path": "src/lib/server/artifacts.ts",
+      "sha256": "80a17626114a104d1fe7a8dbb6e2cafdcbe198f91c67a2c819fb8c38bff91844"
+    },
+    {
+      "path": "tests/browser/shell.spec.ts",
+      "sha256": "fbcc372700a1f8f2219d27478a503256f76c931a9677d6b032d3fb1377ba257c"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "dcc8d47c1482dad6a0432617e4977b521816f8af08201648b710cec05ab946b5"
+    }
+  ],
+  "limitations": [
+    "Synthetic wallet only in browser checks; actual compiled constructor and encrypted IndexedDB were exercised",
+    "No owner signing, submission, deployment, issuance, payment or receiver spend was observed",
+    "Read-only indexer query validates schema, not deployment finality",
+    "Full M1 and product acceptance remain blocked on real owner-approved actions"
+  ]
+}
