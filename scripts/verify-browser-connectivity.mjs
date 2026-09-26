@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from '@playwright/test';
 import { writeFileSync } from 'node:fs';
-let browser, stage = 'isolated browser launch';
+let browser, checks, stage = 'isolated browser launch';
 try {
   browser = await chromium.launch({headless:true});
   const page = await browser.newPage();
@@ -12,12 +12,14 @@ try {
   assert.equal(response.status(), 200);
   await page.getByRole('button', {name:'Check for 1AM'}).waitFor();
   stage = 'browser CSP, prover CORS and read-only Preprod access';
-  const checks = await page.evaluate(async () => {
+  checks = await page.evaluate(async () => {
     const timeout = () => AbortSignal.timeout(20000);
     const result = {};
     for (const path of ['check','prove']) {
-      const r = await fetch(`http://127.0.0.1:6300/${path}`, {method:'OPTIONS',signal:timeout()});
-      result[`${path}BrowserCors`] = r.ok;
+      // Match the provider's POST and content type so Chromium exercises the
+      // real preflight. Empty synthetic input must be rejected, never proved.
+      const r = await fetch(`http://127.0.0.1:6300/${path}`, {method:'POST',headers:{'Content-Type':'application/octet-stream'},body:new Uint8Array(),signal:timeout()});
+      result[`${path}BrowserCors`] = r.status === 400;
     }
     const indexer = await fetch('https://indexer.preprod.midnight.network/api/v4/graphql', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:'query($address:HexEncoded!){contractAction(address:$address){transaction{block{height hash}}}}',variables:{address:'47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635'}}),signal:timeout()});
     const indexed = await indexer.json();
@@ -28,10 +30,10 @@ try {
     return result;
   });
   assert(Object.values(checks).every(v => v === true)); assert.equal(pageErrors.length,0);
-  const report = {scope:'production_browser_csp_cors_and_read_only_preprod_connectivity',result:'passed',observedAt:new Date().toISOString(),origin:'http://127.0.0.1:3000',checks,limitations:['Fresh isolated Chromium; no real wallet extension','Prover OPTIONS access only; actual proof generation recorded separately','No signing or live transaction']};
+  const report = {scope:'production_browser_csp_cors_and_read_only_preprod_connectivity',result:'passed',observedAt:new Date().toISOString(),origin:'http://127.0.0.1:3000',checks,limitations:['Fresh isolated Chromium; no real wallet extension','Prover malformed POST rejection only; actual proof generation recorded separately','No signing or live transaction']};
   writeFileSync('reports/browser-connectivity.json',JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify(report,null,2));
 } catch {
-  writeFileSync('reports/browser-connectivity.json',JSON.stringify({result:'failed',stage,observedAt:new Date().toISOString()},null,2)+'\n');
+  writeFileSync('reports/browser-connectivity.json',JSON.stringify({result:'failed',stage,checks,observedAt:new Date().toISOString()},null,2)+'\n');
   console.error(`Production browser connectivity failed at ${stage}; no private inputs were used.`); process.exitCode=1;
 } finally { await browser?.close(); }
