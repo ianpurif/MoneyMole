@@ -6,6 +6,26 @@ only genuine manual wallet actions and observations remain owner-operated. This
 procedure exercises the implementation; it is not a statement that a step passed.
 Use the pinned tooling and exact compiled build. No push is required.
 
+Local setup and all application checks have now passed on this host; results are
+recorded in `docs/evidence/local-verification.json`. The current production app is
+at `http://127.0.0.1:3000` and the pinned prover at `http://127.0.0.1:6300`.
+`.env.local` is configured; no API key or wallet secret belongs there. Windows NVM
+and the project WSL launcher use Node 22.16.0 / npm 10.9.2. After a host restart,
+run from the repository in PowerShell (keep the second command's terminal open):
+
+```powershell
+wsl --exec bash .local/run.sh npm run services:up
+wsl --exec bash .local/run.sh npm run start -- --port 3000
+```
+
+Resume at the existing issuer in Chrome / Wallet A. Unlock it with the existing
+local passphrase, select **Prepare / recover issuance**, then separately approve
+**Approve issuance of 1,000,000 test units** in 1AM. Expected: finalized issuance
+and A's shielded test balance of 1,000,000. No new issuer deployment is required.
+If the original browser record is unavailable, use its encrypted recovery first;
+do not share the file or passphrase with tools. Escrow/funding/claim/spend approvals
+and the real recovery/privacy matrix follow below; none is claimed as completed.
+
 ## Preparation and approvals
 
 Use Chrome / Wallet A and Brave / independent Wallet B, both 1AM on Preprod.

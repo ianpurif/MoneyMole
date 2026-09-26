@@ -64,10 +64,12 @@ Do not silently install a different compiler or update global Codex settings. [S
 ## Local proof service
 `compose.yaml` binds image `midnightntwrk/proof-server:8.1.0` only to loopback, default
 host/container port 6300. The digest and image entrypoint were inspected locally;
-Windows Compose startup and TCP reachability passed, then the service was stopped.
-Synthetic local circuit proof generation passed; sealed transactions and browser-to-prover access remain unverified. Start only this project's service. When occupied,
-inspect the existing listener and set an explicit alternate host port; do not kill
-another process. The current app pins port 6300. An alternate port requires coordinated client URL,
+Windows Compose now keeps the project service running on loopback port 6300.
+Synthetic fund/claim/issue constraints and real proofs passed, including an unsealed
+issuer transaction proof round trip. Production-browser CORS access to the prover
+and real Preprod API fetches passed. Sealed live payment acceptance remains pending.
+Start only this project's service. When occupied, inspect the existing listener;
+do not kill another process. The current app pins port 6300. An alternate port requires coordinated client URL,
 CSP and wallet configuration changes; no unused NEXT_PUBLIC setting overrides it. S8 describes Lace's historical local-prover
 configuration, not verified 1AM behavior. 1AM advertises Connector v4 and multiple
 proving options; migration does not authorize hosted proving or witness disclosure.
@@ -123,4 +125,3 @@ occurred. The configured Midnight MCP returned no observable tool listing.
 Browser ledger execution uses Next.js webpack async WebAssembly (ADR 006). Both
 `npm run dev` and `npm run build` select webpack explicitly; no separate backend
 is introduced. Validate generated contracts before serving public compiler artifacts.
-

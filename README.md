@@ -5,10 +5,11 @@ implementation includes 1AM wallet integration, funding, local claim links/QR,
 receiver claims, settlement reconciliation, controlled spending and encrypted
 browser recovery.
 
-**Implementation is present; real end-to-end acceptance is pending.** The owner
-will run final app testing. This coding pass used static TypeScript, ESLint and script syntax checks,
-not app, browser, proving or live transaction tests. Earlier test reports apply
-only to their recorded source revisions. See [current status](docs/STATUS.md).
+**Local setup and application verification pass; real wallet E2E remains pending.**
+Compilation, artifact checks, lint, types, unit/contract/integration/browser suites,
+production build, local synthetic proving and read-only issuer verification passed.
+The local app and prover are running. Wallet approvals remain manual; local fixtures
+do not establish real payment acceptance. See [current status](docs/STATUS.md).
 
 ## Run locally
 
@@ -16,6 +17,7 @@ Use Node 22.16.0 and npm 10.9.2 on Linux/WSL2. Install the reviewed Compact tool
 as described in [TOOLCHAIN](docs/TOOLCHAIN.md), then:
 
 ```sh
+cp -n .env.example .env.local
 npm ci
 npm run compile:contracts
 npm run compile:issuance

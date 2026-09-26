@@ -1,6 +1,6 @@
 # M1 — Prove real funded independent claiming
 
-State: the complete candidate funding/claim/qualification and wallet path is implemented. The separate issuer was deployed previously; use its durable record. All remaining real issuance, escrow, independent-wallet settlement, spendability and disclosure acceptance is owner-pending. No live testing ran during the implementation-first pass.
+State: issuer identity and canonical node finality reverified; issued remains false. Local contract/proving checks passed. Real issuance, escrow deployment, independent-wallet settlement, spendability and disclosure acceptance still require owner approval and observation.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 

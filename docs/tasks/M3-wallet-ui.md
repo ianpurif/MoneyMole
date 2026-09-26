@@ -1,6 +1,6 @@
 # M3 — Integrate 1AM and the actual link/QR flow
 
-State: implementation complete. 1AM, sender/receiver UI, client-only fragment capture, local QR, recovery, receipts and controlled spending are connected. Real extension/application acceptance for this revision is owner-pending.
+State: implementation complete; seven production-browser security and synthetic-wallet tests passed, plus real browser prover/API connectivity. Actual 1AM signing and independent-wallet payment acceptance remain owner-pending.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 

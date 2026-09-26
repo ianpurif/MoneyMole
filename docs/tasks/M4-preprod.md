@@ -1,6 +1,6 @@
 # M4 — Finalize durable Preprod operation
 
-State: browser deployment/recovery and read-only chain verification are implemented. The issuer is recorded; no payment escrow has yet been observed. New network actions require explicit owner approval and existing deployments must be reused.
+State: read-only issuer verification passed against indexer and finalized node chain. The original issuer remains unissued. Escrow deployment and real funding/claim/spend evidence require manual approvals; no live transaction was submitted in local verification.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 

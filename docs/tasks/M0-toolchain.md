@@ -1,6 +1,6 @@
 # M0 — Resolve and validate the foundation
 
-State: tooling/dependency implementation is present. Historical Codex account routing and Midnight MCP discovery gates remain blocked. The latest owner directive authorizes full autonomous local setup and verification.
+State: local setup and application verification passed. Exact Node/npm, locked dependencies, Compact, Docker/prover and browser access are ready. Requested Codex model/discovery and Midnight MCP gates remain blocked and do not prevent local app testing.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
@@ -43,12 +43,12 @@ npm run doctor
 npm run doctor:codex
 npm run doctor:mcp
 npm run compile:probe
-npm exec playwright install chromium
+npm exec -- playwright install chromium
 npm run verify:boilerplate
 ```
 
 ## Acceptance
-Expected: genuine lock and npm ci success; SDK mappings and compiler verified; shell builds without any payment actions; requested agents discovered. Probe success is not asset transfer. Doctor commands can remain blocked until missing owner actions are completed.
+Expected: genuine lock and npm ci success; SDK mappings and compiler verified; application builds with explicitly authorized payment controls; requested agents discovered. Probe success is not asset transfer. Doctor commands can remain blocked until missing owner actions are completed.
 
 ## Failure and resume
 If DNS/registry access fails, record the actual error and continue dependency-free work. After three equivalent failures stop retrying. If a package/schema differs, change one hypothesis and verify primary source plus installed types. Do not weaken permissions or claim model substitution.

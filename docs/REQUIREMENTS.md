@@ -10,11 +10,11 @@ Engineering readiness and challenge qualification are separate. No score is infe
 |---|---|---|---|---|
 | PREP-SOURCES | Source ledger and compatible-component research | implemented | None | Primary references, dates, conclusions and unresolved mappings are recorded. |
 | PREP-CONTEXT | Self-contained Codex execution context | implemented | None | BUILD, task cards, ownership protocol, technical requirements and decisions are present and internally consistent. |
-| PREP-LOCK | Real pinned dependency graph | implemented | None | Generate registry-resolved package-lock.json, run npm ci and record exact installed versions. |
-| PREP-SHELL | Next.js application foundation | implemented | PREP-LOCK | Application source, lint/typecheck, browser security checks and production build without fabricated payment behavior; current E2E remains owner-run. |
+| PREP-LOCK | Real pinned dependency graph | verified | None | Generate registry-resolved package-lock.json, run npm ci and record exact installed versions. |
+| PREP-SHELL | Next.js application foundation | verified | PREP-LOCK | Application source, lint/typecheck, browser security checks and production build without fabricated payment behavior; current E2E remains owner-run. |
 | PREP-CODEX | Client-validated model routing | blocked | None | Installed schema, trusted config, all requested model/effort pairs and custom-agent discovery are observed. |
 | PREP-MCP | Midnight documentation MCP | blocked | None | Trusted client observes connection and tool listing; no private data is transmitted. |
-| PREP-TOOLS | Bounded fail-closed tooling | implemented | None | Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred. |
+| PREP-TOOLS | Bounded fail-closed tooling | verified | None | Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred. |
 | ARCH-STACK | Single Next.js frontend/backend and client-only secrets | implemented | None | Next.js App Router, TypeScript, Tailwind; Route Handlers in src/app/api/**/route.ts; appropriate non-secret Server Actions; server-only modules in src/lib/server/. No separate backend without a verified requirement. 1AM authorization, claim secrets, private witnesses and private-state handling never enter Next.js APIs. |
 
 ## Core gates
@@ -36,7 +36,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | ID | Requirement | State | Dependencies | Acceptance |
 |---|---|---|---|---|
 | L1-NODE | Node 22 | verified | None | Node 22 toolchain observed; host Node is distinct from Midnight node version. |
-| L1-DOCKER | Docker toolchain | implemented | None | Docker engine, Compose and pinned local proof image run; browser reachability is checked. |
+| L1-DOCKER | Docker toolchain | verified | None | Docker engine, Compose and pinned local proof image run; browser reachability is checked. |
 | L1-CONTRACT | Payment-relevant Compact contract | implemented | CORE-CONSERVATION, CORE-PRIVACY | Payment contract has public ledger state, private witness and deliberate audited disclosure; the compile-only probe is insufficient. |
 | L1-TESTS | Passing contract tests | implemented | L1-CONTRACT | Meaningful compiled-contract positive and negative tests pass. |
 | L1-MANAGED | Generated circuits and keys | implemented | L1-CONTRACT | Compiler-generated contract, circuits and proving/verification material exist with source/output hashes. |

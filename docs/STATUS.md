@@ -1,70 +1,84 @@
 # Current execution state
 
-Snapshot: 2026-09-26. **Autonomous local setup and verification in progress.**
-Active work: M0 environment repair and current implementation verification across
-M2–M5. The owner now authorizes all local setup, configuration and test layers,
-superseding the previous coding-only hold. Finish all automatable work before
-requesting manual wallet authorization. Real acceptance remains pending.
+Snapshot: 2026-09-26. **Local setup and application verification complete; real wallet E2E pending.**
+Active milestone: M1 owner wallet acceptance. The latest owner directive authorizes
+all local setup and verification. All automatable application checks passed; keep
+progressing after the owner completes the next private browser action. Never
+redeploy the existing issuer just because a session restarted.
 
-## Implemented
+## Working local setup
 
-- Single Next.js App Router frontend/backend, TypeScript and Tailwind; GET-only
-  public artifacts/build metadata APIs and server-only modules.
-- 1AM explicit Preprod connection, DUST readiness and account/network guards.
-- Separate issuer recovery/issuance and escrow deployment controls, encrypted
-  pending identity, finality checks, verifier matching and public metadata export.
-- Sender encrypted draft, integer funding, proof, wallet approval, and finalized
-  qualification before sharing a locally generated claim link or QR.
-- Receiver independent coin qualification and current membership path, claim proof,
-  input/output settlement matching, wallet sync and separate controlled spending.
-- Strict 210-byte claim codec with 256-bit authority and Compact domain bindings;
-  fragment capture/scrub. No private input reaches Next.js.
-- AES-GCM/PBKDF2 IndexedDB, revision conflicts, auto-lock, encrypted exports,
-  insert-only atomic recovery bundles and unverified imports.
-- Durable identifiers before submission, unknown-outcome protection and bounded
-  reconciliation. Existing escrows remain selectable by original address.
-- Read-only deployment/Preprod commands and owner-reviewed acceptance-matrix
-  validation. Missing observations block instead of fabricating success.
-- CI and existing browser fixtures updated for the payment workspace.
+- Windows NVM default and WSL project runtime: Node 22.16.0 / npm 10.9.2.
+- Genuine lockfile installed with npm ci; all 32 direct installed versions match
+  the manifest and lock. Use WSL for dependencies/builds, not mixed Windows installs.
+- `.env.local` configured with `PROOF_SERVER_PORT=6300`; obsolete unused
+  NEXT_PUBLIC entries removed and original local file preserved in ignored state.
+  Preprod URLs are pinned in source; escrow choice stays in the browser. No secret
+  or external API key is required in environment files.
+- Docker Desktop Compose serves the digest-pinned proof-server 8.1.0 on loopback
+  6300. Unrelated containers were preserved. Actual local proofs and browser CORS
+  passed; no remote prover or weakened browser security was used.
+- Current production app is running at `http://127.0.0.1:3000` with the original
+  origin retained for encrypted recovery. Start/restart commands are in OWNER-TESTING.
 
-## Verification boundary
+## Verified scope
 
-Static TypeScript, ESLint and script syntax checks passed during implementation. Final source scope is
-recorded in `docs/evidence/implementation-completion.json`. App tests, production
-build, browser behavior, real proofs and live flows for these changes were
-deliberately not exercised, following the owner instruction.
+Current sanitized record: `docs/evidence/local-verification.json`.
 
-Historical evidence describes earlier code and synthetic scopes. It is preserved,
-not promoted into current acceptance. Older passing browser/contract/proving
-reports do not validate the new adapters.
+| Check | Actual result |
+|---|---|
+| Locked installation, doctor, manifest/installed versions | Passed |
+| Offline source checks | Passed; 50 dependency-free tests |
+| Compact probe, coin probe, payment and separate issuer compilation | Passed |
+| Generated artifacts and verifier identity | Passed |
+| ESLint, TypeScript, production build | Passed |
+| Unit / generated-contract / integration suites | 36 / 13 / 8 passed |
+| Production browser suite | 7 passed; isolated synthetic providers, no real signing |
+| Loopback proving | Real constraints and fund/claim/issue proofs passed with synthetic openings; unsealed issuer transaction proof round trip passed |
+| Production browser connectivity | Prover POST/CORS and real Preprod indexer/RPC queries passed |
+| Existing issuer verification | Source/build/verifier preserved; original dependency graph compatible; canonical node finality confirmed; issued false |
+| Requirements graph and evidence integrity | Passed |
 
-## Real environment last observed
+The complete preparation wrapper returns **blocked (2)** solely for the requested
+Codex account model/discovery and Midnight documentation MCP checks. WSL-to-Windows
+client path translation is fixed and effective project settings match. The CLI
+still does not advertise the requested model/effort pairs, agent discovery is
+unverified, and an initialized Midnight tool listing is unavailable. No delegation
+or model substitution occurred. These gates are not application runtime dependencies.
 
-The owner reports independent Wallet A in Chrome and Wallet B in Brave, both 1AM
-on Preprod with DUST. Do not ask for readiness again.
+`services:check` deliberately returns 2 after a successful TCP probe; genuine proof
+and browser access were checked separately. `verify:deployment`, `test:preprod` and
+`verify:product` return 2 because real escrow/transaction/owner-matrix inputs do not
+exist yet. Those results are not passes and were not bypassed.
 
-The issuer deployment was observed before this pass:
-- Contract: `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`
-- Transaction: `003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886`
-- Block 2716656; successful deployment and matching issue verifier.
-- Record: `deployments/preprod/test-asset-issuer.json`.
-- Issued was false at that observation. It was not rechecked in this pass.
+## Real environment and next manual action
 
-No issuance, escrow deployment, funding, receiver claim or controlled spend has
-been observed. Recover and reuse the existing issuer.
+Wallet A in Chrome and independent Wallet B in Brave are already owner-reported
+connected through 1AM on Preprod with DUST. Do not ask for readiness again.
 
-## Remaining owner acceptance
+Reuse issuer `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`.
+Its original transaction is
+`003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886`, block 2716656.
+The durable record is `deployments/preprod/test-asset-issuer.json`; it was preserved.
+No new deployment, issuance, funding, claim or spend was submitted during setup.
 
-Follow `docs/OWNER-TESTING.md`: start the current app/prover, recover the issuer,
-separately approve issuance and escrow deployment if needed, then exercise fund,
-share, independent claim, spend, reload/recovery and the negative/privacy matrix.
-Export only sanitized, consented evidence.
+Next: **Chrome / Wallet A**, open the running app, unlock the existing issuer with
+its original local passphrase, choose **Prepare / recover issuance**, then
+**Approve issuance of 1,000,000 test units** and approve in 1AM. Expected: finalized
+issuance and A's 1,000,000 shielded test units. If the original record is absent,
+restore its encrypted backup first; never provide the passphrase/backup to tools.
 
-Live acceptance and external qualification remain pending. No remote push/run was
-performed. Requested Codex routing/account and Midnight MCP discovery gates remain
-unresolved historical tooling limitations; no delegation or substitution occurred.
+Then continue with separately approved escrow deployment, funding, private link/QR,
+independent B claim/spend, persistence/recovery, reconciliation and the T01–T24 live
+matrix. No local fixture establishes those observations. Remote CI, participation,
+public metadata and external qualification also remain pending; no push is authorized.
 
-All meaningful changes are committed locally. No push, deployment, issuance or
-live transaction was executed in the prior coding pass. Next agent: complete local
-setup and all verification, then return only for necessary manual wallet actions.
-Preserve the existing issuer and never redo deployment merely to restart a session.
+## Changes made in this setup pass
+
+Corrected environment precedence and pinned-port validation; preserved issuer
+verification across additive UI dependencies while rejecting changed or shadowed
+runtime packages; scoped Next tracing to this repository; fixed npm argument
+forwarding; added codec/QR/fragment tests and reusable browser connectivity checks.
+The supplied logo was preserved byte-for-byte in its own commit. Each logical
+change is committed locally. Historical evidence remains historical; it is not
+promoted into current live acceptance.
