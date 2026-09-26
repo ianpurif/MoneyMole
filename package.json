@@ -41,6 +41,7 @@
     "deploy:preprod": "node scripts/product.mjs deploy",
     "verify:deployment": "node scripts/product.mjs deployment",
     "verify:issuer": "node scripts/verify-issuer.mjs",
+    "verify:connectivity": "node scripts/verify-browser-connectivity.mjs",
     "requirements:report": "node scripts/requirements.mjs --write",
     "requirements:check": "node scripts/requirements.mjs --check",
     "evidence:participants": "node scripts/participants.mjs",
