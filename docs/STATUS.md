@@ -6,9 +6,11 @@ M2 recovery utilities and M3 wallet/security work proceeded independently as BUI
 
 ## Current wallet migration
 
-1AM is now the required primary wallet. The existing Lace adapter is being migrated;
-earlier wallet test evidence is historical and does not verify 1AM. No new real
-wallet authorization, deployment, issuance or transaction has occurred.
+1AM is the primary wallet. The client adapter and UI migration are complete.
+Twenty-eight unit tests, four production-browser tests, lint, typecheck, build and
+offline checks passed. Provider fixtures are synthetic; real 1AM authorization
+remains owner-pending. No deployment, issuance or transaction has occurred.
+Every meaningful logical change is committed locally; nothing was pushed.
 
 ## Implemented
 - Next.js App Router is the frontend and backend; TypeScript and Tailwind. HTTP APIs

@@ -369,7 +369,15 @@
       "dependsOn": [],
       "acceptance": "Actual installed 1AM authorizes and disconnects in the frontend; no headless substitute counts.",
       "commands": [],
-      "evidence": [],
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_1am_connector_checks_not_live_wallet_acceptance",
+          "path": "docs/evidence/M3-wallet-ui.json",
+          "sha256": "51e47737767d3ac3656f4b33dd4615f1d2a19036edac4e7240b40d7d8e90b63c",
+          "observedAt": "2026-09-26T09:09:13.915Z"
+        }
+      ],
       "note": "Explicit client-only controls and synthetic tests implemented; actual extension authorization remains owner-pending. Local disconnect is not extension permission revocation."
     },
     {

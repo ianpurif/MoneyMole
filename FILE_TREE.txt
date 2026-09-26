@@ -1,4 +1,4 @@
-private-payments-boilerplate/
+MoneyMole/
   .agents/skills/midnight-contracts/SKILL.md
   .agents/skills/midnight-wallet/SKILL.md
   .agents/skills/private-payments/SKILL.md
@@ -21,7 +21,10 @@ private-payments-boilerplate/
   components.json
   compose.yaml
   contracts/README.md
+  contracts/issuance/test-asset.compact
+  contracts/private-payments.compact
   contracts/probes/claim-commitment.compact
+  contracts/probes/shielded-io.compact
   deployments/README.md
   deployments/record.schema.json
   docs/ARCHITECTURE.md
@@ -40,6 +43,17 @@ private-payments-boilerplate/
   docs/adr/001-single-app.md
   docs/adr/002-feasibility-first.md
   docs/adr/003-toolchain-truth.md
+  docs/adr/004-private-state.md
+  docs/adr/005-installed-toolchain.md
+  docs/disclosure-audit.md
+  docs/evidence/M0-toolchain.json
+  docs/evidence/M1-feasibility.json
+  docs/evidence/M2-core.json
+  docs/evidence/M3-wallet-ui.json
+  docs/evidence/codex-client-local.json
+  docs/evidence/kdf-benchmark.json
+  docs/evidence/mcp-client-local.json
+  docs/evidence/node-runtime.json
   docs/evidence/preparation-commands.json
   docs/evidence/preparation-gate.json
   docs/evidence/source-syntax.json
@@ -55,6 +69,7 @@ private-payments-boilerplate/
   managed/README.md
   next-env.d.ts
   next.config.ts
+  package-lock.json
   package.json
   playwright.config.ts
   postcss.config.mjs
@@ -70,6 +85,9 @@ private-payments-boilerplate/
   scripts/offline.mjs
   scripts/participants.mjs
   scripts/product.mjs
+  scripts/product/test-contracts.mjs
+  scripts/product/test-proving.mjs
+  scripts/product/verify-artifacts.mjs
   scripts/requirements.mjs
   scripts/services.mjs
   scripts/verify-boilerplate.mjs
@@ -77,17 +95,30 @@ private-payments-boilerplate/
   src/app/layout.tsx
   src/app/page.tsx
   src/components/ui/button.tsx
+  src/components/wallet-panel.tsx
   src/domain/amount.ts
   src/domain/payment.ts
+  src/domain/transaction.ts
+  src/lib/midnight/oneam.ts
   src/lib/midnight/port.ts
+  src/lib/private-state/crypto.ts
+  src/lib/private-state/indexed-db.ts
   src/lib/private-state/port.ts
+  src/lib/server/security.ts
   src/lib/utils.ts
+  src/proxy.ts
   tests/boilerplate/amount.test.mjs
   tests/boilerplate/participants.test.mjs
   tests/boilerplate/requirements.test.mjs
   tests/boilerplate/tooling.test.mjs
   tests/browser/shell.spec.ts
+  tests/contracts/runtime.mjs
   tests/unit/amount.test.ts
+  tests/unit/client-only.ts
+  tests/unit/indexed-db.test.ts
+  tests/unit/oneam.test.ts
+  tests/unit/private-state.test.ts
+  tests/unit/transaction.test.ts
   toolchain.lock.json
   tsconfig.domain.json
   tsconfig.json

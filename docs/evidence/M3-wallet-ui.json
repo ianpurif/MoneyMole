@@ -1,0 +1,76 @@
+{
+  "scope": "1am_client_connection_ui_and_csp_not_real_extension_acceptance",
+  "result": "partial",
+  "observedAt": "2026-09-26T09:09:13.915Z",
+  "checks": [
+    {
+      "command": "npm run test:unit",
+      "result": "passed",
+      "tests": 28
+    },
+    {
+      "command": "npm run lint",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run build",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run test:browser",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run check:offline",
+      "result": "passed",
+      "exit": 0
+    }
+  ],
+  "subjects": [
+    {
+      "path": "src/lib/midnight/oneam.ts",
+      "sha256": "976770fb8b33f7c89015ea94abe7a521bcd2562037d2c61d0a8b3131d307d478"
+    },
+    {
+      "path": "src/components/wallet-panel.tsx",
+      "sha256": "bd0a3359a75b1f07fa00b76b51bdf817c9f91f3d62903f1693ebe765a2adca62"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "sha256": "b39017d4b2f9ccb983a76d2ddfd5c4bad87ada7173adae9e36787609d38f15a9"
+    },
+    {
+      "path": "src/lib/server/security.ts",
+      "sha256": "1b81eb4cade0a100ab0620f434ac5e053419ca7feb291dac30d49616d6143df5"
+    },
+    {
+      "path": "src/proxy.ts",
+      "sha256": "05475f2e476e117474cfd628fa0bf958f90e79938561a81d97f09b6579c0d373"
+    },
+    {
+      "path": "tests/browser/shell.spec.ts",
+      "sha256": "82e8a63980f672c35f923b88d6dbcfc4d3d3d68830e6bdc2838638e13c770f5f"
+    },
+    {
+      "path": "tests/unit/oneam.test.ts",
+      "sha256": "017bb4943191c8220c6c0556fa347fbeb91fe22a59243314ca396431de4d1a92"
+    }
+  ],
+  "actualExtension": "manual owner authorization pending",
+  "liveTransactions": false,
+  "limitations": [
+    "Connector fixtures are synthetic",
+    "No funds, signing, issuance or deployment",
+    "Metadata hints do not authenticate extension identity",
+    "No hosted proving enabled",
+    "Earlier Lace checks do not establish 1AM compatibility"
+  ]
+}
