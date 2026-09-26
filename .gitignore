@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+coverage/
+test-results/
+playwright-report/
+reports/
+.local/
+.env*
+!.env.example
+*.log
+*.tsbuildinfo
+# Generated proving material is reproducible; never hand-edit it.
+managed/**
+!managed/README.md
+# Consented records and private state stay outside version control.
+private-evidence/
+wallet-state/
+claim-exports/
+*.pem
+*.key
+.DS_Store

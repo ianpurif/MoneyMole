@@ -1,0 +1,45 @@
+# M4 — Finalize durable Preprod operation
+
+State: not_started. Expected behavior below is not observed evidence.
+
+**Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
+
+## Load context
+docs/ARCHITECTURE.md, deployments/README.md, deployments/record.schema.json, docs/RUNBOOK.md, prior M1 deployment records
+
+## Prerequisites
+Validated contract build and explicit owner authorization for any network change. Reuse existing compatible deployments; no session-based automatic redeployment.
+
+## Owned files and interfaces
+scripts/product/deploy-preprod.mjs, scripts/product/verify-deployment.mjs, src/lib/midnight/reconciliation/, deployments/, tests/preprod/, docs/RUNBOOK.md
+
+Assign explicit non-overlapping subsets before delegation; no worker may edit all paths merely because this task lists them.
+
+## Concrete work
+1. Inspect durable deployment records and actual Preprod chain state. Bind source, generated build and toolchain hashes. Validate address/transaction encoding with the installed SDK, not a guessed regex. Reuse the existing contract where valid.
+2. Implement bounded deployment with explicit network-change authorization, safe wallet handling and atomic metadata write after observed finality. A pending/unknown deployment must reconcile rather than deploy again. Preserve older funded contracts.
+3. Verify finality, deployed code identity and supported network; store actual transaction and block details. Distinguish indexer freshness from node finality and wallet synchronization.
+4. Test RPC disconnect, stale indexer, prover outage, rejected signing, fee shortage and response loss at every boundary. Preserve pre-funding intent and never blindly resubmit. Expose actionable sanitized diagnostics.
+5. Verify actual end-to-end funding and receiver spendability against the recorded deployment. Document retained addresses, compatibility/migration rules and local proving setup.
+
+## Commands — repository root
+Run only after implementing their missing entry points. Do not treat the current blocked gate as an executable product implementation.
+
+```sh
+npm run verify:deployment
+npm run deploy:preprod -- --authorize-network-change
+npm run verify:deployment
+npm run test:preprod
+npm run test:integration
+```
+
+## Acceptance
+Expected: matching Preprod address/build/finality record, recoverable interrupted transactions and no loss of older funded notes. The deployment command is run only when an authorized deployment is actually needed.
+
+## Failure and resume
+An unknown deployment result is not absence. Query/reconcile before retry. If the current record is wrong, preserve it as disputed, inspect source/chain evidence and repair deliberately. Do not publish private payment records to prove deployment.
+
+## Evidence and requirement updates
+deployments/preprod/<actual-address>.json, docs/evidence/M4-preprod.json
+
+Relevant IDs: L1-DEPLOY, L2-PREPROD, L4-MVP, L4-ADDRESS, CORE-TX, CORE-FEES. Update actual outcomes in `docs/STATUS.md`, then update the authoritative JSON and regenerate the report. Evidence must include code/toolchain subjects and scope.

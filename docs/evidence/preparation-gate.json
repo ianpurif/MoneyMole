@@ -1,0 +1,12 @@
+{
+  "name": "npm run verify:boilerplate",
+  "command": [
+    "npm",
+    "run",
+    "verify:boilerplate"
+  ],
+  "observedAt": "2026-09-26T03:05:22.424655+00:00",
+  "exitCode": 2,
+  "stdout": "\n> private-payments@0.1.0 verify:boilerplate\n> node scripts/verify-boilerplate.mjs\n\n{\n  \"scope\": \"complete_preparation_not_product_acceptance\",\n  \"observedAt\": \"2026-09-26T03:05:22.414Z\",\n  \"result\": \"blocked\",\n  \"checks\": [\n    {\n      \"name\": \"source and dependency-free utility checks\",\n      \"result\": \"passed\",\n      \"exit\": 0\n    },\n    {\n      \"name\": \"real lockfile with dependency entries\",\n      \"result\": \"blocked\"\n    },\n    {\n      \"name\": \"lint/typecheck/unit/build/browser/Compact probe\",\n      \"result\": \"blocked\",\n      \"reason\": \"Resolve the genuine dependency graph and required tools first\"\n    },\n    {\n      \"name\": \"doctor\",\n      \"result\": \"blocked\",\n      \"exit\": 2\n    },\n    {\n      \"name\": \"doctor:codex\",\n      \"result\": \"blocked\",\n      \"exit\": 2\n    },\n    {\n      \"name\": \"doctor:mcp\",\n      \"result\": \"blocked\",\n      \"exit\": 2\n    }\n  ]\n}\n",
+  "stderr": ""
+}

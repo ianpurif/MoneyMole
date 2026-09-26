@@ -1,0 +1,161 @@
+{
+  "observedAt": "2026-09-26T03:03:08.199863+00:00",
+  "scope": "preparation_source_and_utilities_only",
+  "overallPreparation": "blocked",
+  "records": [
+    {
+      "name": "Dependency-free source and utility checks",
+      "command": [
+        "npm",
+        "run",
+        "check:offline"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "matchesExpectation": true,
+      "stdout": "\n> private-payments@0.1.0 check:offline\n> node scripts/offline.mjs\n\nTAP version 13\n# (node:1349) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n# (Use `node --trace-warnings ...` to show where the warning was created)\n# Subtest: six-decimal values use integer atomic units\nok 1 - six-decimal values use integer atomic units\n  ---\n  duration_ms: 1.239912\n  type: 'test'\n  ...\n# Subtest: smallest precision unit is preserved\nok 2 - smallest precision unit is preserved\n  ---\n  duration_ms: 0.18033\n  type: 'test'\n  ...\n# Subtest: balances render in display units\nok 3 - balances render in display units\n  ---\n  duration_ms: 0.228653\n  type: 'test'\n  ...\n# Subtest: trailing zeros are display-only\nok 4 - trailing zeros are display-only\n  ---\n  duration_ms: 0.159259\n  type: 'test'\n  ...\n# Subtest: zero balance is displayable but not fundable\nok 5 - zero balance is displayable but not fundable\n  ---\n  duration_ms: 0.288684\n  type: 'test'\n  ...\n# Subtest: maximum amount round trips\nok 6 - maximum amount round trips\n  ---\n  duration_ms: 0.155844\n  type: 'test'\n  ...\n# Subtest: serialized atomic maximum round trips\nok 7 - serialized atomic maximum round trips\n  ---\n  duration_ms: 0.18667\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"-1\"\nok 8 - invalid decimal syntax or precision rejected: \"-1\"\n  ---\n  duration_ms: 0.139088\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1e3\"\nok 9 - invalid decimal syntax or precision rejected: \"1e3\"\n  ---\n  duration_ms: 0.34666\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1,000\"\nok 10 - invalid decimal syntax or precision rejected: \"1,000\"\n  ---\n  duration_ms: 0.41317\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \" 1\"\nok 11 - invalid decimal syntax or precision rejected: \" 1\"\n  ---\n  duration_ms: 0.195243\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1 \"\nok 12 - invalid decimal syntax or precision rejected: \"1 \"\n  ---\n  duration_ms: 0.083746\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"01\"\nok 13 - invalid decimal syntax or precision rejected: \"01\"\n  ---\n  duration_ms: 0.068603\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \".1\"\nok 14 - invalid decimal syntax or precision rejected: \".1\"\n  ---\n  duration_ms: 0.097266\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1.\"\nok 15 - invalid decimal syntax or precision rejected: \"1.\"\n  ---\n  duration_ms: 0.07371\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"NaN\"\nok 16 - invalid decimal syntax or precision rejected: \"NaN\"\n  ---\n  duration_ms: 0.063846\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"Infinity\"\nok 17 - invalid decimal syntax or precision rejected: \"Infinity\"\n  ---\n  duration_ms: 0.062524\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"\"\nok 18 - invalid decimal syntax or precision rejected: \"\"\n  ---\n  duration_ms: 0.058218\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"0.0000001\"\nok 19 - invalid decimal syntax or precision rejected: \"0.0000001\"\n  ---\n  duration_ms: 0.071618\n  type: 'test'\n  ...\n# Subtest: uint128 overflow rejected\nok 20 - uint128 overflow rejected\n  ---\n  duration_ms: 0.115464\n  type: 'test'\n  ...\n# Subtest: serialized decimal and signed values rejected\nok 21 - serialized decimal and signed values rejected\n  ---\n  duration_ms: 0.194322\n  type: 'test'\n  ...\n# Subtest: precision must be bounded integer\nok 22 - precision must be bounded integer\n  ---\n  duration_ms: 0.148142\n  type: 'test'\n  ...\n# Subtest: long input is rejected before conversion\nok 23 - long input is rejected before conversion\n  ---\n  duration_ms: 0.113119\n  type: 'test'\n  ...\n# Subtest: valid signature proves only attestation integrity\nok 24 - valid signature proves only attestation integrity\n  ---\n  duration_ms: 2.737169\n  type: 'test'\n  ...\n# Subtest: exact duplicate wallet strings counted once\nok 25 - exact duplicate wallet strings counted once\n  ---\n  duration_ms: 0.73938\n  type: 'test'\n  ...\n# Subtest: wrong network is rejected even with valid signature\nok 26 - wrong network is rejected even with valid signature\n  ---\n  duration_ms: 0.320351\n  type: 'test'\n  ...\n# Subtest: missing consent is rejected even with valid signature\nok 27 - missing consent is rejected even with valid signature\n  ---\n  duration_ms: 0.61931\n  type: 'test'\n  ...\n# Subtest: tampering invalidates signature\nok 28 - tampering invalidates signature\n  ---\n  duration_ms: 0.491688\n  type: 'test'\n  ...\n# Subtest: wrong attester key is rejected\nok 29 - wrong attester key is rejected\n  ---\n  duration_ms: 0.576866\n  type: 'test'\n  ...\n# Subtest: future observation rejected\nok 30 - future observation rejected\n  ---\n  duration_ms: 0.303907\n  type: 'test'\n  ...\n# Subtest: extra private fields rejected\nok 31 - extra private fields rejected\n  ---\n  duration_ms: 0.349024\n  type: 'test'\n  ...\n# Subtest: aggregate report contains no raw wallet strings\nok 32 - aggregate report contains no raw wallet strings\n  ---\n  duration_ms: 0.720071\n  type: 'test'\n  ...\n# Subtest: pending requirement is not falsely verified\nok 33 - pending requirement is not falsely verified\n  ---\n  duration_ms: 0.822575\n  type: 'test'\n  ...\n# Subtest: verified requires actual evidence\nok 34 - verified requires actual evidence\n  ---\n  duration_ms: 0.410396\n  type: 'test'\n  ...\n# Subtest: duplicate IDs rejected\nok 35 - duplicate IDs rejected\n  ---\n  duration_ms: 0.126841\n  type: 'test'\n  ...\n# Subtest: unknown dependencies rejected\nok 36 - unknown dependencies rejected\n  ---\n  duration_ms: 0.123175\n  type: 'test'\n  ...\n# Subtest: cyclic dependencies rejected\nok 37 - cyclic dependencies rejected\n  ---\n  duration_ms: 0.115314\n  type: 'test'\n  ...\n# Subtest: unsupported status rejected\nok 38 - unsupported status rejected\n  ---\n  duration_ms: 0.10626\n  type: 'test'\n  ...\n# Subtest: report generation is deterministic\nok 39 - report generation is deterministic\n  ---\n  duration_ms: 0.225409\n  type: 'test'\n  ...\n# Subtest: repository file paths cannot escape\nok 40 - repository file paths cannot escape\n  ---\n  duration_ms: 0.821133\n  type: 'test'\n  ...\n# Subtest: root path is stable independently of caller cwd\nok 41 - root path is stable independently of caller cwd\n  ---\n  duration_ms: 0.165138\n  type: 'test'\n  ...\n# Subtest: unsupported product command fails rather than passes\nok 42 - unsupported product command fails rather than passes\n  ---\n  duration_ms: 29.839371\n  type: 'test'\n  ...\n# Subtest: bounded command captures execution failure\nok 43 - bounded command captures execution failure\n  ---\n  duration_ms: 1.219561\n  type: 'test'\n  ...\n1..43\n# tests 43\n# suites 0\n# pass 43\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 144.894676\n{\n  \"scope\": \"source_and_dependency_free_utilities_only\",\n  \"observedAt\": \"2026-09-26T03:03:06.139Z\",\n  \"result\": \"passed\",\n  \"checks\": [\n    {\n      \"name\": \"source foundation paths\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"requirements graph and derived report\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"all manifest dependencies are exact candidates\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: eslint.config.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: postcss.config.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/bootstrap.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/codex-doctor.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/codex-session.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/compile.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/doctor.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/history.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/install-compact.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/lib.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/mcp-doctor.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/offline.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/participants.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/product.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/requirements.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/services.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/verify-boilerplate.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/amount.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/participants.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/requirements.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/tooling.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"dependency-free utility tests\",\n      \"passed\": true\n    }\n  ],\n  \"excludes\": [\n    \"npm dependency resolution\",\n    \"full Next typecheck/build/runtime\",\n    \"installed Codex schema and routing\",\n    \"Compact compilation\",\n    \"proving\",\n    \"wallet integration\",\n    \"payment acceptance\",\n    \"challenge qualification\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "Domain-only TypeScript checking with environment compiler",
+      "command": [
+        "tsc",
+        "-p",
+        "tsconfig.domain.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "matchesExpectation": true,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "Environment TypeScript compiler version",
+      "command": [
+        "tsc",
+        "--version"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "matchesExpectation": true,
+      "stdout": "Version 5.8.3\n",
+      "stderr": ""
+    },
+    {
+      "name": "Complete preparation gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:boilerplate"
+      ],
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "matchesExpectation": true,
+      "stdout": "\n> private-payments@0.1.0 verify:boilerplate\n> node scripts/verify-boilerplate.mjs\n\n{\n  \"scope\": \"complete_preparation_not_product_acceptance\",\n  \"observedAt\": \"2026-09-26T03:03:07.605Z\",\n  \"result\": \"blocked\",\n  \"checks\": [\n    {\n      \"name\": \"source and dependency-free utility checks\",\n      \"result\": \"passed\",\n      \"exit\": 0\n    },\n    {\n      \"name\": \"real lockfile with dependency entries\",\n      \"result\": \"blocked\"\n    },\n    {\n      \"name\": \"lint/typecheck/unit/build/browser/Compact probe\",\n      \"result\": \"blocked\",\n      \"reason\": \"Resolve the genuine dependency graph and required tools first\"\n    },\n    {\n      \"name\": \"doctor\",\n      \"result\": \"blocked\",\n      \"exit\": 2\n    },\n    {\n      \"name\": \"doctor:codex\",\n      \"result\": \"blocked\",\n      \"exit\": 2\n    },\n    {\n      \"name\": \"doctor:mcp\",\n      \"result\": \"blocked\",\n      \"exit\": 2\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "Absent payment contract blocks compilation",
+      "command": [
+        "npm",
+        "run",
+        "compile:contracts"
+      ],
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "matchesExpectation": true,
+      "stdout": "\n> private-payments@0.1.0 compile:contracts\n> node scripts/compile.mjs --product\n\n",
+      "stderr": "BLOCKED: Missing contracts/private-payments.compact. Execute the M1 task; a commitment probe is not a payment contract.\n"
+    },
+    {
+      "name": "Absent compiler blocks nonpayment probe",
+      "command": [
+        "npm",
+        "run",
+        "compile:probe"
+      ],
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "matchesExpectation": true,
+      "stdout": "\n> private-payments@0.1.0 compile:probe\n> node scripts/compile.mjs --probe\n\n",
+      "stderr": "BLOCKED: Compact compiler 0.31.1 is required and has not been validated.\n"
+    },
+    {
+      "name": "Absent product acceptance blocks completion",
+      "command": [
+        "npm",
+        "run",
+        "verify:product"
+      ],
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "matchesExpectation": true,
+      "stdout": "\n> private-payments@0.1.0 verify:product\n> node scripts/product.mjs acceptance\n\n",
+      "stderr": "BLOCKED: acceptance is not implemented. Required entry point: scripts/product/verify-acceptance.mjs; follow BUILD.md.\n"
+    },
+    {
+      "name": "Absent installation approval blocks execution",
+      "command": [
+        "node",
+        "scripts/install-compact.mjs"
+      ],
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "matchesExpectation": true,
+      "stdout": "",
+      "stderr": "BLOCKED: Verified installer URL/checksum/review and explicit execution approval are required. Complete M0; no script was fetched or executed.\n"
+    },
+    {
+      "name": "Bounded registry metadata connectivity",
+      "command": [
+        "npm",
+        "view",
+        "next@16.3.6",
+        "version",
+        "--fetch-timeout=5000",
+        "--fetch-retries=0"
+      ],
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "matchesExpectation": true,
+      "stdout": "",
+      "stderr": "npm error code EAI_AGAIN\nnpm error syscall getaddrinfo\nnpm error errno EAI_AGAIN\nnpm error request to https://registry.npmjs.org/next failed, reason: getaddrinfo EAI_AGAIN registry.npmjs.org\nnpm error A complete log of this run can be found in: /home/oai/.npm/_logs/2026-09-26T03_03_08_017Z-debug-0.log\n"
+    }
+  ],
+  "formatParsing": {
+    "json": [
+      "components.json",
+      "deployments/record.schema.json",
+      "docs/requirements.json",
+      "package.json",
+      "toolchain.lock.json",
+      "tsconfig.domain.json",
+      "tsconfig.json"
+    ],
+    "toml": [
+      ".codex/agents/architect.toml",
+      ".codex/agents/engineer.toml",
+      ".codex/agents/verifier.toml",
+      ".codex/config.toml"
+    ],
+    "yaml": [
+      ".github/workflows/ci.yml",
+      "compose.yaml"
+    ]
+  },
+  "agentFilesSyntacticallyParsed": 4,
+  "installedCodexSchemaValidated": false,
+  "delegationPerformed": false,
+  "domainCompiler": "Environment global TypeScript 5.8.3; not pinned project 5.9.3",
+  "fullApplicationTypecheckRun": false,
+  "nextBuildRun": false,
+  "browserRuntimeRun": false,
+  "compactCompiled": false,
+  "livePaymentVerified": false,
+  "notes": [
+    "The registry metadata command fails during DNS/network access; it does not establish whether the selected version exists.",
+    "Format parsing is not installed tool schema validation.",
+    "No genuine package-lock.json exists."
+  ],
+  "supersededUtilityTestCountBy": "docs/evidence/utility-acceptance.json"
+}

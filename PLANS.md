@@ -1,0 +1,57 @@
+# Resumable execution protocol
+
+The task cards in `docs/tasks/` are implementation specifications, not requests to
+create more plans. Maintain one active milestone in `docs/STATUS.md`. Before work,
+inspect current files, deployment records, requirement evidence and any dirty Git
+state. Preserve owner changes. A completed task is reusable only while its source,
+lockfile, compiler, network and deployed-contract assumptions remain unchanged.
+
+## Delegation contract
+Each delegation must contain the following filled fields; placeholders are not work:
+
+```text
+Task ID and objective:
+Role and requested model/effort:
+Read only these context paths:
+Owned files (exclusive):
+Dependencies and evidence already verified:
+Concrete implementation tasks:
+Acceptance commands (repository-root cwd):
+Forbidden mutations / security constraints:
+Return: changed paths; command + exit + scope; evidence paths;
+        unresolved risks; blockers with exact missing action.
+```
+
+The architect owns shared interfaces, `docs/requirements.json`, `docs/STATUS.md` and
+cross-cutting ADRs. The engineer may own contracts while the verifier owns separate
+tests, but neither edits shared interfaces until the architect grants a handoff.
+Do not duplicate source research already recorded with applicable versions. If the
+source or installed types disagree, record the conflict and resolve it in a bounded
+probe, not by changing versions at random.
+
+## Milestone record
+After each milestone, record actual completed files, remaining work, commands and
+exit codes, sanitized evidence paths, decisions, blockers and next exact command.
+Expected behavior remains labeled expected until observed. `implemented` means code
+exists; `verified` additionally requires evidence. Do not infer product readiness
+from preparation tests. Do not infer challenge qualification from technical readiness.
+
+## Recovery
+For an interrupted transaction, preserve its locally stored intent and identifier;
+query finality and wallet synchronization before allowing another transaction. If
+its outcome remains unknown, expose that state and stop retries. Never create a new
+contract merely because the old address is not in browser memory. Locate and verify
+the durable record. Preserve previous deployments with potentially funded payments.
+
+A failed command gets a short diagnosis and one evidence-driven correction. After
+three equivalent failures, stop that dependency, record the hypothesis and exact
+owner/environment action needed, and execute independent work. Compiler/prover jobs
+share `.local/heavy-tool.lock`; later proving code must use the same exclusion rule.
+
+## Evidence integrity
+Use `reports/` for local diagnostics and `docs/evidence/` for reviewed, sanitized
+technical records only. No raw proof requests or wallet logs. Verified requirement
+entries must include command, scope, observedAt, a passed result, evidence-file SHA-256
+and SHA-256 digests of every source/config subject on which the result depends.
+Changing a subject invalidates the observation. Regenerate the readable report with
+`npm run requirements:report`, then `npm run requirements:check`.

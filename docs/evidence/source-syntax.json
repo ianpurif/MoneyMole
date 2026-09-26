@@ -1,0 +1,21 @@
+{
+  "scope": "TypeScript_and_TSX_syntax_only_not_resolved_application_types",
+  "compilerVersion": "5.8.3",
+  "files": [
+    "next.config.ts",
+    "playwright.config.ts",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/components/ui/button.tsx",
+    "src/domain/amount.ts",
+    "src/domain/payment.ts",
+    "src/lib/midnight/port.ts",
+    "src/lib/private-state/port.ts",
+    "src/lib/utils.ts",
+    "tests/browser/shell.spec.ts",
+    "tests/unit/amount.test.ts",
+    "vitest.config.ts"
+  ],
+  "diagnostics": [],
+  "result": "passed"
+}

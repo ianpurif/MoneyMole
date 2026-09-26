@@ -1,0 +1,57 @@
+name: Engineering verification
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: engineering-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+      - name: Pin package manager
+        run: npm install --global npm@10.9.2
+      - name: Reject unresolved preparation dependency graph
+        run: test -s package-lock.json
+      - name: Install exactly the locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Check preparation utilities and evidence references
+        run: npm run check:offline
+      - name: Install reviewed pinned Compact toolchain
+        run: |
+          node scripts/install-compact.mjs --approve-reviewed-installer
+          echo "$HOME/.compact/bin" >> "$GITHUB_PATH"
+      - name: Compile actual payment contracts and verify generated artifacts
+        run: |
+          npm run compile:contracts
+          npm run verify:artifacts
+      - name: Lint and typecheck
+        run: |
+          npm run lint
+          npm run typecheck
+      - name: Deterministic and contract integration suites
+        run: |
+          npm run test:unit
+          npm run test:contracts
+          npm run test:integration
+      - name: Browser shell and implemented local UI checks
+        run: |
+          npm exec playwright install --with-deps chromium
+          npm run test:browser
+      - name: Production build and requirement consistency
+        run: |
+          npm run build
+          npm run requirements:check
+# This workflow intentionally fails until M0 installs and locks real dependencies
+# and M1 implements the actual product checks. No live wallet, signing secret or
+# network-changing transaction is allowed in an untrusted push/PR job.
+# M0 must review supported action releases and pin their approved commit SHAs.

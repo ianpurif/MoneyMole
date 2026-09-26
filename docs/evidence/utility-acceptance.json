@@ -1,0 +1,82 @@
+{
+  "result": "passed",
+  "scope": "dependency_free_utility_tests_and_missing_implementation_guards",
+  "observedAt": "2026-09-26T03:05:21.008787+00:00",
+  "node": "22.16.0",
+  "npm": "10.9.2",
+  "tests": 45,
+  "passed": 45,
+  "failed": 0,
+  "skipped": 0,
+  "commands": [
+    {
+      "name": "npm run check:offline",
+      "command": [
+        "npm",
+        "run",
+        "check:offline"
+      ],
+      "observedAt": "2026-09-26T03:05:20.634236+00:00",
+      "exitCode": 0,
+      "stdout": "\n> private-payments@0.1.0 check:offline\n> node scripts/offline.mjs\n\nTAP version 13\n# (node:2337) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n# (Use `node --trace-warnings ...` to show where the warning was created)\n# Subtest: six-decimal values use integer atomic units\nok 1 - six-decimal values use integer atomic units\n  ---\n  duration_ms: 1.104168\n  type: 'test'\n  ...\n# Subtest: smallest precision unit is preserved\nok 2 - smallest precision unit is preserved\n  ---\n  duration_ms: 0.138618\n  type: 'test'\n  ...\n# Subtest: balances render in display units\nok 3 - balances render in display units\n  ---\n  duration_ms: 0.150627\n  type: 'test'\n  ...\n# Subtest: trailing zeros are display-only\nok 4 - trailing zeros are display-only\n  ---\n  duration_ms: 0.120782\n  type: 'test'\n  ...\n# Subtest: zero balance is displayable but not fundable\nok 5 - zero balance is displayable but not fundable\n  ---\n  duration_ms: 0.212048\n  type: 'test'\n  ...\n# Subtest: maximum amount round trips\nok 6 - maximum amount round trips\n  ---\n  duration_ms: 0.118548\n  type: 'test'\n  ...\n# Subtest: serialized atomic maximum round trips\nok 7 - serialized atomic maximum round trips\n  ---\n  duration_ms: 0.128102\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"-1\"\nok 8 - invalid decimal syntax or precision rejected: \"-1\"\n  ---\n  duration_ms: 0.092499\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1e3\"\nok 9 - invalid decimal syntax or precision rejected: \"1e3\"\n  ---\n  duration_ms: 0.234221\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1,000\"\nok 10 - invalid decimal syntax or precision rejected: \"1,000\"\n  ---\n  duration_ms: 0.260842\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \" 1\"\nok 11 - invalid decimal syntax or precision rejected: \" 1\"\n  ---\n  duration_ms: 0.115514\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1 \"\nok 12 - invalid decimal syntax or precision rejected: \"1 \"\n  ---\n  duration_ms: 0.084637\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"01\"\nok 13 - invalid decimal syntax or precision rejected: \"01\"\n  ---\n  duration_ms: 0.04653\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \".1\"\nok 14 - invalid decimal syntax or precision rejected: \".1\"\n  ---\n  duration_ms: 0.037386\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"1.\"\nok 15 - invalid decimal syntax or precision rejected: \"1.\"\n  ---\n  duration_ms: 0.036916\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"NaN\"\nok 16 - invalid decimal syntax or precision rejected: \"NaN\"\n  ---\n  duration_ms: 0.035092\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"Infinity\"\nok 17 - invalid decimal syntax or precision rejected: \"Infinity\"\n  ---\n  duration_ms: 0.034712\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"\"\nok 18 - invalid decimal syntax or precision rejected: \"\"\n  ---\n  duration_ms: 0.035934\n  type: 'test'\n  ...\n# Subtest: invalid decimal syntax or precision rejected: \"0.0000001\"\nok 19 - invalid decimal syntax or precision rejected: \"0.0000001\"\n  ---\n  duration_ms: 0.039429\n  type: 'test'\n  ...\n# Subtest: uint128 overflow rejected\nok 20 - uint128 overflow rejected\n  ---\n  duration_ms: 0.137526\n  type: 'test'\n  ...\n# Subtest: serialized decimal and signed values rejected\nok 21 - serialized decimal and signed values rejected\n  ---\n  duration_ms: 0.139169\n  type: 'test'\n  ...\n# Subtest: precision must be bounded integer\nok 22 - precision must be bounded integer\n  ---\n  duration_ms: 0.13972\n  type: 'test'\n  ...\n# Subtest: long input is rejected before conversion\nok 23 - long input is rejected before conversion\n  ---\n  duration_ms: 0.06666\n  type: 'test'\n  ...\n# Subtest: valid signature proves only attestation integrity\nok 24 - valid signature proves only attestation integrity\n  ---\n  duration_ms: 1.988687\n  type: 'test'\n  ...\n# Subtest: exact duplicate wallet strings counted once\nok 25 - exact duplicate wallet strings counted once\n  ---\n  duration_ms: 0.708895\n  type: 'test'\n  ...\n# Subtest: wrong network is rejected even with valid signature\nok 26 - wrong network is rejected even with valid signature\n  ---\n  duration_ms: 0.362424\n  type: 'test'\n  ...\n# Subtest: missing consent is rejected even with valid signature\nok 27 - missing consent is rejected even with valid signature\n  ---\n  duration_ms: 0.264958\n  type: 'test'\n  ...\n# Subtest: tampering invalidates signature\nok 28 - tampering invalidates signature\n  ---\n  duration_ms: 0.602315\n  type: 'test'\n  ...\n# Subtest: wrong attester key is rejected\nok 29 - wrong attester key is rejected\n  ---\n  duration_ms: 0.714322\n  type: 'test'\n  ...\n# Subtest: future observation rejected\nok 30 - future observation rejected\n  ---\n  duration_ms: 1.27826\n  type: 'test'\n  ...\n# Subtest: extra private fields rejected\nok 31 - extra private fields rejected\n  ---\n  duration_ms: 0.386661\n  type: 'test'\n  ...\n# Subtest: aggregate report contains no raw wallet strings\nok 32 - aggregate report contains no raw wallet strings\n  ---\n  duration_ms: 0.683947\n  type: 'test'\n  ...\n# Subtest: pending requirement is not falsely verified\nok 33 - pending requirement is not falsely verified\n  ---\n  duration_ms: 0.850377\n  type: 'test'\n  ...\n# Subtest: verified requires actual evidence\nok 34 - verified requires actual evidence\n  ---\n  duration_ms: 0.381072\n  type: 'test'\n  ...\n# Subtest: duplicate IDs rejected\nok 35 - duplicate IDs rejected\n  ---\n  duration_ms: 0.124196\n  type: 'test'\n  ...\n# Subtest: unknown dependencies rejected\nok 36 - unknown dependencies rejected\n  ---\n  duration_ms: 0.115663\n  type: 'test'\n  ...\n# Subtest: cyclic dependencies rejected\nok 37 - cyclic dependencies rejected\n  ---\n  duration_ms: 0.117116\n  type: 'test'\n  ...\n# Subtest: unsupported status rejected\nok 38 - unsupported status rejected\n  ---\n  duration_ms: 0.114613\n  type: 'test'\n  ...\n# Subtest: report generation is deterministic\nok 39 - report generation is deterministic\n  ---\n  duration_ms: 0.189074\n  type: 'test'\n  ...\n# Subtest: table delimiters are escaped in derived reports\nok 40 - table delimiters are escaped in derived reports\n  ---\n  duration_ms: 0.274883\n  type: 'test'\n  ...\n# Subtest: verification cannot skip a prerequisite\nok 41 - verification cannot skip a prerequisite\n  ---\n  duration_ms: 0.376896\n  type: 'test'\n  ...\n# Subtest: repository file paths cannot escape\nok 42 - repository file paths cannot escape\n  ---\n  duration_ms: 0.653401\n  type: 'test'\n  ...\n# Subtest: root path is stable independently of caller cwd\nok 43 - root path is stable independently of caller cwd\n  ---\n  duration_ms: 0.126911\n  type: 'test'\n  ...\n# Subtest: unsupported product command fails rather than passes\nok 44 - unsupported product command fails rather than passes\n  ---\n  duration_ms: 30.493795\n  type: 'test'\n  ...\n# Subtest: bounded command captures execution failure\nok 45 - bounded command captures execution failure\n  ---\n  duration_ms: 1.216346\n  type: 'test'\n  ...\n1..45\n# tests 45\n# suites 0\n# pass 45\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 140.79445\n{\n  \"scope\": \"source_and_dependency_free_utilities_only\",\n  \"observedAt\": \"2026-09-26T03:05:20.626Z\",\n  \"result\": \"passed\",\n  \"checks\": [\n    {\n      \"name\": \"source foundation paths\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"requirements graph and derived report\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"all manifest dependencies are exact candidates\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: eslint.config.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: postcss.config.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/bootstrap.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/codex-doctor.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/codex-session.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/compile.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/doctor.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/history.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/install-compact.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/lib.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/mcp-doctor.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/offline.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/participants.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/product.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/requirements.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/services.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: scripts/verify-boilerplate.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/amount.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/participants.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/requirements.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"JS syntax: tests/boilerplate/tooling.test.mjs\",\n      \"passed\": true\n    },\n    {\n      \"name\": \"dependency-free utility tests\",\n      \"passed\": true\n    }\n  ],\n  \"excludes\": [\n    \"npm dependency resolution\",\n    \"full Next typecheck/build/runtime\",\n    \"installed Codex schema and routing\",\n    \"Compact compilation\",\n    \"proving\",\n    \"wallet integration\",\n    \"payment acceptance\",\n    \"challenge qualification\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "npm run compile:contracts",
+      "command": [
+        "npm",
+        "run",
+        "compile:contracts"
+      ],
+      "observedAt": "2026-09-26T03:05:20.748618+00:00",
+      "exitCode": 2,
+      "stdout": "\n> private-payments@0.1.0 compile:contracts\n> node scripts/compile.mjs --product\n\n",
+      "stderr": "BLOCKED: Missing contracts/private-payments.compact. Execute the M1 task; a commitment probe is not a payment contract.\n"
+    },
+    {
+      "name": "npm run compile:probe",
+      "command": [
+        "npm",
+        "run",
+        "compile:probe"
+      ],
+      "observedAt": "2026-09-26T03:05:20.862913+00:00",
+      "exitCode": 2,
+      "stdout": "\n> private-payments@0.1.0 compile:probe\n> node scripts/compile.mjs --probe\n\n",
+      "stderr": "BLOCKED: Compact compiler 0.31.1 is required and has not been validated.\n"
+    },
+    {
+      "name": "npm run verify:product",
+      "command": [
+        "npm",
+        "run",
+        "verify:product"
+      ],
+      "observedAt": "2026-09-26T03:05:20.980157+00:00",
+      "exitCode": 2,
+      "stdout": "\n> private-payments@0.1.0 verify:product\n> node scripts/product.mjs acceptance\n\n",
+      "stderr": "BLOCKED: acceptance is not implemented. Required entry point: scripts/product/verify-acceptance.mjs; follow BUILD.md.\n"
+    },
+    {
+      "name": "node scripts/install-compact.mjs",
+      "command": [
+        "node",
+        "scripts/install-compact.mjs"
+      ],
+      "observedAt": "2026-09-26T03:05:21.008765+00:00",
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "BLOCKED: Verified installer URL/checksum/review and explicit execution approval are required. Complete M0; no script was fetched or executed.\n"
+    }
+  ],
+  "notVerified": [
+    "full npm graph",
+    "Next.js execution/build",
+    "installed Codex schema",
+    "Compact compilation",
+    "actual proofs",
+    "Lace integration",
+    "live payments",
+    "challenge qualification"
+  ]
+}

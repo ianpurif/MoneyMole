@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "network",
+    "address",
+    "transactionId",
+    "finality",
+    "sourceHash",
+    "buildHash",
+    "toolchainHash",
+    "observedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "network": {
+      "const": "preprod"
+    },
+    "address": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transactionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "finality": {
+      "type": "object",
+      "required": [
+        "block",
+        "observed"
+      ],
+      "properties": {
+        "block": {
+          "type": "string"
+        },
+        "observed": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "sourceHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "buildHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "toolchainHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

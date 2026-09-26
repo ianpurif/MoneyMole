@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-26",
+  "status": "source_reviewed_not_installed",
+  "network": "preprod",
+  "host": {
+    "nodejs": "22.16.0",
+    "npm": "10.9.2",
+    "platformPreferred": "Linux or WSL2"
+  },
+  "components": {
+    "compactDevtools": "0.5.1",
+    "compactCompiler": "0.31.1",
+    "compactRuntime": "0.16.0",
+    "compactJs": "2.5.1",
+    "platformJs": "2.2.4",
+    "onChainRuntime": "3.0.0",
+    "walletSdk": "1.2.0",
+    "midnightJs": "4.1.1",
+    "testkit": "4.1.1",
+    "dappConnectorApi": "4.0.1",
+    "indexer": "4.3.302",
+    "proofServer": "8.1.0",
+    "midnightNode": "1.0.3"
+  },
+  "npmMappings": {
+    "@midnight-ntwrk/midnight-js-contracts": {
+      "version": "4.1.1",
+      "source": "S15",
+      "installed": false
+    },
+    "@midnight-ntwrk/midnight-js-types": {
+      "version": "4.1.1",
+      "source": "S15",
+      "installed": false
+    }
+  },
+  "pendingMappings": [
+    "Compact runtime and ledger packages exposed through the 4.1.1 protocol layer",
+    "Browser-compatible encrypted private-state provider",
+    "Compatible wallet connector package and exported types",
+    "Compatible testkit package and proving-provider entry points"
+  ],
+  "proofServer": {
+    "image": "midnightntwrk/proof-server:8.1.0",
+    "digest": null,
+    "containerPort": 6300,
+    "hostBinding": "127.0.0.1",
+    "installed": false
+  },
+  "compactInstaller": {
+    "releaseTag": "compact-v0.5.1",
+    "assetUrl": null,
+    "sha256": null,
+    "status": "owner_review_pending",
+    "reviewed": false,
+    "arguments": []
+  },
+  "packageGraph": {
+    "manifest": "package.json",
+    "lockfile": "package-lock.json",
+    "resolved": false,
+    "installed": false,
+    "reason": "Build runtime cannot resolve registry hosts; a genuine lockfile must be generated in M0."
+  },
+  "codex": {
+    "installedClientVersion": null,
+    "publishedSchema": "https://learn.chatgpt.com/docs/config-schema.json",
+    "installedSchemaValidated": false,
+    "modelsValidatedForAccount": false,
+    "mcpHandshakeVerified": false
+  }
+}

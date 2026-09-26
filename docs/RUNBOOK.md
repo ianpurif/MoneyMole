@@ -1,0 +1,81 @@
+# Local operating runbook
+
+All commands below run from the repository root on Linux/WSL2 with Node 22 and npm
+10.9.2. Stop servers with Ctrl-C or the exact service command; do not kill unrelated
+processes. Exit 0 means the stated scope passed, 1 means failure, 2 means blocked.
+No utility pass establishes payment or challenge completion.
+
+## Initial path
+```sh
+npm run check:offline
+npm run bootstrap
+npm run doctor
+npm run verify:boilerplate
+npm run dev
+```
+These are sequential manual commands, not an instruction to ignore a failure.
+Bootstrap currently needs target-host registry access. Review Compact installer
+metadata before `node scripts/install-compact.mjs --approve-reviewed-installer`.
+Use `npm exec playwright install chromium` after the pinned package is installed.
+Do not run a local server in a fire-and-forget loop; retain its process/session
+handle and shut it down deliberately when done.
+
+## Command ledger
+
+| npm run command | Exact script | Scope / readiness |
+|---|---|---|
+| `bootstrap` | `node scripts/bootstrap.mjs` | Creates a genuine lock if absent, then npm ci; requires registry access. |
+| `deps:lock` | `node scripts/bootstrap.mjs --lock-only` | Only resolves the real graph; no fabricated dependency entries. |
+| `doctor` | `node scripts/doctor.mjs` | Presence/version checks; Docker/Compact/Codex absence is blocked. |
+| `doctor:codex` | `node scripts/codex-doctor.mjs` | Read-only client/model/config probe; custom-agent discovery remains a separate observed gate. |
+| `doctor:mcp` | `node scripts/mcp-doctor.mjs` | Read-only installed-client MCP tool listing; blocks if the configured server exposes no tools. |
+| `check:offline` | `node scripts/offline.mjs` | Source consistency and Node utility tests only; may pass with product blocked. |
+| `test:boilerplate` | `node --experimental-strip-types --test tests/boilerplate/*.test.mjs` | Dependency-free utility assertions only, no payment acceptance. |
+| `verify:boilerplate` | `node scripts/verify-boilerplate.mjs` | Full preparation gate; missing graph/tools/client validation produces nonzero. |
+| `dev` | `next dev --hostname 127.0.0.1` | Starts the Next shell after dependencies are resolved; Ctrl-C stops it. |
+| `start` | `next start --hostname 127.0.0.1` | Serves an existing production build locally. |
+| `lint` | `eslint . --max-warnings=0` | ESLint strict; warnings are failures. |
+| `typecheck` | `tsc --noEmit` | Full project TypeScript, requires installed packages. |
+| `build` | `next build` | Next production build; no simulated product acceptance. |
+| `test:unit` | `vitest run --project unit` | Installed Vitest deterministic suite; no empty test pass. |
+| `compile:probe` | `node scripts/compile.mjs --probe` | Compiler-only nonpayment witness probe; no product qualification. |
+| `compile:contracts` | `node scripts/compile.mjs --product` | Actual payment contract compilation; missing implementation blocks. |
+| `verify:artifacts` | `node scripts/product.mjs artifacts` | M1 action verifies generated source/build/toolchain binding; currently blocked. |
+| `test:contracts` | `node scripts/product.mjs contracts` | M1 compiled-contract suite, currently blocked. |
+| `test:integration` | `node scripts/product.mjs integration` | M2 integration suite, currently blocked. |
+| `test:proving` | `node scripts/product.mjs proving` | Real local-prover suite, currently blocked. |
+| `test:preprod` | `node scripts/product.mjs preprod` | Actual live Preprod suite; requires owner actions/funds; currently blocked. |
+| `verify:product` | `node scripts/product.mjs acceptance` | Actual product acceptance, not preparation; currently blocked. |
+| `test:browser` | `playwright test` | Playwright shell/local UI checks. Does not prove extension operation. |
+| `services:up` | `node scripts/services.mjs up` | Starts only the project proof-server Compose service. |
+| `services:down` | `node scripts/services.mjs down` | Stops only that service; does not delete volumes or unrelated services. |
+| `services:status` | `node scripts/services.mjs status` | Inspect project service through Docker Compose. |
+| `services:check` | `node scripts/services.mjs check` | Bounded local TCP check; deliberately blocked for full proof readiness. |
+| `deploy:preprod` | `node scripts/product.mjs deploy` | M1/M4 authorized deployment action; no automatic session redeploy; currently blocked. |
+| `verify:deployment` | `node scripts/product.mjs deployment` | Actual chain/build-bound deployment verification; currently blocked. |
+| `requirements:report` | `node scripts/requirements.mjs --write` | Derives Markdown from authoritative JSON. |
+| `requirements:check` | `node scripts/requirements.mjs --check` | Checks graph, evidence digests and derived-report consistency. |
+| `evidence:participants` | `node scripts/participants.mjs` | Validates signed owner-attestation integrity only; see EVIDENCE.md. |
+| `history:inspect` | `node scripts/history.mjs` | Read-only Git history; no automatic commits. |
+
+## Recovery boundaries
+A product command reports its missing entry point precisely. Implement it via the
+active BUILD task, do not remove the gate. Keep private diagnostic data out of reports.
+After three repeated failures, record a new hypothesis or the exact blocker.
+
+For occupied prover ports, inspect the listener before configuring another port.
+For stalled transactions, reconcile recorded identifiers before resubmission.
+For deployment loss, verify durable records before any new deployment. For encrypted
+store failure, preserve the original data and do not reset automatically.
+
+## Client activation
+Review the project, then use Codex's normal trust prompt and reopen the session as
+needed. Inspect effective configuration, requested model efforts, discovered agent
+names and Midnight MCP tool listing. Do not edit global settings to force trust or
+route to an unrequested model. Record actual owner action/evidence in M0.
+
+## Network-changing jobs
+Current CI performs local engineering checks only. It has no wallet secrets or
+permission to deploy. A future live job must be explicitly authorized, use a trusted
+revision and protected execution environment, and preserve human wallet authorization
+where required. Never run funded live operations from untrusted pull-request code.

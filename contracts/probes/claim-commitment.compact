@@ -1,0 +1,12 @@
+// COMPILE-ONLY PROBE. No assets, funding, settlement or deployment eligibility.
+// Source-grounded candidate syntax; not compiled in the preparation environment.
+pragma language_version 0.23;
+import CompactStandardLibrary;
+witness claimSecret(): Bytes<32>;
+export ledger commitment: Bytes<32>;
+constructor() {
+  commitment = disclose(persistentHash<Vector<2, Bytes<32>>>([pad(32, "pp/probe/v1"), claimSecret()]));
+}
+export circuit check(): [] {
+  assert(persistentHash<Vector<2, Bytes<32>>>([pad(32, "pp/probe/v1"), claimSecret()]) == commitment, "Wrong secret");
+}
