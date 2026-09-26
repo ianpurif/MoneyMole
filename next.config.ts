@@ -7,8 +7,6 @@ const nextConfig: NextConfig = {
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "X-Frame-Options", value: "DENY" },
       { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-      // Full nonce-based CSP is a release gate before secret-bearing routes exist.
-      { key: "Content-Security-Policy", value: "object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" },
     ] }];
   },
 };
