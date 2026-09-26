@@ -121,8 +121,11 @@ case. Its format is:
 }
 ```
 
-Include one case for every T01–T24 row; the abbreviated example is intentionally
-insufficient. Use source automated only for a real executed result, otherwise
+Include one case for every T01–T24 row and the complete current source subject list;
+the abbreviated example is intentionally insufficient. The verifier requires all
+tracked src/contracts/scripts/tests and package/build/toolchain/CI files. The
+implementation evidence contains that list, but copy its hashes only if they still
+match the exact source you exercised. Use source automated only for a real executed result, otherwise
 owner_observed. SHA-256 can be computed locally with sha256sum or Get-FileHash.
 Evidence may establish a scoped failure; never label it passed to satisfy the tool.
 
