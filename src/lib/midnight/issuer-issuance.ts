@@ -67,7 +67,7 @@ export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore
     review, reconcile,
     async prepare() {
       await checkWallet();
-      if (record.transactionId) return reconcile();
+      if (record.transactionId) return review();
       const action = await observation(address), state = ContractState.deserialize(bytes(action.state));
       if (ledger(state.data).issued) throw new Error("Supply already issued; reconcile instead");
       const compiledContract = CompiledContract.make("test-asset", Contract<{ authority: Uint8Array }>).pipe(CompiledContract.withWitnesses({ issuerAuthority: ({ privateState }) => [privateState, privateState.authority], mintNonce: ({ privateState }) => [privateState, bytes(record.nonce)] }), CompiledContract.withCompiledFileAssets("test-asset"));
