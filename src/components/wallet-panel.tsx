@@ -5,8 +5,9 @@ import type { InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { Button } from "@/components/ui/button";
 import { discoverOneAm, OneAmSession, walletErrorMessage } from "@/lib/midnight/oneam";
 import { IssuerSetup } from "./issuer-setup";
+import { PaymentWorkspace } from "./payment-workspace";
 
-export function WalletPanel() {
+export function WalletPanel({ claimToken, onClaimConsumed }: { claimToken?: string; onClaimConsumed?: () => void } = {}) {
   const [providers, setProviders] = useState<InitialAPI[]>([]);
   const [busy, setBusy] = useState(false);
   const [connected, setConnected] = useState<OneAmSession | null>(null);
@@ -64,7 +65,7 @@ export function WalletPanel() {
         setConnected(null); setBusy(false); setMessage("Browser session cleared. Revoke site permissions inside 1AM if needed.");
       }}>{busy ? "Cancel connection" : "Disconnect"}</Button>}
     </div>
-    <p className="mt-3 text-xs text-muted">Connection stays in this browser. Payment operations remain unavailable.</p>
-    {connected && <IssuerSetup session={connected} />}
+    <p className="mt-3 text-xs text-muted">Wallet authorization and private payment records stay in this browser.</p>
+    {connected && <><PaymentWorkspace session={connected} {...(claimToken ? { claimToken } : {})} {...(onClaimConsumed ? { onClaimConsumed } : {})} /><details className="mt-6"><summary className="cursor-pointer font-medium">Test asset issuer administration</summary><IssuerSetup session={connected} /></details></>}
   </section>;
 }
