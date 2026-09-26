@@ -62,7 +62,9 @@ configured prover, CORS, secure-context and local-network rules. A TCP listener
 proves neither service identity nor working zero-knowledge proofs. Do not invent a
 health route, use a permissive browser flag, or send witnesses to an arbitrary
 endpoint to bypass a connection error. M1/M3 must test the supported 1AM prover
-configuration and distinguish wallet proving from application proving. [S8, S13]
+configuration and distinguish wallet proving from application proving. Historical
+Lace guidance does not prove 1AM behavior. Hosted proving is not enabled or
+authorized by this migration. [S8, S13, S36]
 
 ## Evidence and claim language
 No raw witnesses, links, private state or payment relationships in public evidence.

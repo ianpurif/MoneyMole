@@ -73,3 +73,22 @@ with documented metadata; do not present these pins as a tested graph.
 
 Record a conclusion with exact API/version and observed evidence when resolved.
 Do not repeat completed research unless a version, source or relevant assumption changes.
+
+## Stack clarification sources (2026-09-26)
+
+- S29: https://nextjs.org/docs/app/getting-started/route-handlers — App Router HTTP handlers use route.ts.
+- S30: https://nextjs.org/docs/app/getting-started/server-and-client-components — server-only imports enforce server module separation; browser state belongs behind client boundaries.
+
+
+- S31: https://nextjs.org/docs/app/guides/content-security-policy — request nonces require dynamic rendering; implemented and production-browser tested.
+- S32: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html — PBKDF2 SHA256 work factor baseline; ADR 004 explains browser-native choice and limits.
+- S33: https://api.github.com/repos/midnightntwrk/compact/releases/tags/compact-v0.5.1 — exact installer and Linux x64 archive digests verified; see toolchain.lock.json.
+- S34: registry.npmjs.org exact version metadata and installed protocol 4.1.1 package exports — dependencies recorded in ADR 005 and the genuine lockfile.
+- S35: https://docs.midnight.network/compact/reference/ledger-adt — current reference targets compiler 0.34.0; do not copy its naming over generated compiler 0.31.1 types.
+
+## 1AM migration sources (2026-09-26)
+
+- S36: https://1am.xyz/ — official site confirms Midnight DApp Connector v4 support. This supports retaining the pinned connector types; it does not verify the installed extension, exact provider metadata, proving configuration or live transactions.
+- S37: https://github.com/midnightntwrk/midnight-dapp-connector-api/blob/main/docs/api/_media/SPECIFICATION.md — provider metadata is self-reported and must not be treated as authenticated identity. Discover registry values, require supported API versions and explicit connection.
+
+The adapter recognizes exact 1AM brand names (1AM, 1AM.xyz, 1AM Wallet) or the existing local ecosystem integration's `com.midnight.1am` hint. These hints are not an official identity allowlist. Distinct duplicate matches fail closed; Lace is excluded and no fallback is selected. Actual installed 1AM behavior awaits owner authorization.

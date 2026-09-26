@@ -11,7 +11,7 @@ with validated inputs and authorization. Put server-only modules in
 No Express, NestJS, Fastify or separate backend service unless a verified technical
 requirement is recorded in an ADR. The trusted local proof service is a protocol
 tool, not a separate application backend. Add endpoints only for an actual need.
-Lace wallet authorization, claim secrets, private witnesses and private-state
+1AM wallet authorization, claim secrets, private witnesses and private-state
 handling remain client-side. Never pass these secrets to Next.js API routes,
 Server Actions, server components, server-rendered props, logs or telemetry.
 Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
@@ -37,7 +37,7 @@ against tagged 4.1.1 package source. Map remaining providers through installed
 exports and exact registry metadata before adding dependencies. Avoid the main
 branch's different beta protocol line.
 
-## Preparation environment observed
+## Historical preparation environment
 Linux x86_64, Node 22.16.0 and npm 10.9.2 were available. Codex, Docker and Compact
 executables were absent. Registry lookup timed out; direct runtime HTTP failed DNS
 resolution. Consequently no genuine `package-lock.json` could be generated, no
@@ -56,18 +56,22 @@ source-supported correction during M0.
 Compact installation requires a reviewed exact official release asset, its SHA-256
 and explicit execution authorization. Fill only verified metadata in
 `toolchain.lock.json`; `scripts/install-compact.mjs` refuses missing or unreviewed
-metadata. The documented binary directory is `~/.compact/bin`; a new shell may be
-needed after installation. Verify `compact --version` and `compact compile --version`.
+metadata. The reviewed wrapper installs to `.local/compact/bin` without editing shell
+profiles, and uses `COMPACT_DIRECTORY=.local/compact/artifacts`. Set both paths for
+subsequent commands. Verify `compact --version` and `compact compile --version`.
 Do not silently install a different compiler or update global Codex settings. [S8, S25]
 
 ## Local proof service
 `compose.yaml` binds image `midnightntwrk/proof-server:8.1.0` only to loopback, default
-host/container port 6300. The image tag/command is source-grounded; its digest and
-execution remain unverified. Start only this project's service. When occupied,
+host/container port 6300. The digest and image entrypoint were inspected locally;
+Windows Compose startup and TCP reachability passed, then the service was stopped.
+Synthetic local circuit proof generation passed; sealed transactions and browser-to-prover access remain unverified. Start only this project's service. When occupied,
 inspect the existing listener and set an explicit alternate host port; do not kill
 another process. Update the public prover URL and check the wallet's supported local
-prover configuration separately. Lace documentation describes a local prover setting;
-that does not establish support for arbitrary ports. [S8]
+prover configuration separately. S8 describes Lace's historical local-prover
+configuration, not verified 1AM behavior. 1AM advertises Connector v4 and multiple
+proving options; migration does not authorize hosted proving or witness disclosure.
+Verify actual 1AM behavior before enabling payment actions. [S8, S36]
 
 `services:check` checks TCP reachability only and returns blocked for full proving
 readiness. No unverified HTTP health route is invented. Actual readiness requires
@@ -98,3 +102,19 @@ role/model/effort/discovered=true, and subjects with SHA-256 digests of all four
 The doctor checks the current account and effective config afresh and accepts this
 scoped observation only while client version and subject hashes still match. This
 is explicitly observed session evidence, not proof that delegation occurred.
+
+## Installed follow-up (2026-09-26)
+Registry access now works. Official Node 22.16.0/npm 10.9.2 is available under
+`.local/node/node-v22.16.0-linux-x64/`. The distro's Node build lacks TypeScript
+stripping. Exact Compact 0.5.1 was checksum-verified and extracted under
+`.local/compact-devtools/compact-x86_64-unknown-linux-musl/`; compiler 0.31.1 is
+already installed. `.local/run.sh` selects these paths for this host only.
+The real npm graph installs; ADR 005 records the necessary Vite/Vitest resolution.
+Installed protocol 4.1.1 exports ledger-v8 8.1.0, compact-runtime 0.16.0,
+compact-js 2.5.1, onchain-runtime-v3 3.0.0 and platform-js 2.2.4.
+
+Windows Codex 0.149.1 loads the project settings after config/read receives cwd.
+Its account model listing does not expose the requested GPT-6 combinations, even
+with hidden models included. This session exposes the three named roles, but the
+CLI account/discovery gate is not fully satisfied. No delegation or substitution
+occurred. The configured Midnight MCP returned no observable tool listing.

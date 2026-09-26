@@ -1,7 +1,7 @@
 # Owner-controlled meaningful milestones
 
 These are proposed messages, not commits already made. Use only for real, substantive
-changes with explicit owner authorization; combine or revise when the actual work
+changes under the standing local-commit authorization; combine or revise when the actual work
 differs. Never split empty changes or alter history to meet a number. Targets are
 5/8/10/15/20/30 by Levels 1–6; 30 is conservative pending organizer confirmation.
 
