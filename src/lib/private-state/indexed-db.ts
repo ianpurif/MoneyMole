@@ -52,6 +52,7 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
   #cipher: PrivateCipher;
   #namespace: PrivateNamespace;
   #closed = false;
+  #onLock = new Set<() => void>();
   #timer: ReturnType<typeof setTimeout>;
   #hide = () => { if (document.visibilityState === "hidden") this.lock(); };
   private constructor(db: IDBDatabase, cipher: PrivateCipher, namespace: PrivateNamespace) {
@@ -153,10 +154,15 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
       tx.onerror = () => reject(new Error("Recovery import failed; existing records preserved"));
     });
   }
+  onLock(callback: () => void): void {
+    if (this.#closed) callback(); else this.#onLock.add(callback);
+  }
   lock(): void {
     if (this.#closed) return;
     this.#closed = true; clearTimeout(this.#timer);
     document.removeEventListener("visibilitychange", this.#hide);
     this.#cipher.lock(); this.#db.close();
+    for (const callback of this.#onLock) callback();
+    this.#onLock.clear();
   }
 }

@@ -12,6 +12,14 @@ export function PaymentDeployment({ session, onSelect }: { session: OneAmSession
   const current = useRef<Deployment | null>(null);
   const generation = useRef(0);
   useEffect(() => () => { generation.current++; current.current?.lock(); }, []);
+  const unlocked = review !== null;
+  useEffect(() => {
+    const lock = () => { generation.current++; current.current?.lock(); current.current = null; setReview(null); setPassword(""); setBusy(false); setMessage("Escrow setup locked. Unlock the existing record to continue."); };
+    const hide = () => { if (document.visibilityState === "hidden") lock(); };
+    document.addEventListener("visibilitychange", hide);
+    const timer = unlocked ? setTimeout(lock, 5 * 60_000) : undefined;
+    return () => { document.removeEventListener("visibilitychange", hide); clearTimeout(timer); };
+  }, [unlocked]);
   async function run(action: "unlock" | "approve" | "check" | "export" | "backup") {
     const attempt = generation.current; setBusy(true);
     try {
@@ -20,15 +28,15 @@ export function PaymentDeployment({ session, onSelect }: { session: OneAmSession
         const opened = await session.preparePaymentDeployment(password);
         if (attempt !== generation.current) { opened.lock(); return; } current.current = opened;
         setPassword(""); setReview(opened.review()); setMessage("Review Preprod and the escrow address before approving deployment. This action creates no payment and issues no tokens.");
-        if (opened.review().transactionId) setReview(await opened.reconcile());
+        if (opened.review().transactionId) { const next = await opened.reconcile(); if (attempt === generation.current) setReview(next); }
       } else if (current.current) {
-        if (action === "approve") { setMessage("Approve escrow deployment in 1AM. DUST pays the fee."); setReview(await current.current.approve()); }
-        if (action === "check") setReview(await current.current.reconcile());
+        if (action === "approve") { setMessage("Approve escrow deployment in 1AM. DUST pays the fee."); const next = await current.current.approve(); if (attempt === generation.current) setReview(next); }
+        if (action === "check") { const next = await current.current.reconcile(); if (attempt === generation.current) setReview(next); }
         if (action === "export") downloadLocal("moneymole-preprod-deployment.json", JSON.stringify(await current.current.publicRecord(), null, 2));
         if (action === "backup") downloadLocal("moneymole-encrypted-escrow.json", await current.current.exportEncrypted());
-        if (current.current.review().verified) { setMessage("Escrow confirmed on the finalized Preprod chain. Save its public deployment record and use this address."); onSelect(current.current.review().address); }
+        if (attempt === generation.current && current.current?.review().verified) { setMessage("Escrow confirmed on the finalized Preprod chain. Save its public deployment record and use this address."); onSelect(current.current.review().address); }
       }
-    } catch { setMessage("Deployment operation could not finish. Preserve the record, unlock if the tab was hidden, and reconcile any existing transaction before retrying."); }
+    } catch { if (attempt === generation.current) setMessage("Deployment operation could not finish. Preserve the record, unlock if the tab was hidden, and reconcile any existing transaction before retrying."); }
     finally { if (attempt === generation.current) { setPassword(""); setBusy(false); } }
   }
   return <details className="panel mt-6"><summary className="cursor-pointer font-medium">Create / recover a payment escrow</summary>

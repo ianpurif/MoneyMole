@@ -46,6 +46,7 @@ export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore
     try { revision = await store.write("issuance", plaintext, revision); } finally { plaintext.fill(0); }
   }
   if (!saved) await persist();
+  store.onLock(() => { authority.fill(0); record.nonce = ""; delete record.transaction; });
   const review = (): IssuanceReview => ({ phase: record.phase, asset, amount: "1000000", ...(record.transactionId ? { transactionId: record.transactionId } : {}), ...(record.blockHash ? { blockHash: record.blockHash } : {}), walletCredited });
   async function checkWallet() {
     const status = await api.getConnectionStatus();

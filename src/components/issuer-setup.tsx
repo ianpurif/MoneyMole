@@ -15,6 +15,14 @@ export function IssuerSetup({ session }: { session: OneAmSession }) {
   const prepared = useRef<Prepared | null>(null);
   const generation = useRef(0);
   useEffect(() => () => { generation.current++; prepared.current?.lock(); }, []);
+  const unlocked = review !== null;
+  useEffect(() => {
+    const lock = () => { generation.current++; prepared.current?.lock(); prepared.current = null; setReview(null); setPassword(""); setBusy(false); setMessage("Issuer locked. Unlock the existing record to continue."); };
+    const hide = () => { if (document.visibilityState === "hidden") lock(); };
+    document.addEventListener("visibilitychange", hide);
+    const timer = unlocked ? setTimeout(lock, 5 * 60_000) : undefined;
+    return () => { document.removeEventListener("visibilitychange", hide); clearTimeout(timer); };
+  }, [unlocked]);
   async function reconcile(current: Prepared, attempt: number) {
     for (let count = 0; count < 12 && attempt === generation.current; count++) {
       const state = await current.reconcile();
@@ -38,20 +46,20 @@ export function IssuerSetup({ session }: { session: OneAmSession }) {
       setReview(prepared.current.review());
       setMessage("Review the deployment below. No tokens will be issued by this action.");
       if (current.review().transactionId) await reconcile(current, attempt);
-    } catch { setMessage("Preparation failed. Check Preprod, compiled artifacts and your local unlock passphrase. Existing recovery data was preserved."); }
-    finally { setPassword(""); setBusy(false); }
+    } catch { if (attempt === generation.current) setMessage("Preparation failed. Check Preprod, compiled artifacts and your local unlock passphrase. Existing recovery data was preserved."); }
+    finally { if (attempt === generation.current) { setPassword(""); setBusy(false); } }
   }
   async function deploy() {
-    if (!prepared.current) return;
+    const current = prepared.current, attempt = generation.current; if (!current) return;
     setBusy(true); setMessage("Review and approve the issuer deployment in 1AM. This uses DUST and does not issue tokens.");
     try {
       await session.check();
-      setReview(await prepared.current.approveAndSubmit());
-      await reconcile(prepared.current, generation.current);
+      const result = await current.approveAndSubmit();
+      if (attempt !== generation.current) return;
+      setReview(result); await reconcile(current, attempt);
     } catch {
-      setReview(prepared.current.review());
-      setMessage("Deployment did not finish. Keep this record. An unknown outcome must be reconciled before retrying.");
-    } finally { setBusy(false); }
+      if (attempt === generation.current) { setReview(current.review()); setMessage("Deployment did not finish. Keep this record. An unknown outcome must be reconciled before retrying."); }
+    } finally { if (attempt === generation.current) setBusy(false); }
   }
   async function check() {
     if (!prepared.current) return;

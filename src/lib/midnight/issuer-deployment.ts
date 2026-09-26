@@ -61,6 +61,7 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
     const bytes = new TextEncoder().encode(JSON.stringify(draft));
     try { revision = await store.write("deployment", bytes, 0); } finally { bytes.fill(0); }
   }
+  store.onLock(() => { draft.authority = ""; draft.maintenanceKey = ""; draft.transaction = ""; });
   const persist = async () => {
     const bytes = new TextEncoder().encode(JSON.stringify(draft));
     try { revision = await store.write("deployment", bytes, revision); } finally { bytes.fill(0); }
@@ -97,7 +98,7 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
       const { openIssuance } = await import("./issuer-issuance");
       return openIssuance(api, store, draft.address, unhex(draft.authority), coinKey, encKey, new IssuerKeys());
     },
-    lock: () => { store.lock(); draft.authority = ""; draft.maintenanceKey = ""; draft.transaction = ""; },
+    lock: () => store.lock(),
     async approveAndSubmit(): Promise<DeploymentReview> {
       if (!["prepared", "authorization_requested"].includes(draft.phase)) throw new Error("Reconcile the existing deployment; do not redeploy.");
       const status = await api.getConnectionStatus();

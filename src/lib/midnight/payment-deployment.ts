@@ -21,6 +21,7 @@ export async function openPaymentDeployment(wallet: WalletContext, password: str
     found = { value, revision: await writeRecord(store, "deployment", value, 0) };
   }
   const d = found.value; let revision = found.revision, verified = false;
+  store.onLock(() => { d.signingKey = ""; delete d.tx.transaction; verified = false; });
   if (d.version !== 1) throw new Error("Unsupported deployment recovery"); unhex(d.address, 32); validateTx(d.tx);
   const persist = async () => { revision = await writeRecord(store, "deployment", d, revision); };
   const review = () => ({ address: d.address, asset: paymentAsset(), phase: d.tx.phase, transactionId: d.tx.transactionId, verified });
@@ -40,6 +41,6 @@ export async function openPaymentDeployment(wallet: WalletContext, password: str
       return { schemaVersion: 1, network: "preprod", address: d.address, transactionId: d.tx.transactionId, finality: { block: d.tx.blockHash, observed: true }, ...d.build, observedAt: new Date().toISOString() };
     },
     exportEncrypted: () => store.exportEncrypted("deployment"),
-    lock: () => { store.lock(); d.signingKey = ""; delete d.tx.transaction; },
+    lock: () => store.lock(),
   };
 }
