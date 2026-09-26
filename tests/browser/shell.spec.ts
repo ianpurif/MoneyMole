@@ -26,7 +26,8 @@ test("synthetic wallet prepares real compiled issuer locally and recovers withou
   async function prepare() {
     await page.getByRole("button", { name: "Check for 1AM" }).click();
     await page.getByRole("button", { name: "Connect 1AM", exact: true }).click();
-    await page.getByLabel("Local recovery passphrase", { exact: true }).fill("synthetic browser unlock passphrase");
+    await page.getByText("Test asset issuer administration", { exact: true }).click();
+    await page.getByRole("region", { name: "Preprod issuer setup" }).getByLabel("Local recovery passphrase", { exact: true }).fill("synthetic browser unlock passphrase");
     await page.getByRole("button", { name: "Prepare / unlock issuer deployment", exact: true }).click();
     await expect(page.getByText("State: prepared", { exact: true })).toBeVisible({ timeout: 60_000 });
   }
@@ -52,13 +53,13 @@ test("Lace alone never becomes the primary wallet", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Connect 1AM", exact: true })).toHaveCount(0);
   await expect(page.getByRole("status")).toContainText("supported 1AM API v4 provider was not found");
 });
-test("shell is explicit and cannot start a payment", async ({ page }) => {
+test("disconnected visitor cannot start a payment", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("One claim link.");
-  await expect(page.getByRole("button", { name: "Payment operations unavailable" })).toBeDisabled();
-  await expect(page.getByText("No asset balances are shown.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
+  await expect(page.getByText("Live acceptance of this implementation is pending.", { exact: false })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -84,8 +85,9 @@ test("synthetic connector exercises explicit authorization without API requests"
   await page.getByRole("button", { name: "Check for 1AM" }).click();
   expect(await page.evaluate(() => (window as unknown as { syntheticConnectCalls: number }).syntheticConnectCalls)).toBe(0);
   await page.getByRole("button", { name: "Connect 1AM" }).click();
-  await expect(page.getByRole("status")).toContainText("Connected to Preprod");
-  await expect(page.getByRole("button", { name: "Payment operations unavailable" })).toBeDisabled();
+  await expect(page.getByRole("status").filter({ hasText: "Connected to Preprod" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Save payment draft" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Unlock payment workspace" })).toBeDisabled();
   expect(apiRequests).toEqual([]);
   await page.getByRole("button", { name: "Disconnect", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Browser session cleared");

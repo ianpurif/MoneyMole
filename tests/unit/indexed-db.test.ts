@@ -19,7 +19,7 @@ describe("IndexedDB adapter with fake-indexeddb, no wallet or chain", () => {
     await expect(BrowserPrivateStore.unlock(namespace, "a different synthetic password")).rejects.toThrow();
     const b = await BrowserPrivateStore.unlock(namespace, password);
     expect((await b.read("intent"))?.plaintext).toEqual(bytes);
-    await expect(b.importEncrypted("intent", exported, password)).rejects.toThrow("conflict");
+    await expect(b.importEncrypted("intent", exported, password)).rejects.toThrow("preserved");
     b.lock();
     const c = await BrowserPrivateStore.unlock({ ...namespace, walletIdentity: "another-wallet" }, password, true);
     expect(await c.read("intent")).toBeNull();
