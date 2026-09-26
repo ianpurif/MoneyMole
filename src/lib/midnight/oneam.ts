@@ -56,6 +56,18 @@ export class OneAmSession {
     const { prepareIssuer } = await import("./issuer-deployment");
     return prepareIssuer(this.#api, password);
   }
+  async preparePaymentDeployment(password: string) {
+    await this.check(); if (!this.#api) throw new Error("Reconnect 1AM");
+    const { walletContext } = await import("./payment-session");
+    const { openPaymentDeployment } = await import("./payment-deployment");
+    return openPaymentDeployment(await walletContext(this.#api, () => this.check()), password);
+  }
+  async openPayments(contract: string, password: string) {
+    await this.check(); if (!this.#api) throw new Error("Reconnect 1AM");
+    const { walletContext } = await import("./payment-session");
+    const { openPayments } = await import("./payments");
+    return openPayments(await walletContext(this.#api, () => this.check()), contract, password);
+  }
 }
 
 export function walletErrorMessage(error: unknown): string {
