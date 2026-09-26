@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingRoot: process.cwd(),
   outputFileTracingIncludes: {
     "/api/artifacts/**": ["./managed/private-payments/keys/*", "./managed/private-payments/zkir/*", "./managed/test-asset/keys/*", "./managed/test-asset/zkir/*"],
     "/api/build": ["./contracts/private-payments.compact", "./managed/private-payments/contract/index.js", "./toolchain.lock.json"],
