@@ -1,0 +1,12 @@
+{
+  "scope": "desktop_node_webcrypto_kdf_only_not_mobile_browser",
+  "observedAt": "2026-09-26T08:35:41.696Z",
+  "runtime": "v22.16.0",
+  "iterations": 600000,
+  "milliseconds": [
+    225,
+    216,
+    226
+  ],
+  "result": "passed"
+}

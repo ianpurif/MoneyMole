@@ -1,0 +1,45 @@
+{
+  "scope": "local_recovery_utilities_not_funded_workflow",
+  "result": "partial",
+  "observedAt": "2026-09-26T08:56:32.521Z",
+  "unitCommand": "npm run test:unit",
+  "unitResult": "passed",
+  "implemented": [
+    "AES-GCM/PBKDF2 encrypted IndexedDB",
+    "Authenticated namespace and explicit unlock",
+    "Revision conflicts and encrypted recovery",
+    "Unknown-outcome transaction retry guards"
+  ],
+  "subjects": [
+    {
+      "path": "src/lib/private-state/crypto.ts",
+      "sha256": "58ac38215df410c0982ccab9edf4ee0afb528100610049d5f28d2665ff9f527b"
+    },
+    {
+      "path": "src/lib/private-state/indexed-db.ts",
+      "sha256": "944f1e36f200d47bc608c2e2b7268ebbc3bb4fc1de9d991ea39c78e6b97a32b9"
+    },
+    {
+      "path": "src/domain/transaction.ts",
+      "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+    },
+    {
+      "path": "tests/unit/indexed-db.test.ts",
+      "sha256": "df0786f4dba755d3f087af89ec4ddfb1c0e3dacd97dc5205eda6c0d5a31a3856"
+    },
+    {
+      "path": "tests/unit/private-state.test.ts",
+      "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+    },
+    {
+      "path": "tests/unit/transaction.test.ts",
+      "sha256": "08683f1aac299b3bc7cae3e970ea3a6ef26847e393cbbc358697f29b330fa65d"
+    }
+  ],
+  "limitations": [
+    "fake-indexeddb used in storage tests",
+    "No funded recovery integration",
+    "No deployed claim codec",
+    "Unsupported schema versions fail closed; migrations not implemented"
+  ]
+}
