@@ -14,7 +14,10 @@ else {
     const action = await import(pathToFileURL(at(path)).href);
     if (typeof action.run !== "function") throw new Error("Product action must export run(args)");
     const result = await action.run(process.argv.slice(3));
-    if (!result || result.status !== "passed" || !Array.isArray(result.evidencePaths) || !result.evidencePaths.length || result.evidencePaths.some(p => !has(p))) throw new Error("Product action did not provide observed evidence");
-    console.log(`${name}: passed; evidence: ${result.evidencePaths.join(", ")}`);
+    if (result?.status === "blocked") { blocked(result.reason ?? "Required owner evidence is missing."); }
+    else {
+      if (!result || result.status !== "passed" || !Array.isArray(result.evidencePaths) || !result.evidencePaths.length || result.evidencePaths.some(p => !has(p))) throw new Error("Product action did not provide observed evidence");
+      console.log(`${name}: passed; evidence: ${result.evidencePaths.join(", ")}`);
+    }
   } catch { console.error(`${name}: failed. Inspect the action's sanitized local diagnostic; no sensitive exception payload is printed.`); process.exitCode = 1; }
 }
