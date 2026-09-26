@@ -31,9 +31,17 @@ if (isMain(import.meta.url)) {
   const [recordsPath, publicKeyPath] = process.argv.slice(2).filter(a => !a.startsWith("--"));
   try {
     if (!recordsPath || !publicKeyPath) throw new Error("Usage: npm run evidence:participants -- <private-records.json> <trusted-attester-public.pem> [--require-qualification]");
-    const result = validateParticipants(JSON.parse(readFileSync(recordsPath, "utf8")), readFileSync(publicKeyPath, "utf8"));
+    const records = JSON.parse(readFileSync(recordsPath, "utf8"));
+    const result = validateParticipants(records, readFileSync(publicKeyPath, "utf8"));
+    const chainIndex = process.argv.indexOf("--chain-manifest");
+    if (chainIndex >= 0 && !result.rejectedIndices.length) {
+      const manifestPath = process.argv[chainIndex + 1];
+      if (!manifestPath) throw new Error("Missing chain manifest");
+      const { verifyParticipantActivity } = await import("./product/verify-participant-activity.mjs");
+      result.chainObservation = await verifyParticipantActivity(records, JSON.parse(readFileSync(manifestPath, "utf8")));
+    }
     console.log(JSON.stringify(result, null, 2));
     if (result.rejectedIndices.length) process.exitCode = 1;
-    else if (process.argv.includes("--require-qualification")) { console.error("BLOCKED: signed owner observations do not independently establish chain participation or unique humans."); process.exitCode = 2; }
+    else if (process.argv.includes("--require-qualification")) { console.error("BLOCKED: signed observations and public transactions do not independently establish wallet ownership, unique humans or organizer qualification."); process.exitCode = 2; }
   } catch (e) { console.error(e.message.startsWith("Usage:") ? e.message : "Invalid participant evidence or trust key; no private record contents printed."); process.exitCode = 1; }
 }
