@@ -29,7 +29,7 @@ recorded separately in the implementation evidence.
 
 ## Verification boundary
 
-Static TypeScript checking passed during implementation. Final source scope is
+Static TypeScript, ESLint and script syntax checks passed during implementation. Final source scope is
 recorded in `docs/evidence/implementation-completion.json`. App tests, production
 build, browser behavior, real proofs and live flows for these changes were
 deliberately not exercised, following the owner instruction.

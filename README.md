@@ -6,7 +6,7 @@ receiver claims, settlement reconciliation, controlled spending and encrypted
 browser recovery.
 
 **Implementation is present; real end-to-end acceptance is pending.** The owner
-will run final app testing. This coding pass uses static TypeScript checking,
+will run final app testing. This coding pass used static TypeScript, ESLint and script syntax checks,
 not app, browser, proving or live transaction tests. Earlier test reports apply
 only to their recorded source revisions. See [current status](docs/STATUS.md).
 
