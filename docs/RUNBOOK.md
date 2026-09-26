@@ -62,6 +62,15 @@ handle and shut it down deliberately when done.
 | `history:inspect` | `node scripts/history.mjs` | Read-only Git history; no automatic commits. |
 
 ## Recovery boundaries
+Issuer verification preserves the original deployment record. If the app lockfile
+has gained UI dependencies, it loads the original lockfile from immutable Git
+commit `d4e89bd1589070549e50bb3ee14746708cfa4ead`, checks its recorded SHA-256, and
+requires every original dependency version, integrity and graph entry to remain
+identical (dev-only packages may be promoted to production). Contract source,
+generated code, verifier and toolchain digests must still match exactly. Missing
+history or changed dependencies fail closed. Both deployment and latest state
+must be on the node's finalized canonical chain. No redeployment is performed.
+
 All product entry points are present. Missing live inputs and incomplete acceptance
 remain blocked; do not remove the gate to manufacture evidence. Keep private diagnostic data out of reports.
 After three repeated failures, record a new hypothesis or the exact blocker.
