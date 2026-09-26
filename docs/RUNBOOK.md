@@ -16,7 +16,7 @@ npm run dev
 These are sequential manual commands, not an instruction to ignore a failure.
 Bootstrap currently needs target-host registry access. Review Compact installer
 metadata before `node scripts/install-compact.mjs --approve-reviewed-installer`.
-Use `npm exec playwright install chromium` after the pinned package is installed.
+Use `npm exec -- playwright install chromium` after the pinned package is installed.
 Do not run a local server in a fire-and-forget loop; retain its process/session
 handle and shut it down deliberately when done.
 

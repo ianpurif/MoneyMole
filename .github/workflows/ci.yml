@@ -49,7 +49,7 @@ jobs:
         run: npm run build
       - name: Browser security and synthetic authorization checks
         run: |
-          npm exec playwright install --with-deps chromium
+          npm exec -- playwright install --with-deps chromium
           npm run test:browser
       - name: Requirement consistency
         run: npm run requirements:check
