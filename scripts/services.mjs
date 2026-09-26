@@ -1,11 +1,10 @@
 import net from "node:net";
-import { readFileSync } from "node:fs";
-import { at, has, run, printResult, blocked } from "./lib.mjs";
+import { run, printResult, blocked } from "./lib.mjs";
 import { dockerCommand, composeFile } from "./docker.mjs";
-let port = process.env.PROOF_SERVER_PORT;
-if (!port && has(".env")) port = /^PROOF_SERVER_PORT=(\d+)$/m.exec(readFileSync(at(".env"), "utf8"))?.[1];
-port = Number(port ?? "6300");
-if (!Number.isInteger(port) || port < 1024 || port > 65535) { blocked("PROOF_SERVER_PORT must be an integer from 1024 through 65535."); }
+import { proofServerPort } from "./local-config.mjs";
+let port;
+try { port = proofServerPort(); } catch (error) { blocked(error.message); }
+if (!port) { /* Invalid local configuration already reported without its value. */ }
 else if (process.argv[2] === "check") {
   const connected = await new Promise(resolve => {
     const socket = net.connect({ host: "127.0.0.1", port });
@@ -21,8 +20,9 @@ else if (process.argv[2] === "check") {
   if (!args) blocked("Use up, down, status or check.");
   else {
     const command = dockerCommand(), file = composeFile(command);
-    const config = run(command, ["compose", "--file", file, "config", "--quiet"], { timeout: 10_000 });
+    const env = { ...process.env, PROOF_SERVER_PORT: String(port) };
+    const config = run(command, ["compose", "--file", file, "config", "--quiet"], { timeout: 10_000, env });
     if (!config.ok) blocked("Docker Compose configuration or engine is unavailable.");
-    else { const result = run(command, ["compose", "--file", file, ...args], { timeout: 180_000 }); printResult("local proof service action", result); if (!result.ok) process.exitCode = 1; }
+    else { const result = run(command, ["compose", "--file", file, ...args], { timeout: 180_000, env }); printResult("local proof service action", result); if (!result.ok) process.exitCode = 1; }
   }
 }

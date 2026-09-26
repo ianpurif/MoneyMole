@@ -93,6 +93,14 @@ verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.
 
 ## This host
+Windows NVM and the WSL project runtime both use Node 22.16.0 / npm 10.9.2.
+Use WSL for dependency installation, builds and tests; do not mix Windows and
+Linux native packages in one node_modules directory. `.env.local` contains the
+public `PROOF_SERVER_PORT=6300` setting. `npm run services:*` resolves process env,
+then `.env.local`, then `.env` and passes the same validated port to Compose.
+The app pins Preprod endpoints in source; unused NEXT_PUBLIC variables do not
+configure wallet authority or contract selection. Select the escrow in the browser.
+
 In WSL, `bash .local/run.sh npm run <command>` selects the verified project-local runtime. The helper is ignored host state, not a portable installation. Windows Docker Compose is installed; Ubuntu's plugin is absent. Use `docker compose --file compose.yaml up -d proof-server` and `docker compose --file compose.yaml stop proof-server` from this repository in PowerShell. No wallet data is passed through these commands. Build before test:browser.
 
 WSL service commands prefer native Compose, then reuse the installed Docker Desktop
