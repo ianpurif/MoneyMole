@@ -14,3 +14,8 @@ test("changed integrity, dependency edges and removed packages fail closed", () 
     assert.throws(() => verifyAdditiveDependencies(baseline(), current));
   }
 });
+test("additions cannot shadow an existing transitive deployment dependency", () => {
+  const current = baseline();
+  current.packages["node_modules/runtime/node_modules/helper"] = { version: "2.0.0" };
+  assert.throws(() => verifyAdditiveDependencies(baseline(), current), /resolution/);
+});
