@@ -98,3 +98,13 @@ action. Preserve the same browser record and reconcile unknown outcomes.
 After confirmation, record public deployment metadata and proceed to separately
 approved issuance, escrow deployment and the full two-wallet payment matrix.
 No core payment requirement was promoted to verified. Nothing was pushed.
+
+## Observed issuer deployment
+The owner approved issuer deployment. The official Preprod indexer reports SUCCESS
+at block 2716656 for contract
+`47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`.
+The deployed issue verifier matches the local compiled artifact; public `issued`
+is false. See `deployments/preprod/test-asset-issuer.json`. Reuse this issuer.
+The owner's browser last reported submitted; its encrypted record still needs
+reconciliation. Next implementation: separate fixed-supply issuance approval.
+No payment or receiver spend has occurred; full M1 remains incomplete.

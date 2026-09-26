@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "network": "preprod",
+  "role": "separate_test_asset_issuer",
+  "address": "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635",
+  "transactionId": "003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886",
+  "transactionHash": "46099aaecdb51aff8a37019825e8d7be27663a561f7f06a81c2c1a749b5a6107",
+  "block": {
+    "height": 2716656,
+    "hash": "01592d09d225cce9d7e0f57b7bc8d598cbd68a7d7eab9e64169abcc6c2911d7c"
+  },
+  "observedAt": "2026-09-26T10:15:43.750Z",
+  "observation": "official_preprod_indexer_success",
+  "verifierMatchesLocalArtifact": true,
+  "issued": false,
+  "publicStateSha256": "cae5fe9465ffaa260a82ea57ab78f81ff5eaebbd3aa9e7480f125d30a2d1f961",
+  "subjects": [
+    {
+      "path": "contracts/issuance/test-asset.compact",
+      "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+    },
+    {
+      "path": "managed/test-asset/keys/issue.verifier",
+      "sha256": "d57c16af1b4a1d028611831e0bd4c5f3161fcfeb884cb9f7d4120b27b8039869"
+    },
+    {
+      "path": "managed/test-asset/contract/index.js",
+      "sha256": "e628b2681ac9d6d0ab9cac4db14183b00b7ccddce64b85c733f6f2cd11ad8d5a"
+    },
+    {
+      "path": "toolchain.lock.json",
+      "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "dcc8d47c1482dad6a0432617e4977b521816f8af08201648b710cec05ab946b5"
+    }
+  ],
+  "limitations": [
+    "Issuer deployment only; no issuance, escrow or payment",
+    "Public verification key matches local artifact; no private authority accessed",
+    "Local browser recovery must separately reconcile its encrypted record"
+  ]
+}
