@@ -5,6 +5,7 @@ import { proofDataIntoSerializedPreimage } from "@midnight-ntwrk/midnight-js-pro
 import { runRuntimeCases } from "../../tests/contracts/runtime.mjs";
 import { at, saveJson, hashFile } from "../lib.mjs";
 import { run as verify } from "./verify-artifacts.mjs";
+import { proveIssuerTransaction } from "../../tests/contracts/issuer-transaction.mjs";
 
 class LocalKeys extends ZKConfigProvider {
   read(circuit, folder, extension) {
@@ -36,7 +37,9 @@ export async function run() {
       checks.push({ circuit, constraintCheck: "passed", proofGeneration: "passed", proofBytes: proof.length });
       // Never write preimages, private transcripts or proof bodies to reports.
     }
-    saveJson(path, { scope: "local_circuit_constraint_check_and_proof_generation_synthetic_only", result: "passed", observedAt: new Date().toISOString(), checks,
+    stage = "synthetic issuer transaction proving";
+    const issuerTransaction = await proveIssuerTransaction(new LocalKeys(), provider);
+    saveJson(path, { scope: "local_circuit_constraint_check_and_proof_generation_synthetic_only", result: "passed", observedAt: new Date().toISOString(), checks, issuerTransaction,
       subjects: ["scripts/product/test-proving.mjs", "tests/contracts/runtime.mjs", "contracts/private-payments.compact", "contracts/issuance/test-asset.compact", "compose.yaml"].map(path => ({ path, sha256: hashFile(path) })),
       limitations: ["Not a sealed transaction or independent proof verification", "No ledger-qualified input", "No wallet balance, network submission or receiver spend"] });
     return { status: "passed", evidencePaths: [path] };

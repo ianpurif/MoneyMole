@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import type { OneAmSession } from "@/lib/midnight/oneam";
 import type { DeploymentReview } from "@/lib/midnight/issuer-deployment";
+import { IssuanceSetup } from "./issuance-setup";
 type Prepared = Awaited<ReturnType<OneAmSession["prepareIssuer"]>>;
 
 export function IssuerSetup({ session }: { session: OneAmSession }) {
@@ -18,7 +19,7 @@ export function IssuerSetup({ session }: { session: OneAmSession }) {
       const state = await current.reconcile();
       if (attempt !== generation.current) return;
       setReview(state);
-      if (state.phase === "finalized") { setMessage("Issuer deployment confirmed by the Preprod indexer. No tokens have been issued. Keep your local recovery passphrase and record."); return; }
+      if (state.phase === "finalized") { setMessage("Issuer deployment confirmed by the Preprod indexer. Issuance is a separate operation below. Keep your local recovery passphrase and record."); return; }
       if (!state.transactionId) return;
       setMessage("Waiting for the Preprod indexer to confirm deployment. Do not deploy again.");
       await new Promise(resolve => setTimeout(resolve, 5000));
@@ -85,5 +86,10 @@ export function IssuerSetup({ session }: { session: OneAmSession }) {
       {review.transactionId && <Button variant="outline" disabled={busy} onClick={() => void check()}>Check deployment</Button>}
     </div>}
     <p aria-live="polite" className="mt-3 text-sm text-muted">{message}</p>
+    {!busy && review?.phase === "finalized" && <IssuanceSetup open={async () => {
+      await session.check();
+      if (!prepared.current) throw new Error("Unlock issuer first");
+      return prepared.current.openIssuance();
+    }} />}
   </section>;
 }

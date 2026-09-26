@@ -33,8 +33,24 @@ retries the read-only observation. Reload and unlock resumes the same encrypted
 record. Hiding the tab or five minutes of inactivity locks the store; unlock again
 if necessary. An encrypted export alone is not chain confirmation.
 
-Issuance, escrow deployment, funding and claims require subsequent separate owner
-approvals. No deployment has yet been observed. Do not delete local browser data.
+The issuer deployment has now been observed on Preprod; its public record is in
+`deployments/preprod/test-asset-issuer.json`. Reuse it. Escrow deployment, funding
+and claims still require subsequent separate owner approvals. Do not delete local browser data.
+
+## Separate test issuance
+After refreshing in Chrome, reconnect Wallet A and use the same local passphrase
+to **Prepare / unlock issuer deployment**. The app reconciles the existing issuer;
+it does not redeploy. Once deployment is confirmed, **Prepare / recover issuance**
+constructs and proves a one-time issuance of 1,000,000 atomic units to Wallet A.
+Private inputs go directly to the loopback prover at `http://127.0.0.1:6300`, never
+Next.js. Keep the tab visible while proving. The local prover must be running.
+
+Review the amount, recipient and asset, then choose **Approve issuance of 1,000,000
+test units** and approve the separate transaction in 1AM. The app persists its
+identifier before submission and checks the issuer's successful on-chain call,
+public issued flag and Wallet A's reported shielded balance separately. Unknown
+outcomes cannot be resubmitted. **Check issuance** retries observation and wallet
+synchronization. This issuance is not a funded payment or proof of spendability.
 
 Do not send assets to this source package. No deployed contract address exists in
 its records. Do not interpret the compile-only probe as a payment destination.
@@ -58,5 +74,5 @@ Do not use `contracts/probes/` as deployment input: those files are diagnostics.
 
 The owner selected a separately issued non-redeemable Preprod test asset. The
 candidate issuer creates 1,000,000 atomic units once; proposed display precision is
-zero decimals. No deployment, issuance or funding transaction has been authorized
-or executed. Local proofs use synthetic fixtures and are not funds.
+zero decimals. Issuer deployment is confirmed; issuance and funding remain pending.
+Local proofs use synthetic fixtures and are not funds.

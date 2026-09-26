@@ -68,12 +68,13 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
   const reconcile = async (): Promise<DeploymentReview> => {
     if (!draft.transactionId) return review();
     // Public deployment address/identifier only; never send the draft/private state.
-    const query = `query Deployment($address: HexEncoded!) { contractAction(address: $address) { ... on ContractDeploy { state transaction { hash block { hash height } ... on RegularTransaction { identifiers transactionResult { status } } } } } }`;
+    const query = `fragment DeploymentData on ContractDeploy { state transaction { hash block { hash height } ... on RegularTransaction { identifiers transactionResult { status } } } } query Deployment($address: HexEncoded!) { contractAction(address: $address) { ... on ContractDeploy { ...DeploymentData } ... on ContractCall { deploy { ...DeploymentData } } } }`;
     const response = await fetch("https://indexer.preprod.midnight.network/api/v4/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address: draft.address } }), signal: AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error("Preprod indexer unavailable");
     const body = await response.json();
     if (body.errors) throw new Error("Preprod deployment query failed");
-    const action = body.data?.contractAction, tx = action?.transaction;
+    const latest = body.data?.contractAction;
+    const action = latest?.deploy ?? latest, tx = action?.transaction;
     if (!tx) return review();
     if (tx.transactionResult?.status !== "SUCCESS" || !tx.identifiers?.includes(draft.transactionId) || action.state !== draft.initialState || !/^[a-f0-9]{64}$/.test(tx.block?.hash ?? "")) throw new Error("Deployment observation does not match the prepared state");
     draft.phase = "finalized"; draft.blockHash = tx.block.hash; draft.transactionHash = tx.hash;
@@ -84,6 +85,12 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
     review,
     reconcile,
     exportEncrypted: () => store.exportEncrypted("deployment"),
+    async openIssuance() {
+      await reconcile();
+      if (draft.phase !== "finalized") throw new Error("Confirm deployment before issuance");
+      const { openIssuance } = await import("./issuer-issuance");
+      return openIssuance(api, store, draft.address, unhex(draft.authority), coinKey, encKey, new IssuerKeys());
+    },
     lock: () => { store.lock(); draft.authority = ""; draft.maintenanceKey = ""; draft.transaction = ""; },
     async approveAndSubmit(): Promise<DeploymentReview> {
       if (!["prepared", "authorization_requested"].includes(draft.phase)) throw new Error("Reconcile the existing deployment; do not redeploy.");
