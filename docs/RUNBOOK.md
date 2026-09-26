@@ -32,17 +32,18 @@ handle and shut it down deliberately when done.
 | `check:offline` | `node scripts/offline.mjs` | Source consistency and Node utility tests only; may pass with product blocked. |
 | `test:boilerplate` | `node --experimental-strip-types --test tests/boilerplate/*.test.mjs` | Dependency-free utility assertions only, no payment acceptance. |
 | `verify:boilerplate` | `node scripts/verify-boilerplate.mjs` | Full preparation gate; missing graph/tools/client validation produces nonzero. |
-| `dev` | `next dev --hostname 127.0.0.1` | Starts the Next shell after dependencies are resolved; Ctrl-C stops it. |
+| `dev` | `next dev --webpack --hostname 127.0.0.1` | Starts the Next shell after dependencies are resolved; Ctrl-C stops it. |
 | `start` | `next start --hostname 127.0.0.1` | Serves an existing production build locally. |
 | `lint` | `eslint . --max-warnings=0` | ESLint strict; warnings are failures. |
 | `typecheck` | `tsc --noEmit` | Full project TypeScript, requires installed packages. |
-| `build` | `next build` | Next production build; no simulated product acceptance. |
+| `build` | `next build --webpack` | Next production build with browser WebAssembly; no simulated product acceptance. |
 | `test:unit` | `vitest run --project unit` | Installed Vitest deterministic suite; no empty test pass. |
 | `compile:probe` | `node scripts/compile.mjs --probe` | Compiler-only nonpayment witness probe; no product qualification. |
 | `compile:coin-probe` | `node scripts/compile.mjs --coin-probe` | M1 private shielded I/O compiler diagnostic; lacks authorization, never deploy/fund. |
 | `compile:contracts` | `node scripts/compile.mjs --product` | Actual payment contract compilation; missing implementation blocks. |
 | `compile:issuance` | `node scripts/compile.mjs --issuance` | Separate fixed-supply test issuer; no deployment or mint transaction. |
 | `verify:artifacts` | `node scripts/product.mjs artifacts` | Checks all compiler output hashes, circuit keys/IR, source hashes and installed runtime compatibility. |
+| `verify:issuer` | `node scripts/verify-issuer.mjs` | Read-only real Preprod issuer deployment/state/verifier checks against the preserved record; does not verify payment escrow or acceptance. |
 | `test:contracts` | `node scripts/product.mjs contracts` | 13 synthetic cases execute actual generated contracts; no ledger settlement. |
 | `test:integration` | `node scripts/product.mjs integration` | Encrypted journal/storage integration with fake IndexedDB and synthetic submission callbacks; no live payment acceptance. |
 | `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
