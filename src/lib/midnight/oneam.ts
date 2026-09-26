@@ -68,6 +68,12 @@ export class OneAmSession {
     const { openPayments } = await import("./payments");
     return openPayments(await walletContext(this.#api, () => this.check()), contract, password);
   }
+  async restoreAdmin(kind: "issuer" | "escrow", password: string, text: string, originalPassword: string) {
+    await this.check(); if (!this.#api) throw new Error("Reconnect 1AM");
+    const { walletContext } = await import("./payment-session");
+    const { restoreAdmin } = await import("./admin-recovery");
+    return restoreAdmin(await walletContext(this.#api, () => this.check()), kind, password, text, originalPassword);
+  }
 }
 
 export function walletErrorMessage(error: unknown): string {

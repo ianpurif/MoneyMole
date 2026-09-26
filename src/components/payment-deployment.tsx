@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { OneAmSession } from "@/lib/midnight/oneam";
 import { Button } from "./ui/button";
 import { downloadLocal } from "./download";
+import { AdminRecovery } from "./admin-recovery";
 type Deployment = Awaited<ReturnType<OneAmSession["preparePaymentDeployment"]>>;
 export function PaymentDeployment({ session, onSelect }: { session: OneAmSession; onSelect: (address: string) => void }) {
   const [password, setPassword] = useState(""), [busy, setBusy] = useState(false);
@@ -39,5 +40,6 @@ export function PaymentDeployment({ session, onSelect }: { session: OneAmSession
       <div className="flex flex-wrap gap-2"><Button disabled={busy || !!review.transactionId} onClick={() => void run("approve")}>Approve escrow deployment</Button><Button variant="outline" disabled={busy} onClick={() => void run("check")}>Check deployment</Button><Button variant="outline" disabled={busy} onClick={() => void run("backup")}>Save encrypted escrow recovery</Button><Button variant="outline" disabled={busy || !review.verified} onClick={() => void run("export")}>Save public deployment record</Button></div>
     </div>}
     <p role="status" className="mt-3 text-sm text-muted">{message}</p>
+    {!review && <AdminRecovery session={session} kind="escrow" />}
   </details>;
 }

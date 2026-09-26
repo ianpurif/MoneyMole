@@ -1,11 +1,14 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { WalletPanel } from "./wallet-panel";
 export function ClaimCapture() {
   const [token, setToken] = useState<string>();
   const [message, setMessage] = useState("Capturing the claim locally…");
   const clear = useCallback(() => setToken(undefined), []);
+  const captured = useRef(false);
   useEffect(() => {
+    if (captured.current) return;
+    captured.current = true;
     const fragment = location.hash.slice(1);
     // Never route a fragment through a server, storage log or analytics service.
     history.replaceState(null, "", location.pathname);

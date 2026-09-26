@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import type { OneAmSession } from "@/lib/midnight/oneam";
 import type { DeploymentReview } from "@/lib/midnight/issuer-deployment";
 import { IssuanceSetup } from "./issuance-setup";
+import { AdminRecovery } from "./admin-recovery";
 type Prepared = Awaited<ReturnType<OneAmSession["prepareIssuer"]>>;
 
 export function IssuerSetup({ session }: { session: OneAmSession }) {
@@ -86,6 +87,7 @@ export function IssuerSetup({ session }: { session: OneAmSession }) {
       {review.transactionId && <Button variant="outline" disabled={busy} onClick={() => void check()}>Check deployment</Button>}
     </div>}
     <p aria-live="polite" className="mt-3 text-sm text-muted">{message}</p>
+    {!review && <AdminRecovery session={session} kind="issuer" />}
     {!busy && review?.phase === "finalized" && <IssuanceSetup open={async () => {
       await session.check();
       if (!prepared.current) throw new Error("Unlock issuer first");

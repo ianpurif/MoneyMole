@@ -123,16 +123,35 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
     });
   }
   async importEncrypted(record: string, text: string, password: string): Promise<number> {
-    this.#key(record);
-    if (text.length > 1_500_000) throw new Error("Encrypted import too large");
-    const envelope = parseEnvelope(JSON.parse(text));
-    const source = await PrivateCipher.unlock(password, envelope.salt);
-    let bytes: Uint8Array | undefined;
-    try {
-      bytes = await source.decrypt(this.#namespace, record, envelope);
-      // Import only into an absent record; never overwrite recoverable funded intent.
-      return await this.write(record, bytes, 0);
-    } finally { bytes?.fill(0); source.lock(); }
+    await this.importManyEncrypted({ [record]: text }, password);
+    return 1;
+  }
+  async importManyEncrypted(records: Record<string, string>, password: string): Promise<void> {
+    const entries = Object.entries(records);
+    if (!entries.length || entries.length > 16) throw new Error("Invalid recovery bundle size");
+    const prepared: { key: string; envelope: EncryptedEnvelope }[] = [];
+    // Authenticate and re-encrypt every entry before mutating IndexedDB.
+    for (const [record, text] of entries) {
+      const key = this.#key(record);
+      if (text.length > 1_500_000) throw new Error("Encrypted import too large");
+      const envelope = parseEnvelope(JSON.parse(text));
+      const source = await PrivateCipher.unlock(password, envelope.salt);
+      let bytes: Uint8Array | undefined;
+      try {
+        bytes = await source.decrypt(this.#namespace, record, envelope);
+        prepared.push({ key, envelope: await this.#cipher.encrypt(this.#namespace, record, bytes) });
+      } finally { bytes?.fill(0); source.lock(); }
+    }
+    this.#key(entries[0]![0]);
+    await new Promise<void>((resolve, reject) => {
+      const tx = this.#db.transaction("records", "readwrite", { durability: "strict" });
+      const target = tx.objectStore("records");
+      // add() fails on an existing key, aborting the entire bundle atomically.
+      for (const entry of prepared) target.add({ revision: 1, envelope: entry.envelope }, entry.key);
+      tx.oncomplete = () => resolve();
+      tx.onabort = () => reject(new Error("Recovery import aborted; existing records preserved"));
+      tx.onerror = () => reject(new Error("Recovery import failed; existing records preserved"));
+    });
   }
   lock(): void {
     if (this.#closed) return;

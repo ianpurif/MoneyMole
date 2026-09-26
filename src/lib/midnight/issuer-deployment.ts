@@ -84,7 +84,11 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
   return {
     review,
     reconcile,
-    exportEncrypted: () => store.exportEncrypted("deployment"),
+    async exportEncrypted() {
+      const records: Record<string, unknown> = {};
+      for (const name of await store.keys()) if (["deployment", "issuance"].includes(name)) records[name] = JSON.parse(await store.exportEncrypted(name));
+      return JSON.stringify({ version: 1, records });
+    },
     async openIssuance() {
       await reconcile();
       if (draft.phase !== "finalized") throw new Error("Confirm deployment before issuance");

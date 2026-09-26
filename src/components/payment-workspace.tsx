@@ -32,19 +32,19 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed }: { ses
   }, []);
   useEffect(() => {
     if (!claimToken) return;
-    let active = true;
-    void decodeClaim(claimToken).then(p => { if (active) { setClaim(claimToken); setContract(p.contract); setTab("receive"); setMessage("Claim captured locally and removed from the address bar. Unlock and save it before closing this tab."); onClaimConsumed?.(); } }).catch(() => { if (active) setMessage("This claim link is unsupported or damaged. Ask the sender for the original link."); });
+    let active = true; const attempt = generation.current;
+    void decodeClaim(claimToken).then(p => { if (active && attempt === generation.current) { setClaim(claimToken); setContract(p.contract); setTab("receive"); setMessage("Claim captured locally and removed from the address bar. Unlock and save it before closing this tab."); onClaimConsumed?.(); } }).catch(() => { if (active) setMessage("This claim link is unsupported or damaged. Ask the sender for the original link."); });
     return () => { active = false; };
   }, [claimToken, onClaimConsumed]);
   useEffect(() => {
-    if (!unlocked) return;
     const hide = () => { if (document.visibilityState === "hidden") lock(); };
     document.addEventListener("visibilitychange", hide); const timer = setTimeout(lock, 5 * 60_000);
     return () => { document.removeEventListener("visibilitychange", hide); clearTimeout(timer); };
   }, [unlocked]);
   async function refresh() {
-    const c = controller.current; if (!c) return;
-    const list = await c.list(); setRecords(list); setBalance((await c.balance()).toString());
+    const c = controller.current, attempt = generation.current; if (!c) return;
+    const list = await c.list(), value = (await c.balance()).toString();
+    if (attempt === generation.current) { setRecords(list); setBalance(value); }
   }
   async function operate(action: () => Promise<void>) {
     const attempt = generation.current; setBusy(true); setLink(""); setQr("");
@@ -59,20 +59,24 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed }: { ses
       if (attempt !== generation.current) { c.lock(); return; }
       controller.current?.lock(); controller.current = c; setUnlocked(true); setAsset(c.asset);
       localStorage.setItem("moneymole/current-escrow", c.contract); setContract(c.contract);
-      await refresh(); setMessage("Workspace unlocked. Reconcile saved records before relying on their state.");
-    } catch { setMessage("Could not unlock. Check the Preprod escrow address, node/indexer availability and local passphrase. Existing encrypted data was preserved."); }
-    finally { setPassword(""); setBusy(false); }
+      await refresh(); if (attempt === generation.current) setMessage("Workspace unlocked. Reconcile saved records before relying on their state.");
+    } catch { if (attempt === generation.current) setMessage("Could not unlock. Check the Preprod escrow address, node/indexer availability and local passphrase. Existing encrypted data was preserved."); }
+    finally { if (attempt === generation.current) { setPassword(""); setBusy(false); } }
   }
   async function poll(id: string) {
     const c = controller.current, attempt = generation.current; if (!c) return;
     for (let n = 0; n < 12 && attempt === generation.current; n++) {
       const result = await c.reconcile(id); await refresh();
+      if (attempt !== generation.current) return;
       if (result.phase === "failed") { setMessage("The finalized transaction failed. This record is preserved; do not reuse its transaction."); return; }
       if (result.role === "sender" && result.funded) { setMessage(result.spent ? "This payment has already been claimed." : "Funding is finalized and the escrow coin is qualified. Sharing is available."); return; }
-      if (result.role === "receiver" && result.claimed && result.walletSynced) { setMessage("Claim confirmed and receiver balance synchronized. A controlled spend can establish spendability."); return; }
+      if (result.spendTransactionId) {
+        if (result.spendVerified) { setMessage("Controlled spend finalized and the receiver test-asset balance returned to zero."); return; }
+        if (result.spendPhase === "failed") { setMessage("The controlled spend failed on-chain. Its record is preserved."); return; }
+      } else if (result.role === "receiver" && result.claimed && result.walletSynced) { setMessage("Claim confirmed and receiver balance synchronized. A controlled spend can establish spendability."); return; }
       await new Promise(resolve => setTimeout(resolve, 5000));
     }
-    setMessage("Confirmation or wallet synchronization is pending. Use Reconcile; do not submit again.");
+    if (attempt === generation.current) setMessage("Confirmation or wallet synchronization is pending. Use Reconcile; do not submit again.");
   }
   async function showShare() {
     if (!controller.current || !current) return;
@@ -92,7 +96,7 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed }: { ses
     <div className="flex gap-3" role="tablist" aria-label="Payment action"><Button role="tab" aria-selected={tab === "send"} variant={tab === "send" ? "default" : "outline"} onClick={() => setTab("send")}>Send payment</Button><Button role="tab" aria-selected={tab === "receive"} variant={tab === "receive" ? "default" : "outline"} onClick={() => setTab("receive")}>Receive payment</Button></div>
     {tab === "send" ? <div className="panel"><h3 className="font-medium">Fund a claim link</h3><label className="field">Whole test units<input inputMode="numeric" value={amount} onChange={e => setAmount(e.target.value)} disabled={busy} /></label><p className="mb-3 text-sm text-muted">An exact shielded amount is escrowed. A link becomes shareable only after funding is finalized.</p><Button disabled={!unlocked || busy} onClick={() => void operate(async () => { const v = await controller.current!.create(amount); setSelected(v.id); setMessage("Private draft saved. Prepare its proof, then approve funding."); })}>Save payment draft</Button></div> :
       <div className="panel"><h3 className="font-medium">Open a bearer claim</h3><label className="field">Claim link or token<textarea value={claim} onChange={e => setClaim(e.target.value)} spellCheck={false} autoComplete="off" rows={3} disabled={busy} /></label><p className="mb-3 text-sm text-muted">The link stays in this browser. If using a different escrow, lock and choose the address from the claim first.</p><div className="flex flex-wrap gap-2"><Button variant="outline" disabled={busy || unlocked || !claim} onClick={() => void operate(async () => { const p = await decodeClaim(extractClaim(claim)); setContract(p.contract); setMessage("Claim address selected. Unlock the workspace and save the claim."); })}>Use claim escrow</Button><Button disabled={!unlocked || busy || !claim} onClick={() => void operate(async () => { const v = await controller.current!.receive(extractClaim(claim)); setSelected(v.id); setClaim(""); setMessage("Funded claim verified and saved encrypted. Prepare the claim proof and approve with the receiver wallet."); })}>Verify and save claim</Button></div></div>}
-    {unlocked && <div className="panel"><h3 className="font-medium">Saved payments and receipts</h3><p className="mt-2 text-xs text-muted">Reloaded records are unverified until reconciled. Hiding this tab or five minutes idle locks private state.</p>
+    {unlocked && <div className="panel"><h3 className="font-medium">Saved payments and receipts</h3><p className="mt-2 text-xs text-muted">Reloaded records are unverified until reconciled. Hiding this tab or five minutes after opening locks private state.</p>
       <label className="field">Select payment<select value={selected} onChange={e => { setSelected(e.target.value); setLink(""); setQr(""); }}><option value="">Select a saved payment</option>{records.map(r => <option key={r.id} value={r.id}>{r.role === "sender" ? "Send" : "Receive"} {r.amount} · {r.phase} · {r.id.slice(2, 10)}</option>)}</select></label>
       {current && <div className="space-y-3 text-sm"><p>Transaction: {current.phase} · {current.funded ? "funding verified" : "funding not verified this session"}{current.spent ? " · already claimed" : ""}</p>{current.transactionId && <p className="break-all">Identifier: {current.transactionId}</p>}{current.blockHash && <p className="break-all">Finalized block: {current.blockHash}</p>}
         <div className="flex flex-wrap gap-2"><Button variant="outline" disabled={busy || !!current.transactionId} onClick={() => void operate(async () => { setMessage("Preparing with the trusted local prover. Keep this tab visible."); await controller.current!.prepare(current.id); setMessage("Proof prepared. Review the amount and approve the transaction in 1AM."); })}>Prepare {current.role === "sender" ? "funding" : "claim"}</Button><Button disabled={busy || !!current.transactionId || !["prepared", "authorization_requested"].includes(current.phase)} onClick={() => void operate(async () => { setMessage("Review and approve this payment transaction in 1AM."); await controller.current!.approve(current.id); await poll(current.id); })}>Approve {current.role === "sender" ? "funding" : "claim"} of {current.amount}</Button><Button variant="outline" disabled={busy} onClick={() => void operate(() => poll(current.id))}>Reconcile</Button>
