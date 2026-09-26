@@ -1,6 +1,6 @@
 # M0 — Resolve and validate the foundation
 
-State: blocked at client routing/MCP and WSL Compose gates. Local Node/npm graph, exact Compact devtools/compiler, SDK type inspection and app checks have progressed; see docs/evidence/M0-toolchain.json and docs/STATUS.md.
+State: blocked at client routing/MCP gates. Local Node/npm graph, exact Compact devtools/compiler, SDK type inspection and app checks have progressed; see docs/evidence/M0-toolchain.json and docs/STATUS.md.
 
 Remaining expected behavior below is not observed evidence.
 

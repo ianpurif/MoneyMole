@@ -93,3 +93,8 @@ private-state handling stay client-side and never enter Next.js API routes.
 
 ## This host
 In WSL, `bash .local/run.sh npm run <command>` selects the verified project-local runtime. The helper is ignored host state, not a portable installation. Windows Docker Compose is installed; Ubuntu's plugin is absent. Use `docker compose --file compose.yaml up -d proof-server` and `docker compose --file compose.yaml stop proof-server` from this repository in PowerShell. No wallet data is passed through these commands. Build before test:browser.
+
+WSL service commands prefer native Compose, then reuse the installed Docker Desktop
+CLI under /mnt/c when available. The Compose file path is translated with wslpath;
+arguments are passed directly without a shell. services:up/down remain scoped to
+the project proof-server service. No global plugin installation is required here.

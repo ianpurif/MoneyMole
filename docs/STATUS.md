@@ -1,7 +1,7 @@
 # Current execution state
 
 Snapshot: 2026-09-26. Active milestone: **M1 — independent-wallet feasibility**.
-M0 tooling is installed; its Codex routing/MCP and WSL Compose gates remain blocked.
+M0 tooling is installed; its Codex routing/MCP gates remain blocked. WSL now reuses Docker Desktop Compose.
 M2 recovery utilities and M3 wallet/security work proceeded independently as BUILD permits.
 
 ## Current wallet migration
@@ -51,7 +51,7 @@ No live payment, deployment, actual extension authorization or receiver spend wa
 | Product feasibility still unverified | Continue M1 from the locally tested candidate with independent qualified-coin discovery and sealed-transaction validation; review concrete deployment/funding transactions with the owner before executing. Verify B credit and spend with A unavailable, replay and public effects. |
 | Installed Codex account listing lacks requested GPT-6 combinations | Owner/client resolves account capability discrepancy; do not silently substitute. No workers were spawned. |
 | Midnight MCP listing unavailable | Owner/client checks the configured documentation MCP connection. Direct primary-source research remains available. |
-| Ubuntu Docker lacks Compose plugin | Use the existing Windows Docker Compose for this host's service lifecycle, or owner installs the Linux plugin. Global config/permissions were not changed. |
+| WSL Compose bridge resolved | services:status/up/down now select the installed Docker Desktop CLI and translate only the repository Compose path. No global installation or permission changes. |
 | M2/M3 remaining integration | Finalize codec, payment flows and funded-state recovery only after M1 validates the protocol. Keep payment actions disabled. |
 | M4/M5 live and external evidence | Reuse any future verified deployment. No deployment currently exists in project records. Owner supplies approvals, public metadata, remote runs and consented participation evidence. |
 

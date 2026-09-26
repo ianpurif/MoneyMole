@@ -1,9 +1,11 @@
 import { run, saveJson, has } from "./lib.mjs";
+import { dockerCommand } from "./docker.mjs";
+const docker = dockerCommand();
 const checks = [{ name: "Node.js 22", status: process.versions.node.split(".")[0] === "22" ? "passed" : "blocked", observed: process.version }];
 for (const [name, command, args, pattern] of [
   ["npm", "npm", ["--version"], /^10\.9\.2$/],
-  ["Docker engine", "docker", ["version", "--format", "{{.Server.Version}}"], /\d/],
-  ["Docker Compose", "docker", ["compose", "version", "--short"], /\d/],
+  ["Docker engine", docker, ["version", "--format", "{{.Server.Version}}"], /\d/],
+  ["Docker Compose", docker, ["compose", "version", "--short"], /\d/],
   ["Compact devtools", "compact", ["--version"], /\b0\.5\.1\b/],
   ["Compact compiler", "compact", ["compile", "--version"], /\b0\.31\.1\b/],
   ["Codex client", "codex", ["--version"], /\d/],

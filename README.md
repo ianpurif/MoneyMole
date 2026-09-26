@@ -32,8 +32,8 @@ npm run dev
 ```
 
 Bootstrap preserves the registry-resolved lockfile and installs with npm ci.
-Full preparation remains blocked on the required Codex model/MCP checks and WSL's
-missing Compose plugin; Windows Docker Compose was separately exercised. The exact
+Full preparation remains blocked on the required Codex model/MCP checks. WSL service commands now reuse the installed
+Windows Docker Desktop Compose CLI when the native plugin is unavailable. The exact
 Codex instruction above executes BUILD.md and continues through unblocked milestones.
 
 ## Intended product and privacy boundary
