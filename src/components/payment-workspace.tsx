@@ -27,8 +27,10 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed }: { ses
     setMessage("Private workspace locked. Unlock with the same wallet and passphrase to recover saved payments.");
   }
   useEffect(() => {
-    const saved = localStorage.getItem("moneymole/current-escrow"); if (saved && /^[a-f0-9]{64}$/.test(saved)) setContract(saved);
-    return () => { generation.current++; controller.current?.lock(); };
+    const lifetime = generation, attempt = lifetime.current;
+    const saved = localStorage.getItem("moneymole/current-escrow");
+    queueMicrotask(() => { if (attempt === lifetime.current && saved && /^[a-f0-9]{64}$/.test(saved)) setContract(saved); });
+    return () => { lifetime.current++; controller.current?.lock(); };
   }, []);
   useEffect(() => {
     if (!claimToken) return;
