@@ -19,7 +19,9 @@ Every meaningful logical change is committed locally; nothing was pushed.
 - Genuine npm lockfile; installed SDK graph and exact connector types. ADR 005
   records peer-resolution fixes and the project-local official Node/Compact runtimes.
 - Client-only 1AM discovery, explicit Preprod connection, DUST presence check,
-  account/network invalidation and local disconnect. No signing/submission actions.
+  account/network invalidation and local disconnect. Separate issuer deployment
+  preparation, explicit approval/submission and public-indexer reconciliation are
+  implemented; real wallet signing remains owner-pending.
 - Client-only AES-GCM/PBKDF2 IndexedDB, namespace authentication, revision conflicts,
   explicit unlock/lock, encrypted export/import and corruption preservation. ADR 004
   records limitations. Utilities are not yet connected to a funded product workflow.
@@ -48,7 +50,7 @@ and DUST readiness are owner-reported in docs/evidence/wallet-readiness.json.
 ## Blockers and next actions
 | Blocker | Exact next action |
 |---|---|
-| Wallet readiness reported | Wallet A (Chrome) and Wallet B (Brave) are connected to 1AM Preprod with DUST. Next: implement and review the concrete issuer deployment transaction; wallet signing remains manual. |
+| Issuer approval pending | Wallet A (Chrome) and Wallet B (Brave) are connected to 1AM Preprod with DUST. Next: Wallet A prepares/unlocks the issuer, reviews deployment only, then approves in 1AM. Follow USAGE.md. |
 | Product feasibility still unverified | Continue M1 from the locally tested candidate with independent qualified-coin discovery and sealed-transaction validation; review concrete deployment/funding transactions with the owner before executing. Verify B credit and spend with A unavailable, replay and public effects. |
 | Installed Codex account listing lacks requested GPT-6 combinations | Owner/client resolves account capability discrepancy; do not silently substitute. No workers were spawned. |
 | Midnight MCP listing unavailable | Owner/client checks the configured documentation MCP connection. Direct primary-source research remains available. |
@@ -74,13 +76,12 @@ passed after the recovery/qualification and WSL Compose changes. Evidence is in
 `docs/evidence/local-recovery-qualification.json`. The existing production wallet
 page remains available on port 3000; no UI behavior changed in this follow-up.
 The project proof service was stopped after its lifecycle check. No network-changing
-action was executed. Next owner step: authorize 1AM connections in two independent
-Preprod wallet profiles and report only connection/DUST readiness. This is not
-approval to deploy, issue or transact. Protocol/UI finalization remains gated by
-live M1 evidence; local helper checks cannot replace that gate.
+action was executed. Wallet readiness has since been reported; do not request it
+again. Protocol/UI finalization remains gated by live M1 evidence; local helper
+checks cannot replace that gate.
 
 ## Live verification execution
 The owner has confirmed both independent wallets are ready. Continue implementation
-of the client transaction path; do not request the completed readiness step again.
+of the client transaction path; the issuer approval UI is now available. Do not request the completed readiness step again.
 On-chain actions still require explicit owner approval in the wallet. Connection
 readiness does not establish payment or settlement.

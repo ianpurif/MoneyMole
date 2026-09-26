@@ -50,6 +50,12 @@ export class OneAmSession {
   }
   /** Connector v4 has no revoke method; forget only this browser's session. */
   disconnect(): void { this.#api = null; this.#address = ""; }
+  async prepareIssuer(password: string) {
+    await this.check();
+    if (!this.#api) throw new Error("Reconnect 1AM.");
+    const { prepareIssuer } = await import("./issuer-deployment");
+    return prepareIssuer(this.#api, password);
+  }
 }
 
 export function walletErrorMessage(error: unknown): string {

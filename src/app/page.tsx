@@ -11,7 +11,7 @@ export default function Home() {
       <section aria-labelledby="title" className="flex flex-1 flex-col justify-center py-20">
         <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-muted">Midnight payment foundation</p>
         <h1 id="title" className="max-w-3xl text-5xl font-semibold leading-[1.08] tracking-tight sm:text-7xl">A private payment.<br />One claim link.</h1>
-        <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted">The intended flow is a funded, single-use transfer between independent wallets. You can connect 1AM on Preprod. Funding, claim links and transactions are unavailable while the payment protocol is being verified.</p>
+        <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted">The intended flow is a funded, single-use transfer between independent wallets. Connect 1AM on Preprod to prepare the separate test-asset issuer. Payment funding and claim links remain unavailable while the protocol is being verified.</p>
         <WalletPanel />
         <div className="mt-8"><Button disabled aria-describedby="availability">Payment operations unavailable</Button></div>
         <p id="availability" className="mt-3 text-sm text-muted">Implementation and privacy validation are pending. No asset balances are shown.</p>

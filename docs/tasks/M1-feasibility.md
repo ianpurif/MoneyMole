@@ -1,6 +1,6 @@
 # M1 — Prove real funded independent claiming
 
-State: candidate payment and separate issuer compile; 13 generated-runtime cases and three local circuit proof generations pass on synthetic fixtures. The owner will prepare two wallets and chose a separately issued non-redeemable Preprod test asset. Live wallet readiness, concrete deployment approval, qualification, sealed transactions and spendability remain pending. See disclosure-audit.md.
+State: candidate payment and separate issuer compile; 13 generated-runtime cases and three local circuit proof generations pass on synthetic fixtures. The owner confirms Wallet A in Chrome and Wallet B in Brave are connected on Preprod with DUST. A browser-only issuer deployment approval/recovery flow is implemented; preparation and reload pass in a synthetic-wallet browser test using the real compiled constructor. Next: the owner approves issuer deployment in Chrome. Real deployment, issuance, qualification, payments and spendability remain unverified. See disclosure-audit.md and USAGE.md.
 
 Remaining expected behavior below is not observed evidence.
 

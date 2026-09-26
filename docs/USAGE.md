@@ -12,10 +12,29 @@ the connection and address only in browser memory. **Disconnect** clears that
 local session; revoke the site's permission in 1AM to revoke extension access.
 Account/network changes invalidate the session on the next check or window focus.
 
-Funding, sharing and claim actions remain disabled. The app does not hold funds,
-create links, display payment balances or submit transactions. Automated connector
-fixtures verify UI behavior only; a real owner-approved 1AM connection is pending.
-The encrypted storage utilities are tested but are not wired to live payment flows.
+Funding, sharing and claim actions remain disabled. The owner reports independent
+1AM connections with DUST in Chrome (A) and Brave (B). Automated connector fixtures
+verify UI behavior only; payment acceptance still requires real transactions.
+
+## Issuer deployment approval
+Use Wallet A in Chrome at `http://127.0.0.1:3000`. Connect if the refreshed page
+requires it. Choose a private local recovery passphrase (not a seed/key), then click
+**Prepare / unlock issuer deployment**. Preparation builds the actual compiled
+issuer transaction in the browser and persists encrypted recovery before signing.
+It does not submit. Keep the passphrase private and use **Save encrypted recovery**.
+
+Review Preprod, the displayed contract address and deployment-only scope, then click
+**Approve issuer deployment on Preprod** and approve the request in 1AM. DUST pays
+deployment fees; no test tokens are issued by deployment. The client checks the
+balanced deployment against the reviewed address/state, persists its identifier
+before submission, and polls the public indexer for matching successful inclusion.
+Pending/unknown outcomes must be checked, never redeployed. **Check deployment**
+retries the read-only observation. Reload and unlock resumes the same encrypted
+record. Hiding the tab or five minutes of inactivity locks the store; unlock again
+if necessary. An encrypted export alone is not chain confirmation.
+
+Issuance, escrow deployment, funding and claims require subsequent separate owner
+approvals. No deployment has yet been observed. Do not delete local browser data.
 
 Do not send assets to this source package. No deployed contract address exists in
 its records. Do not interpret the compile-only probe as a payment destination.

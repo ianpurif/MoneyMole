@@ -77,6 +77,11 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
       return new BrowserPrivateStore(db, cipher, namespace);
     } catch (error) { cipher?.lock(); db.close(); throw error; }
   }
+  static async exists(namespace: PrivateNamespace): Promise<boolean> {
+    const db = await openDatabase();
+    try { return await read(db, `${namespaceId(namespace)}/${CHECK}`) !== null; }
+    finally { db.close(); }
+  }
   #key(record: string): string {
     if (this.#closed) throw new Error("Private store is locked");
     if (record === CHECK || !/^[A-Za-z0-9_-]{1,128}$/.test(record)) throw new Error("Invalid private record key");

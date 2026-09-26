@@ -27,8 +27,10 @@ describe("IndexedDB adapter with fake-indexeddb, no wallet or chain", () => {
     c.lock();
   });
   it("prevents stale concurrent updates and never silently recreates a namespace", async () => {
+    expect(await BrowserPrivateStore.exists(namespace)).toBe(false);
     await expect(BrowserPrivateStore.unlock(namespace, password)).rejects.toThrow("explicitly create");
     const a = await BrowserPrivateStore.unlock(namespace, password, true);
+    expect(await BrowserPrivateStore.exists(namespace)).toBe(true);
     await expect(BrowserPrivateStore.unlock(namespace, password, true)).rejects.toThrow("exists");
     const b = await BrowserPrivateStore.unlock(namespace, password);
     const results = await Promise.allSettled([a.write("intent", bytes, 0), b.write("intent", bytes, 0)]);
