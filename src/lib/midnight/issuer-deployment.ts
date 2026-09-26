@@ -9,6 +9,7 @@ import { ZKConfigProvider, createZKIR, createProverKey, createVerifierKey } from
 import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import { MidnightBech32m, ShieldedCoinPublicKey, ShieldedEncryptionPublicKey } from "@midnight-ntwrk/wallet-sdk-address-format";
 import { BrowserPrivateStore } from "../private-state/indexed-db";
+import { finalized } from "./payment-network";
 
 const hex = (bytes: Uint8Array) => Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("");
 const unhex = (value: string) => { if (!/^(?:[a-f0-9]{2})+$/.test(value)) throw new Error("Invalid local transaction encoding"); return Uint8Array.from(value.match(/../g)!, b => Number.parseInt(b, 16)); };
@@ -77,6 +78,7 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
     const action = latest?.deploy ?? latest, tx = action?.transaction;
     if (!tx) return review();
     if (tx.transactionResult?.status !== "SUCCESS" || !tx.identifiers?.includes(draft.transactionId) || action.state !== draft.initialState || !/^[a-f0-9]{64}$/.test(tx.block?.hash ?? "")) throw new Error("Deployment observation does not match the prepared state");
+    await finalized(tx.block);
     draft.phase = "finalized"; draft.blockHash = tx.block.hash; draft.transactionHash = tx.hash;
     await persist();
     return review();
@@ -102,6 +104,7 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
       if (status.status !== "connected" || status.networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress) throw new Error("Wallet changed; reconnect.");
       draft.phase = "authorization_requested"; await persist();
       const balanced = await api.balanceUnsealedTransaction(draft.transaction);
+      if ((await api.getConfiguration()).networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress) throw new Error("Wallet changed during authorization; reconnect");
       const sealed = Transaction.deserialize("signature", "proof", "binding", unhex(balanced.tx));
       const actions = [...(sealed.intents?.values() ?? [])].flatMap(intent => intent.actions);
       if (actions.length !== 1 || !(actions[0] instanceof ContractDeploy) || actions[0].address !== draft.address || hex(actions[0].initialState.serialize()) !== draft.initialState) throw new Error("Wallet changed the reviewed deployment");

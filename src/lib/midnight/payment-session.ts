@@ -7,6 +7,7 @@ import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import { BrowserPrivateStore } from "../private-state/indexed-db";
 import { hex, unhex } from "./payment-codec";
 import { PaymentKeys, observeTransaction } from "./payment-network";
+import { withLocalProver } from "./proof-lock";
 
 export const ISSUER = "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635";
 export function paymentAsset() { const d = new Uint8Array(32); d.set(new TextEncoder().encode("moneymole/test/v1")); return rawTokenType(d, ISSUER); }
@@ -41,8 +42,7 @@ export async function writeRecord(store: BrowserPrivateStore, key: string, value
 }
 export async function provePayment(tx: UnprovenTransaction) {
   const action = async () => hex((await tx.prove(httpClientProvingProvider("http://127.0.0.1:6300", new PaymentKeys(), { timeout: 180000 }), CostModel.initialCostModel())).serialize());
-  if (!navigator.locks) throw new Error("This browser must support Web Locks for local proving");
-  return navigator.locks.request("moneymole-local-prover", { mode: "exclusive" }, action);
+  return withLocalProver(action);
 }
 export async function submitPrepared(wallet: WalletContext, tx: TxRecord, persist: () => Promise<void>) {
   await wallet.guard(); validateTx(tx);

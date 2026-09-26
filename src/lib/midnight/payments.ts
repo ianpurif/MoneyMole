@@ -63,6 +63,7 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
     await wallet.guard(); const found = await load(id), r = found.value;
     if (r.tx.transactionId) throw new Error("Reconcile the submitted transaction; do not resubmit");
     const current = await verifiedPaymentState(contract, asset);
+    if (r.role === "sender" && ledger(current.state.data).notes.isFull()) throw new Error("Escrow capacity reached; retain this address for existing claims and use another approved escrow for new funding");
     let index: bigint | undefined;
     if (r.role === "receiver") {
       const f = await funded(r.payload); if (f.spent) throw new Error("This payment has already been claimed");

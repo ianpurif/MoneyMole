@@ -9,6 +9,9 @@ import { httpClientProvingProvider } from "@midnight-ntwrk/midnight-js-http-clie
 import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import type { ZKConfigProvider } from "@midnight-ntwrk/midnight-js-types";
 import type { BrowserPrivateStore } from "../private-state/indexed-db";
+import { finalized } from "./payment-network";
+import { withLocalProver } from "./proof-lock";
+import { ISSUER } from "./payment-session";
 
 const hex = (bytes: Uint8Array) => Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("");
 const bytes = (s: string) => { if (!/^(?:[a-f0-9]{2})+$/.test(s)) throw new Error("Invalid local encoding"); return Uint8Array.from(s.match(/../g)!, h => parseInt(h, 16)); };
@@ -17,15 +20,17 @@ export type IssuanceReview = { phase: RecordData["phase"]; asset: string; amount
 
 /** Reads only public chain data. No wallet authority or opening is sent to the indexer. */
 async function observation(address: string) {
-  const query = `query Issuer($address: HexEncoded!) { contractAction(address: $address) { state zswapState transaction { block { hash ledgerParameters } ... on RegularTransaction { identifiers transactionResult { status } } } } }`;
+  const query = `query Issuer($address: HexEncoded!) { contractAction(address: $address) { state zswapState transaction { block { hash height ledgerParameters } ... on RegularTransaction { identifiers transactionResult { status } } } } }`;
   const response = await fetch("https://indexer.preprod.midnight.network/api/v4/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address } }), signal: AbortSignal.timeout(20000) });
   if (!response.ok) throw new Error("Indexer unavailable");
   const body = await response.json();
   if (body.errors || !body.data?.contractAction) throw new Error("Issuer state unavailable");
+  await finalized(body.data.contractAction.transaction.block);
   return body.data.contractAction;
 }
 
 export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore, address: string, authority: Uint8Array, coinKey: string, encKey: string, keys: ZKConfigProvider<"issue">) {
+  if (address !== ISSUER) { authority.fill(0); throw new Error("Recover the configured issuer; another issuer creates an unsupported asset"); }
   setNetworkId("preprod");
   const connectedAddress = (await api.getShieldedAddresses()).shieldedAddress;
   const asset = rawTokenType(bytes(hex(new TextEncoder().encode("moneymole/test/v1")).padEnd(64, "0")), address);
@@ -61,13 +66,14 @@ export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore
     review, reconcile,
     async prepare() {
       await checkWallet();
-      if (record.phase !== "planned") return review();
+      if (record.transactionId) return reconcile();
       const action = await observation(address), state = ContractState.deserialize(bytes(action.state));
       if (ledger(state.data).issued) throw new Error("Supply already issued; reconcile instead");
       const compiledContract = CompiledContract.make("test-asset", Contract<{ authority: Uint8Array }>).pipe(CompiledContract.withWitnesses({ issuerAuthority: ({ privateState }) => [privateState, privateState.authority], mintNonce: ({ privateState }) => [privateState, bytes(record.nonce)] }), CompiledContract.withCompiledFileAssets("test-asset"));
       const call = await createUnprovenCallTxFromInitialStates(keys, { compiledContract, circuitId: "issue", contractAddress: address, coinPublicKey: coinKey, initialPrivateState: { authority }, initialContractState: state, initialZswapChainState: ZswapChainState.deserialize(bytes(action.zswapState)), ledgerParameters: LedgerParameters.deserialize(bytes(action.transaction.block.ledgerParameters)) }, encKey);
       // Private proof preimages go directly to this trusted loopback service, never Next.js.
-      const proven = await call.private.unprovenTx.prove(httpClientProvingProvider("http://127.0.0.1:6300", keys, { timeout: 120000 }), CostModel.initialCostModel());
+      const proven = await withLocalProver(() => call.private.unprovenTx.prove(httpClientProvingProvider("http://127.0.0.1:6300", keys, { timeout: 120000 }), CostModel.initialCostModel()));
+      await checkWallet();
       record.transaction = hex(proven.serialize()); record.phase = "prepared"; await persist();
       return review();
     },
@@ -80,6 +86,7 @@ export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore
       const original = Transaction.deserialize("signature", "proof", "pre-binding", bytes(record.transaction));
       const originalCalls = [...(original.intents?.values() ?? [])].flatMap(i => i.actions);
       const balanced = await api.balanceUnsealedTransaction(record.transaction);
+      await checkWallet();
       const sealed = Transaction.deserialize("signature", "proof", "binding", bytes(balanced.tx));
       const calls = [...(sealed.intents?.values() ?? [])].flatMap(i => i.actions);
       if (calls.length !== 1 || originalCalls.length !== 1 || !(calls[0] instanceof ContractCall) || calls[0].address !== address || calls[0].toString() !== originalCalls[0]!.toString()) throw new Error("Wallet changed the reviewed issuance call");
