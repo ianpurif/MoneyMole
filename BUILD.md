@@ -1,6 +1,7 @@
-# Build Private Payments
+# Build MoneyMole — Private Payments
 
 ## Execute, do not re-plan
+
 Implement the product described here using the repository's existing preparation
 files. Start the first unblocked action now and continue through the milestones.
 Do not return a new folder proposal or ask permission after each phase. Request only
@@ -13,6 +14,7 @@ or separate attachment is required. The supplied engineering requirements are th
 eligibility basis; original organizer materials were not independently supplied.
 
 ## Start from the actual state
+
 Read `AGENTS.md`, `PLANS.md`, `docs/STATUS.md` and this file. Inspect files and any Git
 diff without discarding changes. Run the following from the repository root:
 
@@ -29,6 +31,7 @@ M0 resolves those gaps on a suitably connected host. Recheck STATUS; this paragr
 is the initial snapshot, not a reason to redo already verified work on a later run.
 
 ## Product acceptance, not a proxy
+
 One wallet funds an exact amount of one supported shielded asset. Only after actual
 funding finality can the application share a bearer claim link and equivalent local
 QR. An independent receiver wallet claims after the sender disconnects. Confirm
@@ -43,13 +46,14 @@ is no automatic expiry/refund/recovery. Lost capabilities may mean permanently
 unclaimable value. Do not broaden the MVP into request-to-pay or another product.
 
 ## Role routing
+
 Use the installed, trusted client's custom-agent definitions:
 
-| Role | Exact model | Effort | Ownership |
-|---|---|---|---|
-| architect | gpt-6-astra | medium | Coordination, interfaces, threat model, ADRs, acceptance |
-| engineer | gpt-6-sol | high | Full-stack, Compact, infrastructure, fixes and technical docs |
-| verifier | gpt-6-luna | max | Bounded checks and sanitized evidence |
+| Role      | Exact model | Effort | Ownership                                                     |
+| --------- | ----------- | ------ | ------------------------------------------------------------- |
+| architect | gpt-6-astra | medium | Coordination, interfaces, threat model, ADRs, acceptance      |
+| engineer  | gpt-6-sol   | high   | Full-stack, Compact, infrastructure, fixes and technical docs |
+| verifier  | gpt-6-luna  | max    | Bounded checks and sanitized evidence                         |
 
 Validate support and discovery before delegation. No silent substitutions. No
 actual model delegation occurred during preparation. Up to two workers, disjoint
@@ -57,17 +61,18 @@ files, no nested coordinators, one heavy compilation/proving task at a time.
 Use the explicit delegation/return contract in `PLANS.md`.
 
 ## Ordered milestones
+
 All commands below use repository-root cwd. Read only the active task card plus its
 listed context. Expectations are not observations.
 
-| ID | Implement now | Detailed executable task | Gate |
-|---|---|---|---|
-| M0 | Resolve tooling, exact graph, installed APIs and Codex capabilities | `docs/tasks/M0-toolchain.md` | Genuine lock + installed checks; supported model routing or explicit block |
-| M1 | Minimal real shielded funding-to-claim slice | `docs/tasks/M1-feasibility.md` | Independent receiver spendable coin, no replay, audited public transcript |
-| M2 | Complete contracts, domain, persistence and negative cases | `docs/tasks/M2-core.md` | Conservation, binding, recovery and corruption tests |
-| M3 | Lace and responsive link/QR application | `docs/tasks/M3-wallet-ui.md` | Real extension authorization and privacy-safe two-context flow |
-| M4 | Preprod deployment, durable metadata and reconciliation | `docs/tasks/M4-preprod.md` | Chain-bound address, finality and wallet synchronization |
-| M5 | Hardening, regression, pipeline and technical evidence | `docs/tasks/M5-acceptance.md` | Product acceptance distinct from external qualification |
+| ID  | Implement now                                                       | Detailed executable task       | Gate                                                                       |
+| --- | ------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------------- |
+| M0  | Resolve tooling, exact graph, installed APIs and Codex capabilities | `docs/tasks/M0-toolchain.md`   | Genuine lock + installed checks; supported model routing or explicit block |
+| M1  | Minimal real shielded funding-to-claim slice                        | `docs/tasks/M1-feasibility.md` | Independent receiver spendable coin, no replay, audited public transcript  |
+| M2  | Complete contracts, domain, persistence and negative cases          | `docs/tasks/M2-core.md`        | Conservation, binding, recovery and corruption tests                       |
+| M3  | Lace and responsive link/QR application                             | `docs/tasks/M3-wallet-ui.md`   | Real extension authorization and privacy-safe two-context flow             |
+| M4  | Preprod deployment, durable metadata and reconciliation             | `docs/tasks/M4-preprod.md`     | Chain-bound address, finality and wallet synchronization                   |
+| M5  | Hardening, regression, pipeline and technical evidence              | `docs/tasks/M5-acceptance.md`  | Product acceptance distinct from external qualification                    |
 
 M1 may require an owner-authorized provisional Preprod deployment to verify true
 cross-wallet behavior. Record it durably and reuse it in M4 where compatible; M4
@@ -76,6 +81,7 @@ utilities and M3 presentation, but do not freeze cryptographic interfaces or
 advertise complete payments until the feasibility gate passes.
 
 ## Non-negotiable implementation rules
+
 Keep the single Next.js application, strict TypeScript, Tailwind and source-owned
 shadcn/ui components. Browser-side wallet and encrypted state operations feed typed
 domain logic and an SDK adapter; the proof service runs locally by default. No
@@ -103,6 +109,7 @@ not persist their own decryption keys; namespace by network, contract, schema an
 wallet. Never hand-edit generated material or discard funded-deployment history.
 
 ## Fail-closed command implementation
+
 `compile:contracts` requires `contracts/private-payments.compact` and currently
 blocks. Product command gates route to `scripts/product/*.mjs`, intentionally absent
 until implemented. Each new action exports `run(args)` and returns
@@ -116,6 +123,7 @@ check. Contract artifact verification must inspect hashes, runtime compatibility
 and actual generated outputs, not just directory names.
 
 ## Final acceptance and handoff
+
 Execute the complete matrix in `docs/TESTING.md`. At least one real claim must use
 an independently connected receiver and an unavailable sender browser. Confirm
 value conservation, receiver spendability, failure of copied/tampered/concurrent
