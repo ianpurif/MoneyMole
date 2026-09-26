@@ -5,7 +5,7 @@ export function contentSecurityPolicy(nonce: string, development: boolean): stri
   if (!/^[A-Za-z0-9+/=]{24,64}$/.test(nonce)) throw new Error("Invalid CSP nonce");
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${development ? " 'unsafe-eval'" : ""}`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'wasm-unsafe-eval'${development ? " 'unsafe-eval'" : ""}`,
     `style-src 'self' ${development ? "'unsafe-inline'" : `'nonce-${nonce}'`}`,
     "img-src 'self' data: blob:",
     "font-src 'self'",

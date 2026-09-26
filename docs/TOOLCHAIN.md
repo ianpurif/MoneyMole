@@ -118,3 +118,10 @@ Its account model listing does not expose the requested GPT-6 combinations, even
 with hidden models included. This session exposes the three named roles, but the
 CLI account/discovery gate is not fully satisfied. No delegation or substitution
 occurred. The configured Midnight MCP returned no observable tool listing.
+
+Browser ledger execution uses Next.js webpack async WebAssembly (ADR 006). Both
+
+pm run dev and 
+pm run build select webpack explicitly; no separate backend
+is introduced. Validate generated contracts before serving public compiler artifacts.
+

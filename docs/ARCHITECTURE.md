@@ -136,8 +136,9 @@ connection, Preprod checks and local disconnect. `src/lib/private-state/` provid
 Web Crypto encryption and revision-checked IndexedDB; ADR 004 describes its limits.
 `src/domain/transaction.ts` guards local recovery transitions; it cannot certify
 chain observations. `src/lib/server/security.ts` owns the nonce CSP policy, applied
-by `src/proxy.ts` with dynamic rendering. No backend API or Server Action is needed
-yet; future non-secret endpoints must follow the Route Handler convention above.
+by `src/proxy.ts` with dynamic rendering. A GET-only Route Handler serves allowlisted
+public compiler artifacts; no wallet input or private state is accepted. ADR 006
+documents browser WebAssembly and its narrow CSP requirement.
 Compiled coin diagnostics reveal helper effects and exact pinned types; see
 `disclosure-audit.md`. The product protocol and claim codec remain gated by M1.
 
