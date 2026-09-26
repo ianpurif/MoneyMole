@@ -120,8 +120,6 @@ CLI account/discovery gate is not fully satisfied. No delegation or substitution
 occurred. The configured Midnight MCP returned no observable tool listing.
 
 Browser ledger execution uses Next.js webpack async WebAssembly (ADR 006). Both
-
-pm run dev and 
-pm run build select webpack explicitly; no separate backend
+`npm run dev` and `npm run build` select webpack explicitly; no separate backend
 is introduced. Validate generated contracts before serving public compiler artifacts.
 
