@@ -107,7 +107,15 @@
       "commands": [
         "npm run test:preprod"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "partial",
+          "scope": "local_recovery_and_qualification_not_live_payment",
+          "path": "docs/evidence/local-recovery-qualification.json",
+          "sha256": "616d1e7f2ca35688ff8820b06ed3917af95193f280e5a54ba2f7bc7a266fdc31",
+          "observedAt": "2026-09-26T09:32:09.392Z"
+        }
+      ]
     },
     {
       "id": "CORE-CLAIM",
@@ -188,6 +196,13 @@
           "path": "docs/evidence/M2-core.json",
           "sha256": "4ed015ebfe041bf1dcc176c19e01b3e40f94ac6510612e3241ee14c20b4adb72",
           "observedAt": "2026-09-26T08:56:32.521Z"
+        },
+        {
+          "result": "partial",
+          "scope": "local_recovery_and_qualification_not_live_payment",
+          "path": "docs/evidence/local-recovery-qualification.json",
+          "sha256": "616d1e7f2ca35688ff8820b06ed3917af95193f280e5a54ba2f7bc7a266fdc31",
+          "observedAt": "2026-09-26T09:32:09.392Z"
         }
       ],
       "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1."
@@ -208,6 +223,13 @@
           "path": "docs/evidence/M2-core.json",
           "sha256": "4ed015ebfe041bf1dcc176c19e01b3e40f94ac6510612e3241ee14c20b4adb72",
           "observedAt": "2026-09-26T08:56:32.521Z"
+        },
+        {
+          "result": "partial",
+          "scope": "local_recovery_and_qualification_not_live_payment",
+          "path": "docs/evidence/local-recovery-qualification.json",
+          "sha256": "616d1e7f2ca35688ff8820b06ed3917af95193f280e5a54ba2f7bc7a266fdc31",
+          "observedAt": "2026-09-26T09:32:09.392Z"
         }
       ],
       "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1."

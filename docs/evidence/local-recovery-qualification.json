@@ -1,0 +1,160 @@
+{
+  "observedAt": "2026-09-26T09:32:09.392Z",
+  "scope": "local_recovery_and_qualification_only",
+  "checks": [
+    {
+      "command": "npm run lint",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run test:unit",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run test:integration",
+      "result": "passed",
+      "exit": 0
+    },
+    {
+      "command": "npm run check:offline",
+      "result": "passed",
+      "exit": 0
+    }
+  ],
+  "result": "passed_within_local_scope",
+  "integration": {
+    "scope": "local_journal_crypto_storage_integration_fake_indexeddb_synthetic_submission",
+    "observedAt": "2026-09-26T09:32:04.173Z",
+    "result": "passed",
+    "exit": 0,
+    "subjects": [
+      {
+        "path": "src/lib/private-state/transaction-journal.ts",
+        "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+      },
+      {
+        "path": "src/lib/private-state/indexed-db.ts",
+        "sha256": "944f1e36f200d47bc608c2e2b7268ebbc3bb4fc1de9d991ea39c78e6b97a32b9"
+      },
+      {
+        "path": "src/domain/transaction.ts",
+        "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+      },
+      {
+        "path": "tests/integration/recovery.test.ts",
+        "sha256": "1e567c0ab130912a75d4c05dfc92541ab39f403f47245e3e3a887ba57f9fdb46"
+      },
+      {
+        "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+        "sha256": "86028bb2ccddc72139a77ba4aa659ed79748c5e883d7ef4d4b8fc5a26e22b83b"
+      },
+      {
+        "path": "tests/integration/qualification.test.ts",
+        "sha256": "f922b3e26e4636ab305c3a1545cd284b2f513b85bfc7979bcc2b62d023b80d67"
+      }
+    ],
+    "limitations": [
+      "No wallet authorization or live submission",
+      "No chain reconciliation or funded payment",
+      "Restored local states are unverified"
+    ]
+  },
+  "doctor": {
+    "scope": "tool_presence_and_versions_only",
+    "observedAt": "2026-09-26T09:29:28.437Z",
+    "checks": [
+      {
+        "name": "Node.js 22",
+        "status": "passed",
+        "observed": "v22.16.0"
+      },
+      {
+        "name": "npm",
+        "status": "passed",
+        "observed": "10.9.2"
+      },
+      {
+        "name": "Docker engine",
+        "status": "passed",
+        "observed": "29.8.0"
+      },
+      {
+        "name": "Docker Compose",
+        "status": "passed",
+        "observed": "5.5.1"
+      },
+      {
+        "name": "Compact devtools",
+        "status": "passed",
+        "observed": "compact 0.5.1"
+      },
+      {
+        "name": "Compact compiler",
+        "status": "passed",
+        "observed": "0.31.1"
+      },
+      {
+        "name": "Codex client",
+        "status": "blocked",
+        "observed": "ENOENT"
+      },
+      {
+        "name": "Dependency lockfile present (not graph validation)",
+        "status": "passed"
+      },
+      {
+        "name": "Next package present (not compatibility validation)",
+        "status": "passed"
+      }
+    ],
+    "result": "blocked"
+  },
+  "serviceLifecycle": {
+    "status": "passed",
+    "up": "passed",
+    "down": "passed",
+    "scope": "project loopback proof service only"
+  },
+  "subjects": [
+    {
+      "path": "scripts/docker.mjs",
+      "sha256": "39414dc00cb81578572543196d7d08585fae78a16868f6b6b5506de2c2cbc9cf"
+    },
+    {
+      "path": "scripts/services.mjs",
+      "sha256": "59a1c052a454280836d3bc679b265aae8258bacb7871a2d3facca63ceedecec6"
+    },
+    {
+      "path": "scripts/doctor.mjs",
+      "sha256": "3186b9d4a684bd288a848ccf87e5803418248bd3ed049d038b3d772693b60f90"
+    },
+    {
+      "path": "src/lib/private-state/transaction-journal.ts",
+      "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+    },
+    {
+      "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+      "sha256": "86028bb2ccddc72139a77ba4aa659ed79748c5e883d7ef4d4b8fc5a26e22b83b"
+    },
+    {
+      "path": "tests/integration/recovery.test.ts",
+      "sha256": "1e567c0ab130912a75d4c05dfc92541ab39f403f47245e3e3a887ba57f9fdb46"
+    },
+    {
+      "path": "tests/integration/qualification.test.ts",
+      "sha256": "f922b3e26e4636ab305c3a1545cd284b2f513b85bfc7979bcc2b62d023b80d67"
+    }
+  ],
+  "limitations": [
+    "Synthetic submissions and fake IndexedDB in recovery tests",
+    "Synthetic native coin tree; no authenticated Preprod finality/unspent observation",
+    "No live wallet, funds, issuance, deployment or transaction"
+  ]
+}

@@ -65,3 +65,15 @@ state together in encrypted storage. Five integration tests cover response loss,
 competing tabs, pre-submit failure, acknowledgment-write failure and malformed
 records. Tests use fake IndexedDB and synthetic callbacks; no live submission or
 chain reconciliation is implemented. Restored states are explicitly unverified.
+
+## Latest local verification
+
+Lint, typecheck, all 28 unit tests, all eight integration tests and offline checks
+passed after the recovery/qualification and WSL Compose changes. Evidence is in
+`docs/evidence/local-recovery-qualification.json`. The existing production wallet
+page remains available on port 3000; no UI behavior changed in this follow-up.
+The project proof service was stopped after its lifecycle check. No network-changing
+action was executed. Next owner step: authorize 1AM connections in two independent
+Preprod wallet profiles and report only connection/DUST readiness. This is not
+approval to deploy, issue or transact. Protocol/UI finalization remains gated by
+live M1 evidence; local helper checks cannot replace that gate.

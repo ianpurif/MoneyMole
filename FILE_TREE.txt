@@ -52,6 +52,7 @@ MoneyMole/
   docs/evidence/M3-wallet-ui.json
   docs/evidence/codex-client-local.json
   docs/evidence/kdf-benchmark.json
+  docs/evidence/local-recovery-qualification.json
   docs/evidence/mcp-client-local.json
   docs/evidence/node-runtime.json
   docs/evidence/preparation-commands.json
@@ -77,6 +78,7 @@ MoneyMole/
   scripts/codex-doctor.mjs
   scripts/codex-session.mjs
   scripts/compile.mjs
+  scripts/docker.mjs
   scripts/doctor.mjs
   scripts/history.mjs
   scripts/install-compact.mjs
@@ -86,6 +88,7 @@ MoneyMole/
   scripts/participants.mjs
   scripts/product.mjs
   scripts/product/test-contracts.mjs
+  scripts/product/test-integration.mjs
   scripts/product/test-proving.mjs
   scripts/product/verify-artifacts.mjs
   scripts/requirements.mjs
@@ -99,11 +102,13 @@ MoneyMole/
   src/domain/amount.ts
   src/domain/payment.ts
   src/domain/transaction.ts
+  src/lib/midnight/feasibility/qualify-escrow.ts
   src/lib/midnight/oneam.ts
   src/lib/midnight/port.ts
   src/lib/private-state/crypto.ts
   src/lib/private-state/indexed-db.ts
   src/lib/private-state/port.ts
+  src/lib/private-state/transaction-journal.ts
   src/lib/server/security.ts
   src/lib/utils.ts
   src/proxy.ts
@@ -113,6 +118,8 @@ MoneyMole/
   tests/boilerplate/tooling.test.mjs
   tests/browser/shell.spec.ts
   tests/contracts/runtime.mjs
+  tests/integration/qualification.test.ts
+  tests/integration/recovery.test.ts
   tests/unit/amount.test.ts
   tests/unit/client-only.ts
   tests/unit/indexed-db.test.ts
