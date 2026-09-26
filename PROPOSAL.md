@@ -1,8 +1,8 @@
 # Private Payments: technical product proposal
 
 **Category:** payments. **Network:** Midnight Preprod.
-**Status:** proposed product with source-level preparation; no implemented or
-verified payment flow. **Eligibility approval:** owner-pending.
+**Status:** candidate product implementation complete; real payment acceptance
+remains owner-pending. **Eligibility approval:** owner-pending.
 
 ## Problem and intended users
 A sender should be able to pre-fund a transferable claim without exposing payment

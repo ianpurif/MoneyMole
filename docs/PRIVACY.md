@@ -2,7 +2,7 @@
 
 **Goal, not an established property:** authorized, funded, single-use settlement
 without unintended public amount disclosure or a direct sender-receiver mapping.
-The preparation shell proves none of this. Shielded assets do not automatically
+The completed candidate implementation still requires owner-run live disclosure review. Shielded assets do not automatically
 make an application's arguments, transcripts, storage or traffic private.
 
 ## Adversaries and remaining visibility
@@ -33,9 +33,9 @@ Runtime-generated transcripts and actual public chain data must be inspected. [S
 Claim authority uses at least 32 bytes of CSPRNG entropy. URL fragments are read in
 the client only and scrubbed after secure capture. No query/path secrets, remote QR
 service, external scripts/fonts, analytics, server rendering of secrets or raw error
-logging. The initial shell contains no secret-bearing routes. Its baseline headers
-are not a complete secret-handling policy; M3 must implement a nonce-based CSP and
-verify production plus development behavior without disabling browser protections.
+logging. The `/claim` route captures secrets only client-side. Nonce-based CSP and local QR
+are implemented; the owner must verify this revision in production/development
+without disabling browser protections.
 
 Local persistence needs authenticated encryption, isolated wallet/network/contract
 namespaces, explicit unlock, corruption handling and secure recovery. Wallet address
@@ -52,7 +52,7 @@ failed payment implementation, not a workaround.
 
 Public funding/claim correlation is not solved by a private amount alone. Review
 commitment/nullifier construction, accumulator membership and coin helper effects.
-The proposed protocol is gated; root-history choices and wallet authorization
+The implemented candidate's acceptance remains gated; root-history choices and wallet authorization
 assumptions require installed-type/compiler and live evidence. `ownPublicKey()` is
 not sufficient authorization on its own. [S10, S11]
 
@@ -68,6 +68,8 @@ authorized by this migration. [S8, S13, S36]
 
 ## Evidence and claim language
 No raw witnesses, links, private state or payment relationships in public evidence.
+Owner-run manifests that link funding/claim/spend transactions stay in ignored
+reports unless the owner separately consents to publishing that association.
 Use sanitized test results and hashes of locally retained records. Participant
 evidence stays outside Git and must not expose private payment relationships.
 Explain residual metadata risks. Never promise universal anonymity, intended-

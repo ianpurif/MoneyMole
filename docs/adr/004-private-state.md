@@ -1,6 +1,6 @@
 # Client-only encrypted recovery storage
 
-Date: 2026-09-26. Status: implemented utilities; product integration and real funded recovery pending M1.
+Date: 2026-09-26. Status: integrated into funding, claiming and administration; real funded recovery remains pending owner acceptance.
 
 Use browser Web Crypto AES-256-GCM, random 96-bit IVs per write, 128-bit tags and
 PBKDF2-HMAC-SHA256 at 600,000 iterations with a random 128-bit salt. This uses native
@@ -29,4 +29,6 @@ remain unverified until the SDK adapter reconciles them against the chain.
 
 Neither module is reachable from a Next.js Route Handler or Server Action.
 The `client-only` import makes accidental server inclusion a build error.
-The store is not wired to payment actions until M1 protocol and recovery review pass.
+The payment controller now uses the store. Recovery bundles authenticate all entries
+before one insert-only IndexedDB transaction, preserving existing records atomically.
+No destructive schema upgrade is introduced. Real funded recovery remains unverified.

@@ -1,8 +1,8 @@
 # M0 — Resolve and validate the foundation
 
-State: blocked at client routing/MCP gates. Local Node/npm graph, exact Compact devtools/compiler, SDK type inspection and app checks have progressed; see docs/evidence/M0-toolchain.json and docs/STATUS.md.
+State: tooling/dependency implementation is present. Historical Codex account routing and Midnight MCP discovery gates remain blocked. The latest owner directive defers all app/E2E verification to the owner.
 
-Remaining expected behavior below is not observed evidence.
+The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -35,7 +35,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 6. Check Midnight MCP from the trusted client and record its actual tool listing. Do not send source secrets. A published endpoint is not a working connection.
 
 ## Commands — repository root
-Run only after implementing their missing entry points. Do not treat the current blocked gate as an executable product implementation.
+Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
 
 ```sh
 npm run bootstrap

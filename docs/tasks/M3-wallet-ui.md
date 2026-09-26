@@ -1,8 +1,8 @@
 # M3 — Integrate 1AM and the actual link/QR flow
 
-State: partially implemented. Client-only 1AM connection controls and nonce CSP are implemented; production browser tests use a clearly synthetic wallet fixture. Actual extension authorization and payment UI await owner/M1 evidence.
+State: implementation complete. 1AM, sender/receiver UI, client-only fragment capture, local QR, recovery, receipts and controlled spending are connected. Real extension/application acceptance for this revision is owner-pending.
 
-Remaining expected behavior below is not observed evidence.
+The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
 
 **Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -19,7 +19,7 @@ private witnesses and private-state handling stay client-side and never enter
 Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
 
 ## Prerequisites
-M1 verified contract/coin semantics and M2 private-state interfaces; actual 1AM available for extension acceptance. Do not substitute another wallet without explicit scope approval.
+M2 private-state and candidate contract/coin interfaces are implemented; actual 1AM is required for owner acceptance. Do not substitute another wallet without explicit scope approval.
 
 ## Owned files and interfaces
 src/app/, src/components/, src/lib/midnight/, src/lib/private-state/, tests/browser/, tests/integration/, next.config.ts, src/proxy.ts if needed, docs/USAGE.md
@@ -36,13 +36,13 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 7. Run separate browser contexts with actual extension authorization. A mocked extension may test UI errors but never satisfy real 1AM acceptance. Document exact owner action when the browser runner cannot control the extension.
 
 ## Commands — repository root
-Run only after implementing their missing entry points. Do not treat the current blocked gate as an executable product implementation.
+Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
 
 ```sh
 npm run dev
 npm run test:integration
 npm run test:browser
-npm run test:preprod -- --case oneam-two-contexts
+npm run test:preprod -- --manifest reports/preprod-manifest.json
 npm run lint
 npm run typecheck
 npm run build

@@ -1,5 +1,5 @@
 import type { AssetMetadata, Network, SettlementObservation } from "../../domain/payment";
-/** Implement against inspected 4.1.1 types; never return synthetic observations. */
+/** Legacy domain port. Concrete browser operations are typed by payment-session.ts and payments.ts. */
 export interface WalletIdentity { readonly network: Network; readonly publicIdentity: string; }
 export interface FundingReadiness { readonly asset: AssetMetadata; readonly assetAtomicUnits: string; readonly feeReady: boolean; readonly proverReady: boolean; }
 export interface MidnightPaymentPort {
@@ -8,4 +8,4 @@ export interface MidnightPaymentPort {
   readiness(): Promise<FundingReadiness>;
   reconcile(transactionId: string): Promise<SettlementObservation | null>;
 }
-// Funding/claim interfaces are intentionally not frozen before the M1 coin and proof gates.
+// Production UI uses the concrete typed controller in payments.ts.

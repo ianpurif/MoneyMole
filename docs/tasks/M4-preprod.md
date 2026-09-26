@@ -1,8 +1,8 @@
 # M4 — Finalize durable Preprod operation
 
-State: blocked on M1 and owner-authorized network changes. No product deployment exists; no redeployment was attempted.
+State: browser deployment/recovery and read-only chain verification are implemented. The issuer is recorded; no payment escrow has yet been observed. New network actions require explicit owner approval and existing deployments must be reused.
 
-Remaining expected behavior below is not observed evidence.
+The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
 
 **Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -22,7 +22,7 @@ Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boun
 Validated contract build and explicit owner authorization for any network change. Reuse existing compatible deployments; no session-based automatic redeployment.
 
 ## Owned files and interfaces
-scripts/product/deploy-preprod.mjs, scripts/product/verify-deployment.mjs, src/lib/midnight/reconciliation/, deployments/, tests/preprod/, docs/RUNBOOK.md
+scripts/product/deploy-preprod.mjs, scripts/product/verify-deployment.mjs, src/lib/midnight/payment-network.ts, src/lib/midnight/payment-deployment.ts, deployments/, tests/preprod/, docs/RUNBOOK.md
 
 Assign explicit non-overlapping subsets before delegation; no worker may edit all paths merely because this task lists them.
 
@@ -34,13 +34,13 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 5. Verify actual end-to-end funding and receiver spendability against the recorded deployment. Document retained addresses, compatibility/migration rules and local proving setup.
 
 ## Commands — repository root
-Run only after implementing their missing entry points. Do not treat the current blocked gate as an executable product implementation.
+Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
 
 ```sh
-npm run verify:deployment
-npm run deploy:preprod -- --authorize-network-change
-npm run verify:deployment
-npm run test:preprod
+npm run verify:deployment -- --record deployments/preprod/<address>.json
+npm run deploy:preprod
+npm run verify:deployment -- --record deployments/preprod/<address>.json
+npm run test:preprod -- --manifest reports/preprod-manifest.json
 npm run test:integration
 ```
 

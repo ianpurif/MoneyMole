@@ -40,8 +40,9 @@ eligibility basis; original organizer materials were not independently supplied.
 
 ## Start from the actual state
 
-Read `AGENTS.md`, `PLANS.md`, `docs/STATUS.md` and this file. Inspect files and any Git
-diff without discarding changes. Run the following from the repository root:
+Read `AGENTS.md`, `PLANS.md`, `docs/STATUS.md` and this file. The implementation is now
+present; use `docs/OWNER-TESTING.md` for the owner's final verification handoff. Inspect files and any Git
+diff without discarding changes. When verification is authorized again, run the following from the repository root:
 
 ```sh
 npm run check:offline
@@ -101,9 +102,9 @@ listed context. Expectations are not observations.
 
 M1 may require an owner-authorized provisional Preprod deployment to verify true
 cross-wallet behavior. Record it durably and reuse it in M4 where compatible; M4
-is not an instruction to redeploy. When live M1 is blocked, work on testable M2
-utilities and M3 presentation, but do not freeze cryptographic interfaces or
-advertise complete payments until the feasibility gate passes.
+is not an instruction to redeploy. The owner authorized completing all M2–M5
+implementation before live M1 acceptance. Keep the candidate versioned and all
+unobserved payment/privacy acceptance pending; do not pause coding at that gate.
 
 ## Non-negotiable implementation rules
 
@@ -119,7 +120,8 @@ cryptographically secure 256-bit minimum claim entropy, versioned domain separat
 and an authenticated compact payload. URL fragments are captured only in the
 client, then scrubbed. Never place secrets in paths, queries, telemetry, logs,
 server-rendered props or remote resources. Implement and test nonce-based CSP before
-secret-bearing routes exist; current shell headers are not the final policy.
+secret-bearing routes are accepted. Nonce CSP is implemented; this revision still
+needs the owner-run production browser check.
 
 Enforce every security-relevant binding in the contract, not only the browser.
 Verify actual coin receipt, qualification and consumption. Audit `disclose()` and
@@ -137,8 +139,10 @@ wallet. Never hand-edit generated material or discard funded-deployment history.
 
 `compile:contracts` compiles the candidate `contracts/private-payments.compact`;
 `compile:issuance` compiles the separate fixed-supply test issuer. Artifact,
-generated-runtime and synthetic local-proving actions are implemented. Remaining
-product command gates route to `scripts/product/*.mjs` and block until implemented.
+generated-runtime, synthetic local-proving, read-only deployment/Preprod and
+owner-reviewed acceptance actions are implemented in `scripts/product/*.mjs`.
+Missing real inputs/evidence return blocked. The deployment CLI prepares a browser
+handoff; only the browser can request owner-approved signing.
 Each new action exports `run(args)` and returns
 `{status: "passed", evidencePaths: [...]}` ONLY after its actual acceptance passes.
 Tests may use isolated mocks, but integration/proving/live acceptance may not count
@@ -151,14 +155,15 @@ and actual generated outputs, not just directory names.
 
 ## Final acceptance and handoff
 
-Execute the complete matrix in `docs/TESTING.md`. At least one real claim must use
+The owner will execute the complete matrix in `docs/TESTING.md` after this coding
+pass; do not run app/E2E testing during the handoff. At least one real claim must use
 an independently connected receiver and an unavailable sender browser. Confirm
 value conservation, receiver spendability, failure of copied/tampered/concurrent
 claims and absence of unintended disclosed fields in inspected public data.
 A successful SDK test does not prove 1AM integration; report any extension limit.
 
-Run compile, artifact validation, lint, typechecks, all relevant test layers and
-production build. Inspect actual authorized remote pipeline results separately;
+For final owner-run verification, run compilation, artifact validation, lint,
+typechecks, all relevant test layers and production build. Inspect actual authorized remote pipeline results separately;
 a workflow definition is not a successful run. Record deployment network, address,
 transaction, observed finality and source/build/toolchain hashes. Update every
 relevant requirement with observed evidence and regenerate its readable report.

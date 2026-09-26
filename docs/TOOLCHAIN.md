@@ -67,11 +67,12 @@ host/container port 6300. The digest and image entrypoint were inspected locally
 Windows Compose startup and TCP reachability passed, then the service was stopped.
 Synthetic local circuit proof generation passed; sealed transactions and browser-to-prover access remain unverified. Start only this project's service. When occupied,
 inspect the existing listener and set an explicit alternate host port; do not kill
-another process. Update the public prover URL and check the wallet's supported local
-prover configuration separately. S8 describes Lace's historical local-prover
+another process. The current app pins port 6300. An alternate port requires coordinated client URL,
+CSP and wallet configuration changes; no unused NEXT_PUBLIC setting overrides it. S8 describes Lace's historical local-prover
 configuration, not verified 1AM behavior. 1AM advertises Connector v4 and multiple
 proving options; migration does not authorize hosted proving or witness disclosure.
-Verify actual 1AM behavior before enabling payment actions. [S8, S36]
+Verify actual 1AM behavior during owner acceptance; implemented actions always
+require explicit approval and no prior fixture pass certifies them. [S8, S36]
 
 `services:check` checks TCP reachability only and returns blocked for full proving
 readiness. No unverified HTTP health route is invented. Actual readiness requires

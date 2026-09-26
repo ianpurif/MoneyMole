@@ -44,16 +44,25 @@ activity are signed assertions, not independently revalidated facts. Distinct
 participant references are not a unique-human count. Its successful exit means only
 that the supplied record signatures/structure were valid. Add
 `--require-qualification` to require qualification; it returns blocked until the
-additional independent checks are implemented and observed.
+additional owner/organizer decisions and independent human evidence are supplied.
 
-M5 must add an exact-SDK chain-backed verifier or accept specifically approved
-owner/organizer attestations with a documented trust basis. Retain the explicit
+An optional exact-SDK chain reference verifier is now implemented:
+`npm run evidence:participants -- <private-records.json> <trusted-public.pem> --chain-manifest <private-manifest.json>`.
+The private manifest has `schemaVersion: 1` and `entries`, each containing the signed
+record's `evidenceSha256`, public `transactionId` and payment `contract`. It is
+bounded to 1,000 nonempty records and decodes Preprod shielded addresses, checks
+compiled escrow verifiers, finalized successful fund/claim actions and shielded
+events. Only aggregate counts are printed. Signed consent and a separately trusted
+attester key remain mandatory. Public chain data cannot independently bind a
+shielded actor to a person or wallet; that association remains the trusted private
+attestation. Keep the manifest outside Git. Missing or failed checks do not count.
+Owner/organizer approval of this trust basis remains pending. Retain the explicit
 wallet/human distinction. The Level 5 target is 50 real Preprod participants; Level 6
 is 70 total, not invented additional people. Neither row is completed by this
 utility alone. Never disclose private payment relationships to meet an evidence target.
 
 ## Meaningful history
 `history:inspect` reads existing Git history only. Planned milestones in `COMMITS.md`
-are suggestions, not fabricated events. Owner authorization is required before any
-commit creation. Never alter timestamps/author identity or rewrite history to meet
+are suggestions, not fabricated events. Standing owner authorization permits a concise local commit after every logical
+change. Pushes and history rewrites remain separately unauthorized. Never alter timestamps/author identity or rewrite history to meet
 counts. A numeric count alone does not prove meaningful engineering.

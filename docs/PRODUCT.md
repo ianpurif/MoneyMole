@@ -18,7 +18,7 @@ Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
 
 
 ## Scope and direction
-Working label: **Private Payments**. Category: payment application on Midnight.
+Product name: **MoneyMole**. Category: payment application on Midnight.
 People sending money, freelancers receiving client payments and small businesses
 are the intended users. The single MVP direction is sender-funded value transfer.
 A client funds a link and gives it to the freelancer. A freelancer-originated
@@ -27,7 +27,7 @@ request for a client to pay is a distinct, deferred feature.
 Expected flow: connect wallet -> select one supported shielded asset and amount ->
 authorize funding -> verify funding -> share bearer link/local QR -> independent
 receiver connects and claims -> verify actual credit and spendability. There is
-no implemented payment behavior in the preparation shell.
+a complete candidate implementation; real E2E acceptance remains owner-pending.
 
 ## Product invariants
 A shareable payment represents funded, finalized value, never a promise to mint.
@@ -61,8 +61,8 @@ marked local/unverified until reconciled.
 Unknown outcomes expose a reconciliation action instead of another submit. Wallet
 rejection preserves the draft. Insufficient asset or fees cannot show success.
 Reload/reconnect uses the same encrypted namespace; switching wallets cannot silently
-show another wallet's private records. Amount entry uses metadata precision and
-integer atomic units; do not infer decimals from a token symbol.
+show another wallet's private records. Amount entry uses integer atomic units and the supported test asset's declared
+zero decimals; do not infer decimals from a token symbol.
 
 ## Definition of usefulness
 The engineering result is a receiver-redeemable funded capability, not merely a

@@ -32,7 +32,7 @@ handle and shut it down deliberately when done.
 | `check:offline` | `node scripts/offline.mjs` | Source consistency and Node utility tests only; may pass with product blocked. |
 | `test:boilerplate` | `node --experimental-strip-types --test tests/boilerplate/*.test.mjs` | Dependency-free utility assertions only, no payment acceptance. |
 | `verify:boilerplate` | `node scripts/verify-boilerplate.mjs` | Full preparation gate; missing graph/tools/client validation produces nonzero. |
-| `dev` | `next dev --webpack --hostname 127.0.0.1` | Starts the Next shell after dependencies are resolved; Ctrl-C stops it. |
+| `dev` | `next dev --webpack --hostname 127.0.0.1` | Starts the Next application after dependencies are resolved; Ctrl-C stops it. |
 | `start` | `next start --hostname 127.0.0.1` | Serves an existing production build locally. |
 | `lint` | `eslint . --max-warnings=0` | ESLint strict; warnings are failures. |
 | `typecheck` | `tsc --noEmit` | Full project TypeScript, requires installed packages. |
@@ -47,23 +47,23 @@ handle and shut it down deliberately when done.
 | `test:contracts` | `node scripts/product.mjs contracts` | 13 synthetic cases execute actual generated contracts; no ledger settlement. |
 | `test:integration` | `node scripts/product.mjs integration` | Encrypted journal/storage integration with fake IndexedDB and synthetic submission callbacks; no live payment acceptance. |
 | `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
-| `test:preprod` | `node scripts/product.mjs preprod` | Actual live Preprod suite; requires owner actions/funds; currently blocked. |
-| `verify:product` | `node scripts/product.mjs acceptance` | Actual product acceptance, not preparation; currently blocked. |
-| `test:browser` | `playwright test` | Playwright shell/local UI checks. Does not prove extension operation. |
+| `test:preprod` | `node scripts/product.mjs preprod` | Read-only real chain checks; requires --manifest with observed funding/claim/spend IDs. See OWNER-TESTING.md. |
+| `verify:product` | `node scripts/product.mjs acceptance` | Revalidates chain + hashed owner-reviewed matrix with --acceptance; missing observations block. |
+| `test:browser` | `playwright test` | Playwright security/synthetic wallet UI checks. Does not prove extension operation. |
 | `services:up` | `node scripts/services.mjs up` | Starts only the project proof-server Compose service. |
 | `services:down` | `node scripts/services.mjs down` | Stops only that service; does not delete volumes or unrelated services. |
 | `services:status` | `node scripts/services.mjs status` | Inspect project service through Docker Compose. |
 | `services:check` | `node scripts/services.mjs check` | Bounded local TCP check; deliberately blocked for full proof readiness. |
-| `deploy:preprod` | `node scripts/product.mjs deploy` | M1/M4 authorized deployment action; no automatic session redeploy; currently blocked. |
-| `verify:deployment` | `node scripts/product.mjs deployment` | Actual chain/build-bound deployment verification; currently blocked. |
+| `deploy:preprod` | `node scripts/product.mjs deploy` | Writes a nonexecuting browser deployment plan and returns 2 for owner signing; never deploys from CLI. |
+| `verify:deployment` | `node scripts/product.mjs deployment` | Read-only escrow identity/finality check with --record; missing records block. |
 | `requirements:report` | `node scripts/requirements.mjs --write` | Derives Markdown from authoritative JSON. |
 | `requirements:check` | `node scripts/requirements.mjs --check` | Checks graph, evidence digests and derived-report consistency. |
-| `evidence:participants` | `node scripts/participants.mjs` | Validates signed owner-attestation integrity only; see EVIDENCE.md. |
+| `evidence:participants` | `node scripts/participants.mjs` | Signed attestation integrity; optional --chain-manifest checks public activity references. Neither establishes humans; see EVIDENCE.md. |
 | `history:inspect` | `node scripts/history.mjs` | Read-only Git history; no automatic commits. |
 
 ## Recovery boundaries
-A product command reports its missing entry point precisely. Implement it via the
-active BUILD task, do not remove the gate. Keep private diagnostic data out of reports.
+All product entry points are present. Missing live inputs and incomplete acceptance
+remain blocked; do not remove the gate to manufacture evidence. Keep private diagnostic data out of reports.
 After three repeated failures, record a new hypothesis or the exact blocker.
 
 For occupied prover ports, inspect the listener before configuring another port.

@@ -52,8 +52,8 @@ the documentation's `mtIndex`/`isSome`. Use generated types for adapters.
 Remaining M1 gates: independently discoverable qualified escrow coins; validated
 membership/commitment/nullifier construction bound to deployment and asset; output
 destination binding; actual proof and public transcript review; independent 1AM
-receiver credit and subsequent spend with the sender unavailable. No protocol
-encoding or sharing route is frozen while these gates are pending.
+receiver credit and subsequent spend with the sender unavailable. The owner authorized implementing the versioned codec and sharing route before
+live acceptance. Their presence does not resolve these gates.
 
 ## Local escrow qualification candidate
 The client-only feasibility helper reconstructs a contract-owned commitment from
@@ -61,5 +61,7 @@ an opening locally, matches exactly one public contract/commitment/index observa
 and asks ledger-v8 to construct an input against the supplied coin tree. It rejects
 missing/ambiguous observations, changed openings, invented indices and absent coins.
 The synthetic fixture must apply postBlockUpdate before constructing a spend input;
-the native runtime rejects an un-rehashed tree. These local cases do not authenticate
-an indexer, prove finality, check unspent status or demonstrate a live receiver spend.
+the native runtime rejects an un-rehashed tree. Those historical local cases do not authenticate an indexer or establish live
+settlement. The implemented payment controller now checks official node finality,
+transaction identity and the spent set, then matches claim input/output events.
+The new adapter has not undergone final real-wallet testing.

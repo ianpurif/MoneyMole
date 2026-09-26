@@ -46,7 +46,9 @@ the durable record. Preserve previous deployments with potentially funded paymen
 A failed command gets a short diagnosis and one evidence-driven correction. After
 three equivalent failures, stop that dependency, record the hypothesis and exact
 owner/environment action needed, and execute independent work. Compiler/prover jobs
-share `.local/heavy-tool.lock`; later proving code must use the same exclusion rule.
+share `.local/heavy-tool.lock`. Browser proofs share an origin-level Web Lock;
+coordinate CLI work and separate browser profiles manually, because those locks
+cannot share one filesystem or browser origin.
 
 ## Evidence integrity
 Use `reports/` for local diagnostics and `docs/evidence/` for reviewed, sanitized

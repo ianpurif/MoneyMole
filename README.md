@@ -1,84 +1,65 @@
-# Private Payments
+# MoneyMole
 
-A product-specific development foundation for a **sender-funded, single-use shielded
-payment link on Midnight Preprod**. Working label only; payment features are not yet
-implemented. The repository contains a truthful Next.js shell and the self-contained
-Codex execution workflow that builds the product from this starting state.
+Sender-funded, single-use shielded payment links on Midnight Preprod. The
+implementation includes 1AM wallet integration, funding, local claim links/QR,
+receiver claims, settlement reconciliation, controlled spending and encrypted
+browser recovery.
 
-> Read and execute BUILD.md.
+**Implementation is present; real end-to-end acceptance is pending.** The owner
+will run final app testing. This coding pass uses static TypeScript checking,
+not app, browser, proving or live transaction tests. Earlier test reports apply
+only to their recorded source revisions. See [current status](docs/STATUS.md).
 
-## Current status — read first
-The genuine npm lockfile and installed Next/SDK graph are present. The application
-builds and provides explicit client-only 1AM connection controls. Encrypted local
-storage and transaction recovery guards have deterministic tests. Nonce-based CSP
-is checked against the production app. Compact diagnostics compile; they are never
-payment destinations. No product contract, funded link, claim, deployment or real
-wallet payment has been verified. M1 live feasibility remains the product gate.
+## Run locally
 
-See `docs/PREPARATION-REPORT.md` for checks actually run and `docs/STATUS.md` for
-current blockers. A source or utility check passing is not product acceptance.
-
-## Start in your repository
-Extract this directory into an empty working directory, including hidden `.codex`,
-`.agents` and `.github` folders. Use Node 22.16.0/npm 10.9.2 on Linux or WSL2. Review
-project configuration and open the repository in Codex. Approve normal project trust
-only after review; reopen the session if required. Do not change global settings.
+Use Node 22.16.0 and npm 10.9.2 on Linux/WSL2. Install the reviewed Compact toolchain
+as described in [TOOLCHAIN](docs/TOOLCHAIN.md), then:
 
 ```sh
-npm run check:offline
-npm run bootstrap
-npm run verify:boilerplate
+npm ci
+npm run compile:contracts
+npm run compile:issuance
+npm run services:up
 npm run dev
 ```
 
-Bootstrap preserves the registry-resolved lockfile and installs with npm ci.
-Full preparation remains blocked on the required Codex model/MCP checks. WSL service commands now reuse the installed
-Windows Docker Desktop Compose CLI when the native plugin is unavailable. The exact
-Codex instruction above executes BUILD.md and continues through unblocked milestones.
+Open http://127.0.0.1:3000 in the browser containing 1AM on Preprod. Keep the origin
+identical across sessions so encrypted IndexedDB records remain available.
+The local proof service uses loopback port 6300. A previously running production
+build must be rebuilt and restarted before it includes these changes.
 
-## Intended product and privacy boundary
-Connect -> fund a real shielded asset -> verify funding -> share local link/QR ->
-independent receiver claims -> verify finality, credit and spendability. Claiming
-must consume existing funded value, never mint a replacement. The first implementation
-milestone proves this with two wallets after the sender disconnects.
+Follow [USAGE](docs/USAGE.md) and [OWNER-TESTING](docs/OWNER-TESTING.md).
+The existing issuer is recorded in
+[deployments/preprod/test-asset-issuer.json](deployments/preprod/test-asset-issuer.json);
+reuse it. Deployment did not issue tokens. Every deployment, issuance and live
+transaction requires a separate explicit wallet approval.
 
-The link is a bearer capability, including for its creator. There is no automatic
-refund, expiry or recovery. A lost secret may leave funds inaccessible. Test assets
-are explicitly non-redeemable; NIGHT and DUST are not substitutes for the shielded
-payment asset. Amount privacy and participant unlinkability are requirements to
-validate, not properties this shell establishes. See `docs/PRIVACY.md`.
+## Stack and privacy
 
-## What is present
-A single Next App Router/TypeScript/Tailwind shell with a source-owned shadcn-style
-button; client-only 1AM discovery/connection; integer amount and recovery helpers;
-encrypted IndexedDB with authenticated namespaces and revision conflicts; bounded fail-closed scripts;
-three exact-model Codex agent definitions; four focused skills; six executable task
-cards; structured requirements/evidence states; threat model and gated architecture;
-local utility, storage, wallet-fixture and production-browser tests; candidate
-payment and separate test-issuer contracts with 13 generated-runtime cases and
-three local circuit proof generations. Remaining integration/deployment/live
-acceptance commands intentionally block until implemented. No payment is live.
+One Next.js App Router application provides frontend and backend, with TypeScript
+and Tailwind CSS. Public HTTP APIs are GET Route Handlers under
+`src/app/api/**/route.ts`. Server-only modules live in `src/lib/server/`.
+Server Actions are unnecessary for the current browser-only mutations; use them
+only for appropriate non-secret operations. No Express, NestJS, Fastify or separate
+application backend is used. A new backend requires a verified technical need and ADR.
 
-## Context map
-- `BUILD.md`, `PLANS.md`, `AGENTS.md`: execution, ownership and resume protocol.
-- `docs/PRODUCT.md`, `ARCHITECTURE.md`, `PRIVACY.md`: scope, protocol hypotheses and invariants.
-- `docs/requirements.json`: authoritative IDs/status/evidence; readable report is generated.
-- `docs/TOOLCHAIN.md`, `SOURCES.md`, `RUNBOOK.md`: version evidence, commands and recovery.
-- `docs/TESTING.md`, `EVIDENCE.md`: exact verification scope and sensitive-record boundaries.
-- `docs/tasks/`: prerequisites, interfaces, role ownership, commands, recovery and evidence per milestone.
+1AM authorization, claim secrets, private witnesses and private state remain
+client-side. Proof inputs go directly to the trusted loopback prover, never
+Next.js. No seed phrase or private key is requested. Claim fragments are captured
+and removed locally, and QR images are generated in the browser.
 
-## Qualification and repository history
-Level 6 uses Preprod and 70 total real participants. Plan conservatively for 30
-meaningful owner commits pending source-conflict confirmation. Product eligibility,
-public repository metadata, supplied product references, remote pipeline runs and
-real participant evidence remain pending unless observed. Meaningful changes are committed separately under standing owner authorization.
-History rewrites and pushes require separate authorization; a numeric count alone proves little.
+A link is bearer authority: anyone holding it can claim, including its creator.
+There is no automatic refund or expiry. Losing the link and encrypted recovery
+can strand funds. Test units are non-redeemable; DUST covers fees separately.
+Privacy and unlinkability require [disclosure review](docs/PRIVACY.md).
 
-## Stack contract
+## Project context
 
-Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
-Use Route Handlers in `src/app/api/**/route.ts`, appropriate non-secret Server
-Actions, and server-only modules in `src/lib/server/`. Follow
-`docs/ARCHITECTURE.md`: no Express, NestJS, Fastify or separate backend without a
-verified requirement; 1AM authorization, claim secrets, private witnesses and
-private-state handling stay client-side and never enter Next.js API routes.
+- [BUILD](BUILD.md), [AGENTS](AGENTS.md), [PLANS](PLANS.md): resumable scope and owner rules.
+- [ARCHITECTURE](docs/ARCHITECTURE.md), [PRODUCT](docs/PRODUCT.md): implementation and invariants.
+- [RUNBOOK](docs/RUNBOOK.md), [TESTING](docs/TESTING.md): commands and acceptance matrix.
+- [Requirements](docs/REQUIREMENTS.md): generated from authoritative JSON.
+
+Logical changes are committed locally. No push is authorized. Remote CI,
+participation evidence and external qualification remain separate owner-pending
+requirements; file counts, local tests and wallet addresses do not establish them.

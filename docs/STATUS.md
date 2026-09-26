@@ -1,127 +1,69 @@
 # Current execution state
 
-Current instruction: finish all remaining implementation continuously. The owner
-will perform final E2E testing. Live M1 gates no longer block coding. Do not run
-app tests or network mutations in this pass; preserve the existing issuer and
-pending live acceptance. Static checking is allowed as implementation work.
-
-Snapshot: 2026-09-26. Active milestone: **M1 — independent-wallet feasibility**.
-M0 tooling is installed; its Codex routing/MCP gates remain blocked. WSL now reuses Docker Desktop Compose.
-M2 recovery utilities and M3 wallet/security work proceeded independently as BUILD permits.
-
-## Current wallet migration
-
-1AM is the primary wallet. The client adapter and UI migration are complete.
-Thirty unit tests, five production-browser tests, lint, typecheck, build and
-offline checks passed. Provider fixtures are synthetic; the owner now confirms real 1AM authorization for Wallet A in Chrome and Wallet B
-in Brave, both on Preprod with DUST. Issuer deployment is confirmed; no issuance or payment has been observed.
-Every meaningful logical change is committed locally; nothing was pushed.
+Snapshot: 2026-09-26. **Implementation complete; owner acceptance pending.**
+The owner's latest instruction is to finish coding and leave final app/E2E testing
+to them. M1 is an acceptance gate, not a coding stop. No app, browser, unit,
+proving or live tests were run in this pass. Static TypeScript checking is
+recorded separately in the implementation evidence.
 
 ## Implemented
-- Next.js App Router is the frontend and backend; TypeScript and Tailwind. HTTP APIs
-  use `src/app/api/**/route.ts`, server-only code uses `src/lib/server/`, and Server
-  Actions are only for appropriate non-secret mutations. No separate backend service.
-- Genuine npm lockfile; installed SDK graph and exact connector types. ADR 005
-  records peer-resolution fixes and the project-local official Node/Compact runtimes.
-- Client-only 1AM discovery, explicit Preprod connection, DUST presence check,
-  account/network invalidation and local disconnect. Separate issuer deployment
-  preparation, explicit approval/submission and public-indexer reconciliation are
-  implemented; real wallet signing remains owner-pending.
-- Client-only AES-GCM/PBKDF2 IndexedDB, namespace authentication, revision conflicts,
-  explicit unlock/lock, encrypted export/import and corruption preservation. ADR 004
-  records limitations. Utilities are not yet connected to a funded product workflow.
-- Local transaction state guards persist uncertainty before submission and reject
-  blind retries. SDK-derived settlement observations are still required.
-- Server-only CSP policy, fresh per-request nonces and dynamic App Router rendering.
-- Commitment and shielded-I/O compiler diagnostics, generated outputs and initial
-  disclosure review. Diagnostics must never be deployed/funded. The candidate payment
-  contract and separate fixed-supply test issuer now compile, with 13 runtime cases
-  and three local constraint checks/proof generations on synthetic fixtures.
 
-## Observed checks
-Registry resolution and npm ci passed. Offline utility tests passed. Unit tests,
-TypeScript, lint, production build and production-browser tests have passed within
-local scope; the preparation gate is blocked only on tooling/client availability,
-with its per-command results recorded in M0 evidence.
-Compiler 0.31.1 produced diagnostics, candidate payment/issuer contracts and keys. Exact devtools 0.5.1
-was archive/checksum verified locally. KDF benchmark: 225/216/226 ms in Node Web
-Crypto on this desktop; mobile/browser performance is unmeasured.
-Windows Docker Compose started the pinned proof image on loopback and TCP was
-reachable. The service checked and generated fund/claim/issue circuit proofs using
-synthetic fixtures, then was stopped. No sealed transaction or ledger-validity test ran.
-The issuer is now deployed; no live payment or receiver spend was observed. Real extension connections
-and DUST readiness are owner-reported in docs/evidence/wallet-readiness.json.
+- Single Next.js App Router frontend/backend, TypeScript and Tailwind; GET-only
+  public artifacts/build metadata APIs and server-only modules.
+- 1AM explicit Preprod connection, DUST readiness and account/network guards.
+- Separate issuer recovery/issuance and escrow deployment controls, encrypted
+  pending identity, finality checks, verifier matching and public metadata export.
+- Sender encrypted draft, integer funding, proof, wallet approval, and finalized
+  qualification before sharing a locally generated claim link or QR.
+- Receiver independent coin qualification and current membership path, claim proof,
+  input/output settlement matching, wallet sync and separate controlled spending.
+- Strict 210-byte claim codec with 256-bit authority and Compact domain bindings;
+  fragment capture/scrub. No private input reaches Next.js.
+- AES-GCM/PBKDF2 IndexedDB, revision conflicts, auto-lock, encrypted exports,
+  insert-only atomic recovery bundles and unverified imports.
+- Durable identifiers before submission, unknown-outcome protection and bounded
+  reconciliation. Existing escrows remain selectable by original address.
+- Read-only deployment/Preprod commands and owner-reviewed acceptance-matrix
+  validation. Missing observations block instead of fabricating success.
+- CI and existing browser fixtures updated for the payment workspace.
 
-## Blockers and next actions
-| Blocker | Exact next action |
-|---|---|
-| Issuance approval pending | Wallet A (Chrome) unlocks the existing confirmed issuer, prepares the separate fixed-supply issuance and approves in 1AM. Follow USAGE.md. |
-| Product feasibility still unverified | Continue M1 from the locally tested candidate with independent qualified-coin discovery and sealed-transaction validation; review concrete deployment/funding transactions with the owner before executing. Verify B credit and spend with A unavailable, replay and public effects. |
-| Installed Codex account listing lacks requested GPT-6 combinations | Owner/client resolves account capability discrepancy; do not silently substitute. No workers were spawned. |
-| Midnight MCP listing unavailable | Owner/client checks the configured documentation MCP connection. Direct primary-source research remains available. |
-| WSL Compose bridge resolved | services:status/up/down now select the installed Docker Desktop CLI and translate only the repository Compose path. No global installation or permission changes. |
-| M2/M3 remaining integration | Finalize codec, payment flows and funded-state recovery only after M1 validates the protocol. Keep payment actions disabled. |
-| M4/M5 live and external evidence | Reuse the confirmed issuer in deployments/preprod/test-asset-issuer.json. Payment escrow remains undeployed. Owner supplies approvals, remote runs and consented participation evidence. |
+## Verification boundary
 
-## Resume
-Read BUILD.md and `docs/tasks/M1-feasibility.md`. Use `docs/USAGE.md` for the
-implemented 1AM preparation controls. Run targeted checks after changes; preserve
-current lockfile and evidence. Never infer product acceptance from diagnostics or mocks.
+Static TypeScript checking passed during implementation. Final source scope is
+recorded in `docs/evidence/implementation-completion.json`. App tests, production
+build, browser behavior, real proofs and live flows for these changes were
+deliberately not exercised, following the owner instruction.
 
-Local recovery follow-up: TransactionJournal now persists opaque intent and recovery
-state together in encrypted storage. Five integration tests cover response loss,
-competing tabs, pre-submit failure, acknowledgment-write failure and malformed
-records. Tests use fake IndexedDB and synthetic callbacks; no live submission or
-chain reconciliation is implemented. Restored states are explicitly unverified.
+Historical evidence describes earlier code and synthetic scopes. It is preserved,
+not promoted into current acceptance. Older passing browser/contract/proving
+reports do not validate the new adapters.
 
-## Latest local verification
+## Real environment last observed
 
-Lint, typecheck, all 28 unit tests, all eight integration tests and offline checks
-passed after the recovery/qualification and WSL Compose changes. Evidence is in
-`docs/evidence/local-recovery-qualification.json`. The existing production wallet
-page remains available on port 3000; no UI behavior changed in this follow-up.
-The project proof service was stopped after its lifecycle check. No network-changing
-action was executed. Wallet readiness has since been reported; do not request it
-again. Protocol/UI finalization remains gated by live M1 evidence; local helper
-checks cannot replace that gate.
+The owner reports independent Wallet A in Chrome and Wallet B in Brave, both 1AM
+on Preprod with DUST. Do not ask for readiness again.
 
-## Live verification execution
-The owner has confirmed both independent wallets are ready. Continue implementation
-of the client transaction path; the issuer approval UI is now available. Do not request the completed readiness step again.
-On-chain actions still require explicit owner approval in the wallet. Connection
-readiness does not establish payment or settlement.
+The issuer deployment was observed before this pass:
+- Contract: `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`
+- Transaction: `003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886`
+- Block 2716656; successful deployment and matching issue verifier.
+- Record: `deployments/preprod/test-asset-issuer.json`.
+- Issued was false at that observation. It was not rechecked in this pass.
 
-## Issuer approval handoff
-Production webpack build (including TypeScript), lint, 28 unit tests, five browser
-tests, artifact verification and offline checks passed. The browser deployment
-preparation/reload test uses a synthetic wallet and the actual compiled constructor;
-it is not real deployment evidence. The real Preprod v4 deployment query returned
-HTTP 200 without schema errors for a zero-address lookup.
-See docs/evidence/issuer-deployment-ui.json. The owner must now prepare/unlock and
-approve issuer deployment in Chrome with Wallet A. No tokens are issued by this
-action. Preserve the same browser record and reconcile unknown outcomes.
-After confirmation, record public deployment metadata and proceed to separately
-approved issuance, escrow deployment and the full two-wallet payment matrix.
-No core payment requirement was promoted to verified. Nothing was pushed.
+No issuance, escrow deployment, funding, receiver claim or controlled spend has
+been observed. Recover and reuse the existing issuer.
 
-## Observed issuer deployment
-The owner approved issuer deployment. The official Preprod indexer reports SUCCESS
-at block 2716656 for contract
-`47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`.
-The deployed issue verifier matches the local compiled artifact; public `issued`
-is false. See `deployments/preprod/test-asset-issuer.json`. Reuse this issuer.
-The owner's browser last reported submitted; its encrypted record still needs
-reconciliation. Next implementation: separate fixed-supply issuance approval.
-No payment or receiver spend has occurred; full M1 remains incomplete.
+## Remaining owner acceptance
 
-## Issuance approval handoff
-The existing issuer is verified by `npm run verify:issuer`. Separate issuance
-preparation, explicit approval, persistent unknown-outcome protection, indexer
-confirmation and wallet balance synchronization are implemented. Thirty unit
-tests, five production-browser tests, lint, typecheck, production build, offline
-checks and local proving passed. A complete synthetic issuance transaction was
-proved and serialization-tested; this does not establish real issuance or payment.
-See docs/evidence/issuer-issuance-checks.json. The trusted project-local proof
-service is running on loopback 6300 for the next action. Next: Chrome / Wallet A,
-unlock the same issuer, prepare issuance and approve 1,000,000 non-redeemable
-Preprod test units in 1AM. No token issuance was executed by the agent.
+Follow `docs/OWNER-TESTING.md`: start the current app/prover, recover the issuer,
+separately approve issuance and escrow deployment if needed, then exercise fund,
+share, independent claim, spend, reload/recovery and the negative/privacy matrix.
+Export only sanitized, consented evidence.
+
+Live acceptance and external qualification remain pending. No remote push/run was
+performed. Requested Codex routing/account and Midnight MCP discovery gates remain
+unresolved historical tooling limitations; no delegation or substitution occurred.
+
+All meaningful changes are committed locally. No push, deployment, issuance or
+live transaction was executed in this coding pass. Next agent: respect the owner's
+testing handoff; do not automatically start E2E or redo deployments.

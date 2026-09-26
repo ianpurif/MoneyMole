@@ -34,8 +34,8 @@ and states; `docs/REQUIREMENTS.md` is derived. `docs/SOURCES.md` owns verified r
 
 ## Boundaries
 Real shielded value must move between independent wallets. A counter, commitment,
-proof, imported receipt or mocked balance is not a payment. The shell intentionally
-has no payment actions. Keep issuance separate from claiming. Never expose claim
+proof, imported receipt or mocked balance is not a payment. Payment actions require
+explicit wallet approval and observed finality. Keep issuance separate from claiming. Never expose claim
 secrets, coin openings, private state or wallet keys in logs, artifacts or MCP calls.
 Scope work to product engineering, developer tools, technical docs, tests and
 permitted technical evidence. Do not import unrelated activities from external material.
@@ -50,8 +50,8 @@ eligibility and irreversible changes require the owner's explicit action.
 
 ## Execution
 Use Node 22, npm and one genuine lockfile. Linux/WSL2 is the toolchain target.
-Read the command table in `docs/RUNBOOK.md`. Start with `npm run check:offline`,
-`npm run doctor`, then M0. `npm run verify:boilerplate` is preparation only;
+Read the command table in `docs/RUNBOOK.md`. Normally start with `npm run check:offline`,
+`npm run doctor`, then M0; the current owner testing handoff takes precedence. `npm run verify:boilerplate` is preparation only;
 `npm run verify:product` requires real product evidence. Exit 2 means blocked, not passed.
 After three equivalent failures, change the hypothesis or record a blocker.
 

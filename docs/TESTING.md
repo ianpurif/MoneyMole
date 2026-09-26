@@ -1,6 +1,7 @@
 # Acceptance matrix
 
-No live product case below has been executed during preparation. The pure amount,
+The implementation is complete, but final live acceptance is not observed. The
+owner will run the app/E2E matrix; no suites ran in the latest coding pass. The pure amount,
 requirement-validation and attestation-integrity tests are utility tests, not
 payment acceptance. `tests/unit` is the installed Vitest execution layer;
 `tests/boilerplate` can run on Node 22 without npm dependencies.
@@ -40,7 +41,8 @@ isolated mocks. Real proving tests use actual generated keys and the trusted loc
 service. Live Preprod acceptance additionally observes chain finality and wallet
 credit/spendability. A browser test with a mock wallet does not prove 1AM works.
 
-Build product suite entry points under `scripts/product/` as specified in task cards.
+Product suite entry points are implemented under `scripts/product/`; see
+`OWNER-TESTING.md` for required real manifests and owner-reviewed evidence.
 They must reject absent or empty test globs and skipped necessary cases. Record
 which checks are deterministic, proving, live or owner-observed. Test data is
 synthetic only inside isolated test fixtures; never count it as real participation.
@@ -61,7 +63,7 @@ verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.
 
 ## Current deterministic and browser scope
-Unit tests now cover amount bounds, transaction recovery, native Web Crypto encryption, fake-indexeddb storage recovery/conflicts/corruption, and synthetic 1AM APIs. Browser tests use the production build and verify nonce CSP and an explicitly synthetic wallet flow. These do not establish real extension, proving or payment behavior.
+Existing unit test sources cover amount bounds, transaction recovery, native Web Crypto encryption, fake-indexeddb storage recovery/conflicts/corruption, and synthetic 1AM APIs. Browser tests use the production build and verify nonce CSP and an explicitly synthetic wallet flow. These do not establish real extension, proving or payment behavior.
 
 ## Current contract and proving scope
 `test:contracts` runs 13 cases against generated Compact code, including exact

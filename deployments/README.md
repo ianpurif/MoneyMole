@@ -1,7 +1,17 @@
 # Durable deployment records
-There is no deployment record because no deployment was performed. M4 must write
-an atomic, validated record matching `record.schema.json` after observing chain
-finality. Use `preprod/<address>.json`; keep older records while funded notes may
-remain. Never infer an address from browser memory, an example or a session restart.
-The public record must not contain coin openings, payment amounts, participants,
-wallet seeds, signing keys, claim secrets or private state.
+
+The confirmed issuer is in `preprod/test-asset-issuer.json`. It is separate from
+the payment escrow. Recover and reuse it; never redeploy after a session restart.
+
+A payment escrow record has not yet been observed. After explicit browser
+approval and finality, use **Save public deployment record**, retain it as
+`preprod/<address>.json`, then run:
+
+```sh
+npm run verify:deployment -- --record deployments/preprod/<address>.json
+```
+
+This checks compiled keys, asset, build identity and finalized chain state.
+Keep older records while funded notes may remain. Follow `record.schema.json`;
+never include openings, private amounts/relationships, claim secrets or wallet keys.
+Encrypted recovery exports belong outside Git and are not deployment evidence.

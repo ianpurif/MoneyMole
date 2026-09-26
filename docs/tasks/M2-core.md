@@ -1,8 +1,8 @@
 # M2 — Complete contract, domain and encrypted state
 
-State: partially implemented (requirement states remain authoritative). Encrypted local storage and transaction recovery guards have deterministic coverage; candidate compiled-contract cases pass. Protocol codec, full integration and funded recovery await the live M1 gate.
+State: implementation complete. Contract adapters, exact claim codec, durable transactions, encrypted storage and atomic recovery imports are connected to the product. Funded recovery and negative cases remain subject to owner testing; historical synthetic tests are not current live acceptance.
 
-Remaining expected behavior below is not observed evidence.
+The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
 
 **Lead:** engineer; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -19,7 +19,7 @@ private witnesses and private-state handling stay client-side and never enter
 Next.js APIs or Server Actions. Follow `docs/ARCHITECTURE.md` for the trust boundary.
 
 ## Prerequisites
-M1 protocol validated before final cryptographic interfaces are frozen. Pure amount, storage and recovery work may proceed independently while M1 is blocked.
+The versioned candidate is implemented under the owner directive. M1 live results gate verified acceptance, not coding. Changes to cryptographic encoding must preserve older funded deployments.
 
 ## Owned files and interfaces
 contracts/, src/domain/, src/lib/private-state/, src/lib/midnight/, tests/unit/, tests/contracts/, tests/integration/, scripts/product/test-integration.mjs
@@ -34,7 +34,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 5. Add corrupted-data, cross-wallet/cross-contract namespace, interrupted writes, concurrent-tab coordination, reload/reconnect, invalid amount and stale-receipt tests. Distinguish local imported data from verified observations. Keep storage secrets out of test reports.
 
 ## Commands — repository root
-Run only after implementing their missing entry points. Do not treat the current blocked gate as an executable product implementation.
+Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
 
 ```sh
 npm run compile:contracts
@@ -59,5 +59,4 @@ Relevant IDs: CORE-STATE, CORE-TX, CORE-AUTH, CORE-REPLAY, L1-TESTS, L2-STATE. U
 Local recovery follow-up: TransactionJournal now persists opaque intent and recovery
 state together in encrypted storage. Five integration tests cover response loss,
 competing tabs, pre-submit failure, acknowledgment-write failure and malformed
-records. Tests use fake IndexedDB and synthetic callbacks; no live submission or
-chain reconciliation is implemented. Restored states are explicitly unverified.
+records. Tests use fake IndexedDB and synthetic callbacks; the newer product controller implements submission and reconciliation, with live results still unverified. Restored states are explicitly unverified.

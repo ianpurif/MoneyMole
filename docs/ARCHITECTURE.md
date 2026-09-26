@@ -1,146 +1,124 @@
-# Architecture and feasibility gates
+# Application architecture
 
-## Application stack and privacy boundary
+## Stack and trust boundary
 
-Use **Next.js App Router for both frontend and backend**, **TypeScript**, and
-**Tailwind CSS**. Backend HTTP APIs belong in `src/app/api/**/route.ts` using Next.js
-Route Handlers. Use Server Actions only for appropriate non-secret UI mutations,
-with validated inputs and authorization. Put server-only modules in
-`src/lib/server/` and mark them with `import "server-only"`.
+Next.js App Router serves frontend and backend with TypeScript and Tailwind CSS.
+Backend APIs are Route Handlers under `src/app/api/**/route.ts`; modules under
+`src/lib/server/` import `server-only`. Server Actions are only for appropriate
+non-secret mutations and are currently unnecessary. No Express, NestJS, Fastify
+or separate application backend is used without a verified requirement and ADR.
 
-No Express, NestJS, Fastify or separate backend service unless a verified technical
-requirement is recorded in an ADR. The trusted local proof service is a protocol
-tool, not a separate application backend. Add endpoints only for an actual need.
-1AM wallet authorization, claim secrets, private witnesses and private-state
-handling remain client-side. Never pass these secrets to Next.js API routes,
-Server Actions, server components, server-rendered props, logs or telemetry.
-Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
-
-
-Status: **proposed implementation architecture**, not a deployed payment protocol.
-Source-grounded SDK capabilities are in `SOURCES.md`; the construction below is an
-engineering hypothesis requiring M1 validation. Do not infer that a proof of a
-commitment transfers funds.
-
-## Boundaries
+The browser owns 1AM authorization, claim capabilities, witnesses and encrypted
+state. They never enter Next.js APIs, Server Actions, server props or logs.
+The backend serves allowlisted public compiler artifacts and build hashes.
+The trusted loopback prover is a protocol tool, not an application backend.
 
 ```text
-Browser: React UI + explicit 1AM authorization
-    -> integer-valued payment domain and separate transaction state machine
-    -> Midnight.js adapter + unlocked encrypted local store
-    -> trusted local prover / connected wallet
-    -> Preprod node and indexer
-    -> Compact contract holding shielded assets
+Next.js UI and public artifacts
+  -> browser: 1AM session, payment controller, encrypted IndexedDB
+       -> compiled Compact code and trusted loopback prover
+       -> explicitly authorized 1AM balance/sign/submit
+       -> official Preprod indexer and node finality
 ```
 
-One Next.js App Router application. Public configuration may be server-readable;
-wallet, claim payload, encrypted state and witnesses remain in the browser/prover
-boundary. Next server code must not receive secrets. No separate backend service or central
-DB at inception. The app has no signing key, custody or user account system.
-Source-owned UI components stay separate from SDK and private-state adapters.
+Status: implemented candidate protocol; independent-wallet acceptance and public
+disclosure review remain pending. Code completion does not prove settlement or privacy.
 
-## Proposed funded-note protocol (M1 gate, not a claim of support)
-Choose one escrowed coin per payment to minimize splitting/change complexity.
-Sender funding supplies the coin to the contract; an audited `receiveShielded`
-call must enforce the actual receipt. Store only a blinded note commitment in a
-contract accumulator. A claim proves membership privately, spends the matching
-qualified escrow coin, records a nullifier and creates the exact receiver output
-atomically. Do not store a public note-ID-to-claimed mapping that trivially joins
-funding with claiming. A proposed append-only note accumulator plus spent-nullifier
-set must be checked against the pinned Compact data structures and public effects.
+## Funded-note protocol
 
-A canonical commitment must bind protocol domain/version, the actual deployment
-network domain and contract address, asset color, atomic amount, escrow coin nonce
-and claim authority. Binding a browser-supplied network string is insufficient:
-anchor network configuration in the deployment/contract and transaction verifier.
-Do not claim cross-network binding until the contract's available self-address and
-network assumptions are validated. Cross-deployment replay tests are required.
+`contracts/private-payments.compact` holds one shielded coin per payment.
+Funding requires a positive Uint128 amount of the supported asset, receives the
+actual contract-owned output and inserts a commitment in a 65,536-slot note tree.
+The client rejects new funding at capacity; old claims retain their original escrow.
 
-Select documented `persistentCommit`/hash primitives and validate exact Compact
-encoding against generated runtime test vectors. A JavaScript SHA-256 over JSON is
-not assumed equivalent. Derive a domain-separated nullifier from private authority
-and note identity; publicly revealing it must not reveal the public funding note
-association. Nullifier uniqueness, membership soundness, root freshness and replay
-resistance need compiled tests. If roots are stateful, evaluate a bounded history
-rather than silently making old notes unclaimable when another note is inserted.
+The exact Compact persistentHash struct binds note domain, fixed Preprod domain,
+kernel self-address, coin nonce/color/value and 32-byte authority.
+`payment-crypto.ts` uses matching runtime type descriptors, not JSON/SHA-256.
 
-The candidate Compact implementation compiles and has synthetic runtime/proving
-coverage. M1 must still establish
-that coin selection, membership and all library effects preserve the claimed
-privacy before freezing the protocol. A compile-only witness probe lives separately.
+Claim witnesses supply the opening, qualified escrow coin and membership path.
+The browser verifies finalized public output/index observations and reconstructs
+the matching native input locally. It never queries the indexer with the opening.
+Paths use the current root; prepare again when another funding changes it.
 
-## Receiver knowledge and independence
-The protected fragment payload must carry every required private opening: claim
-authority, coin nonce, color, amount, protocol version and precise contract/network
-binding. Public locator fields may include a funding transaction reference and
-note index only if the threat model accepts their disclosure to queried services.
-Do not put private openings in indexer queries. Obtain coin qualification/Merkle
-positions and authenticated note paths from verified chain data; validate they
-correspond to the actual received coin. Do not rely on the sender browser to serve
-witnesses, on a raw self-asserted `mtIndex`, or on an in-memory deployment address.
+The circuit checks membership and a domain-separated spent nullifier, records
+that nullifier and consumes the escrow coin into an exact receiver output.
+There is no mint or change output in claim. ownPublicKey binds the output but does
+not replace bearer authorization. Copied-proof, concurrent-claim and privacy
+properties remain subject to the acceptance matrix.
 
-The public docs distinguish fresh and qualified coins and expose naming variations
-across tutorials (`mt_index`) and current type definitions (`mtIndex`). Inspect
-installed types rather than guessing field spelling. If no privacy-preserving,
-independent witness-discovery path works, record that exact blocker; do not switch
-to public transfers or pretend an encrypted receipt solves it. [S10, S11]
+## Asset and wallet
 
-## Destination and competing claims
-Make the receiver the caller when required by wallet coin-discovery behavior.
-Current tutorial guidance warns about notification to another wallet; a successful
-send helper alone is not evidence the intended receiver can spend the output. The
-wallet key returned by `ownPublicKey()` is not, by itself, signer authorization.
-The bearer secret authorizes the note; the recipient destination must be bound to
-the proof/transaction's exact output and applicable wallet authorization. [S10]
+`oneam.ts` detects API-v4 1AM and explicitly connects to Preprod.
+`payment-session.ts` binds the original shielded address, checks network/account
+before sensitive operations and after balancing, and keeps DUST separate from
+the shielded payment balance.
 
-Someone copying a proof without its witness must be unable to replace the output.
-Someone holding the secret may construct a new competing claim by design. Nullifier
-check/write, original coin consumption and receiver output must succeed or fail
-atomically. Concurrent claim tests must show one settlement, not two UI successes.
-Receiver spendability requires a subsequent controlled receiver-originated spend
-or equivalent ledger-backed evidence, not just a displayed balance.
+The supported asset derives from the fixed issuer in `payment-session.ts` and
+domain `moneymole/test/v1`. The separate issuer creates 1,000,000 non-redeemable,
+zero-decimal test units once. Issuance rejects other issuers because their assets
+would be unsupported. Reuse the confirmed issuer record.
 
-## Private persistence and transport
-Use encrypted IndexedDB with authenticated namespace (network, contract, wallet,
-schema), random encryption nonces, explicit unlock and a reviewed password-to-key
-strategy. Never persist the key alongside ciphertext or derive it from a public
-wallet address. Design an encrypted export/recovery format and transactional
-migration before funding. Exact KDF parameters remain a benchmarked/security-reviewed
-M2 decision, not a guessed constant. Keep an intent record before a wallet can fund.
+`payment-deployment.ts` stores address, initial state, maintenance key and build
+identity encrypted before approval. Confirmation matches the original deployment
+action, current circuit verifier keys and asset. Public export contains only
+network/address/transaction/block and source/build/toolchain hashes.
+Existing compatible escrow addresses stay selectable; no automatic redeployment,
+migration or administrative withdrawal is implemented.
 
-Capture fragment data client-side, move it to the unlocked protected session/store
-and immediately remove the address-bar copy without losing recovery. Use a compact
-versioned binary codec with strict size, integer, length and tag bounds; inspect
-QR payload lengths at actual accepted asset precision. Generate QR locally. A
-Next.js Route Handler for encrypted blob storage is not justified unless measured size constraints require it;
-then only ciphertext may leave the client and keys must remain in the fragment.
+## Payment controller and settlement
 
-## Reliability and durable identity
-Keep transaction state separate from payment state. Persist draft and submission
-identity, distinguish finality from wallet synchronization, and reconcile after
-network interruptions. A lost response is not permission to re-fund. Record contract
-address, network, transaction, source/build/toolchain hashes and observed finality
-in `deployments/`. Preserve earlier contracts until no funded obligations remain.
-Never update every record to the newest address indiscriminately.
+`payments.ts` implements draft, prepare, approve, reconcile, share, receive,
+controlled spend, encrypted recovery and public receipts.
 
-## Interfaces to finalize
-`src/domain/` already supplies atomic-unit helpers and design-only types. The SDK
-and private-store ports do not implement payments. After M1, define FundingIntent,
-ClaimOpening, VerifiedFunding, PreparedClaim and reconciliation error unions from
-observed SDK types. Private fields must not be accepted by server components.
-Prefer small explicit adapters over a generic multi-chain framework.
+- Persist encrypted intent before proving or wallet authorization.
+- Persist the sealed identifier as outcome_unknown before submitting.
+- Refuse a second submission when an identifier exists, including after reload.
+- Verify native transaction identity, successful inclusion, canonical node finality,
+  deployed verifier keys and supported asset.
+- Enable sharing only after funding and qualified-coin checks.
+- Match the receiver's expected input nullifier/output commitment to claim events;
+  check wallet balance synchronization separately.
+- A controlled spend sends exactly the received amount to another shielded address.
+  Attribution requires an initially zero receiver test balance, no unrelated
+  transfers and a zero balance after finalized spending.
 
-## Implemented foundation (2026-09-26)
-Client-only `src/lib/midnight/oneam.ts` uses connector 4.0.1 discovery, explicit
-connection, Preprod checks and local disconnect. `src/lib/private-state/` provides
-Web Crypto encryption and revision-checked IndexedDB; ADR 004 describes its limits.
-`src/domain/transaction.ts` guards local recovery transitions; it cannot certify
-chain observations. `src/lib/server/security.ts` owns the nonce CSP policy, applied
-by `src/proxy.ts` with dynamic rendering. A GET-only Route Handler serves allowlisted
-public compiler artifacts; no wallet input or private state is accepted. ADR 006
-documents browser WebAssembly and its narrow CSP requirement.
-Compiled coin diagnostics reveal helper effects and exact pinned types; see
-`disclosure-audit.md`. The product protocol and claim codec remain gated by M1.
+Balance observations alone cannot prove conservation or independent wallets.
+Imported phases do not enable sharing or certify receipts without reconciliation.
+A definitive failed transaction remains recorded; there is no blind retry.
 
+## Claim transport and recovery
 
-Server Actions are currently unnecessary because every implemented wallet operation is local to the browser. Neither an API proxy for proving nor a server-side private-state provider is permitted. Public deployment metadata may later be served by a Route Handler only after real deployment records exist.
+The strict codec encodes 210 bytes as a 284-character mm1 token: version/network,
+contract, asset, nonce, authority, funding identifier, Uint128 amount and 32-byte
+HMAC. The tag detects accidental corruption; its key is part of the bearer
+payload, so it does not authenticate a sender. Contract bindings enforce the opening.
+The default localhost claim URL is 312 characters. QR is generated locally.
+
+`/claim` captures the fragment in browser memory and immediately removes it.
+The owner connects 1AM and saves the claim encrypted. Unsaved memory is not crash
+recovery. There is no blob API or remote QR service.
+
+IndexedDB uses AES-256-GCM, PBKDF2-SHA256 at 600,000 iterations, memory-only keys
+and namespace AAD binding network, contract, wallet and schema. Revision
+compare-and-swap preserves concurrent records. Recovery bundles authenticate
+before one atomic insert-only transaction. Unknown schemas and corruption fail
+closed; see ADR 004.
+
+Hiding the tab or five minutes after unlock locks private storage. Interrupted
+work cannot persist or submit after locking; reopen and reconcile recorded
+identifiers. JavaScript memory erasure remains best effort.
+
+## Proving and evidence
+
+Browser fund/claim/issue proofs go directly to loopback port 6300. An origin-level
+Web Lock serializes requests; separate profiles and CLI jobs require owner
+coordination. CLI heavy jobs share a file lock. Never use arbitrary hosted proving.
+
+Nonce CSP, no-referrer policy, same-origin resources and sanitized errors restrict
+delivery. The public artifact and build routes accept no wallet input.
+ADR 006 records webpack WebAssembly support.
+
+Read-only CLIs verify real deployment/action/finality references without signing.
+`verify:product` also requires hashed owner-reviewed evidence for every matrix
+row. It does not make owner assertions independent automated proof, and it does
+not establish participant or external eligibility requirements.

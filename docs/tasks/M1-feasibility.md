@@ -1,8 +1,8 @@
 # M1 — Prove real funded independent claiming
 
-State: the separate issuer is deployed on Preprod at the recorded address in deployments/preprod/test-asset-issuer.json. Its transaction is SUCCESS and its verifier matches the local artifact. Wallet A in Chrome and Wallet B in Brave are owner-reported ready. Separate issuance preparation/approval and recovery are implemented. Next: Wallet A unlocks the existing issuer and approves issuance, following USAGE.md. Escrow deployment, funding, qualification, payments and spendability remain unverified. Synthetic local proofs do not satisfy this live gate.
+State: the complete candidate funding/claim/qualification and wallet path is implemented. The separate issuer was deployed previously; use its durable record. All remaining real issuance, escrow, independent-wallet settlement, spendability and disclosure acceptance is owner-pending. No live testing ran during the implementation-first pass.
 
-Remaining expected behavior below is not observed evidence.
+The work below specifies required behavior and acceptance. The implementation-first directive in BUILD.md takes precedence: the owner will execute final testing; do not pause coding at an unobserved live gate.
 
 **Lead:** architect; architect controls shared interfaces and state; verifier owns assigned acceptance evidence.
 
@@ -35,7 +35,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 6. Fund with wallet A, disconnect A, claim with independent B, verify exact asset/amount credit and a controlled B-originated spend. Run wrong-secret, double-claim, competing-claim and copied-proof/destination tests. Inspect actual public transcripts and chain data. A successful proof alone fails this gate.
 
 ## Commands — repository root
-Run only after implementing their missing entry points. Do not treat the current blocked gate as an executable product implementation.
+Entry points are implemented. These commands are for the owner testing handoff; do not execute app/E2E suites during the current coding-only pass. Missing real inputs remain blocked.
 
 ```sh
 npm run compile:contracts
@@ -44,9 +44,9 @@ npm run verify:artifacts
 npm run test:contracts
 npm run services:up
 npm run test:proving
-npm run deploy:preprod -- --authorize-network-change
-npm run verify:deployment
-npm run test:preprod -- --case independent-funded-claim
+npm run deploy:preprod
+npm run verify:deployment -- --record deployments/preprod/<address>.json
+npm run test:preprod -- --manifest reports/preprod-manifest.json
 ```
 
 ## Acceptance
