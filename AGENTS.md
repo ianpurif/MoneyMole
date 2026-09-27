@@ -89,3 +89,10 @@ on the revision bound by docs/evidence/local-verification.json. Resume using
 docs/STATUS.md; do not redo issuance/deployment or treat local fixtures as live E2E.
 Revalidate evidence whenever its bound source/configuration changes. Public runtime
 settings live in config/preprod.json; owner secrets stay in encrypted browser state.
+
+## Current Level audit scope (2026-09-27)
+Audit against docs/LEVEL-AUDIT-SCOPE.md. Exclude videos, hosted app links,
+screenshots, users and user feedback from this audit. Accept 1AM in place of Lace;
+real wallet/circuit/privacy evidence remains required. Fix automatable gaps and
+keep public-repository, remote-CI, organizer-approval and product-X evidence truthful.
+Do not infer Level passes from local implementation or count excluded items as blockers.

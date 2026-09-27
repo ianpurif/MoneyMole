@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "source": "User-provided engineering specification, 2026-09-26; original full challenge documents were not separately available.",
+  "source": "Owner-provided Level 1–6 requirements, 2026-09-27; exact text and scoped exclusions in docs/LEVEL-AUDIT-SCOPE.md.",
   "qualificationStatus": "owner_pending",
   "requirements": [
     {
@@ -1816,5 +1816,18 @@
     "applicationUrl": null,
     "productXUrl": null,
     "eligibilityApproval": null
+  },
+  "auditScope": {
+    "source": "docs/LEVEL-AUDIT-SCOPE.md",
+    "excluded": [
+      "demo video",
+      "hosted/live application link",
+      "screenshots",
+      "users",
+      "user feedback"
+    ],
+    "acceptedWallet": "1AM (owner confirms judge acceptance)",
+    "level6CommitMinimum": 30,
+    "notes": "Excluded requirements remain distinct from verified requirements. Public GitHub, remote CI, organizer approval, product X and real wallet operation remain in scope."
   }
 }

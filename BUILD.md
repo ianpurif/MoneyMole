@@ -202,3 +202,10 @@ production build and read-only issuer checks passed again. Use the current STATU
 and hashed local-verification evidence to resume at owner wallet acceptance.
 Auxiliary agent-session and remote documentation authentication gates remain
 explicitly blocked; no live product evidence is inferred from local checks.
+
+## Current Level audit scope (2026-09-27)
+Audit against docs/LEVEL-AUDIT-SCOPE.md. Exclude videos, hosted app links,
+screenshots, users and user feedback from this audit. Accept 1AM in place of Lace;
+real wallet/circuit/privacy evidence remains required. Fix automatable gaps and
+keep public-repository, remote-CI, organizer-approval and product-X evidence truthful.
+Do not infer Level passes from local implementation or count excluded items as blockers.
