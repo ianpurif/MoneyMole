@@ -1,6 +1,6 @@
 # M5 — Harden, verify and report technical readiness
 
-State: all local application checks passed. Public product CI run 36295888117 at 1b3ed38 and 35 meaningful published commits are verified. Real wallet acceptance, organizer approval and publication of the current README corrections remain pending. The Level audit excludes owner-deferred items listed in docs/LEVEL-AUDIT-SCOPE.md. Auxiliary agent/MCP checks do not block Level qualification or application runtime.
+State: fresh local application checks and replacement remote CI passed. Level 1 required evidence is public. Levels 2–6 await actual wallet/payment/privacy acceptance. Current owner exclusions include unsupplied organizer approval; non-sensitive publication is authorized.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
@@ -30,7 +30,7 @@ Assign explicit non-overlapping subsets before delegation; no worker may edit al
 1. Complete every applicable negative and recovery row in TESTING.md. Keep deterministic, integration, real proving and live Preprod reports separate. No empty or skipped suite passes. Repeat real independent-wallet acceptance after relevant changes.
 2. Complete disclosure/secret-leak review, production browser security checks and receiver spendability evidence. Assess residual timing, shape, fee, prover and compromised-client risks; narrow privacy claims to observations.
 3. Finish pinned CI Compact installation after M0 records verified installer metadata. CI must npm ci, compile real contracts, validate artifacts, lint, typecheck, run unit/contract/integration/browser tests and build on push/PR. Live network mutation must use a separate explicit owner-authorized procedure, not untrusted PR code.
-4. Inspect real remote pipeline results only when supplied/authorized. Record actual run identifier and source commit; a local workflow file is not a completed remote run. Create concise local commits after each meaningful logical change; inspect history without rewriting it. Remote pushes require separate authorization.
+4. Inspect real remote pipeline results only when supplied/authorized. Record actual run identifier and source commit; a local workflow file is not a completed remote run. Create concise local commits after each meaningful logical change; inspect history without rewriting it. The current owner explicitly authorizes non-sensitive pushes to ianpurif/MoneyMole.
 5. Validate only consented real owner-supplied participant records. The included signed-attestation integrity utility does not establish unique humans or re-query chain activity. Complete any required chain-backed adapter against exact SDK types; keep sensitive associations outside Git. Do not invent participation.
 6. Reconcile every requirement, conflict and external metadata field. Maintain proposal approval pending until supplied, Preprod for L6, 70 total real participants and conservative 30-commit target. Separate readiness from complete challenge qualification.
 7. Update README, USAGE, architecture, sources and remaining risks. Produce a technical acceptance report with exact commands/outcomes, hashes, evidence, blockers and next action.

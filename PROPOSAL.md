@@ -4,6 +4,9 @@
 **Status:** candidate product implementation complete; real payment acceptance
 remains owner-pending. **Eligibility approval:** owner-pending.
 
+The owner excludes unsupplied organizer approval from the current scoped Level
+submission pass. This does not turn this draft into an approved proposal.
+
 ## Problem and intended users
 A sender should be able to pre-fund a transferable claim without exposing payment
 amounts or a direct participant mapping in ordinary public application state.

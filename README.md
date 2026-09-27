@@ -11,7 +11,7 @@ Claiming does not mint tokens. Test units are non-redeemable.
 
 ## Verification at a glance
 
-Evidence checked on **27 September 2026**. Local engineering verification passes;
+Evidence checked on **27 September 2026**. **Highest scoped Level passed: Level 1.** Local engineering verification passes;
 **real independent-wallet payment acceptance is still pending**. A deployed issuer
 is not proof that funding, claiming or receiver spending has succeeded.
 
@@ -21,8 +21,8 @@ is not proof that funding, claiming or receiver spending has succeeded.
 | Network and primary wallet | Midnight **Preprod**, **1AM.xyz**, Connector API v4; 1AM accepted by the owner’s judge-confirmed instruction |
 | Real deployed contract | Test-asset issuer below; canonical finality and deployed verifier checked against actual Preprod |
 | Payment escrow | Implemented; no finalized public deployment record or real funding/claim/spend receipts supplied yet |
-| CI | [Current main workflow](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml) · [recorded actual runs](docs/evidence/github-verification.json); the badge is live, evidence snapshots identify the revision tested |
-| Local evidence | [Compilation, tests, proving and issuer checks](docs/evidence/level-verification.json) · [source-bound engineering evidence](docs/evidence/local-verification.json) |
+| CI | [Current main workflow](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml) · [verified publication and actual CI](docs/evidence/publication-verification.json); the badge is live, evidence snapshots identify the revision tested |
+| Local evidence | [Fresh complete verification](docs/evidence/submission-verification.json) · [source-bound engineering evidence](docs/evidence/local-verification.json) |
 | Meaningful history | [35 reviewed substantive published commits](docs/evidence/commit-audit.json), excluding audit/docs-only commits; every Level threshold is exceeded |
 | Full requirement map | [Level audit](docs/LEVEL-AUDIT.md) · [authoritative requirement states](docs/requirements.json) |
 
@@ -73,7 +73,7 @@ an assertion of full organizer acceptance. Level 6 uses the stricter **30** comm
 
 | Level | Included requirements and evidence | Current result |
 |---|---|---|
-| 1 | Exact installed toolchain; all four Compact targets compile; passing tests; generated circuits/keys; real issuer address and transaction above; initial idea, setup and public/private explanation here; public repository; ≥5 meaningful commits | Technical evidence complete; publication verification is recorded in the [audit](docs/LEVEL-AUDIT.md) |
+| 1 | Exact installed toolchain; all four Compact targets compile; passing tests; generated circuits/keys; real issuer address and transaction above; initial idea, setup and public/private explanation here; public repository; ≥5 meaningful commits | **PASS** — required README sections and deployment evidence are public; [verified publication](docs/evidence/publication-verification.json) |
 | 2 | [1AM connect/disconnect](src/lib/midnight/oneam.ts); [frontend circuit flows](src/lib/midnight/payments.ts); bounded privacy model below; real Preprod issuer; ≥8 meaningful commits | **NOT PASSED:** actual frontend circuit finality, installed-wallet disconnect/reconnect and live privacy behavior remain unverified |
 | 3 | [Payment dApp](src/components/payment-workspace.tsx); 38 unit, 13 contract, 20 integration and 7 browser checks; [workflow](.github/workflows/ci.yml) and actual passing runs; complete privacy model; ≥10 meaningful commits | **NOT PASSED:** independent-wallet payment acceptance remains pending; proposal/approval evidence is owner-excluded |
 | 4 | Same Preprod product; setup/usage here; actual product CI; ≥15 meaningful commits | **NOT PASSED:** a working payment escrow and finalized funding/claim/spend evidence are still needed |
@@ -280,6 +280,8 @@ blocked (2); actual proving and browser connectivity are the readiness evidence.
 Compact compilation, artifact verification, lint/types, unit/contract/integration
 tests, production build, browser tests and requirement consistency. It has no
 wallet credentials or permission to deploy. Actual Preprod acceptance is separate.
+The clean-checkout ordering failure in run 36298220841 was reproduced and fixed by
+compiling generated evidence subjects before validation. [Failure and fix](docs/evidence/ci-ordering-failure.json); the replacement run is in the publication evidence.
 Missing real inputs cause `verify:deployment`, `test:preprod` and `verify:product`
 to return blocked (2), never a fabricated pass. The generic product matrix retains
 T24 participation; T24 is excluded from the current Level submission scope.

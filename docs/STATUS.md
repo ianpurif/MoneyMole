@@ -1,123 +1,68 @@
 # Current execution state
 
-Publication follow-up in progress: the owner now authorizes pushing completed
-non-sensitive work to ianpurif/MoneyMole and excludes unsupplied organizer approval
-from this scoped submission pass. Earlier no-push and approval-blocker statements
-below describe the prior audit. Full verification and public CI will be refreshed.
+Snapshot: 2026-09-27T05:56:41.575Z. **Highest scoped Level passed: Level 1.**
+All local application verification passed again. Levels 2–6 remain **NOT PASSED**
+because actual independent-wallet payment/privacy/recovery acceptance is missing.
+The owner excludes videos, hosted app links, screenshots, users/feedback, X and
+unsupplied organizer approval. 1AM is accepted. These exclusions are not verified.
 
-Snapshot: 2026-09-27. **Requested application engineering remediation is complete;
-real 1AM wallet E2E acceptance remains pending.** Current sanitized evidence is
-`docs/evidence/local-verification.json`. No live transaction or push was performed.
+## Published work and CI
 
-## Current Level audit
+The README now presents the Level 1–6 evidence map, visible actual issuer and
+transaction, complete setup/usage, public/private/proven model, architecture,
+configuration, test commands, security/recovery and reviewed meaningful commits.
+Public repository content was compared with immutable Git files at 056f41817d313189f96cc2505195965c51ecacbe.
+CI run 36298455485 passed every step after the
+clean-checkout ordering fix. The earlier f85fbd6 run failed because evidence checks
+preceded generated ignored keys; reproduction and correction are recorded in
+docs/evidence/ci-ordering-failure.json. Later audit-only commits are published and
+checked separately; the README badge links current main. The owner authorizes
+non-sensitive pushes to ianpurif/MoneyMole. No history rewrite is authorized.
 
-The strict [Level 1–6 audit](LEVEL-AUDIT.md) is complete for all automatable work.
-All six Levels are **NOT PASSED** under the published-submission criteria. Level 1
-has compiling contracts, tests, generated keys, a real issuer deployment and enough
-published history; its required explicit README privacy section is fixed locally
-but unpublished. Higher Levels still need real 1AM payment acceptance; Level 3
-also needs actual idea-list submission/organizer approval.
+## Fresh verification
 
-The owner supplied https://github.com/ianpurif/MoneyMole. Public access and CI run
-36295888117 at 1b3ed38 are independently verified: every step passed. Thirty-five
-substantive commits were reviewed in the existing published history, excluding
-audit/docs-only commits. Fresh evidence is in docs/evidence/level-verification.json,
-github-verification.json and commit-audit.json. Video, hosted app link, screenshots,
-users/feedback and the owner-deferred X profile do not affect this audit verdict.
-The X profile remains required for the later complete submission, not a verified item.
+See docs/evidence/submission-verification.json and publication-verification.json.
+Clean npm ci, zero-finding audit, 53 utility tests, lint/types, 38 unit tests,
+production build, 7 browser cases, all four Compact compiles, artifact verification,
+13 generated-contract cases, 20 integration cases, real synthetic fund/claim/issue
+proofs, browser CORS/indexer/RPC connectivity and read-only issuer finality passed.
+Regenerated artifacts match the browser-tested build. Retry/recovery integration
+uses the production saved-payment controller and real encryption, with synthetic
+protocol boundaries; it does not establish real wallet acceptance.
 
-## Completed engineering
+The app is running at http://127.0.0.1:3000 and the trusted pinned prover at
+http://127.0.0.1:6300. The preparation wrapper returns 2 only for auxiliary agent
+attestation/docs-MCP authentication, neither a Level nor runtime requirement.
+TCP-only services:check returns 2 by design. verify:deployment, test:preprod and
+verify:product return 2 without real escrow/payment/acceptance records.
 
-- Confirmed failed claims and controlled spends have explicit retry actions. Each
-  reset freshly verifies canonical complete failure and the original payment state,
-  atomically archives the failed attempt, and requires a new owner approval.
-  Unknown, partial, stale and already-spent outcomes cannot authorize retry.
-- Recovery integration exercises the production payment controller, transaction
-  helpers, real encryption and saved records across reload/import, interruption,
-  rejection and concurrent access. Protocol/wallet boundaries remain synthetic.
-- Complete Preprod shielded addresses are accepted with strict bounded checksum,
-  network, type and canonical encoding checks; SDK 3.1.2's default 90-character
-  parser limit no longer rejects the genuine 132-character address.
-- PostCSS 8.5.28, Vite 7.3.6, Vitest 4.1.11 and esbuild 0.28.2 resolve the dependency
-  audit findings. The original deployed runtime closure, source and verifier remain
-  protected while independent development tools can receive security patches.
-- Public settings are consolidated in config/preprod.json and shared by browser,
-  CSP and verification scripts. Acceptance evidence now includes configuration.
-- The clean-install timeout is finite but accommodates Windows-backed WSL I/O;
-  fresh npm ci passed after the original four-minute limit interrupted installation.
+## Deployment and configuration
 
-## Current local setup and verification
+Existing Preprod issuer:
+47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635
 
-Windows and project WSL use Node 22.16.0 / npm 10.9.2. All 33 direct installed
-versions match the manifest and lockfile. Use WSL for dependencies and builds.
-The updated production app is running at http://127.0.0.1:3000 and the pinned
-proof-server 8.1.0 image is running on loopback port 6300. The original application
-origin was retained so owner encrypted recovery remains accessible.
+Deployment identifier:
+003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886
 
-| Check | Observed result |
-|---|---|
-| Clean npm ci, installed identity, tool doctor | Passed |
-| Full dependency audit | Passed; zero reported vulnerabilities |
-| Offline source and utility checks | Passed |
-| Compact probe, coin probe, payment and issuer compilation | Passed |
-| Artifact hashes and runtime compatibility | Passed; regenerated artifacts match the browser-tested build byte for byte |
-| ESLint, TypeScript, full unit suite, production build | Passed |
-| Generated-contract / integration suites | 13 / 20 passed |
-| Production browser suite | 7 passed; synthetic providers, no real signing |
-| Local proving | Real fund/claim/issue constraints and proofs, plus unsealed issuer transaction round trip passed using synthetic inputs |
-| Browser connectivity | Prover CORS and real read-only Preprod indexer/RPC queries passed |
-| Existing issuer | Source, verifier, runtime closure and canonical finality verified; issued false |
-| Requirements | Graph, evidence hashes and derived report checked |
+Canonical finalized block 2716656; source, verifier and original runtime closure
+match; issued=false. Do not deploy it again. No payment escrow acceptance record
+has been supplied. .env.local intentionally contains only PROOF_SERVER_PORT=6300.
+config/preprod.json owns public network/issuer/prover values. Public escrow choice
+is moneymole/current-escrow in localStorage; encrypted recovery is in IndexedDB
+moneymole-private-v1. No wallet secret belongs in an environment file or tool.
 
-The preparation wrapper returns **blocked (2)** for auxiliary custom-agent/schema
-session attestation and documentation MCP authentication. The newer installed
-Codex CLI 0.158.0-alpha.2 now advertises all requested model/effort pairs and loads
-matching project settings. No delegation occurred. The official Midnight MCP
-endpoint returns HTTP 401. Neither auxiliary service is an application runtime
-requirement; their verification was not fabricated or bypassed.
+## Exact resume point
 
-`services:check` is deliberately a TCP-only blocked diagnostic; actual proof and
-browser CORS checks passed separately. `verify:deployment`, `test:preprod` and
-`verify:product` correctly return 2 without real escrow/payment/acceptance inputs.
-GitHub CLI is unauthenticated; public read-only API access nevertheless verified
-the actual product CI run. Authentication is not needed to inspect that public run.
+Computer Use was stopped by an automatic policy check because it could not
+determine Chrome's current URL. No wallet UI was controlled or private storage
+read. Chrome / Wallet A: open http://127.0.0.1:3000 and leave MoneyMole visible;
+report that it is open so automation can resume at the actual page. The next owner
+steps will be 1AM connection authorization if requested and private unlock of the
+existing issuer recovery. Do not send any passphrase, backup, seed or private key.
 
-## Configuration and recovery locations
-
-- .env.local contains only PROOF_SERVER_PORT=6300; this is intentional. No wallet
-  secret or API credential belongs in it.
-- config/preprod.json owns the reviewed network endpoints, issuer and asset domain.
-- deployments/preprod/test-asset-issuer.json preserves the real issuer deployment.
-  toolchain.lock.json is also part of that immutable deployment fingerprint;
-  current client/tool observations are recorded in the new evidence, not rewritten
-  into the original deployment profile.
-- Public escrow selection uses localStorage key moneymole/current-escrow. Escrow
-  addresses are generated in the browser and exported after approved deployment.
-- Encrypted payment/admin recovery uses IndexedDB moneymole-private-v1, scoped by
-  network, contract, wallet and schema. Secrets remain client-side.
-
-## Exact next owner action and remaining acceptance
-
-Chrome / Wallet A: open the running app, use the original local recovery passphrase
-with **Prepare / unlock issuer deployment**, then **Check deployment** if needed.
-The existing issuer must be
-47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635.
-Choose **Prepare / recover issuance**, then **Approve issuance of 1,000,000 test
-units** and approve in 1AM. Expect finalized issuance and A's shielded test balance
-of 1,000,000. Restore the original encrypted backup first if necessary; never share
-that backup or passphrase with tools and never redeploy this issuer on session restart.
-
-Then approve/recover the escrow, fund 10 units in A, privately transfer its link/QR
-and close A. Brave / independent Wallet B must begin with zero of this asset,
-claim 10, reconcile, reload and exercise encrypted export/import, then approve the
-controlled spend of 10 back to A. Expect B zero, A credited and the original claim
-spent; replay must not pay twice. Complete the live negative/recovery/privacy
-matrix and retain only sanitized evidence. Unknown outcomes reconcile; only fresh
-confirmed failures expose retry actions. Every live transaction needs approval.
-
-Source, build and automated checks do not establish real extension signing,
-receiver spendability, optical QR scanning, funded recovery or privacy acceptance.
-Organizer approval and publication of the current documentation remain pending.
-Remote CI at the published 1b3ed38 revision is verified; later local audit updates
-are not covered by that run. Participation is excluded from the current audit.
-No push is authorized. All meaningful changes are committed locally.
+Then prepare/approve the separate 1,000,000-unit issuance, recover/approve the
+payment escrow, fund 10 in A, privately transfer its link/QR and close A. Independent
+Wallet B in Brave begins with zero of the asset, claims 10, reconciles/reloads and
+checks encrypted recovery, then approves spending 10 back to A. Check replay,
+remaining live negatives and sealed disclosures. Each transaction requires the
+owner's personal confirmation. Synthetic tests do not satisfy these observations.

@@ -1,0 +1,180 @@
+{
+  "observedAt": "2026-09-27T05:55:46.130Z",
+  "scope": "public_repository_exact_committed_files_and_CI",
+  "repository": "https://github.com/ianpurif/MoneyMole",
+  "public": true,
+  "publishedHead": "056f41817d313189f96cc2505195965c51ecacbe",
+  "publishedCommitCount": 68,
+  "publishedCommitHashes": [
+    "056f41817d313189f96cc2505195965c51ecacbe",
+    "f85fbd6d7e9c7af5a3fdb0c3b2788ddc1f527426",
+    "f788ac01129cc30019e76b4022b729ddaaef71cc",
+    "32c456a6d322a7d18d1a50d0c5a4bd90e7db1dcb",
+    "c8b16076c9fb1f287a0bd1b4f8f16fec9b7412cb",
+    "6c562a7c533b4cf8c822c8bc118928f7c86c15f3",
+    "6d758553b02174ada51a643aa110afb85995568a",
+    "1b3ed385c0fab85d0e96fd5f7ac9e69462d48d98",
+    "85dd354d3dea6788e7ba63b8199ea05594afb8d7",
+    "21f626c1955e9a9f209686cffe820c133d58f445",
+    "face9f6ef12844773fbf2c495594339b125fdae6",
+    "ac5566fa3fca5cb6bc47a8815674c29548089a50",
+    "df2d7a4d792b81a0425838f2ff52e60ab0f79049",
+    "972b879b4e9c34188eebd347418e05847f2085ca",
+    "c799fe49ad59496611baa5496b20368ecb84a383",
+    "23322c89c5e89e16435f25d54a69780061456236",
+    "869ef89b5ff497b529be379850fb964952fe93a9",
+    "00ecd2540498666f73687c6950f19ae6f1dbfc47",
+    "a8289dc539e567c5e7bd58dc27825a5cc6c0a3c0",
+    "03b789398420ac8094c2c2a23a2fbfcdd8a1c4ef",
+    "bb1c0b3f262ef00d6e543fc628cd40df72e4b45f",
+    "dc12561e716ab453610db4d4d361714b10413ef2",
+    "a0877429e4c970c555232939e32a2ec303c4c245",
+    "966707b5cdbf7c72c1cc1ee344102b71356d431d",
+    "861a9cd8bd3014d18a9e2a5d184efe992c79e344",
+    "93b561828a76cd1ed82fa5b78231e00e2a3516d8",
+    "241d48ec970b0259321b5ae24b6710aeff5baee0",
+    "a4ad345aa77f28dfd523063631b36697af1bd83c",
+    "7d119879618ff8e674f837aeb729f45038e6dabe",
+    "a84d879eda3e6d4687df16b3e3c50b4121c51d49",
+    "b5b655ebb794af129bf5cb997ca1f6a3c5cd65db",
+    "5c77082192d4734494dfe362f2751eab37b1807f",
+    "3f6c2e3da0e866c7fdf2ad49e03ca154bda9ae5a",
+    "9975dcf3e3f48356c1d9ad000856bd9b49251bcc",
+    "e0329c12dc67103ba8263ce6ad8bcd4322bd8a5e",
+    "a86a0cc78779a459635c312f0fa7eb025802ecc6",
+    "dfa2ed9a00e6d8e160d7d707164e33b57d6e88a4",
+    "f5e02ddcd74c30a1b6e6115f2f93efebdf754ee0",
+    "234f53b099faf86c5c88b79d7a48d80f9792f7e1",
+    "88765f6c8a7eb97e3ec9e3c0bea9665f591994a3",
+    "0d7fec9993906f9dbc9c616dd6e11ebad34c729f",
+    "2dd1cb0e3a52fd74ee5c928384d96df170dc349f",
+    "c936f050b8b68d6bc943924d6049c01479a78a8d",
+    "cf952715eef854503a3359cfce5ad0db7c796c92",
+    "6ba1f70a552ae5d9e3fa886816b055387125720e",
+    "47919c3884e01de342b1f7f559daac912b2c4da4",
+    "bc1791450fd4fd6c2d171de13049302e18e89c8a",
+    "71001562feee0d31a29dd45ae7ee8c3169e97ab7",
+    "2c5473172486b457dc044816a11c5d544b53147d",
+    "22d38c16331843a657a9b1c8ef6babacfe49fd86",
+    "5ddf74f6cd1f129aeb1aea997da08cb08af84ad0",
+    "d4e89bd1589070549e50bb3ee14746708cfa4ead",
+    "7733332558eb7326dc684a838904330ccd0bf396",
+    "5dd3d41fcc161fbdeaa83af74d8982059efe5725",
+    "9201f9743b6209805e21ed01d1e9e82963bae5c5",
+    "12e0a4c77ad60e15bdbeae87dfd7c378e83cbd33",
+    "be6a28bc24fb3dea162e43b0f3932ef40de77247",
+    "ab0788ee8beb0e1d0f38bf370db2d574c9ae174b",
+    "2d4a2d96f59649f282878326c08a5731e9bd47b8",
+    "378bbaef02e5aff01fbddec6f62fcf985e6a2794",
+    "9d576c82113fe4a12ab311fb61d289cb9009958d",
+    "5d5ccfdde655abe73561766b0305d51980f0bcaf",
+    "578b09e975c9cfa7ca2e10d9b72a1486de4b53c8",
+    "ac6c3fe5f5633252ec9d6510c4d69a5ec11d86f5",
+    "58f1d490503a2151b111cf0f458a08c756f181be",
+    "afa0478573cc2d5c6e0c932653ef6bd9c60eaa47",
+    "9e674e6d378e0df2bc47af89e656c2bcc9250deb",
+    "b2edd4153626f9236c70c9e09c778145cbdc6ef2"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "23d9c048522853d159a7cdca4f0924787b5ad66cc585c29830b2f9860f335ed5",
+      "matchesCommittedSource": true
+    },
+    {
+      "path": "docs/LEVEL-AUDIT.md",
+      "sha256": "9a51ab18e5507d87879586d77f41675ffd406c6a40659c59a1305b4abf6befaa",
+      "matchesCommittedSource": true
+    }
+  ],
+  "runs": [
+    {
+      "id": 36298455485,
+      "url": "https://github.com/ianpurif/MoneyMole/actions/runs/36298455485",
+      "head": "056f41817d313189f96cc2505195965c51ecacbe",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "verify",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "conclusion": "success"
+            },
+            {
+              "name": "Pin package manager",
+              "conclusion": "success"
+            },
+            {
+              "name": "Reject unresolved preparation dependency graph",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install exactly the locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Audit production and development dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install reviewed pinned Compact toolchain",
+              "conclusion": "success"
+            },
+            {
+              "name": "Compile actual payment contracts and verify generated artifacts",
+              "conclusion": "success"
+            },
+            {
+              "name": "Check preparation utilities and evidence references",
+              "conclusion": "success"
+            },
+            {
+              "name": "Lint and typecheck",
+              "conclusion": "success"
+            },
+            {
+              "name": "Deterministic and contract integration suites",
+              "conclusion": "success"
+            },
+            {
+              "name": "Production build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Browser security and synthetic authorization checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Requirement consistency",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ciPassed": true
+}
