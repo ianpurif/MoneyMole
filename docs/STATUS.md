@@ -25,7 +25,10 @@ checks were corrected and rerun. Its custom Codex agent/MCP checks remain separa
 auxiliary blockers; no subagents were delegated. TCP-only readiness, absent real
 NIGHT deployment and live product acceptance continue to exit 2 as expected.
 
-Publication/remote CI for this revision is pending below. Historical migration
+Published revision `6096bddab3cb9d70c9e9cebc171e5e8b67e55e6f` passed
+[GitHub Actions 36324197091](https://github.com/ianpurif/MoneyMole/actions/runs/36324197091). Public immutable
+source files matched Git. Evidence: docs/evidence/wallet-card-publication.json.
+Following evidence-only commits preserve every checked subject. Historical migration
 records remain intact and must not be treated as current source verification.
 
 ## Exact next owner action for this wallet fix
