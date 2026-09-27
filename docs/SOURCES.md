@@ -166,3 +166,16 @@ imagery, third-party runtime resources, tracking, fonts or endorsement assets ad
 - The owner explicitly requested 1AM and Lace selection for this UI revision.
   Provider metadata is self-reported, not wallet identity proof. No wallet is
   chosen automatically and synthetic connector checks are not live acceptance.
+
+## Embroidery-inspired card — researched 2026-09-27
+
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-shadow
+  documents layered shadows for subtle raised lettering.
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/gradient/repeating-linear-gradient
+  supports a fine thread pattern without a font or texture dependency.
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/background-clip
+  describes text clipping and legibility fallbacks. Apply the pattern only to the
+  wordmark with a feature query; keep numeric balances solid and high contrast.
+- Reuse the owner's lunar textile background unchanged. System Avenir/Segoe UI,
+  stitched borders and light text relief approximate embroidery without impairing
+  live balance precision or introducing an external font request.

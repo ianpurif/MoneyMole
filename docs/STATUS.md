@@ -1,5 +1,17 @@
 # Current execution state
 
+## Embroidered wallet presentation — 2026-09-27
+
+The wallet card now uses the supplied `public/images/debit-card-bg.png` unchanged,
+with stitched edges, raised lettering and padded action buttons. Live totals and
+wallet callbacks retain their existing behavior. Disconnected Send content and
+the outer Send heading are hidden. Development preview: http://localhost:3001.
+
+Tests and build checks were deliberately skipped for this UI-only request. Earlier
+verification below describes earlier revisions; requirements bound to changed UI
+subjects are returned to implemented until reverified. The presentation commit
+skips CI to honor the owner's no-tests instruction. No wallet action was performed.
+
 ## Wallet selection, balances and focused actions — 2026-09-27
 
 Connect now discovers supported API v4 wallets and offers explicit 1AM/Lace choices.

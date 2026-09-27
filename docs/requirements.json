@@ -82,7 +82,7 @@
       "level": "Preparation",
       "title": "Next.js application foundation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "PREP-LOCK"
       ],
@@ -2594,7 +2594,7 @@
       "level": "Level 3",
       "title": "Push and pull-request compile/test workflow",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-MANAGED",
         "PREP-LOCK"
@@ -4235,7 +4235,7 @@
       "level": "Level 3",
       "title": "Production build",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L3-CI"
       ],
@@ -5761,7 +5761,7 @@
       "level": "Level 4",
       "title": "Product repository pipeline",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L3-CI"
       ],
@@ -7804,7 +7804,7 @@
       "level": "External metadata",
       "title": "Public repository",
       "owner": "owner",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Owner-supplied repository URL is independently checked for public access.",
       "commands": [
