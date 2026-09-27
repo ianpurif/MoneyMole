@@ -60,3 +60,9 @@ Local recovery follow-up: TransactionJournal now persists opaque intent and reco
 state together in encrypted storage. Five integration tests cover response loss,
 competing tabs, pre-submit failure, acknowledgment-write failure and malformed
 records. Tests use fake IndexedDB and synthetic callbacks; the newer product controller implements submission and reconciliation, with live results still unverified. Restored states are explicitly unverified.
+
+2026-09-27: Implemented explicit claim/spend reset after fresh finalized FAILURE,
+preserving failed attempt identifiers and requiring new approval. Production
+controller integration now uses real encrypted IndexedDB records across reload,
+import, lost acknowledgments, rejection and competing controllers. Partial/unknown
+outcomes remain non-retryable. Full regression is pending the final engineering run.

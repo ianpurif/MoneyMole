@@ -83,3 +83,11 @@ checks circuit constraints and generates fund/claim/issue proofs. It records onl
 outcomes and byte counts. It does not independently verify the returned proofs,
 construct a sealed transaction, establish native coin qualification or move funds.
 T01/T02/T05/T06/T07/T08/T19 still require the stronger observations in the matrix.
+
+The recovery integration suite now invokes openPayments and the production
+submission/reconciliation helpers over real AES-GCM and fake IndexedDB. Network,
+proving and wallet boundaries remain synthetic. It covers failed-leg retries,
+partial/unknown outcomes, histories, reload/import, authorization rejection and
+concurrent reset/submission. Recipient regression includes the SDK's 132-character
+Preprod shielded address; the SDK 3.1.2 default parser's 90-character bound is not
+used for that composite address. These cases are not real wallet acceptance.

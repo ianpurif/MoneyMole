@@ -8,6 +8,7 @@ import { BrowserPrivateStore } from "../private-state/indexed-db";
 import { hex, unhex } from "./payment-codec";
 import { PaymentKeys, observeTransaction } from "./payment-network";
 import { withLocalProver } from "./proof-lock";
+import { bech32m } from "@scure/base";
 
 export const ISSUER = "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635";
 export function paymentAsset() { const d = new Uint8Array(32); d.set(new TextEncoder().encode("moneymole/test/v1")); return rawTokenType(d, ISSUER); }
@@ -63,10 +64,17 @@ export async function submitPrepared(wallet: WalletContext, tx: TxRecord, persis
 export async function reconcileTx(tx: TxRecord, persist: () => Promise<void>) {
   if (!tx.transactionId) return null;
   const observation = await observeTransaction(tx.transactionId); if (!observation) return null;
-  tx.phase = observation.transactionResult.status === "SUCCESS" ? "finalized" : "failed";
+  // PARTIAL_SUCCESS (or a future status) is not a wholly failed transaction.
+  // Its effects must never authorize another payment attempt.
+  const status = observation.transactionResult.status;
+  tx.phase = status === "SUCCESS" ? "finalized" : status === "FAILURE" ? "failed" : "outcome_unknown";
   tx.transactionHash = observation.hash; tx.blockHash = observation.block.hash; tx.blockHeight = observation.block.height;
   delete tx.transaction; await persist(); return observation;
 }
 export function validateRecipient(address: string) {
-  ShieldedAddress.codec.decode("preprod", MidnightBech32m.parse(address)); return address;
+  // SDK 3.1.2 parse() applies Bitcoin's 90-character default to Midnight's
+  // 132-character shielded address. Decode with an explicit bounded limit.
+  const decoded = bech32m.decode(address as `${string}1${string}`, 256);
+  if (decoded.prefix !== `mn_${ShieldedAddress.codec.type}_preprod` || bech32m.fromWords(decoded.words).length !== 64 || bech32m.encode(decoded.prefix, decoded.words, 256) !== address) throw new Error("Enter a canonical Preprod shielded address");
+  return address;
 }

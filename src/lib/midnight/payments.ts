@@ -9,22 +9,30 @@ import { PaymentKeys, verifiedPaymentState, observeTransaction, outputObservatio
 import { qualifyEscrowCoin } from "./feasibility/qualify-escrow";
 import { openStore, readRecord, writeRecord, paymentAsset, provePayment, submitPrepared, reconcileTx, validateTx, validateRecipient, type WalletContext, type TxRecord } from "./payment-session";
 
-type RecordData = { version: 1; role: "sender" | "receiver"; payload: ClaimPayload; tx: TxRecord; baseline: string; output?: string; input?: string; spend?: TxRecord; spendRecipient?: string; spendBaseline?: string };
-export type PaymentView = { id: string; role: RecordData["role"]; amount: string; phase: TxRecord["phase"]; transactionId?: string; transactionHash?: string; blockHash?: string; funded: boolean; claimed: boolean; walletSynced: boolean; spent: boolean; spendPhase?: TxRecord["phase"]; spendTransactionId?: string; spendVerified: boolean };
+type FailedAttempt = { action: "claim" | "spend"; transactionId: string; transactionHash: string; blockHash: string; blockHeight: number };
+type RecordData = { version: 1; role: "sender" | "receiver"; payload: ClaimPayload; tx: TxRecord; baseline: string; output?: string; input?: string; spend?: TxRecord; spendRecipient?: string; spendBaseline?: string; failedAttempts?: FailedAttempt[] };
+export type PaymentView = { id: string; role: RecordData["role"]; amount: string; phase: TxRecord["phase"]; transactionId?: string; transactionHash?: string; blockHash?: string; funded: boolean; claimed: boolean; walletSynced: boolean; spent: boolean; spendPhase?: TxRecord["phase"]; spendTransactionId?: string; spendVerified: boolean; claimRetryAvailable: boolean; spendRetryAvailable: boolean; failedAttempts: number };
 export async function openPayments(wallet: WalletContext, contract: string, password: string) {
   const asset = paymentAsset(); await verifiedPaymentState(contract, asset);
   const store = await openStore(wallet, contract, password);
-  const observations = new Map<string, { funded: boolean; claimed: boolean; walletSynced: boolean; spent: boolean; spendVerified: boolean }>();
+  const observations = new Map<string, { funded: boolean; claimed: boolean; walletSynced: boolean; spent: boolean; spendVerified: boolean; claimRetryAvailable: boolean; spendRetryAvailable: boolean }>();
   async function load(id: string) {
     if (!/^[sr]_[a-f0-9]{64}$/.test(id)) throw new Error("Invalid local payment identifier");
     const found = await readRecord<RecordData>(store, id); if (!found) throw new Error("Local payment not found");
     const r = found.value;
     if (r.version !== 1 || !["sender", "receiver"].includes(r.role) || r.payload.contract !== contract || r.payload.asset !== asset || !/^(0|[1-9][0-9]*)$/.test(r.baseline)) throw new Error("Recovery record has an incompatible namespace");
     await encodeClaim(r.payload); validateTx(r.tx); if (r.spend) validateTx(r.spend);
+    if (r.failedAttempts !== undefined) {
+      if (!Array.isArray(r.failedAttempts)) throw new Error("Invalid attempt history");
+      for (const attempt of r.failedAttempts) {
+        if (!["claim", "spend"].includes(attempt.action) || !Number.isSafeInteger(attempt.blockHeight) || attempt.blockHeight < 0) throw new Error("Invalid failed attempt");
+        for (const field of [attempt.transactionId, attempt.transactionHash, attempt.blockHash]) unhex(field, 32);
+      }
+    }
     if (id !== `${r.role === "sender" ? "s" : "r"}_${hex(noteDigest(r.payload))}`) throw new Error("Recovery payment identity mismatch");
     return found;
   }
-  const view = (id: string, r: RecordData): PaymentView => ({ id, role: r.role, amount: r.payload.amount, phase: r.tx.phase, ...(r.tx.transactionId ? { transactionId: r.tx.transactionId } : {}), ...(r.tx.transactionHash ? { transactionHash: r.tx.transactionHash } : {}), ...(r.tx.blockHash ? { blockHash: r.tx.blockHash } : {}), ...(observations.get(id) ?? { funded: false, claimed: false, walletSynced: false, spent: false, spendVerified: false }), ...(r.spend ? { spendPhase: r.spend.phase } : {}), ...(r.spend?.transactionId ? { spendTransactionId: r.spend.transactionId } : {}) });
+  const view = (id: string, r: RecordData): PaymentView => ({ id, role: r.role, amount: r.payload.amount, phase: r.tx.phase, failedAttempts: r.failedAttempts?.length ?? 0, ...(r.tx.transactionId ? { transactionId: r.tx.transactionId } : {}), ...(r.tx.transactionHash ? { transactionHash: r.tx.transactionHash } : {}), ...(r.tx.blockHash ? { blockHash: r.tx.blockHash } : {}), ...(observations.get(id) ?? { funded: false, claimed: false, walletSynced: false, spent: false, spendVerified: false, claimRetryAvailable: false, spendRetryAvailable: false }), ...(r.spend ? { spendPhase: r.spend.phase } : {}), ...(r.spend?.transactionId ? { spendTransactionId: r.spend.transactionId } : {}) });
   async function balance() { await wallet.guard(); const balances = await wallet.api.getShieldedBalances(); return balances[asset] ?? 0n; }
   async function funded(payload: ClaimPayload) {
     const tx = await observeTransaction(payload.fundingId);
@@ -39,13 +47,15 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
     return tx.zswapLedgerEvents.some(row => { const e = Event.deserialize(unhex(row.raw)); return e.source.transactionHash === tx.hash && e.content.tag === tag && field in e.content && (e.content as unknown as Record<string, unknown>)[field] === value; });
   }
   async function reconcile(id: string) {
+    // A failed refresh must not leave earlier success/retry flags visible.
+    observations.delete(id);
     await wallet.guard(); const found = await load(id), r = found.value;
     const persist = async () => { found.revision = await writeRecord(store, id, r, found.revision); };
     const own = await reconcileTx(r.tx, persist);
     if (r.role === "sender" && r.tx.transactionId) r.payload.fundingId = r.tx.transactionId;
     let funding: Awaited<ReturnType<typeof funded>>;
     try { funding = await funded(r.payload); } catch (error) { observations.delete(id); if (r.tx.phase === "draft" || r.tx.phase === "prepared" || r.tx.phase === "authorization_requested" || !own) return view(id, r); throw error; }
-    const flags = { funded: true, spent: funding.spent, claimed: false, walletSynced: false, spendVerified: false };
+    const flags = { funded: true, spent: funding.spent, claimed: false, walletSynced: false, spendVerified: false, claimRetryAvailable: r.role === "receiver" && own?.transactionResult.status === "FAILURE" && !funding.spent, spendRetryAvailable: false };
     if (!funding.spent) qualifyEscrowCoin(contract, { nonce: r.payload.nonce, type: asset, value: BigInt(r.payload.amount) }, outputObservations(funding.tx), funding.current.zswap);
     if (r.role === "receiver" && own?.transactionResult.status === "SUCCESS") {
       if (!funding.spent || !r.output || !r.input || !eventMatches(own, "zswapOutput", "commitment", r.output) || !eventMatches(own, "zswapInput", "nullifier", r.input)) throw new Error("Claim settlement does not match the expected coin transfer");
@@ -56,6 +66,7 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
       const after = await balance();
       flags.spendVerified = !!spendTx && spendTx.transactionResult.status === "SUCCESS" && r.baseline === "0" && r.spendBaseline === r.payload.amount && after === 0n && spendTx.zswapLedgerEvents.some(row => Event.deserialize(unhex(row.raw)).content.tag === "zswapInput");
       if (flags.spendVerified) flags.walletSynced = true;
+      flags.spendRetryAvailable = spendTx?.transactionResult.status === "FAILURE" && flags.claimed && flags.walletSynced;
     }
     observations.set(id, flags); await persist(); return view(id, r);
   }
@@ -85,6 +96,25 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
   }
   return {
     contract, asset, balance, prepare, reconcile,
+    async retryFailed(id: string, action: "claim" | "spend") {
+      // Reloaded/imported phases are never authority to retry. Recheck native
+      // identity, canonical finality, the original note and wallet balance now.
+      const status = await reconcile(id);
+      if (action === "claim" ? !status.claimRetryAvailable : action !== "spend" || !status.spendRetryAvailable) throw new Error("A confirmed complete failure is required before retry");
+      const found = await load(id), r = found.value;
+      const tx = action === "claim" ? r.tx : r.spend;
+      const observedId = action === "claim" ? status.transactionId : status.spendTransactionId;
+      if (r.role !== "receiver" || !tx || tx.phase !== "failed" || tx.transactionId !== observedId || !tx.transactionId || !tx.transactionHash || !tx.blockHash || tx.blockHeight === undefined) throw new Error("Attempt changed; reconcile before retry");
+      r.failedAttempts = [...(r.failedAttempts ?? []), { action, transactionId: tx.transactionId, transactionHash: tx.transactionHash, blockHash: tx.blockHash, blockHeight: tx.blockHeight }];
+      if (action === "claim") { r.tx = { phase: "draft" }; delete r.input; delete r.output; }
+      else { delete r.spend; delete r.spendRecipient; delete r.spendBaseline; }
+      await wallet.guard();
+      // One atomic CAS archives the old attempt and resets only the failed leg.
+      // Conflicts or storage errors prevent reset; this operation never signs.
+      await writeRecord(store, id, r, found.revision);
+      observations.delete(id);
+      return reconcile(id);
+    },
     async list() { const out: PaymentView[] = []; for (const id of await store.keys()) { if (/^[sr]_/.test(id)) out.push(view(id, (await load(id)).value)); } return out; },
     async create(amount: string) {
       if (!/^[1-9][0-9]{0,38}$/.test(amount) || BigInt(amount) > MAX_AMOUNT) throw new Error("Enter a positive whole number of test units");

@@ -84,7 +84,14 @@ controlled spend, encrypted recovery and public receipts.
 
 Balance observations alone cannot prove conservation or independent wallets.
 Imported phases do not enable sharing or certify receipts without reconciliation.
-A definitive failed transaction remains recorded; there is no blind retry.
+A definitive failed transaction remains recorded. Claim/spend retries require a
+fresh authenticated observation with status FAILURE, never PARTIAL_SUCCESS,
+unknown, missing or successful. Claim retry additionally checks that the funded
+note remains unspent; spend retry checks the original successful claim and wallet
+balance. An atomic encrypted write archives the failed identifier/block and resets
+only that leg. The next proof/approval is explicit; no reset signs or submits.
+Reload/import does not enable retry until reconciliation. Earlier attempt history
+survives encrypted export/import. A failed reconciliation clears cached flags.
 
 ## Claim transport and recovery
 
