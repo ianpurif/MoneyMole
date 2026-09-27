@@ -9,7 +9,7 @@ try {
   const pageErrors = [];
   page.on('pageerror', () => pageErrors.push('page_error'));
   stage = 'local production app and hydration';
-  const response = await page.goto('http://127.0.0.1:3000', {timeout:30000});
+  const response = await page.goto('http://localhost:3000', {timeout:30000});
   assert.equal(response.status(), 200);
   await page.getByRole('button', {name:'Check for 1AM'}).waitFor();
   stage = 'browser CSP, prover CORS and read-only Preprod access';
@@ -31,7 +31,7 @@ try {
     return result;
   }, preprod);
   assert(Object.values(checks).every(v => v === true)); assert.equal(pageErrors.length,0);
-  const report = {scope:'production_browser_csp_cors_and_read_only_preprod_connectivity',result:'passed',observedAt:new Date().toISOString(),origin:'http://127.0.0.1:3000',checks,limitations:['Fresh isolated Chromium; no real wallet extension','Prover malformed POST rejection only; actual proof generation recorded separately','No signing or live transaction']};
+  const report = {scope:'production_browser_csp_cors_and_read_only_preprod_connectivity',result:'passed',observedAt:new Date().toISOString(),origin:'http://localhost:3000',checks,limitations:['Fresh isolated Chromium; no real wallet extension','Prover malformed POST rejection only; actual proof generation recorded separately','No signing or live transaction']};
   writeFileSync('reports/browser-connectivity.json',JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify(report,null,2));
 } catch {

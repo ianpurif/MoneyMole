@@ -1,6 +1,6 @@
 # Using MoneyMole with Preprod NIGHT
 
-1. Run the production app at http://127.0.0.1:3000 and the local prover at port 6300.
+1. Run the production app at http://localhost:3000 and the local prover at port 6300.
    Use Node 22.16.0/npm 10.9.2 and config/preprod.json. .env.local only needs the
    public PROOF_SERVER_PORT=6300 setting. No wallet secret or issuer setup is needed.
 2. Chrome/A and Brave/B: Check for 1AM, Connect 1AM, manually approve Preprod.
@@ -28,3 +28,27 @@ NIGHT transfers publicly reveal amounts/addresses. Claim secrets and recovery
 remain client-side. Anyone holding a link can claim, including its sender. There
 is no expiry/refund. Never publish live links or discard encrypted backups.
 See OWNER-TESTING.md for exact manual failure/recovery and read-only verification.
+
+## Connection and local recovery
+
+Use **http://localhost:3000** consistently. A wallet connection remains in memory
+across MoneyMole client navigation. Temporary connector or DUST reads retain that
+connection and retry automatically; payment operations still require a successful
+current identity check. A confirmed disconnect, changed account, or changed network
+invalidates it. Disconnect clears the local connection without deleting encrypted
+records or revoking extension permissions.
+
+Connector v4 has no passive restore method. A full reload or a new tab requires an
+explicit Connect 1AM click; the app never opens authorization prompts on its own.
+The private payment workspace independently locks when the tab is hidden or after
+five minutes. Unlocking those records is separate from connecting the wallet.
+
+Browser storage is origin-specific. Records previously saved at 127.0.0.1 are not
+visible at localhost and have not been deleted. If needed, open the original origin,
+use its existing encrypted export, and import on localhost with the same wallet,
+escrow and original export passphrase. Never redeploy to replace missing local data
+or enter a wallet seed. Keep the encrypted export private.
+
+The wallet card keeps Send, Receive, Activity, Tools, Disconnect and (when unlocked)
+Lock workspace visible. Scroll inside the main card to reach details, recovery and
+escrow setup; expanding content does not resize the card.

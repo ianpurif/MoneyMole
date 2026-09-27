@@ -32,6 +32,7 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await page.locator(".state-view").evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)));
   await page.screenshot({path:"reports/revision/saved-draft.png"});
   await page.setViewportSize({width:390,height:844});
+  await page.getByRole("button",{name:"Prepare funding",exact:true}).scrollIntoViewIfNeeded();
   const prepareBox = await page.getByRole("button",{name:"Prepare funding",exact:true}).boundingBox();
   expect(prepareBox!.y + prepareBox!.height).toBeLessThan(844);
   await page.screenshot({path:"reports/revision/saved-draft-mobile.png"});
@@ -43,7 +44,10 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await expect(page.getByLabel("Select payment")).toBeVisible({timeout:60_000});
   await page.getByLabel("Select payment").selectOption({index:1});
   await expect(page.getByText("funding not verified this session",{exact:false})).toBeHidden();
+  const beforeExpand = await page.locator(".payment-app").boundingBox();
   await page.getByText("Transaction details",{exact:true}).click();
+  expect((await page.locator(".payment-app").boundingBox())!.height).toBe(beforeExpand!.height);
+  expect(await page.locator(".wallet-scroll").evaluate(el => el.scrollHeight > el.clientHeight)).toBe(true);
   await expect(page.getByText("funding not verified this session",{exact:false})).toBeVisible();
   await page.getByRole("button",{name:"Receive",exact:true}).click();
   await expect(page.getByLabel("Claim link or token")).toBeVisible();
@@ -59,6 +63,7 @@ for (const width of [320,390,768,1440]) {
   test(`responsive actions remain focused at ${width}px`, async ({page}) => {
     await page.setViewportSize({width,height:900});
     await page.goto("/");
+    const frame = await page.locator(".payment-app").boundingBox();
     await page.getByRole("button",{name:"Receive",exact:true}).click();
     await expect(page.getByRole("heading",{name:"A payment, just a link away."})).toBeVisible();
     await expect(page.getByLabel("Amount in NIGHT")).toHaveCount(0);
@@ -66,6 +71,8 @@ for (const width of [320,390,768,1440]) {
     await expect(page.getByRole("heading",{name:"Your payments live with you."})).toBeVisible();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.getByRole("button",{name:"Send",exact:true}).click();
+    expect((await page.locator(".payment-app").boundingBox())!.height).toBe(frame!.height);
+    await page.getByRole("button",{name:"Check for 1AM"}).scrollIntoViewIfNeeded();
     const box=await page.getByRole("button",{name:"Check for 1AM"}).boundingBox();
     expect(box!.y+box!.height).toBeLessThan(900);
   });

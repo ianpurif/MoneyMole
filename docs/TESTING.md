@@ -71,3 +71,15 @@ build with an explicitly synthetic 1AM fixture. Real local proving tests both
 circuit constraints and SDK fund/claim transaction construction/proof serialization.
 None signs, seals or submits a real NIGHT payment. Current results are recorded in
 STATUS.md and docs/evidence/night-verification.json when completed.
+
+## Wallet connection and fixed card regression
+
+`tests/unit/oneam.test.ts` distinguishes explicit wallet invalidation from temporary
+read failures, tests bounded read timeouts and post-approval retries, and checks
+DUST readiness independently. `tests/browser/wallet-session.spec.ts` exercises
+synthetic polling over minutes, client navigation, manual disconnect, account
+changes and absence of automatic reload authorization. The redesign suite verifies
+stable card bounds, internal scrolling and the real encrypted saved-record flow.
+These fixtures do not establish real 1AM extension acceptance. Manually approve a
+connection at localhost:3000, leave it connected, switch focus, and navigate home;
+only observed results can establish stability with the owner's installed extension.

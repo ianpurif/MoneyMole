@@ -85,7 +85,7 @@ The installer command explicitly executes the repository-reviewed pinned install
 inspect scripts/install-compact.mjs on a new host. Legacy compiles preserve historical
 identities and regression coverage; they do not issue anything. generated managed/
 code and keys are reproducible ignored artifacts, not fabricated checked-in output.
-Keep the final app process running and open http://127.0.0.1:3000. Stop the app
+Keep the final app process running and open http://localhost:3000. Stop the app
 before rebuilding. The proof server listens at http://127.0.0.1:6300.
 
 On the already configured Windows host, prefix each npm command with

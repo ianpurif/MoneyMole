@@ -33,8 +33,8 @@ handle and shut it down deliberately when done.
 | `check:offline` | `node scripts/offline.mjs` | Source consistency and Node utility tests only; may pass with product blocked. |
 | `test:boilerplate` | `node --experimental-strip-types --test tests/boilerplate/*.test.mjs` | Dependency-free utility assertions only, no payment acceptance. |
 | `verify:boilerplate` | `node scripts/verify-boilerplate.mjs` | Full preparation gate; missing graph/tools/client validation produces nonzero. |
-| `dev` | `next dev --webpack --hostname 127.0.0.1` | Starts the Next application after dependencies are resolved; Ctrl-C stops it. |
-| `start` | `next start --hostname 127.0.0.1` | Serves an existing production build locally. |
+| `dev` | `next dev --webpack --hostname localhost` | Starts the Next application after dependencies are resolved; Ctrl-C stops it. |
+| `start` | `next start --hostname localhost` | Serves an existing production build locally. |
 | `lint` | `eslint . --max-warnings=0` | ESLint strict; warnings are failures. |
 | `typecheck` | `tsc --noEmit` | Full project TypeScript, requires installed packages. |
 | `build` | `next build --webpack` | Next production build with browser WebAssembly; no simulated product acceptance. |
@@ -46,7 +46,7 @@ handle and shut it down deliberately when done.
 | `compile:issuance` | `node scripts/compile.mjs --issuance` | Legacy issuer regression only; never needed to pay NIGHT. |
 | `verify:artifacts` | `node scripts/product.mjs artifacts` | Checks all compiler output hashes, circuit keys/IR, source hashes and installed runtime compatibility. |
 | `verify:issuer` | `node scripts/verify-issuer.mjs` | Read-only real Preprod issuer deployment/state/verifier checks against the preserved record; does not verify payment escrow or acceptance. |
-| `verify:connectivity` | `node scripts/verify-browser-connectivity.mjs` | Fresh Chromium checks the running app at 127.0.0.1:3000, expected malformed POST rejection over local prover CORS, and real read-only Preprod indexer/RPC fetches. No wallet or transaction. |
+| `verify:connectivity` | `node scripts/verify-browser-connectivity.mjs` | Fresh Chromium checks the running app at localhost:3000, expected malformed POST rejection over local prover CORS, and real read-only Preprod indexer/RPC fetches. No wallet or transaction. |
 | `test:contracts` | `node scripts/product.mjs contracts` | 25 synthetic cases execute current NIGHT and preserved legacy contracts; no ledger settlement. |
 | `test:integration` | `node scripts/product.mjs integration` | Production payment controller, encrypted saved-record reload/import and confirmed-failure retries with fake IndexedDB and synthetic protocol boundaries; no live payment acceptance. |
 | `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
