@@ -5,5 +5,11 @@
   "indexerHttp": "https://indexer.preprod.midnight.network/api/v4/graphql",
   "indexerWs": "wss://indexer.preprod.midnight.network/api/v4/graphql/ws",
   "nodeRpc": "https://rpc.preprod.midnight.network",
-  "proofServer": "http://127.0.0.1:6300"
+  "proofServer": "http://127.0.0.1:6300",
+  "paymentAsset": {
+    "symbol": "NIGHT",
+    "kind": "unshielded",
+    "decimals": 6,
+    "protocolVersion": 2
+  }
 }

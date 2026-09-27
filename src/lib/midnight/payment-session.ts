@@ -13,7 +13,8 @@ import { bech32m } from "@scure/base";
 
 export const ISSUER = preprod.issuerAddress;
 export function paymentAsset() { return nativeToken().raw; }
-export const NIGHT_DECIMALS = 6;
+export const NIGHT_DECIMALS = preprod.paymentAsset.decimals;
+if (preprod.paymentAsset.symbol !== "NIGHT" || preprod.paymentAsset.kind !== "unshielded" || NIGHT_DECIMALS !== 6 || preprod.paymentAsset.protocolVersion !== 2) throw new Error("Unsupported NIGHT configuration");
 export type TxPhase = "draft" | "prepared" | "authorization_requested" | "outcome_unknown" | "submitted" | "finalized" | "failed";
 export type TxRecord = { phase: TxPhase; transaction?: string; transactionId?: string; transactionHash?: string; blockHash?: string; blockHeight?: number };
 export function validateTx(value: TxRecord) {
