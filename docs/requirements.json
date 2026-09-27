@@ -30,7 +30,7 @@
       "level": "Preparation",
       "title": "Real pinned dependency graph",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Generate registry-resolved package-lock.json, run npm ci and record exact installed versions.",
       "commands": [
@@ -66,7 +66,7 @@
       "level": "Preparation",
       "title": "Next.js application foundation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "PREP-LOCK"
       ],
@@ -542,7 +542,7 @@
       "level": "Preparation",
       "title": "Bounded fail-closed tooling",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred.",
       "commands": [
@@ -1003,7 +1003,7 @@
       "level": "Level 1",
       "title": "Docker toolchain",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Docker engine, Compose and pinned local proof image run; browser reachability is checked.",
       "commands": [],

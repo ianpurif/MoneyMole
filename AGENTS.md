@@ -1,6 +1,11 @@
 # Private Payments: repository operating rules
 
 ## Current owner directive — autonomous local setup and verification
+Finish all engineering remediation before asking for wallet actions: safe retries
+after observed final failures, real saved-record integration coverage, dependency
+audit fixes and maintainable public configuration. Reverify changed subjects;
+retain original issuer records and never treat a partial/unknown outcome as failed.
+
 Own the local Node/NVM, dependency, environment, Docker/prover and application
 setup. Configure `.env.local` directly with real local/test settings. Run all
 available compilation, artifact, lint, type, unit, contract, integration, proving,

@@ -1,6 +1,15 @@
 # Current execution state
 
-Snapshot: 2026-09-26. **Local setup and application verification complete; real wallet E2E pending.**
+Snapshot: 2026-09-27. **Engineering remediation in progress; wallet E2E pending.**
+The owner requested confirmed-failure retry, actual controller recovery tests,
+dependency security updates and public configuration consolidation before wallet
+actions. The audit found five dev/build dependency findings (two high), no retry
+path for failed saved claims/spends, and helper-only recovery integration coverage.
+Historical results below describe the previous revision. Source-dependent verified
+requirements are temporarily implemented until the complete rerun supplies evidence.
+
+## Previous verified snapshot (2026-09-26)
+
 Active milestone: M1 owner wallet acceptance. The latest owner directive authorizes
 all local setup and verification. All automatable application checks passed; keep
 progressing after the owner completes the next private browser action. Never

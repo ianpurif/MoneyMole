@@ -1,6 +1,12 @@
 # Build MoneyMole — Private Payments
 
 ## Current owner directive — complete local setup and verification
+2026-09-27 follow-up: finish confirmed-failure claim/spend retry, exercise the
+actual saved-payment controller in integration tests, patch audited dependencies,
+and consolidate public runtime settings. Rerun every local readiness layer before
+returning wallet steps. Preserve deployed identity and unknown outcomes. Historical
+verification is not current evidence after a source or dependency change.
+
 Take ownership of Node/NVM, dependencies, `.env.local`, Docker/prover and app
 startup. Run every available local verification layer and read-only chain check,
 fix failures and continue until only genuine manual actions remain. This replaces
