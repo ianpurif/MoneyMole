@@ -34,7 +34,8 @@ test("temporary failures and minutes of polling retain one authorized session", 
   await expect(page.locator(".connection-status")).toContainText("DUST balance is temporarily unavailable");
   await mode(page, "offline");
   await expect(page.locator(".connection-status")).toContainText("Connection retained");
-  await page.clock.fastForward(180_000);
+  await page.clock.runFor(180_000);
+  expect((await probe(page)).reads).toBeGreaterThanOrEqual(14);
   await expect(page.getByRole("button", {name:"Disconnect",exact:true})).toBeVisible();
   await page.evaluate(() => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.dustFails = false; });
   await mode(page, "ready");
