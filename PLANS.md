@@ -75,7 +75,7 @@ private keys, claim secrets, coin openings or private state in logs, APIs, artif
 or tool output. Deployment, asset issuance and every live transaction require
 explicit owner approval before execution. Connection/signing prompts are manual
 owner actions. Commit every meaningful codebase change separately with a clear,
-concise message; local commits are authorized, pushes and history rewrites are not.
+concise message; local commits and pushes to ianpurif/MoneyMole are authorized; history rewrites are not.
 
 
 ## Current owner directive — publish verified submission work (2026-09-27)

@@ -70,5 +70,5 @@ utility alone. Never disclose private payment relationships to meet an evidence 
 ## Meaningful history
 `history:inspect` reads existing Git history only. Planned milestones in `COMMITS.md`
 are suggestions, not fabricated events. Standing owner authorization permits a concise local commit after every logical
-change. Pushes and history rewrites remain separately unauthorized. Never alter timestamps/author identity or rewrite history to meet
+change. Pushes to ianpurif/MoneyMole are now owner-authorized; history rewrites remain unauthorized. Never alter timestamps/author identity or rewrite history to meet
 counts. A numeric count alone does not prove meaningful engineering.

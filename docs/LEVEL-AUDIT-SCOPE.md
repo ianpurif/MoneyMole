@@ -11,7 +11,7 @@ profile to the owner and exclude it from this audit's verdict for now. The full
 Level 4 submission checklist still needs that profile when the owner provides it.
 Use the stricter Level 6 checklist threshold of 30 meaningful commits; local
 history and published history are distinct. Do not manufacture commits or evidence.
-Standing restrictions still apply: no push and no deployment, issuance or live
+Earlier audit restrictions: no push and no deployment, issuance or live
 transaction without explicit owner approval. Public account creation/publication
 and missing account authorization cannot be silently substituted with local files.
 
