@@ -1,5 +1,16 @@
 # M3 — Integrate 1AM and the actual link/QR flow
 
+## Current native NIGHT milestone (2026-09-27)
+
+1AM native balances/transfers, six-decimal amount UI, mm2 links and local QR implemented; real extension/optical QA pending.
+
+Execute BUILD.md, ADR 007, STATUS.md and OWNER-TESTING.md. Use native Preprod
+NIGHT (six decimals) and DUST only for fees; no custom asset issuance. Preserve
+legacy records. Commit logical engineering changes and keep wallet approvals
+manual. Local checks never establish live finality or independent wallet control.
+
+## Historical pre-NIGHT plan (superseded asset details)
+
 State: implementation complete; seven production-browser security and synthetic-wallet tests passed, plus real browser prover/API connectivity. Actual 1AM signing and independent-wallet payment acceptance remain owner-pending.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.

@@ -1,14 +1,27 @@
 # Current execution state
 
-## Native NIGHT migration in progress — 2026-09-27
+## Native NIGHT migration — 2026-09-27
 
-The owner replaced the custom shielded test-token scope with native Preprod NIGHT
-payments, with DUST only for fees. ADR 006 defines the migration and its public
-amount/address disclosure. Existing evidence below covers the previous asset and
-does not establish NIGHT implementation or acceptance. Preserve legacy recovery
-and issuer identity. No deployment, issuance or transaction is authorized by this
-engineering change. Local `.codex/config.toml` edits and untracked REVISION.md
-predate this work and are not part of the migration.
+Native NIGHT implementation is present: separate fund/claim contract, six-decimal
+NIGHT UI, unshielded wallet balance/transfer APIs, exact native payout validation,
+mm2 links, schema-v2 encrypted payment/deployment recovery and no issuer UI.
+DUST remains fees only. NIGHT amounts/addresses are public; bearer secrets and
+private recovery stay in the browser/trusted prover. ADR 007 records the change.
+
+Fresh local runs passed: build, lint/types, 46 unit, 25 generated-contract,
+22 production saved-record integration and 15 production-browser tests. Real
+synthetic circuit and SDK fund/claim transaction proofs passed locally. The
+browser run exposed an initial hydration timing bug, fixed and rerun successfully.
+The comprehensive clean-install preparation wrapper is running; final gate and
+publication evidence will be recorded in docs/evidence/night-verification.json.
+
+No compatible native NIGHT escrow is yet observed on Preprod. The original issuer
+is historical and must not be redeployed/issued for this flow. Complete manual
+NIGHT deployment, A funding, B claim/spend, QR/replay and recovery acceptance via
+docs/OWNER-TESTING.md. Wallet approvals remain manual; no live NIGHT acceptance or
+new Level pass is claimed. Existing old records stay untouched in v1 namespaces.
+Local .codex/config.toml and untracked REVISION.md predate this migration and are
+not part of the work. All sections below are historical pre-NIGHT checkpoints.
 
 ## Frontend revision — 2026-09-27, local only
 

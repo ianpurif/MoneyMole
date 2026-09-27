@@ -1,72 +1,57 @@
-# Product specification
+# MoneyMole product specification
 
-## Application stack and privacy boundary
+MoneyMole sends native NIGHT on Midnight Preprod through sender-funded bearer links
+and locally generated QR codes. Wallet A deposits NIGHT; independent Wallet B
+claims exactly that NIGHT. DUST pays transaction fees only. There is no application
+mint, custom token, wrapping, conversion, fiat backing or mainnet payment.
 
-Use **Next.js App Router for both frontend and backend**, **TypeScript**, and
-**Tailwind CSS**. Backend HTTP APIs belong in `src/app/api/**/route.ts` using Next.js
-Route Handlers. Use Server Actions only for appropriate non-secret UI mutations,
-with validated inputs and authorization. Put server-only modules in
-`src/lib/server/` and mark them with `import "server-only"`.
+Use Next.js App Router for frontend and backend, TypeScript and Tailwind CSS.
+Backend HTTP APIs use src/app/api/**/route.ts; server-only modules live under
+src/lib/server/ and import "server-only". Server Actions are appropriate only for
+non-secret validated/authorized mutations. No Express/NestJS/Fastify or separate
+application backend without a verified requirement and ADR. The local proof server
+is a protocol tool. 1AM authorization, secrets, witnesses and encrypted private
+state stay client-side; they never enter Next APIs, actions, props or logs.
 
-No Express, NestJS, Fastify or separate backend service unless a verified technical
-requirement is recorded in an ADR. The trusted local proof service is a protocol
-tool, not a separate application backend. Add endpoints only for an actual need.
-1AM wallet authorization, claim secrets, private witnesses and private-state
-handling remain client-side. Never pass these secrets to Next.js API routes,
-Server Actions, server components, server-rendered props, logs or telemetry.
-Browser-to-trusted-local-prover traffic stays outside the Next.js backend.
+## Asset and disclosure
 
+NIGHT is unshielded: amounts, addresses and transfer relationships are public.
+Only bearer authority, payment nonce and encrypted recovery remain private.
+One NIGHT is 1,000,000 STAR. Accept positive decimal strings with up to six digits
+after the decimal point; convert with integer arithmetic to Uint128 STAR.
+Never reinterpret earlier zero-decimal issuer tokens as NIGHT.
 
-## Scope and direction
-Product name: **MoneyMole**. Category: payment application on Midnight.
-People sending money, freelancers receiving client payments and small businesses
-are the intended users. The single MVP direction is sender-funded value transfer.
-A client funds a link and gives it to the freelancer. A freelancer-originated
-request for a client to pay is a distinct, deferred feature.
+## Required behavior
 
-Expected flow: connect wallet -> select one supported shielded asset and amount ->
-authorize funding -> verify funding -> share bearer link/local QR -> independent
-receiver connects and claims -> verify actual credit and spendability. There is
-a complete candidate implementation; real E2E acceptance remains owner-pending.
+Connect 1AM on Preprod, select a verified NIGHT escrow, unlock local recovery,
+save a draft, prepare a proof, approve funding, observe canonical finality, and
+only then share the claim link/QR. The receiver verifies funding, saves the claim,
+prepares a proof, approves, reconciles finality and checks the NIGHT balance delta.
+A separately approved controlled spend to another wallet establishes spendability.
+Record each wallet's initial NIGHT balance; B may already hold NIGHT for DUST
+capacity. Keep unrelated transfers out of the controlled verification interval.
 
-## Product invariants
-A shareable payment represents funded, finalized value, never a promise to mint.
-A claim transfers exactly the funded asset/amount, atomically prevents reuse and
-cannot be redirected by someone who has only a copied proof. Anyone with the
-secret itself can compete to claim. Claims must remain possible after the sender
-closes the browser. Neither application hosting nor a central signing service
-may be required to control the escrowed asset.
+A claim must consume existing escrowed value without minting. Contract membership,
+deployment/asset/amount/secret bindings and one-time nullifiers prevent forged or
+repeated claims. The proof binds its public destination; possession of the bearer
+secret itself allows choosing a recipient. The sender can also claim their link.
+No recipient identity restriction, expiry or refund is implemented. Lost recovery
+and lost bearer authority can make funds permanently inaccessible.
 
-Use one verified shielded asset; the initial default is a separately issued,
-explicitly non-redeemable Preprod test asset. Fee readiness is separate from
-payment balance. No fiat backing, exchange rate or stable value is implied.
+Persist intent before proving/signing and identifiers before submission. Unknown
+or partial outcomes permit reconciliation only. Confirmed wholly failed claims
+and spends can be reset after fresh chain checks; retain failed attempt history.
+Imported/reloaded records are unverified until reconciled. Account/network changes
+lock the session. Private state locks on hidden tabs and after five minutes.
 
-## Explicit exclusions and consequences
-No fiat conversion, bridges, swaps, multiple chains, recurring payments, marketplace,
-subscriptions, AI feature, central user account or request-to-pay in the MVP.
-Expiry, refund and recipient restrictions are deferred unless a documented security
-flaw requires a narrow change. There is no automatic recovery. A lost claim secret
-can make value permanently inaccessible; an encrypted sender export can preserve
-access but must not imply exclusive receiver ownership.
+## Migration and acceptance
 
-## Expected application states
-Funding: editable draft -> encrypted recoverable draft -> wallet authorization ->
-submitted/unknown -> included -> finalized -> sharing enabled. A submitted transaction
-is not funded evidence. A synchronized wallet is not proof of another wallet's credit.
-Claiming: strict local payload decode -> validate deployment/network -> local unlock
-and wallet readiness -> claim proof and authorization -> finality -> wallet discovery
--> receiver spendability check -> chain-verified receipt. Imported records stay
-marked local/unverified until reconciled.
+Protocol v2 uses native NIGHT, mm2 fragments and schema-v2 encrypted namespaces.
+Old mm1 tokens, issuer assets and old escrow verifier keys fail closed. Preserve
+legacy contracts, original deployment records and encrypted browser stores for
+historical recovery; never deploy the old issuer as part of NIGHT setup.
 
-Unknown outcomes expose a reconciliation action instead of another submit. Wallet
-rejection preserves the draft. Insufficient asset or fees cannot show success.
-Reload/reconnect uses the same encrypted namespace; switching wallets cannot silently
-show another wallet's private records. Amount entry uses integer atomic units and the supported test asset's declared
-zero decimals; do not infer decimals from a token symbol.
-
-## Definition of usefulness
-The engineering result is a receiver-redeemable funded capability, not merely a
-private note. Privacy is limited by the proven circuit behavior, client delivery,
-proof provider trust and network metadata. Claims remain conditional until M1/M5
-observations establish them. Requirement and external qualification states live in
-`requirements.json`; product eligibility approval remains owner-pending.
+Native engineering checks and real wallet acceptance are distinct. Real NIGHT
+escrow deployment, independent-wallet credit/spend, optical QR, recovery and live
+privacy inspection remain pending until observed. Organizer requirements are
+preserved separately; a public NIGHT transfer does not satisfy hidden-amount claims.

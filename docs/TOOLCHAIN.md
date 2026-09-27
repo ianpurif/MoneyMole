@@ -146,3 +146,12 @@ The preserved toolchain.lock.json belongs to the original deployed issuer
 fingerprint. Its historical Codex version is not the current launcher selection.
 Use current package.json/package-lock.json and local-verification.json for the
 security-patched build/test graph and installed client observations.
+
+## Native NIGHT v2 (2026-09-27)
+
+Same pinned compiler/runtime/prover. Compile product with compile:contracts
+(night-payments); compile:legacy and compile:issuance preserve historical artifacts.
+No issuance is part of NIGHT setup. config/preprod.json.paymentAsset records NIGHT,
+unshielded, six decimals and protocol v2; nativeToken().raw supplies native identity.
+New public schema-v2 escrow records are exported by the browser, not supplied in
+.env.local. Original issuerAddress/assetDomain remain only for legacy continuity.

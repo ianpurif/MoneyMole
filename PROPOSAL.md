@@ -14,18 +14,20 @@ People sending funds, freelancers receiving client payments and small businesses
 are the intended users. This is a product hypothesis, not measured market evidence.
 
 ## Proposed solution
-A sender authorizes funding of one shielded asset into a Compact payment contract.
+A sender authorizes funding of native Preprod NIGHT into a Compact payment contract.
 After actual funding finality, a locally generated bearer link and QR let a separate
 receiver wallet claim the same value once. The receiver initiates the transaction
 and must obtain a discoverable, spendable output without sender-browser access.
-No mint-on-claim, central signer or unshielded fallback can satisfy the proposal.
+No mint-on-claim, custom issuer asset or central signer can satisfy the proposal.
+NIGHT is unshielded: public amounts/addresses are an explicit owner-directed
+scope change (ADR 007). Bearer authorization remains private.
 
 ## Technical distinction and validation
 Private authority plus audited public commitment/nullifier state aim to authorize
 single use while avoiding raw amount and sender-receiver disclosure. This construction
 is conditional on the funding/qualification/claim feasibility slice, generated
 transcript audit and independent-wallet acceptance. The protocol is not claimed
-superior or private merely because the underlying asset is shielded.
+anonymous or amount-private: the underlying NIGHT transfer is public.
 
 ## Delivery and risks
 M0 establishes tools and dependency compatibility; M1 proves actual cross-wallet

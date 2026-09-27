@@ -41,12 +41,13 @@ handle and shut it down deliberately when done.
 | `test:unit` | `vitest run --project unit` | Installed Vitest deterministic suite; no empty test pass. |
 | `compile:probe` | `node scripts/compile.mjs --probe` | Compiler-only nonpayment witness probe; no product qualification. |
 | `compile:coin-probe` | `node scripts/compile.mjs --coin-probe` | M1 private shielded I/O compiler diagnostic; lacks authorization, never deploy/fund. |
-| `compile:contracts` | `node scripts/compile.mjs --product` | Actual payment contract compilation; missing implementation blocks. |
-| `compile:issuance` | `node scripts/compile.mjs --issuance` | Separate fixed-supply test issuer; no deployment or mint transaction. |
+| `compile:contracts` | `node scripts/compile.mjs --product` | Native NIGHT escrow compilation (fund/claim). |
+| `compile:legacy` | `node scripts/compile.mjs --legacy` | Preserve historical shielded contract artifacts; not the NIGHT payment asset. |
+| `compile:issuance` | `node scripts/compile.mjs --issuance` | Legacy issuer regression only; never needed to pay NIGHT. |
 | `verify:artifacts` | `node scripts/product.mjs artifacts` | Checks all compiler output hashes, circuit keys/IR, source hashes and installed runtime compatibility. |
 | `verify:issuer` | `node scripts/verify-issuer.mjs` | Read-only real Preprod issuer deployment/state/verifier checks against the preserved record; does not verify payment escrow or acceptance. |
 | `verify:connectivity` | `node scripts/verify-browser-connectivity.mjs` | Fresh Chromium checks the running app at 127.0.0.1:3000, expected malformed POST rejection over local prover CORS, and real read-only Preprod indexer/RPC fetches. No wallet or transaction. |
-| `test:contracts` | `node scripts/product.mjs contracts` | 13 synthetic cases execute actual generated contracts; no ledger settlement. |
+| `test:contracts` | `node scripts/product.mjs contracts` | 25 synthetic cases execute current NIGHT and preserved legacy contracts; no ledger settlement. |
 | `test:integration` | `node scripts/product.mjs integration` | Production payment controller, encrypted saved-record reload/import and confirmed-failure retries with fake IndexedDB and synthetic protocol boundaries; no live payment acceptance. |
 | `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
 | `test:preprod` | `node scripts/product.mjs preprod` | Read-only real chain checks; requires --manifest with observed funding/claim/spend IDs. See OWNER-TESTING.md. |
@@ -111,7 +112,7 @@ Use WSL for dependency installation, builds and tests; do not mix Windows and
 Linux native packages in one node_modules directory. `.env.local` contains the
 public `PROOF_SERVER_PORT=6300` setting. `npm run services:*` resolves process env,
 then `.env.local`, then `.env` and passes the same validated port to Compose.
-The app pins public Preprod endpoints and issuer in config/preprod.json, shared by browser, CSP and CLI; unused NEXT_PUBLIC variables do not
+The app pins public Preprod endpoints and native NIGHT metadata (plus historical issuer identity) in config/preprod.json, shared by browser, CSP and CLI; unused NEXT_PUBLIC variables do not
 configure wallet authority or contract selection. Select the escrow in the browser.
 This host's ignored WSL launcher sets `MONEYMOLE_CODEX_WINDOWS=1` when reusing the
 installed Windows Codex CLI. The read-only diagnostics translate the workspace

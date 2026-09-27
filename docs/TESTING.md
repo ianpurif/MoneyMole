@@ -8,12 +8,12 @@ payment acceptance. `tests/unit` is the installed Vitest execution layer;
 
 | ID | Scenario | Layers | Required observation |
 |---|---|---|---|
-| T01 | Actual value conservation | contract, proving, live | Sender/escrow/receiver shielded amounts reconcile; claim has no mint; DUST accounted separately. |
-| T02 | Independent receiver | live, actual 1AM | Sender context unavailable; B obtains and spends the funded coin. |
+| T01 | Actual value conservation | contract, proving, live | Sender/escrow/receiver native NIGHT amounts reconcile; claim has no mint; DUST accounted separately. |
+| T02 | Independent receiver | live, actual 1AM | Sender context unavailable; B obtains and spends the funded NIGHT. |
 | T03 | Wrong secret | unit, contract, proving | Claim rejected; funded value remains unchanged. |
 | T04 | Tampered amount/asset | codec, contract, proving | No substituted color or amount can settle. |
 | T05 | Wrong network/contract | contract, live | Cross-domain and cross-deployment claim cannot consume a note. |
-| T06 | Wrong coin/qualification/path | contract, proving | Merkle position and opening correspond to the real escrow coin. |
+| T06 | Wrong note/path/balance | contract, proving | Membership binds the funded NIGHT note and escrow has enough native balance. |
 | T07 | Destination substitution/copied proof | proving, live | Copied proof cannot redirect the receiver output. |
 | T08 | Duplicate/concurrent claims | contract, live | At most one settlement and one receiver output; rejected competitor is not a success. |
 | T09 | Zero/negative/overflow/precision | unit, contract | Invalid amounts fail at the appropriate boundary; no float math. |
@@ -26,12 +26,12 @@ payment acceptance. `tests/unit` is the installed Vitest execution layer;
 | T16 | Malformed/oversized claim payload | unit, browser | Strict bounds and schema rejection, no raw payload logging. |
 | T17 | Corrupted ciphertext/wrong unlock | unit, browser | Authenticated failure without destroying original data. |
 | T18 | Imported receipt | integration, browser | Remains local/unverified until actual contract/transaction matches. |
-| T19 | Explicit and implicit disclosures | compiled audit, proving, live | Inspected public data contains no unintended openings, raw amount or participant mapping. |
+| T19 | Explicit and implicit disclosures | compiled audit, proving, live | Public NIGHT amounts/addresses are expected; no bearer authority, nonce or decrypted recovery leaks. This does not establish hidden-amount privacy. |
 | T20 | Fragment and QR privacy | browser, network inspection | No secret to server/resources/referrer; scrubbed address; local QR round trip with measured bounds. |
-| T21 | State migration/concurrent tab | unit, integration | Atomic writes and safe old-version recovery; no lost funded intent. |
-| T22 | Old deployment continuity | integration, live | Funded notes on earlier retained contracts remain discoverable/claimable. |
+| T21 | State migration/concurrent tab | unit, integration | Atomic writes and safe old-version isolation/recovery; no lost funded intent. |
+| T22 | Old deployment continuity | integration, live | NIGHT deployments remain usable after reload; legacy token stores are preserved and rejected by v2, with historical revision retained for their recovery. |
 | T23 | CI source/artifact identity | local, actual remote CI | Pinned graph, compiled outputs and tested source hashes match real run. |
-| T24 | Participation evidence | local trusted review | Consent, deduplication, supported attestation verification and explicit wallet/human distinction. |
+| T24 | Participation evidence | local trusted review | Local attestation verification and wallet/human distinction; real participants are excluded from current scoped audit. |
 
 ## Layer boundaries
 Deterministic tests may mock adapters only within test fixtures. Contract tests
@@ -62,32 +62,12 @@ Actions, and server-only modules in `src/lib/server/`. Follow
 verified requirement; 1AM authorization, claim secrets, private witnesses and
 private-state handling stay client-side and never enter Next.js API routes.
 
-## Current deterministic and browser scope
-Existing unit test sources cover amount bounds, transaction recovery, native Web Crypto encryption, fake-indexeddb storage recovery/conflicts/corruption, and synthetic 1AM APIs. Browser tests use the production build and verify nonce CSP and an explicitly synthetic wallet flow. These do not establish real extension, proving or payment behavior.
+## Current local scope
 
-Current local run: the dependency-free and full unit suites, 13 generated-contract
-cases, 20 integration cases and 7 browser tests passed. The added codec cases
-exercise exact Uint128 bounds, altered fields/tags, malformed links and local QR
-size. Browser cases confirm fragment scrubbing without resource/referrer/storage
-leakage and reject oversized capture. QR generation/size is verified; a real optical
-scan and real wallet settlement remain owner acceptance. `verify:connectivity`
-checks browser access to both prover POST endpoints and real indexer/RPC queries
-from the production origin. Malformed prover input must return 400; no witness is
-used in that connectivity probe. See `docs/evidence/local-verification.json`.
-
-## Current contract and proving scope
-`test:contracts` runs 13 cases against generated Compact code, including exact
-output, altered bearer/coin/deployment, stale path, replay and separate issuance.
-`test:proving` sends synthetic preimages directly to the loopback proof service,
-checks circuit constraints and generates fund/claim/issue proofs. It records only
-outcomes and byte counts. It does not independently verify the returned proofs,
-construct a sealed transaction, establish native coin qualification or move funds.
-T01/T02/T05/T06/T07/T08/T19 still require the stronger observations in the matrix.
-
-The recovery integration suite now invokes openPayments and the production
-submission/reconciliation helpers over real AES-GCM and fake IndexedDB. Network,
-proving and wallet boundaries remain synthetic. It covers failed-leg retries,
-partial/unknown outcomes, histories, reload/import, authorization rejection and
-concurrent reset/submission. Recipient regression includes the SDK's 132-character
-Preprod shielded address; the SDK 3.1.2 default parser's 90-character bound is not
-used for that composite address. These cases are not real wallet acceptance.
+NIGHT contract tests execute compiled code; legacy cases are regression only.
+Production saved-record integration uses real AES-GCM and fake IndexedDB with
+synthetic wallet/network/proving boundaries. Browser tests use the production
+build with an explicitly synthetic 1AM fixture. Real local proving tests both
+circuit constraints and SDK fund/claim transaction construction/proof serialization.
+None signs, seals or submits a real NIGHT payment. Current results are recorded in
+STATUS.md and docs/evidence/night-verification.json when completed.

@@ -2,7 +2,7 @@
 
 ## Native NIGHT migration directive
 The payment asset is now native unshielded Preprod NIGHT, with six decimals
-(1 NIGHT = 1,000,000 STAR). DUST pays fees only. Follow ADR 006; remove custom
+(1 NIGHT = 1,000,000 STAR). DUST pays fees only. Follow ADR 007; remove custom
 issuance from the normal payment path. Public NIGHT amounts/addresses must be
 disclosed honestly. Keep secrets client-side and preserve legacy browser recovery
 and original issuer identity. Historical shielded-token evidence is not NIGHT
@@ -48,7 +48,7 @@ context only as that task requires. `docs/requirements.json` owns requirement ID
 and states; `docs/REQUIREMENTS.md` is derived. `docs/SOURCES.md` owns verified research.
 
 ## Boundaries
-Real shielded value must move between independent wallets. A counter, commitment,
+Real native NIGHT must move between independent wallets. A counter, commitment,
 proof, imported receipt or mocked balance is not a payment. Payment actions require
 explicit wallet approval and observed finality. Keep issuance separate from claiming. Never expose claim
 secrets, coin openings, private state or wallet keys in logs, artifacts or MCP calls.

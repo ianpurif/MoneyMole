@@ -1,5 +1,16 @@
 # M5 — Harden, verify and report technical readiness
 
+## Current native NIGHT milestone (2026-09-27)
+
+Run all fresh local layers and read-only gates; only observed live NIGHT evidence can complete product acceptance.
+
+Execute BUILD.md, ADR 007, STATUS.md and OWNER-TESTING.md. Use native Preprod
+NIGHT (six decimals) and DUST only for fees; no custom asset issuance. Preserve
+legacy records. Commit logical engineering changes and keep wallet approvals
+manual. Local checks never establish live finality or independent wallet control.
+
+## Historical pre-NIGHT plan (superseded asset details)
+
 State: fresh local application checks and replacement remote CI passed. Level 1 required evidence is public. Levels 2–6 await actual wallet/payment/privacy acceptance. Current owner exclusions include unsupplied organizer approval; non-sensitive publication is authorized.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.

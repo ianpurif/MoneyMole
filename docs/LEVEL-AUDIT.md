@@ -1,5 +1,6 @@
 # MoneyMole Level 1–6 audit
 
+> Historical pre-NIGHT audit. The owner changed the asset on 2026-09-27; these issuer/Level conclusions do not establish native NIGHT deployment or acceptance. Current states are in requirements.json and STATUS.md.
 Observed 2026-09-27T05:55:46.130Z. **Highest fully passed: 1. Submission-ready: no.**
 
 This report applies the current [owner scope](LEVEL-AUDIT-SCOPE.md). Videos, hosted

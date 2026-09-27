@@ -1,5 +1,16 @@
 # M4 — Finalize durable Preprod operation
 
+## Current native NIGHT milestone (2026-09-27)
+
+New NIGHT escrow requires owner-approved deployment. Original issuer is historical, not a NIGHT escrow.
+
+Execute BUILD.md, ADR 007, STATUS.md and OWNER-TESTING.md. Use native Preprod
+NIGHT (six decimals) and DUST only for fees; no custom asset issuance. Preserve
+legacy records. Commit logical engineering changes and keep wallet approvals
+manual. Local checks never establish live finality or independent wallet control.
+
+## Historical pre-NIGHT plan (superseded asset details)
+
 State: read-only issuer verification passed against indexer and finalized node chain. The original issuer remains unissued. Escrow deployment and real funding/claim/spend evidence require manual approvals; no live transaction was submitted in local verification.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.

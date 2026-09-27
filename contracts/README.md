@@ -1,17 +1,27 @@
-# Contracts
-`probes/claim-commitment.compact` is a compiled, compile-only syntax probe. It
-uses a private witness, public commitment and explicit disclosure; it transfers
-nothing and must never be deployed as the payment product. Run `npm run compile:probe`.
+# Compact contracts
 
-`private-payments.compact` is the M1 candidate: exact one-asset receipt, deployment-
-bound note, private membership, spent nullifier and exact caller-directed output.
-`issuance/test-asset.compact` is a separate one-time issuer of 1,000,000 atomic
-non-redeemable Preprod test units (proposed display precision: zero decimals).
-The owner selected this asset category; deployment and issuance are not authorized.
-Run `compile:contracts`, `compile:issuance`, `verify:artifacts`, `test:contracts`.
-Local `test:proving` needs the loopback proof service. These commands have passed
-within their recorded scope, but no sealed transaction/live payment is verified.
-Issuance may never be called during claiming.
-See `docs/tasks/M1-feasibility.md` and `docs/PRIVACY.md` before changing this directory.
+night-payments.compact is the current native NIGHT escrow. fund receives existing
+unshielded NIGHT and commits its amount/nonce/authority; claim spends the same NIGHT
+to a proof-bound UserAddress after membership and nullifier checks. DUST pays fees.
+No current payment operation issues assets. NIGHT amounts and addresses are public.
 
-The shielded-io.compact diagnostic has no authorization and MUST NEVER be deployed or funded. Its generated types use mt_index/is_some with compiler 0.31.1. See docs/disclosure-audit.md. Neither probe satisfies compile:contracts or real payment acceptance.
+Compile with Compact 0.31.1 through Linux/WSL (Windows compact.exe is unrelated):
+
+```sh
+npm run compile:contracts
+npm run compile:legacy
+npm run compile:issuance
+npm run verify:artifacts
+npm run test:contracts
+```
+
+managed/night-payments contains current generated code/keys. Legacy
+private-payments.compact and issuance/test-asset.compact retain their original
+identities and compile into separate directories; the original 1,000,000-unit
+issuer is not the payment asset. Never edit generated artifacts or redeploy a
+historical contract on restart. Product deployment needs new NIGHT verifier keys
+and explicit owner approval. Probe contracts are diagnostics: never deploy/fund.
+
+Generated tests execute 12 NIGHT cases plus 13 legacy regression cases. Local
+proving additionally constructs and proves real SDK fund/claim transactions over
+synthetic state; it never signs, seals or submits a wallet transaction.

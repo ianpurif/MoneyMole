@@ -141,3 +141,16 @@ are scope instructions, not independently sourced organizer approval of the idea
 
 The only image is the owner's supplied public/images/moneymole_logo.png. No stock
 imagery, third-party runtime resources, tracking, fonts or endorsement assets added.
+
+## Native NIGHT migration — checked 2026-09-27
+
+- Official example: https://github.com/midnightntwrk/example-private-party uses
+  receiveUnshielded(nativeToken(), ...) / sendUnshielded(..., UserAddress).
+- https://docs.midnight.network/compact/standard-library/exports documents native
+  token and unshielded transfer/balance primitives; verified by installed compiler.
+- https://docs.midnight.network/glossary defines unshielded NIGHT and atomic STAR
+  (1 NIGHT = 1,000,000 STAR); Preprod uses testnet NIGHT.
+- https://midnight.network/faq distinguishes NIGHT and DUST transaction capacity.
+- Installed dapp-connector-api 4.0.1 supports getUnshieldedAddress,
+  getUnshieldedBalances and makeTransfer kind unshielded. Real 1AM approval and
+  network settlement remain owner-observed gates, not inferred from types.

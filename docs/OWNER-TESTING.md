@@ -1,177 +1,247 @@
-# Local verification and owner wallet acceptance
+# Owner QA — native NIGHT only
 
-The prior coding pass intentionally did not run app/E2E tests. The current owner
-directive authorizes autonomous local setup and every local verification layer;
-only genuine manual wallet actions and observations remain owner-operated. This
-procedure exercises the implementation; it is not a statement that a step passed.
-Use the pinned tooling and exact compiled build. No push is required.
+This is the current v2 flow. The original 1,000,000-unit issuer and mm1 links are
+legacy; do not issue that asset or use its contract as a NIGHT escrow. NIGHT is
+unshielded: amounts and addresses are public. Use Preprod only. DUST pays fees.
+Every connection, deployment and transaction approval is your own manual action.
+Never give an agent a seed, private key, recovery passphrase or bearer link.
 
-Local setup and all application checks have now passed on this host; results are
-recorded in `docs/evidence/local-verification.json`. The current production app is
-at `http://127.0.0.1:3000` and the pinned prover at `http://127.0.0.1:6300`.
-`.env.local` is configured; no API key or wallet secret belongs there. Windows NVM
-and the project WSL launcher use Node 22.16.0 / npm 10.9.2. After a host restart,
-run from the repository in PowerShell (keep the second command's terminal open):
+## 1. Start the local prerequisites
+
+Use Docker Desktop with WSL2 integration, Linux Node 22.16.0 / npm 10.9.2, Compact
+0.31.1 and the repo's pinned dependencies. On this configured Windows host, run
+from the MoneyMole repository in PowerShell:
 
 ```powershell
+wsl --exec bash .local/run.sh node --version
+wsl --exec bash .local/run.sh npm --version
+wsl --exec bash .local/run.sh npm ci --no-audit --no-fund
 wsl --exec bash .local/run.sh npm run services:up
+wsl --exec bash .local/run.sh npm run compile:contracts
+wsl --exec bash .local/run.sh npm run compile:legacy
+wsl --exec bash .local/run.sh npm run compile:issuance
+wsl --exec bash .local/run.sh npm run verify:artifacts
+wsl --exec bash .local/run.sh npm run test:proving
+wsl --exec bash .local/run.sh npm run build
 wsl --exec bash .local/run.sh npm run start -- --port 3000
 ```
 
-Resume at the existing issuer in Chrome / Wallet A. Unlock it with the existing
-local passphrase, select **Prepare / recover issuance**, then separately approve
-**Approve issuance of 1,000,000 test units** in 1AM. Expected: finalized issuance
-and A's shielded test balance of 1,000,000. No new issuer deployment is required.
-If the original browser record is unavailable, use its encrypted recovery first;
-do not share the file or passphrase with tools. Escrow/funding/claim/spend approvals
-and the real recovery/privacy matrix follow below; none is claimed as completed.
+Stop an existing app with Ctrl-C before rebuilding or starting on its port. Leave
+the final command running. The ignored .local/run.sh selects this host's verified
+WSL runtime; a fresh machine uses the equivalent npm commands after installing
+Node/Compact. The pinned Compose proof server listens at http://127.0.0.1:6300.
+Actual synthetic proof generation must pass; an open port alone proves nothing.
+The app is http://127.0.0.1:3000. Do not alternate localhost and 127.0.0.1: browser
+storage and extension permissions are origin-specific.
 
-## Preparation and approvals
+Check .env.local has PROOF_SERVER_PORT=6300. All other reviewed public endpoints
+and NIGHT metadata come from config/preprod.json, not invented NEXT_PUBLIC values.
+No NIGHT contract address belongs in .env.local. The selected escrow is stored in
+the browser and public exports; its private deployment recovery is encrypted.
+No local Midnight node/indexer is required: the app uses configured official
+Preprod services. Do not put any wallet credential in an environment file.
 
-Use Chrome / Wallet A and Brave / independent Wallet B, both 1AM on Preprod.
-Both are already reported connected with DUST. Start the current app and local
-prover as described in USAGE.md. Never approve a different network or expose keys,
-claim links, witnesses or recovery passphrases to tools, logs or other people.
+## 2. Prepare independent wallets
 
-Every deployment, issuance, funding, claim and controlled spend is a distinct
-owner-approved transaction. Preparation and read-only reconciliation do not submit.
-Do not deploy the issuer again. Recover its existing encrypted record and compare
-the displayed address with deployments/preprod/test-asset-issuer.json.
+Chrome = Wallet A (sender), Brave = Wallet B (receiver), both real 1AM.xyz and both
+on Preprod. Use separate independently created wallets, not two views of the same
+account. Open the app in each browser, **Check for 1AM → Connect 1AM**, and approve
+connection manually. Confirm Preprod and DUST readiness in each wallet.
 
-Run local verification when ready:
-```sh
-npm run compile:contracts
-npm run compile:issuance
-npm run verify:artifacts
-npm run lint
-npm run typecheck
-npm run test:unit
-npm run test:contracts
-npm run test:integration
-npm run build
-npm run test:browser
-```
+A needs at least the test amount of native Preprod NIGHT (use **1 NIGHT**) and
+sufficient available DUST for escrow deployment and funding. B needs available
+DUST for claim and controlled spend. B may already own NIGHT; it need not start
+at zero. Obtain actual Preprod NIGHT through the current official network faucet
+or a funded Preprod wallet, then let 1AM's DUST generation/synchronization finish.
+MoneyMole does not mint NIGHT or convert the legacy test asset. No fixed DUST
+quantity is promised: the wallet estimates each transaction's cost. If the wallet
+cannot fund the fee, wait/top up through the wallet before continuing.
 
-These commands do not replace real wallet acceptance. The browser fixture uses
-synthetic providers. With the trusted prover running, `npm run test:proving`
-uses synthetic openings for real proof generation; do not run it concurrently
-with a browser proof.
+Record A and B's initial **NIGHT** balances privately (call them A0 and B0). Copy
+A's **unshielded NIGHT address**, not its shielded address. Avoid unrelated NIGHT
+transfers during the test so exact balance deltas remain attributable.
 
-## Real happy path
+## 3. Deploy or recover a compatible NIGHT escrow
 
-1. A recovers the confirmed issuer and, if still unissued, separately approves the
-   one-time 1,000,000-unit issuance. Check finality and A's actual shielded balance.
-2. Recover an existing escrow or explicitly approve a new compatible escrow once.
-   Export its public deployment record and encrypted recovery.
-3. B must start with zero of this test asset for controlled-spend attribution.
-   Record private before/after observations locally, with DUST tracked separately.
-4. A creates a small positive whole-unit draft, saves encrypted recovery, prepares
-   and approves funding. Sharing must stay unavailable until finalized funding.
-5. Transfer the bearer link privately or scan its local QR. Close/disconnect A.
-6. B opens the link, checks fragment removal, unlocks, verifies/saves the opening
-   encrypted and approves claiming. Confirm actual finality and receiver balance.
-7. Reload B, reconnect/unlock the same namespace and reconcile the saved receipt.
-   Export recovery and exercise import into an empty namespace with the same wallet.
-   The import alone must not certify settlement.
-8. B separately approves the controlled spend to another shielded wallet. Confirm
-   the spend transaction, destination credit and B's zero test-asset balance.
-9. Reopen A and reconcile: the original funding is spent and cannot be shared as
-   unclaimed. A retained link or concurrent second claim must not pay again.
-10. Complete the remaining T01–T24 matrix in TESTING.md. Public chain activity does
-    not establish every negative case, privacy property or external requirement.
+In Chrome/A, the locked payment workspace contains **Create / recover a payment
+escrow**. Expand it. Enter a separate local recovery passphrase (at least 16
+characters; never a wallet seed). Click **Prepare / unlock escrow**. This prepares
+an unsigned native NIGHT deployment or opens the existing v2 staging record.
 
-Record sanitized assertions, public transaction identifiers/block hashes and source
-hashes only. Do not save raw network traces containing proofs/openings. The chain
-report associates funding/claim/spend IDs; keep it local in ignored reports unless
-the owner explicitly consents to publishing that linkage.
+If it already has a transaction identifier, click **Check deployment**; do not
+approve a second deployment. If finalized, reuse it. Otherwise, when the review
+shows Preprod and a new NIGHT escrow, click **Approve escrow deployment**, then
+review and approve in 1AM. Expected: submitted, then **Check deployment** yields
+**chain verified** on the finalized Preprod chain. No NIGHT is issued or deposited
+by deploying; only DUST pays the fee.
 
-## Read-only chain evidence
+Click **Save public deployment record** and **Save encrypted escrow recovery**. Keep the encrypted
+file and passphrase private. The public download is
+moneymole-night-preprod-deployment.json; copy it to reports/night-escrow.json.
+Successful reconciliation selects the escrow in the workspace.
+Use this same address in A and B. It is not the historical issuer address
+47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635.
+A compatible escrow can be shared or reused by senders; each payment is bound to
+its actual escrow. No new escrow per payment is required.
 
-Save the exported escrow record as deployments/preprod/<address>.json and create
-an ignored reports/preprod-manifest.json containing these public fields:
+If the tab locks while handling a wallet popup, unlock with the same wallet and
+passphrase and check the saved deployment. The encrypted identifier survives;
+never infer failure from a locked or closed tab.
+
+## 4. Wallet A funds 1 NIGHT
+
+In Chrome/A, enter the verified **Preprod escrow address** and a local payment
+recovery passphrase, then **Unlock payment workspace**. Check the available NIGHT
+balance. Select **Send**, enter **1** in **Amount in NIGHT**, and click **Save
+payment draft**. Expected: Activity displays **Sending 1 NIGHT**, draft.
+
+Expand **Recovery & receipts → Save encrypted recovery** before authorizing.
+Choose **Prepare funding**; keep the tab visible while the local prover runs.
+Expected: prepared, **Approve funding of 1** appears. Click it and approve in 1AM
+only if the review is Preprod and deposits 1 NIGHT into the intended escrow, with
+DUST as fees. Click **Reconcile** until funding is finalized and verified.
+Expected: A NIGHT = A0 - 1; escrow receives exactly 1 NIGHT. Sharing is enabled
+only after the actual successful funding transaction contains this note.
+Save updated encrypted recovery and **Save public receipt**; keep funding ID.
+
+## 5. Link, QR and receiver independence
+
+Choose **Show claim link / QR**. The private link contains /claim#mm2.…; its QR is
+created on this device. Copy it privately into Brave/B. Do not paste it into chat,
+Git, a terminal, evidence reports or an online QR decoder. For optical QA, use a
+trusted local/offline scanner; confirm it decodes the exact same private link.
+Do not send the link to an external scanning service. Finish sharing, then lock
+or close A's workspace so B has no sender session/private store available.
+
+In Brave/B, open the link at the same local app origin. Expected: the fragment is
+removed from the address bar, the claim is captured locally and its escrow is
+selected. If pasting manually, choose **Receive**, expand **Select escrow from a
+claim link**, paste, then **Use claim escrow**. Unlock B's workspace with B's own
+local passphrase; choose **Verify and save claim**. Expected: verified funded
+claim saved encrypted; Activity displays **Receiving 1 NIGHT**. Save encrypted
+recovery immediately. Anyone with the link can compete to claim, including A.
+
+## 6. Wallet B claims that NIGHT
+
+Choose **Prepare claim**, then **Approve claim of 1**, and approve the transaction
+in B's 1AM. Keep the tab visible except for the necessary wallet interaction.
+Click **Reconcile** until claim finality and wallet synchronization are confirmed.
+Expected: the existing escrow balance decreases by 1 NIGHT; B NIGHT = B0 + 1.
+The claim mints nothing. The public payout address is B's unshielded NIGHT address.
+A remains A0 - 1. DUST fee changes are separate from those NIGHT balances.
+
+Reload Brave, reconnect/unlock if needed, choose **Activity → Select payment**, and
+**Reconcile**. Expected: same transaction and confirmed claim after fresh checks,
+not a new claim. Try importing/verifying the original link again: it must report
+already claimed/refuse another claim. No second NIGHT payout is allowed.
+
+## 7. Spend the received NIGHT
+
+On B's confirmed claim, expand **Controlled spendability check**. Enter A's actual
+Preprod unshielded NIGHT address in **Destination NIGHT address**. Click **Approve
+controlled spend of 1**, review and approve in 1AM, then **Reconcile**.
+Expected: **Spend: finalized · verified**, B NIGHT returns to B0 and A returns to
+A0. The verifier checks exact native inputs, change, recipient output and amount;
+a sent identifier alone is not success. Save B's latest encrypted recovery and
+public receipt, including spend ID. DUST fees are not returned.
+
+## 8. Recovery and privacy checks
+
+Reload A and B, unlock the same namespaces, select the saved records and reconcile.
+A's record shows already claimed; B's record confirms claim plus controlled spend.
+Lock/disconnect and verify private links/QR/records disappear. Switching accounts
+must not unlock the other wallet's records. Wrong passphrase or damaged encrypted
+file must fail without erasing the originals.
+
+For independent import QA without deleting existing data, start the same built
+app in another terminal on port 3001. Use the same wallet with that new origin,
+manually approve its connection, select the same NIGHT escrow, create a local
+passphrase, then **Activity → Import encrypted payment recovery**. Enter the
+original export passphrase and choose the previously saved encrypted JSON.
+Expected: imported local record first; **Reconcile** re-establishes its exact
+chain state. No sign/submit should be needed. Stop the extra server afterward.
+
+Privately inspect browser network requests: no bearer token in Next API requests,
+paths, queries, referrers or remote assets. Proving requests go directly to the
+trusted loopback prover and are sensitive: do not record their bodies. Public
+chain data is expected to show NIGHT amounts/addresses; it must not expose the
+raw bearer authority. Do not record the demo with an unspent claim QR visible.
+
+## 9. Read-only chain verification
+
+Use the public receipts to create reports/preprod-manifest.json (actual observed
+values only; the receipts include the necessary decoded address hex fields):
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "network": "preprod",
-  "deploymentRecord": "deployments/preprod/<actual-address>.json",
-  "fundingId": "<actual finalized funding identifier>",
-  "claimId": "<actual finalized claim identifier>",
-  "spendId": "<actual finalized controlled-spend identifier>"
+  "asset": "NIGHT",
+  "amountAtomic": "1000000",
+  "deploymentRecord": "reports/night-escrow.json",
+  "senderAddressHex": "<A receipt walletAddressHex>",
+  "receiverAddressHex": "<B receipt walletAddressHex>",
+  "spendRecipientAddressHex": "<B receipt spendRecipientAddressHex>",
+  "fundingId": "<A receipt transactionId>",
+  "claimId": "<B receipt transactionId>",
+  "spendId": "<B receipt spendTransactionId>"
 }
 ```
 
-Replace placeholders with observed values; do not invent an evidence file.
-Then run:
-```sh
-npm run verify:deployment -- --record deployments/preprod/<address>.json
-npm run test:preprod -- --manifest reports/preprod-manifest.json
+```powershell
+wsl --exec bash .local/run.sh npm run verify:deployment -- --record reports/night-escrow.json
+wsl --exec bash .local/run.sh npm run test:preprod -- --manifest reports/preprod-manifest.json
 ```
 
-These commands re-query official Preprod indexer and node finality, deserialize
-native transactions, verify deployment identity and inspect real action/event
-kinds. They cannot independently establish private amount conservation, wallet
-independence, destination credit, browser recovery or human identity. They do not
-sign, deploy, issue or submit. Exit 2 means missing owner inputs; exit 1 means
-verification failed; exit 0 passes only the scope recorded in the report.
+Expected: both exit 0. They re-query indexer/node finality, code/verifier identity,
+exact native NIGHT deposit/payout/spend, destination and no mint. They do not
+sign or submit. Missing input returns 2; failed verification returns 1. These
+checks do not establish independent human wallet control or optical/browser QA.
+Keep combined wallet/transaction linkage local unless publication is intended.
 
-## Full acceptance record
+For complete acceptance, record every T01–T24 case in reports/owner-acceptance.json:
+schemaVersion 1, ownerReviewed true, actual observedAt, manifestPath, cases with
+id/result/source/evidencePath/evidenceSha256, and subjects with current path/sha256.
+Every tracked src/config/contracts/scripts/tests and package/build/test/Compose/
+toolchain/CI file is required by verify:product; do not copy stale hashes.
+Use source owner_observed for manual observations and automated only for executed
+checks. Evidence must be sanitized. Run npm run verify:product -- --acceptance
+reports/owner-acceptance.json only with complete truthful observations. Organizer
+qualification remains separate; excluded participation is not a NIGHT flow gate.
 
-Create reports/owner-acceptance.json only after observing every applicable matrix
-case. Its format is:
-```json
-{
-  "schemaVersion": 1,
-  "ownerReviewed": true,
-  "observedAt": "<actual ISO timestamp>",
-  "manifestPath": "reports/preprod-manifest.json",
-  "cases": [
-    {
-      "id": "T01",
-      "result": "passed",
-      "source": "owner_observed",
-      "evidencePath": "reports/owner-T01.json",
-      "evidenceSha256": "<SHA-256 of sanitized evidence>"
-    }
-  ],
-  "subjects": [
-    { "path": "src/lib/midnight/payments.ts", "sha256": "<current SHA-256>" },
-    { "path": "src/lib/midnight/payment-codec.ts", "sha256": "<current SHA-256>" },
-    { "path": "contracts/private-payments.compact", "sha256": "<current SHA-256>" },
-    { "path": "package-lock.json", "sha256": "<current SHA-256>" }
-  ]
-}
-```
+## If anything fails
 
-Include one case for every T01–T24 row and the complete current source subject list;
-the abbreviated example is intentionally insufficient. The verifier requires all
-tracked src/config/contracts/scripts/tests and package/build/test/Compose/toolchain/CI files. The
-implementation evidence contains that list, but copy its hashes only if they still
-match the exact source you exercised. Use source automated only for a real executed result, otherwise
-owner_observed. SHA-256 can be computed locally with sha256sum or Get-FileHash.
-Evidence may establish a scoped failure; never label it passed to satisfy the tool.
+- Rejected connection/signing: reconnect or approve only when ready; the saved
+  draft remains. Check for an existing identifier before trying again.
+- Unknown, partial, submitted or stalled: **Reconcile** the original identifier.
+  Do not create another funding/claim/spend just because the UI timed out.
+- Confirmed full claim failure: reconcile; **Retry failed claim** appears only
+  if the original note remains unspent. Reset, prepare a fresh proof, then approve.
+- Confirmed full spend failure: reconcile; **Retry failed spend** preserves the
+  failed attempt, then permits a new explicit approval after balance checks.
+- Failed funding: retain the original record. Only after canonical full failure
+  and no deposited note may a separate new draft be funded; never clone unknown
+  funding. There is no automatic funding retry button.
+- Stale root: reprepare an unsubmitted claim against current state. Preserve any
+  submitted transaction and reconcile first.
+- Wrong old escrow/mm1/custom asset: use a verified v2 NIGHT escrow/link. Old
+  encrypted stores are retained; do not convert their amounts or reset storage.
+- Balance mismatch: wait for 1AM synchronization and stop unrelated transfers.
+  Never mark the check passed by editing a baseline or an evidence record.
+- Prover unavailable: restart only the project service; run test:proving. Do not
+  route private witnesses to an arbitrary remote service.
+- Recovery error: retain original files, correct wallet/escrow/original passphrase
+  and use an isolated origin for import. Never disclose the passphrase.
 
-`npm run verify:product -- --acceptance reports/owner-acceptance.json` checks
-matrix completeness, evidence hashes, source identity and revalidates the chain
-manifest. A passing report remains partly owner-observed. T23 requires a real
-authorized remote CI run; T24 and external participation/eligibility require
-genuine consented evidence. Missing external evidence must remain pending.
+## Demo-ready checklist
 
-## Minimal failure report
-
-Report the browser/wallet, button or phase, sanitized message and public transaction
-identifier if present. Include expected versus observed final state. Never report
-a claim link, opening, passphrase, seed, private key or raw proof request.
-Keep the original encrypted records and deployment identity for repair.
-
-## Confirmed failed attempts
-
-A saved `failed` label alone never permits resubmission. In Brave / Wallet B,
-choose **Reconcile**. A claim retry appears only after a fresh, canonical complete
-failure and an unspent original note. Choose **Retry failed claim**, then **Prepare claim**
-and explicitly approve the new claim in 1AM. A failed controlled spend exposes
-**Retry failed spend** only after the original claim and balance are rechecked;
-enter the destination and explicitly approve the new spend. Resetting itself does
-not sign or submit, and the old transaction remains in encrypted attempt history.
-Unknown or partial outcomes remain reconciliation-only. A failed refresh clears
-previous retry flags. Export encrypted recovery again after an attempt changes.
+- [ ] Current NIGHT production build, prover and relevant local checks pass.
+- [ ] Two independent 1AM wallets are on Preprod with enough NIGHT/DUST.
+- [ ] New NIGHT escrow deployment is finalized and public record verified.
+- [ ] A deposits 1 NIGHT; B claims the exact 1 NIGHT with A's session absent.
+- [ ] B's controlled spend returns NIGHT to A; expected balances reconcile.
+- [ ] Replay is rejected; no mint, duplicate payment or unknown outcome remains.
+- [ ] Link and local QR work; no secret leaks into server/network artifacts.
+- [ ] Reload and independent encrypted import restore the same finalized records.
+- [ ] Read-only deployment and native Preprod manifest checks pass.
+- [ ] Public NIGHT disclosure is described honestly; private data is hidden for recording.

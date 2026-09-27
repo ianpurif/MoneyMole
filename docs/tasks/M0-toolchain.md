@@ -1,5 +1,16 @@
 # M0 — Resolve and validate the foundation
 
+## Current native NIGHT milestone (2026-09-27)
+
+Installed local toolchain retained; revalidate source/config changes.
+
+Execute BUILD.md, ADR 007, STATUS.md and OWNER-TESTING.md. Use native Preprod
+NIGHT (six decimals) and DUST only for fees; no custom asset issuance. Preserve
+legacy records. Commit logical engineering changes and keep wallet approvals
+manual. Local checks never establish live finality or independent wallet control.
+
+## Historical pre-NIGHT plan (superseded asset details)
+
 State: local setup and application verification passed. Exact Node/npm, locked dependencies, Compact, Docker/prover and browser access are ready. Requested model/effort pairs are now advertised. Custom-agent/schema session attestation and Midnight MCP authentication remain blocked and do not prevent local app testing.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.

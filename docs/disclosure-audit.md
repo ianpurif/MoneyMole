@@ -1,67 +1,36 @@
-# M1 diagnostic disclosure review
+# Native NIGHT disclosure review — 2026-09-27
 
-## Candidate review, 2026-09-26
+contracts/night-payments.compact uses nativeToken(), receiveUnshielded and
+sendUnshielded. The public effects explicitly disclose native amounts. Funding
+inputs and claim outputs expose unshielded addresses; timing and relationships
+can be correlated. NIGHT is not a shielded asset. This changes the prior product
+privacy premise under the owner's explicit directive (ADR 007).
 
-`private-payments.compact` and the separate test issuer compile with 0.31.1.
-Thirteen generated-runtime cases pass; local proof-server 8.1.0 constraint checks
-and proof generation pass for synthetic fund, claim and issue calls. These checks
-do not establish native coin membership, sealed transaction validity or anonymity.
+Public ledger: supportedAsset, append-only note tree and spent nullifiers.
+Private witness: amount before its required disclosure, nonce, bearer authority
+and membership path. The commitment binds domain, network domain, deployment,
+asset, amount, nonce and authority. The public claim argument is UserAddress;
+changing it changes the proof transcript. A claimant must possess the bearer
+secret; no wallet identity restriction is implied. There is no mint call.
 
-The candidate's public ledger contains the supported asset color, an append-only
-note tree and a spent-nullifier set. Commitment inputs bind the fixed Preprod
-domain, `kernel.self()`, exact fresh coin fields and private bearer authority.
-The fixed string is domain separation, not proof of the chain network: native
-transaction/deployment network validation and cross-network tests remain required.
-`ownPublicKey()` selects the receiver output; secret knowledge is the authorization.
-No claim path calls a mint helper. The separate issuer has an issuer-secret
-commitment and one-time supply flag; its mint helper has explicit disclosure.
+Generated contract tests check exact native input/output effects, no mints,
+destination transcript binding, replay, changed secret/amount/nonce/deployment,
+zero, insufficient balance, stale paths and refreshed membership. SDK transaction
+tests construct/prove/deserialize fund and claim using the actual local prover
+and inspect native effects plus claim output. These use synthetic public state,
+not wallet-funded ledger inputs. They do not prove live consensus acceptance.
 
-The tree checks its current root. New deposits invalidate old paths, so the
-receiver must refresh the path from authenticated public state. Runtime tests
-reject stale paths and accept refreshed ones. Capacity is 65,536 deposits; the
-app must reject new funding at capacity and preserve claims against old deployments.
-This candidate makes no claim about anonymity-set size or timing correlation.
+The tree's current root changes on funding; reprepare stale claims. Capacity is
+65,536 deposits, with old addresses retained for claims. The Preprod string is
+domain separation, not network authentication: wallet and transaction network
+checks remain required. Public state is authenticated against native serialization,
+indexer identity and canonical finalized node blocks.
 
-Runtime replay tests use updated ledger state; they are not a concurrent native
-transaction test. Claim destination binding against a copied proof, qualified-coin
-discovery with the sender absent, and inspection of sealed public data remain live
-M1 gates. Test-asset issuance and deployment require concrete owner approval.
+Remaining live review: owner-approved NIGHT deployment and two-wallet fund/claim/
+spend, real output amounts/addresses, failed replay/concurrent claim behavior,
+recovery after reload/import, fragment/QR leakage and installed-wallet behavior.
+No hidden-amount or unlinkability claim may be inferred from those results.
 
-## Diagnostic background
-
-Scope: compiler-generated code from `contracts/probes/shielded-io.compact`,
-Compact compiler 0.31.1/runtime 0.16.0. This unauthorized diagnostic must never be
-deployed or funded. It is not the product contract, a proof, or a real payment.
-
-The compiler initially rejected private inputs to `receiveShielded` and
-`sendShielded`: the helpers expose coin commitments/nullifiers and branch effects.
-Explicit `disclose` annotations now acknowledge these effects for inspection.
-They do not establish acceptable privacy. No real secret was used or recorded.
-
-The generated `receiveShielded` implementation queries the contract self-address,
-creates a Zswap output and records its commitment in the receive effects.
-`sendShielded` creates the qualified Zswap input and receiver output, with a
-conditional change output. Its native effects and public transcript must be checked
-in an actual sealed transaction before any claim of unlinkability. Empty exported
-arguments and absence of application ledger fields do not mean zero disclosure.
-
-Observed type mismatch with current web documentation: the installed compiler
-emits `mt_index` and `is_some`, matching installed runtime declarations, rather than
-the documentation's `mtIndex`/`isSome`. Use generated types for adapters.
-
-Remaining M1 gates: independently discoverable qualified escrow coins; validated
-membership/commitment/nullifier construction bound to deployment and asset; output
-destination binding; actual proof and public transcript review; independent 1AM
-receiver credit and subsequent spend with the sender unavailable. The owner authorized implementing the versioned codec and sharing route before
-live acceptance. Their presence does not resolve these gates.
-
-## Local escrow qualification candidate
-The client-only feasibility helper reconstructs a contract-owned commitment from
-an opening locally, matches exactly one public contract/commitment/index observation,
-and asks ledger-v8 to construct an input against the supplied coin tree. It rejects
-missing/ambiguous observations, changed openings, invented indices and absent coins.
-The synthetic fixture must apply postBlockUpdate before constructing a spend input;
-the native runtime rejects an un-rehashed tree. Those historical local cases do not authenticate an indexer or establish live
-settlement. The implemented payment controller now checks official node finality,
-transaction identity and the spent set, then matches claim input/output events.
-The new adapter has not undergone final real-wallet testing.
+Historical shielded contract/probe reviews remain available in Git at 16aa745.
+Their contracts/artifacts and original issuer record are preserved. They are not
+current NIGHT evidence and must never be counted as new NIGHT deployment/payment.

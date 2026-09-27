@@ -1,5 +1,16 @@
 # M2 — Complete contract, domain and encrypted state
 
+## Current native NIGHT milestone (2026-09-27)
+
+NIGHT commitment, exact native settlement, v2 recovery and canonical failed-leg retries implemented.
+
+Execute BUILD.md, ADR 007, STATUS.md and OWNER-TESTING.md. Use native Preprod
+NIGHT (six decimals) and DUST only for fees; no custom asset issuance. Preserve
+legacy records. Commit logical engineering changes and keep wallet approvals
+manual. Local checks never establish live finality or independent wallet control.
+
+## Historical pre-NIGHT plan (superseded asset details)
+
 State: implementation complete; current unit and contract checks plus 20 integration cases passed, including actual saved-record retry/recovery. Funded recovery, live contention and negative/privacy acceptance remain pending; local synthetic fixtures are not live acceptance.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.

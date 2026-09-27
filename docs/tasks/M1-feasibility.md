@@ -1,5 +1,16 @@
 # M1 — Prove real funded independent claiming
 
+## Current native NIGHT milestone (2026-09-27)
+
+Native NIGHT local contract/proving checks implemented; real two-wallet acceptance remains owner-pending.
+
+Execute BUILD.md, ADR 007, STATUS.md and OWNER-TESTING.md. Use native Preprod
+NIGHT (six decimals) and DUST only for fees; no custom asset issuance. Preserve
+legacy records. Commit logical engineering changes and keep wallet approvals
+manual. Local checks never establish live finality or independent wallet control.
+
+## Historical pre-NIGHT plan (superseded asset details)
+
 State: issuer identity and canonical node finality reverified; issued remains false. Local contract/proving checks passed. Real issuance, escrow deployment, independent-wallet settlement, spendability and disclosure acceptance still require owner approval and observation.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.

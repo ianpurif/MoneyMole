@@ -2,7 +2,7 @@
 
 ## Current asset migration — native Preprod NIGHT
 The owner now requires native Preprod NIGHT as the sole payment asset and DUST
-only for fees. Execute ADR 006 (`docs/adr/006-native-night-payments.md`). Earlier
+only for fees. Execute ADR 007 (`docs/adr/007-native-night-payments.md`). Earlier
 custom-token/shielded-payment wording below is historical scope, not permission
 to keep that asset as the default. Complete contracts, wallet balances/transfers,
 amounts, reconciliation, recovery, UI, documentation and verification together.
@@ -74,13 +74,13 @@ is the initial snapshot, not a reason to redo already verified work on a later r
 
 ## Product acceptance, not a proxy
 
-One wallet funds an exact amount of one supported shielded asset. Only after actual
+One wallet funds an exact amount of native Preprod NIGHT. Only after actual
 funding finality can the application share a bearer claim link and equivalent local
 QR. An independent receiver wallet claims after the sender disconnects. Confirm
-receiver credit AND spendability; demonstrate failed replay and atomic conflict
+receiver NIGHT credit AND spendability; demonstrate failed replay and atomic conflict
 handling. Claiming consumes existing funded value and never mints replacements.
-Use a clearly labeled, non-redeemable Preprod test asset unless a suitable real asset
-is verified. NIGHT and DUST do not substitute for a shielded payment asset.
+Use native unshielded Preprod NIGHT with six decimal places; DUST pays fees only.
+No custom token issuance, wrapping or replacement asset is part of the flow.
 
 The link is bearer authority: anyone holding it, including the sender, can attempt
 to claim. No intended-recipient identity is implied by connecting a wallet. There
@@ -110,7 +110,7 @@ listed context. Expectations are not observations.
 | ID  | Implement now                                                       | Detailed executable task       | Gate                                                                       |
 | --- | ------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------------- |
 | M0  | Resolve tooling, exact graph, installed APIs and Codex capabilities | `docs/tasks/M0-toolchain.md`   | Genuine lock + installed checks; supported model routing or explicit block |
-| M1  | Minimal real shielded funding-to-claim slice                        | `docs/tasks/M1-feasibility.md` | Independent receiver spendable coin, no replay, audited public transcript  |
+| M1  | Minimal real NIGHT funding-to-claim slice                        | `docs/tasks/M1-feasibility.md` | Independent receiver spendable NIGHT, no replay, audited public transcript  |
 | M2  | Complete contracts, domain, persistence and negative cases          | `docs/tasks/M2-core.md`        | Conservation, binding, recovery and corruption tests                       |
 | M3  | 1AM and responsive link/QR application                             | `docs/tasks/M3-wallet-ui.md`   | Real extension authorization and privacy-safe two-context flow             |
 | M4  | Preprod deployment, durable metadata and reconciliation             | `docs/tasks/M4-preprod.md`     | Chain-bound address, finality and wallet synchronization                   |
@@ -136,14 +136,13 @@ cryptographically secure 256-bit minimum claim entropy, versioned domain separat
 and an authenticated compact payload. URL fragments are captured only in the
 client, then scrubbed. Never place secrets in paths, queries, telemetry, logs,
 server-rendered props or remote resources. Implement and test nonce-based CSP before
-secret-bearing routes are accepted. Nonce CSP is implemented; this revision still
-needs the owner-run production browser check.
+secret-bearing routes are accepted. Nonce CSP is implemented; local browser checks are distinct from the required real wallet inspection.
 
 Enforce every security-relevant binding in the contract, not only the browser.
-Verify actual coin receipt, qualification and consumption. Audit `disclose()` and
+Verify exact native NIGHT receipt, contract balance and payout destination. Audit `disclose()` and
 all implicit standard-library effects. `ownPublicKey()` alone is not signer
 proof. A proposed note/nullifier construction is a hypothesis until compiled,
-tested and inspected; do not advertise anonymity because assets are shielded.
+tested and inspected; NIGHT amounts and addresses are public, not anonymous.
 
 Persist intent before funding. Separate payment progression from transaction
 submission, inclusion, finality and wallet synchronization. Imported receipts are
@@ -153,8 +152,8 @@ wallet. Never hand-edit generated material or discard funded-deployment history.
 
 ## Fail-closed command implementation
 
-`compile:contracts` compiles the candidate `contracts/private-payments.compact`;
-`compile:issuance` compiles the separate fixed-supply test issuer. Artifact,
+`compile:contracts` compiles `contracts/night-payments.compact`;
+`compile:legacy` and `compile:issuance` preserve historical contracts only. Artifact,
 generated-runtime, synthetic local-proving, read-only deployment/Preprod and
 owner-reviewed acceptance actions are implemented in `scripts/product/*.mjs`.
 Missing real inputs/evidence return blocked. The deployment CLI prepares a browser

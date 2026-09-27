@@ -30,7 +30,7 @@
       "level": "Preparation",
       "title": "Real pinned dependency graph",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Generate registry-resolved package-lock.json, run npm ci and record exact installed versions.",
       "commands": [
@@ -55,14 +55,15 @@
             }
           ]
         }
-      ]
+      ],
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "PREP-SHELL",
       "level": "Preparation",
       "title": "Next.js application foundation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "PREP-LOCK"
       ],
@@ -306,7 +307,8 @@
           ]
         }
       ],
-      "progress": "fresh_application_lint_types_build_browser_checks;_remote_workflow_verified_separately"
+      "progress": "fresh_application_lint_types_build_browser_checks;_remote_workflow_verified_separately",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "PREP-CODEX",
@@ -335,7 +337,7 @@
       "level": "Preparation",
       "title": "Bounded fail-closed tooling",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred.",
       "commands": [
@@ -400,7 +402,8 @@
             }
           ]
         }
-      ]
+      ],
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "CORE-CONSERVATION",
@@ -429,7 +432,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-CLAIM",
@@ -440,7 +443,7 @@
       "dependsOn": [
         "CORE-CONSERVATION"
       ],
-      "acceptance": "Receiver initiates claim after sender disconnects; receives and spends the coin without sender browser state.",
+      "acceptance": "Receiver initiates claim after sender disconnects; receives and spends the same NIGHT without sender browser state.",
       "commands": [],
       "evidence": [
         {
@@ -451,7 +454,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-PRIVACY",
@@ -464,7 +467,8 @@
       ],
       "acceptance": "Inspect circuit transcripts, outputs and implicit effects; no unintended public amount or participant mapping.",
       "commands": [],
-      "evidence": []
+      "evidence": [],
+      "migrationNote": "Owner requires unshielded native NIGHT. Public amounts/addresses are intentional; this does not establish any earlier hidden-amount or unlinkability requirement."
     },
     {
       "id": "CORE-AUTH",
@@ -491,7 +495,7 @@
           "observedAt": "2026-09-26T13:46:29.524Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-REPLAY",
@@ -520,7 +524,7 @@
           "observedAt": "2026-09-26T13:46:29.524Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-LINK",
@@ -549,7 +553,7 @@
           "observedAt": "2026-09-26T13:46:29.524Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-STATE",
@@ -591,7 +595,7 @@
         }
       ],
       "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1.",
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-TX",
@@ -633,7 +637,7 @@
         }
       ],
       "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1.",
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "CORE-FEES",
@@ -642,7 +646,7 @@
       "owner": "engineer",
       "status": "implemented",
       "dependsOn": [],
-      "acceptance": "Insufficient shielded asset, DUST, authorization, prover and indexer failures produce truthful recoverable states.",
+      "acceptance": "Insufficient native NIGHT, DUST, authorization, prover and indexer failures produce truthful recoverable states.",
       "commands": [],
       "evidence": [
         {
@@ -653,14 +657,14 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L1-NODE",
       "level": "Level 1",
       "title": "Node 22",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Node 22 toolchain observed; host Node is distinct from Midnight node version.",
       "commands": [
@@ -685,14 +689,15 @@
             }
           ]
         }
-      ]
+      ],
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L1-DOCKER",
       "level": "Level 1",
       "title": "Docker toolchain",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Docker engine, Compose and pinned local proof image run; browser reachability is checked.",
       "commands": [],
@@ -723,7 +728,8 @@
             }
           ]
         }
-      ]
+      ],
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L1-CONTRACT",
@@ -732,7 +738,7 @@
       "owner": "engineer",
       "status": "verified",
       "dependsOn": [],
-      "acceptance": "Actual payment and issuer contracts compile with the pinned Compact compiler. Live conservation and disclosure acceptance remain separate CORE requirements.",
+      "acceptance": "Current native NIGHT escrow and retained legacy contracts compile with the pinned compiler. Live conservation/disclosure acceptance remains separate.",
       "commands": [
         "npm run compile:contracts && npm run compile:issuance"
       ],
@@ -853,7 +859,7 @@
       "level": "Level 1",
       "title": "Verified deployment address",
       "owner": "engineer",
-      "status": "verified",
+      "status": "owner_pending",
       "dependsOn": [
         "L1-MANAGED"
       ],
@@ -886,14 +892,15 @@
         }
       ],
       "note": "Separate issuer deployment verified against the real Preprod indexer and local verifier. Payment escrow deployment and full payment acceptance remain pending.",
-      "progress": "existing_separate_Preprod_issuer_deployment_only_not_payment_escrow"
+      "progress": "existing_separate_Preprod_issuer_deployment_only_not_payment_escrow",
+      "migrationNote": "Original issuer remains historical. A new native NIGHT escrow deployment must be approved and verified."
     },
     {
       "id": "L1-DOCS",
       "level": "Level 1",
       "title": "Initial technical README",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -929,7 +936,8 @@
           ]
         }
       ],
-      "progress": "required_idea_setup_and_public_private_README_sections_verified_on_public_repository;_later_audit_display_update_only"
+      "progress": "required_idea_setup_and_public_private_README_sections_verified_on_public_repository;_later_audit_display_update_only",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L1-COMMITS",
@@ -990,7 +998,7 @@
         }
       ],
       "note": "Explicit client-only controls and synthetic tests implemented; actual extension authorization remains owner-pending. Local disconnect is not extension permission revocation.",
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L2-CIRCUIT",
@@ -1013,7 +1021,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L2-PRIVACY",
@@ -1057,14 +1065,14 @@
         }
       ],
       "note": "Local utilities implemented and tested; funded product integration and chain-derived reconciliation remain pending M1.",
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L2-PREPROD",
       "level": "Level 2",
       "title": "Verified Preprod address",
       "owner": "engineer",
-      "status": "verified",
+      "status": "owner_pending",
       "dependsOn": [
         "L1-DEPLOY"
       ],
@@ -1092,7 +1100,8 @@
           ]
         }
       ],
-      "progress": "existing_separate_issuer_on_Preprod_not_functional_payment_MVP"
+      "progress": "existing_separate_issuer_on_Preprod_not_functional_payment_MVP",
+      "migrationNote": "Original issuer remains historical. A new native NIGHT escrow deployment must be approved and verified."
     },
     {
       "id": "L2-COMMITS",
@@ -1154,14 +1163,14 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L3-TESTS",
       "level": "Level 3",
       "title": "At least three meaningful tests",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-TESTS"
       ],
@@ -1193,7 +1202,8 @@
           ]
         }
       ],
-      "progress": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E"
+      "progress": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L3-CI",
@@ -1568,14 +1578,14 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L4-DOCS",
       "level": "Level 4",
       "title": "Setup and implemented usage documentation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-DOCS"
       ],
@@ -1611,7 +1621,8 @@
           ]
         }
       ],
-      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance"
+      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L4-PIPELINE",
@@ -1677,7 +1688,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L4-X",
@@ -1744,14 +1755,14 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L5-DOCS",
       "level": "Level 5",
       "title": "Maintained technical documentation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L4-DOCS"
       ],
@@ -1787,7 +1798,8 @@
           ]
         }
       ],
-      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance"
+      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L5-PARTICIPANTS",
@@ -1853,7 +1865,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L6-HARDEN",
@@ -1877,14 +1889,14 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     },
     {
       "id": "L6-DOCS",
       "level": "Level 6",
       "title": "Final technical documentation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L5-DOCS"
       ],
@@ -1920,7 +1932,8 @@
           ]
         }
       ],
-      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance"
+      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "L6-PARTICIPANTS",
@@ -1971,7 +1984,7 @@
       "level": "External metadata",
       "title": "Public repository",
       "owner": "owner",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Owner-supplied repository URL is independently checked for public access.",
       "commands": [
@@ -1993,7 +2006,8 @@
           ]
         }
       ],
-      "progress": "public_repository_and_published_required_README_content_at_recorded_revision"
+      "progress": "public_repository_and_published_required_README_content_at_recorded_revision",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
     },
     {
       "id": "META-APP-URL",
@@ -2028,7 +2042,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
     }
   ],
   "conflicts": [
@@ -2051,6 +2065,11 @@
       "id": "ELIGIBILITY",
       "decision": "Payment links remain the product; related Private Payroll / Splits wording does not establish approval.",
       "status": "owner_pending"
+    },
+    {
+      "id": "NATIVE-NIGHT",
+      "decision": "Owner replaced shielded issuer token with native unshielded Preprod NIGHT, six decimals; DUST fees only. Public amounts/addresses cannot satisfy an earlier hidden-amount criterion. Legacy evidence is not NIGHT acceptance.",
+      "status": "owner_directed_scope_change"
     }
   ],
   "externalMetadata": {
@@ -2082,6 +2101,47 @@
     }
   },
   "levelAudit": {
+    "observedAt": "2026-09-27",
+    "source": "docs/LEVEL-AUDIT-SCOPE.md",
+    "report": "docs/STATUS.md",
+    "highestFullyPassed": null,
+    "submissionReady": false,
+    "allAutomatableChecksPassed": false,
+    "scope": "native NIGHT migration; final local verification in progress; no owner-approved NIGHT deployment/payment observed",
+    "levels": [
+      {
+        "level": 1,
+        "verdict": "NOT PASSED",
+        "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
+      },
+      {
+        "level": 2,
+        "verdict": "NOT PASSED",
+        "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
+      },
+      {
+        "level": 3,
+        "verdict": "NOT PASSED",
+        "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
+      },
+      {
+        "level": 4,
+        "verdict": "NOT PASSED",
+        "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
+      },
+      {
+        "level": 5,
+        "verdict": "NOT PASSED",
+        "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
+      },
+      {
+        "level": 6,
+        "verdict": "NOT PASSED",
+        "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
+      }
+    ]
+  },
+  "historicalLevelAudit": {
     "observedAt": "2026-09-27T05:55:46.130Z",
     "source": "docs/LEVEL-AUDIT-SCOPE.md",
     "report": "docs/LEVEL-AUDIT.md",
@@ -2524,6 +2584,7 @@
     ],
     "deferred": [
       "Videos, hosted app, screenshots, users/feedback, X and unsupplied organizer approval are excluded by the current owner directive."
-    ]
+    ],
+    "historicalScope": "Before native NIGHT migration; preserved for provenance, not current verdicts"
   }
 }

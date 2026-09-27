@@ -18,6 +18,12 @@ public metadata fields remain null until supplied and checked. Current audit
 exclusions are authoritative in requirements.json.auditScope; excluded items are
 not silently marked verified. The owner now authorizes publication; fresh checks and actual replacement CI are recorded in evidence/submission-verification.json and evidence/publication-verification.json.
 
+## Current NIGHT evidence boundary
+
+Earlier CI, counts and issuer observations above are historical. Current native
+engineering evidence is docs/evidence/night-verification.json; no real NIGHT
+deployment, wallet credit or privacy acceptance follows from legacy receipts.
+
 ## Local participant attestation validator
 `npm run evidence:participants -- <records.json> <trusted-public.pem>` verifies
 **signed owner-observation integrity only**. Keep records and public-key trust
@@ -55,14 +61,13 @@ additional owner/organizer decisions and independent human evidence are supplied
 
 An optional exact-SDK chain reference verifier is now implemented:
 `npm run evidence:participants -- <private-records.json> <trusted-public.pem> --chain-manifest <private-manifest.json>`.
-The private manifest has `schemaVersion: 1` and `entries`, each containing the signed
-record's `evidenceSha256`, public `transactionId` and payment `contract`. It is
-bounded to 1,000 nonempty records and decodes Preprod shielded addresses, checks
-compiled escrow verifiers, finalized successful fund/claim actions and shielded
-events. Only aggregate counts are printed. Signed consent and a separately trusted
-attester key remain mandatory. Public chain data cannot independently bind a
-shielded actor to a person or wallet; that association remains the trusted private
-attestation. Keep the manifest outside Git. Missing or failed checks do not count.
+The private NIGHT manifest has `schemaVersion: 2`, `asset: "NIGHT"` and `entries`,
+each containing evidenceSha256, transactionId, contract and amountAtomic (STAR).
+It is bounded to 1,000 records and decodes Preprod unshielded addresses, checks
+NIGHT escrow verifier keys, canonical successful fund/claim actions, exact native
+amounts and the attested address against native input/output ownership. Only aggregate counts are printed. Signed consent and a separately trusted
+attester key remain mandatory. Public chain data binds an unshielded address, not an independent person; human
+identity remains a separate trusted private attestation. Keep the manifest outside Git. Missing or failed checks do not count.
 Owner/organizer approval of this trust basis remains pending. Retain the explicit
 wallet/human distinction. The Level 5 target is 50 real Preprod participants; Level 6
 is 70 total, not invented additional people. Neither row is completed by this
