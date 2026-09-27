@@ -33,24 +33,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .site-header nav a { text-decoration: none; }
 .site-header nav a:hover { color: var(--accent); }
 .header-action { border: 1px solid #d6d5dd; border-radius: 100px; padding: 12px 19px; display: flex; gap: 22px; align-items: center; }
-.product-stage { max-width: 1280px; margin: auto; padding: 62px 48px 88px; display: grid; grid-template-columns: 1fr 480px; gap: 70px; align-items: center; min-height: 710px; }
 .eyebrow { font-size: 10px; letter-spacing: 1.65px; text-transform: uppercase; font-weight: 700; margin: 0 0 24px; }
 .signal-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #6b699d; margin-right: 8px; vertical-align: 1px; }
-.stage-copy h1 { font-size: clamp(48px, 5.3vw, 76px); letter-spacing: -4.5px; line-height: 1.035; font-weight: 500; margin: 0; }
-.stage-copy h1 > span { color: #747183; }
-.stage-description { margin: 28px 0 26px; font-size: 17px; line-height: 1.65; color: var(--muted); }
 .text-link { display: inline-flex; gap: 30px; align-items: center; font-size: 13px; text-decoration: none; border-bottom: 1px solid #c7c5cd; padding-bottom: 10px; }
-.stage-note { display: flex; gap: 15px; align-items: center; margin-top: 80px; font-size: 11px; line-height: 1.65; color: var(--muted); }
-.stage-note > span { font-size: 38px; color: #9d99b7; font-weight: 300; }
-.app-anchor { min-width: 0; scroll-margin-top: 30px; }
-.payment-app { background: #fff; border: 1px solid #e9e8ee; border-radius: 25px; padding: 23px; box-shadow: 0 18px 60px -35px #29233c45, 0 2px 6px #24213604; min-width: 0; }
-.app-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 10px; margin-bottom: 23px; }
-.app-network { font-weight: 600; }
-.test-label { color: var(--muted); font-size: 10px; }
-.action-switch { display: flex; gap: 24px; border-bottom: 1px solid #ecebf0; margin-bottom: 25px; }
-.action-switch button { position: relative; background: transparent; border: 0; padding: 0 0 14px; color: var(--muted); font-size: 14px; font-weight: 500; }
-.action-switch button[aria-pressed="true"] { color: var(--foreground); }
-.action-switch button[aria-pressed="true"]::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--foreground); }
 .flow-heading h2, .section-heading { font-size: 20px; font-weight: 500; letter-spacing: -.6px; margin: 0; }
 .flow-heading p { color: var(--muted); font-size: 12px; line-height: 1.5; margin-top: 7px; }
 .amount-field { display: block; margin: 23px 0 15px; background: #f5f4f8; padding: 18px 20px; border-radius: 16px; }
@@ -72,8 +57,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .connection-status { font-size: 11px; line-height: 1.55; color: var(--muted); text-align: center; margin: 12px 0 0; overflow-wrap: anywhere; }
 .connection-status.connected { border-top: 1px solid var(--border); padding-top: 12px; text-align: left; font-size: 10px; }
 .app-disclaimer { font-size: 10px; text-align: center; color: #767580; line-height: 1.6; margin-top: 12px; }
-.app-caption { text-align: center; font-size: 10px; letter-spacing: .15px; color: var(--muted); padding-top: 18px; }
-.app-caption span { padding: 0 6px; color: #aaa6b7; }
 .empty-action { min-height: 274px; padding: 15px 8px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .empty-symbol { font-size: 45px; color: #8781b9; margin-bottom: 15px; }
 .empty-action h2 { font-size: 20px; letter-spacing: -.65px; font-weight: 500; }
@@ -123,10 +106,7 @@ details[open] > summary::after { content: "−"; }
 .workspace details { padding-top: 15px; margin-top: 15px; border-top: 1px solid var(--border); }
 .workspace details summary { font-size: 11px; font-weight: 500; }
 .workspace-status { color: #5e596f; background: #f5f4f8; border-left: 2px solid #b9b1e7; border-radius: 0 8px 8px 0; padding: 12px 14px; font-size: 11px; line-height: 1.65; margin-top: 20px; overflow-wrap: anywhere; }
-.balance-strip { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--muted); margin: -6px 0 23px; }
-.balance-strip strong { color: var(--foreground); display: block; font-size: 14px; margin-top: 4px; }
 .quiet-button { padding: 5px 0; font-size: 10px; color: #656076; background: transparent; border: 0; text-decoration: underline; text-underline-offset: 3px; }
-.wallet-controls { display: flex; gap: 16px; }
 .empty-history { text-align: center; padding: 34px 10px 18px; color: var(--muted); }
 .empty-history > span { font-size: 32px; color: #8b83ae; }
 .empty-history h3 { color: var(--foreground); font-size: 17px; margin: 12px 0; }
@@ -163,12 +143,8 @@ details[open] > summary::after { content: "−"; }
 [data-sonner-toaster] .mole-toast [data-description] { color: var(--muted); line-height: 1.5; font-size: 12px; }
 [data-sonner-toaster] .mole-toast[data-type="success"] [data-icon] { color: #4b7763; }
 [data-sonner-toaster] .mole-toast[data-type="error"] [data-icon] { color: #af514e; }
-@media (min-width: 1500px) { .product-stage { min-height: 780px; } }
 @media (max-width: 1050px) {
   .site-header { padding: 0 32px; }
-  .product-stage { grid-template-columns: 1fr 430px; gap: 34px; padding: 45px 32px 70px; }
-  .stage-copy h1 { font-size: 55px; letter-spacing: -3px; }
-  .stage-description { font-size: 14px; }
   .product-story { padding: 0 32px; }
   .privacy-story { gap: 40px; padding: 40px; }
 }
@@ -177,15 +153,6 @@ details[open] > summary::after { content: "−"; }
   .site-header nav { gap: 20px; }
   .site-header nav > a:not(.header-action) { display: none; }
   .network-label { display: none; }
-  .product-stage { display: flex; flex-direction: column; padding: 30px 24px 50px; gap: 30px; min-height: auto; }
-  .stage-copy { text-align: center; }
-  .stage-copy .eyebrow { font-size: 9px; margin-bottom: 17px; }
-  .stage-copy h1 { font-size: 48px; line-height: 1.02; letter-spacing: -2.8px; }
-  .stage-copy h1 br { display: none; }
-  .stage-copy h1 > span { display: block; }
-  .stage-description { margin: 17px 0 0; font-size: 13px; }
-  .stage-copy .text-link, .stage-note { display: none; }
-  .app-anchor { width: 100%; max-width: 480px; }
   .product-story { padding: 0 24px; }
   .story-intro { grid-template-columns: 1fr 1fr; padding: 55px 0 35px; gap: 25px; }
   .story-intro h2 { font-size: 37px; letter-spacing: -1.8px; }
@@ -205,18 +172,10 @@ details[open] > summary::after { content: "−"; }
   .wordmark { font-size: 20px; }
   .wordmark img { width: 29px; height: 29px; }
   .header-action { padding: 10px 13px; gap: 12px; font-size: 11px; }
-  .product-stage { padding: 18px 16px 42px; gap: 25px; }
-  .stage-copy h1 { font-size: 42px; letter-spacing: -2.3px; }
-  .stage-copy .eyebrow { font-size: 8px; letter-spacing: 1.1px; margin-bottom: 12px; }
-  .stage-description { font-size: 12px; margin-top: 13px; }
-  .payment-app { padding: 19px; border-radius: 21px; }
-  .app-toolbar { margin-bottom: 21px; }
-  .action-switch { margin-bottom: 21px; }
   .flow-heading h2 { font-size: 19px; }
   .amount-field { padding: 15px 17px; margin-top: 19px; }
   .amount-field input { font-size: 42px; }
   .delivery-row { padding-bottom: 19px; }
-  .app-caption { font-size: 9px; }
   .story-intro { display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
   .story-intro h2 { font-size: 43px; }
   .brand-object { align-self: center; }
@@ -234,13 +193,60 @@ details[open] > summary::after { content: "−"; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 
-@media (max-width: 480px) and (max-height: 780px) {
-  .stage-copy h1 { font-size: 34px; }
-  .stage-description { display: none; }
-  .product-stage { padding-top: 10px; gap: 20px; }
-}
 
-@media (max-width: 780px) {
-  .product-stage:has(.connection-status.connected) .stage-copy { display: none; }
-  .product-stage:has(.connection-status.connected) { padding-top: 12px; }
+
+
+
+/* The wallet surface stays anchored while payment data scrolls beneath it. */
+.product-stage { max-width: 1040px; margin: 0 auto; padding: 32px 24px 76px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.product-stage h1 { margin: 0; text-align: center; font-size: clamp(28px, 3.6vw, 48px); font-weight: 500; line-height: 1.15; letter-spacing: -1.9px; }
+.product-stage h1 span { color: #78738b; font-size: .74em; letter-spacing: -.9px; }
+.stage-description { margin: -4px 0 0; text-align: center; font-size: 13px; line-height: 1.8; color: var(--muted); }
+.app-anchor { width: 100%; max-width: 500px; min-width: 0; scroll-margin-top: 24px; }
+.payment-app { display: flex; flex-direction: column; height: 650px; min-width: 0; padding: 12px; background: #fff; border: 1px solid #e7e5ed; border-radius: 28px; box-shadow: 0 20px 65px -32px #29233c45, 0 3px 9px #24213604; overflow: hidden; }
+.workspace { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.wallet-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #cbc6db transparent; padding: 22px 13px 12px; scroll-padding-block: 16px; }
+.wallet-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 12px; }
+.wallet-card { flex: none; padding: 19px 21px 12px; border: 1px solid #cfc9e8; border-radius: 19px; color: #302d48; background: radial-gradient(ellipse at 100% 0%, #f4f0ff 0%, transparent 65%), linear-gradient(115deg, #c8c0e4, #e1dbef 60%, #cec5e9); box-shadow: inset 0 1px #ffffffb3, 0 4px 12px #4334690a; }
+.wallet-card-brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wallet-card-brand > span:first-child { display: flex; align-items: center; gap: 7px; font-size: 17px; font-weight: 600; letter-spacing: -.6px; }
+.wallet-card-brand img { object-fit: contain; }
+.card-network { font-size: 8px; letter-spacing: 1.5px; border: 1px solid #a99ebd; border-radius: 20px; padding: 5px 8px; }
+.wallet-card-body { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin: 20px 0 13px; }
+.card-caption { display: block; font-size: 8px; letter-spacing: 1.45px; color: #625977; }
+.card-value { font-size: 27px; letter-spacing: -1px; font-weight: 500; line-height: 1.25; margin: 6px 0 8px; overflow-wrap: anywhere; max-width: 300px; }
+.card-connection { display: flex; align-items: center; gap: 6px; font-size: 9px; color: #625977; }
+.card-dot { width: 5px; height: 5px; border-radius: 50%; background: #8a809a; }
+.card-dot.online { background: #3b715b; box-shadow: 0 0 0 3px #3b715b14; }
+.card-chip { display: flex; flex: none; width: 34px; height: 26px; border: 1px solid #a197b2; border-radius: 6px; overflow: hidden; opacity: .7; }
+.card-chip i { flex: 1; border-right: 1px solid #a197b2; background: linear-gradient(145deg,#ffffff65,#afa1c329); }
+.card-chip i:nth-child(2) { border-top: 7px solid #cfc5dc; border-bottom: 7px solid #cfc5dc; }
+.card-chip i:last-child { border-right: 0; }
+.card-controls { height: 24px; display: flex; align-items: flex-start; gap: 16px; font-size: 9px; color: #625977; }
+.card-controls .quiet-button { padding: 0; font-size: 9px; color: #544a6a; }
+.card-controls .quiet-button:last-child { margin-left: auto; }
+.card-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; border-top: 1px solid #bdb2d366; padding-top: 10px; margin: 0; }
+.card-actions button { display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 38px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: #655977; font-size: 11px; }
+.card-actions button > span { font-size: 18px; }
+.card-actions button[aria-pressed="true"] { background: #fff9; border-color: #ffffff73; color: #322945; box-shadow: 0 2px 6px #54416b08; }
+.card-actions button:hover:not(:disabled) { background: #ffffff60; }
+.card-actions button:disabled { opacity: .6; }
+.payment-app > .connection-status { flex: none; height: 44px; overflow-y: auto; border-top: 1px solid #ece9f0; margin: 0 12px; padding: 9px 3px 0; font-size: 10px; line-height: 1.45; text-align: center; }
+.disconnected-action .flow-heading h2 { font-size: 18px; }
+.disconnected-action .amount-field { margin-top: 14px; margin-bottom: 12px; padding: 14px 17px; }
+.disconnected-action .amount-field input { font-size: 38px; }
+.disconnected-action .delivery-row { padding-bottom: 16px; }
+.disconnected-action .empty-action { min-height: 220px; padding: 6px 4px 18px; }
+.claim-page { max-width: 540px; }
+@media (max-width: 480px) {
+  .product-stage { padding: 20px 12px 48px; gap: 23px; }
+  .product-stage h1 { font-size: 30px; letter-spacing: -1.2px; }
+  .product-stage h1 span { display: block; margin-top: 6px; font-size: .59em; letter-spacing: 1.1px; }
+  .stage-description { font-size: 11px; }
+  .payment-app { height: 630px; padding: 9px; border-radius: 24px; }
+  .wallet-card { padding: 16px 16px 10px; border-radius: 17px; }
+  .wallet-card-body { margin-top: 16px; }
+  .wallet-scroll { padding: 19px 9px 12px; }
+  .card-value { font-size: 25px; max-width: 240px; }
+  .card-actions button { gap: 5px; }
 }

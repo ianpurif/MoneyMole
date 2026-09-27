@@ -1,7 +1,7 @@
 import { getImageProps } from "next/image";
 import Link from "next/link";
 
-function BrandImage({ size, alt, priority = false }: { size: number; alt: string; priority?: boolean }) {
+export function BrandImage({ size, alt, priority = false }: { size: number; alt: string; priority?: boolean }) {
   const { props } = getImageProps({ src: "/images/moneymole_logo.png", width: size, height: size, alt, priority });
   // Next's default color:transparent style is unnecessary and conflicts with
   // nonce-only SSR styles. Retain its optimized URLs, sizing and lazy loading.

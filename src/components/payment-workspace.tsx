@@ -9,10 +9,11 @@ import type { PaymentView } from "@/lib/midnight/payments";
 import { decodeClaim, extractClaim } from "@/lib/midnight/payment-codec";
 import { Button } from "./ui/button";
 import { PaymentDeployment } from "./payment-deployment";
+import { WalletCard } from "./wallet-card";
 import { downloadLocal } from "./download";
 const night = (atomic: string) => formatAmount(BigInt(atomic), 6);
 type Controller = Awaited<ReturnType<OneAmSession["openPayments"]>>;
-export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initialAction = "send", initialAmount = "10" }: { session: OneAmSession; claimToken?: string; onClaimConsumed?: () => void; initialAction?: "send" | "receive" | "activity"; initialAmount?: string }) {
+export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initialAction = "send", initialAmount = "10", onTools, onDisconnect }: { onTools: () => void; onDisconnect: () => void; session: OneAmSession; claimToken?: string; onClaimConsumed?: () => void; initialAction?: "send" | "receive" | "activity"; initialAmount?: string }) {
   const controller = useRef<Controller | null>(null), generation = useRef(0);
   const [contract, setContract] = useState(""), [password, setPassword] = useState("");
   const [amount, setAmount] = useState(initialAmount), [claim, setClaim] = useState("");
@@ -94,8 +95,8 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initial
     setLink(value); setQr(dataUrl); setMessage("Anyone with this link can claim, including you. Share it privately. There is no expiry or refund.");
   }
   return <section aria-label="Payments" className="workspace" aria-busy={busy}>
-    <div className="action-switch" role="group" aria-label="Payment action">{(["send", "receive", "activity"] as const).map(value => <button key={value} disabled={busy} aria-pressed={tab === value} onClick={() => { setTab(value); setLink(""); setQr(""); }}>{value === "send" ? "Send" : value === "receive" ? "Receive" : "Activity"}</button>)}</div>
-    {unlocked && <div className="balance-strip"><span>Available <strong>{balance ?? "checking"} NIGHT</strong></span><button className="quiet-button" onClick={lock}>Lock workspace</button></div>}
+    <WalletCard action={tab} onAction={value => { setTab(value); setLink(""); setQr(""); }} disabled={busy} connected balance={unlocked ? balance : null} controls={<><button className="quiet-button" onClick={onTools} aria-label="Open workspace tools">Tools</button>{unlocked && <button className="quiet-button" onClick={lock}>Lock workspace</button>}<button className="quiet-button" onClick={onDisconnect}>Disconnect</button></>} />
+    <div className="wallet-scroll" tabIndex={0} role="region" aria-label="Payment content">
     {!unlocked && <div className="unlock-heading"><span className="step-number">YOUR LOCAL WORKSPACE</span><h2>Unlock. Pick up where you left off.</h2><p>Your passphrase unlocks encrypted records on this device.</p></div>}
     {!unlocked && tab === "receive" && <details className="claim-address"><summary>Select escrow from a claim link</summary><label className="field">Claim link or token<textarea value={claim} onChange={e => setClaim(e.target.value)} spellCheck={false} autoComplete="off" rows={3} disabled={busy} /></label><Button variant="outline" disabled={busy || !claim} onClick={() => void operate(async () => { const p = await decodeClaim(extractClaim(claim)); setContract(p.contract); setMessage("Claim address selected. Unlock the workspace and save the claim."); })}>Use claim escrow</Button></details>}
     {!unlocked &&
@@ -124,5 +125,6 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initial
     <p role="status" aria-live="polite" className="workspace-status">{busy && <span className="busy-indicator" aria-hidden="true" />}{message}</p>
     {unlocked && <details className="workspace-info"><summary>Asset & workspace details</summary><p className="break-all text-xs text-muted">Asset: {asset}</p><p className="break-all text-xs text-muted">Escrow: {contract}</p><p className="text-xs text-muted">Native Preprod NIGHT · 6 decimals · public amounts and addresses. DUST covers fees. Private state locks when this tab is hidden or after five minutes.</p></details>}
     {!unlocked && <PaymentDeployment session={session} onSelect={setContract} />}
+    </div>
   </section>;
 }
