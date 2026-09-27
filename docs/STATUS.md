@@ -1,5 +1,21 @@
 # Current execution state
 
+## Forgotten local passphrase recovery — 2026-09-28
+
+Returning users can log in independently with an enrolled passkey or recovery
+passphrase. Missing passkey enrollment opens recovery choices instead of the
+previous enrollment dead end. Forgot recovery passphrase offers existing-passkey
+unlock, wrapped-backup unlock, and an explicitly confirmed fresh local workspace.
+Fresh workspaces preserve old encrypted records and archived authentication
+metadata; the user can switch back. Reset creates no on-chain wallet, escrow or
+transaction and does not claim to recover inaccessible payment/claim secrets.
+
+Focused checks passed for 17 encryption/session/storage cases and one browser
+scenario that creates an encrypted draft, starts an isolated workspace, then
+switches back and recovers the original draft. TypeScript and targeted lint passed.
+Real-device passkey prompts remain owner-observed; no live transaction was executed.
+Frontend remains http://localhost:3000. Full deployment/proving checks were not rerun.
+
 ## Shared local recovery and passkeys — 2026-09-28
 
 Connect Wallet opens a centered picker with official bundled 1AM/Lace icons and

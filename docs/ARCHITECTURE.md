@@ -73,6 +73,21 @@ the unlocked identity, selected escrow and payment/deployment/issuer controllers
 Closing Tools or navigating client routes does not discard these controllers.
 The public escrow preference is wallet-scoped; the older selection remains readable.
 
+Forgotten-passphrase resets use a separate local storage identity under the same
+authorized wallet. Previous authentication wrappers are archived before selecting
+the new workspace; no IndexedDB records are deleted or overwritten. Namespace
+validation rejects another wallet's identity. Payments, escrow, issuer recovery,
+preferences and backup imports all use the selected local identity, while chain
+addresses, coin keys and authorization checks remain tied to the real wallet.
+Other tabs lock when the active authentication record changes.
+
+An enrolled passkey and an enrolled fallback phrase independently unwrap the
+same local secret. Their authenticated wrapper is sufficient for local login;
+unrelated damaged/legacy namespaces do not invalidate a successful passkey login.
+Missing enrollment is shown as a recovery choice, never a request to bypass old
+encryption. Wrapped backups can restore the local unlock method with their export
+passphrase. Older exports still require their original secret and namespace.
+
 Local authentication metadata in localStorage contains only encrypted key wrappers
 and public credential metadata. WebAuthn requires user verification and PRF output
 to derive an AES-GCM wrapping key. Unsupported authenticators fail closed and offer

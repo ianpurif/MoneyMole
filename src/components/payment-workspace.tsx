@@ -16,6 +16,7 @@ import { useWallet } from "./wallet-provider";
 import { useRecovery } from "./recovery-provider";
 import { RecoveryAccess } from "./recovery-access";
 import { validPassphrase } from "@/lib/private-state/passphrase";
+import { RecoveryWorkspaceMismatch } from "@/lib/private-state/storage-identity";
 const night = (atomic: string) => formatAmount(BigInt(atomic), 6);
 export function PaymentWorkspace({
   session,
@@ -138,10 +139,10 @@ export function PaymentWorkspace({
     try {
       await action();
       if (attempt === generation.current) await refresh();
-    } catch {
+    } catch (error) {
       if (attempt === generation.current) {
         setMessage(
-          "The operation could not finish. Check the wallet, balance, local prover and connection. Unlock if needed. Preserve saved records and reconcile any transaction identifier before retrying.",
+          error instanceof RecoveryWorkspaceMismatch ? error.message : "The operation could not finish. Check the wallet, balance, local prover and connection. Unlock if needed. Preserve saved records and reconcile any transaction identifier before retrying.",
         );
         try {
           await refresh();

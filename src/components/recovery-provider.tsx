@@ -27,7 +27,13 @@ export function RecoveryProvider({ children }: { children: ReactNode }) {
     window.addEventListener("pointerdown", activity); window.addEventListener("keydown", activity);
     window.addEventListener("pagehide", recovery.lock);
     window.addEventListener("focus", expire); document.addEventListener("visibilitychange", expire);
-    return () => { clearInterval(timeout); unsubscribe(); window.removeEventListener("pointerdown", activity); window.removeEventListener("keydown", activity); window.removeEventListener("pagehide", recovery.lock); window.removeEventListener("focus", expire); document.removeEventListener("visibilitychange", expire); };
+    const changedElsewhere = (event: StorageEvent) => {
+      if (event.key === null || event.key === `moneymole/auth/v1/${recovery.walletId}`) {
+        recovery.lock(); void recovery.initialize().catch(() => { recovery.message = "Local authentication changed. Reconnect your wallet to continue."; recovery.changed(); });
+      }
+    };
+    window.addEventListener("storage", changedElsewhere);
+    return () => { clearInterval(timeout); unsubscribe(); window.removeEventListener("pointerdown", activity); window.removeEventListener("keydown", activity); window.removeEventListener("pagehide", recovery.lock); window.removeEventListener("focus", expire); document.removeEventListener("visibilitychange", expire); window.removeEventListener("storage", changedElsewhere); };
   }, [recovery]);
   return <Context.Provider value={recovery}>{children}</Context.Provider>;
 }

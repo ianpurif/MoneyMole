@@ -6,6 +6,7 @@ import { Transaction, CostModel, nativeToken, type UnprovenTransaction } from "@
 import { httpClientProvingProvider } from "@midnight-ntwrk/midnight-js-http-client-proof-provider";
 import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import { BrowserPrivateStore } from "../private-state/indexed-db";
+import { storageIdentity } from "../private-state/storage-identity";
 import { hex, unhex } from "./payment-codec";
 import { PaymentKeys, observeTransaction } from "./payment-network";
 import { withLocalProver } from "./proof-lock";
@@ -22,7 +23,7 @@ export function validateTx(value: TxRecord) {
   if (["outcome_unknown", "submitted", "finalized", "failed"].includes(value.phase)) unhex(value.transactionId ?? "", 32);
   if (value.transaction && value.transaction.length > 1_800_000) throw new Error("Transaction recovery record too large");
 }
-export async function walletContext(api: ConnectedAPI, check: () => Promise<unknown>) {
+export async function walletContext(api: ConnectedAPI, check: () => Promise<unknown>, localIdentity?: string) {
   await check(); setNetworkId("preprod");
   const addresses = await api.getShieldedAddresses();
   const coinKey = ShieldedCoinPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedCoinPublicKey)).toHexString();
@@ -31,7 +32,7 @@ export async function walletContext(api: ConnectedAPI, check: () => Promise<unkn
   const unshieldedKey = UnshieldedAddress.codec.decode("preprod", MidnightBech32m.parse(address)).hexString;
   const walletId = hex(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(coinKey))));
   async function guard() { await check(); if ((await api.getConfiguration()).networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress || (await api.getUnshieldedAddress()).unshieldedAddress !== address) throw new Error("Reconnect the original Preprod wallet"); }
-  return { api, coinKey, encKey, walletId, guard, address, unshieldedKey };
+  return { api, coinKey, encKey, walletId: storageIdentity(walletId, localIdentity), guard, address, unshieldedKey };
 }
 export type WalletContext = Awaited<ReturnType<typeof walletContext>>;
 export async function openStore(wallet: WalletContext, contract: string, password: string, schemaVersion = 1) {

@@ -1,9 +1,11 @@
 import "client-only";
 import { PrivateCipher, type EncryptedEnvelope } from "./crypto";
 import { requirePassphrase } from "./passphrase";
+import { storageIdentity } from "./storage-identity";
 
 type PasskeyWrap = { id: string; salt: string; iv: string; ciphertext: string };
-export type LocalAuthRecord = { version: 1; passphrase?: EncryptedEnvelope; passkey?: PasskeyWrap };
+export type LocalAuthRecord = { version: 1; passphrase?: EncryptedEnvelope; passkey?: PasskeyWrap; storageIdentity?: string };
+export type PreservedWorkspace = { id: string; createdAt: string; auth: LocalAuthRecord | null };
 const utf8 = new TextEncoder();
 const ns = (wallet: string) => ({ network: "preprod" as const, contractAddress: "moneymole-local-auth-v1", walletIdentity: wallet, schemaVersion: 2 });
 const key = (wallet: string) => `moneymole/auth/v1/${wallet}`;
@@ -17,9 +19,25 @@ export function readAuth(wallet: string): LocalAuthRecord | null {
   if (!raw) return null;
   const value = JSON.parse(raw) as LocalAuthRecord;
   if (value.version !== 1 || (!value.passkey && !value.passphrase)) throw new Error("Local authentication data is damaged. Preserve your recovery backup.");
+  storageIdentity(wallet, value.storageIdentity);
   return value;
 }
 export function saveAuth(wallet: string, value: LocalAuthRecord) { localStorage.setItem(key(wallet), JSON.stringify(value)); }
+export function preservedWorkspaces(wallet: string): PreservedWorkspace[] {
+  const items = JSON.parse(localStorage.getItem(`${key(wallet)}/preserved`) ?? "[]") as PreservedWorkspace[];
+  if (!Array.isArray(items) || items.some(item => !item || typeof item.id !== "string" || typeof item.createdAt !== "string")) throw new Error("Local authentication archive is damaged. Preserve your browser data.");
+  return items;
+}
+/** Archive first, then atomically replace the active wrapper. IndexedDB is never deleted. */
+export function preserveAndSelectAuth(wallet: string, expected: LocalAuthRecord | null, next: LocalAuthRecord | null) {
+  const current = readAuth(wallet);
+  if (JSON.stringify(current) !== JSON.stringify(expected)) throw new Error("Local authentication changed in another tab. Reload before continuing.");
+  if (next) storageIdentity(wallet, next.storageIdentity);
+  const preserved = preservedWorkspaces(wallet);
+  preserved.push({ id: crypto.randomUUID(), createdAt: new Date().toISOString(), auth: current });
+  localStorage.setItem(`${key(wallet)}/preserved`, JSON.stringify(preserved));
+  if (next) saveAuth(wallet, next); else localStorage.removeItem(key(wallet));
+}
 export async function wrapPassphrase(wallet: string, secret: string, password: string) {
   requirePassphrase(password);
   const cipher = await PrivateCipher.unlock(password), bytes = utf8.encode(secret);
@@ -87,11 +105,12 @@ export async function unlockPasskey(wallet: string, record: PasskeyWrap) {
 export function packageRecovery(wallet: string, text: string) {
   const record = readAuth(wallet);
   if (!record?.passphrase) throw new Error("Add a recovery passphrase in Security before saving a portable backup.");
-  return JSON.stringify({ moneymoleRecovery: 1, key: record.passphrase, payload: JSON.parse(text) });
+  return JSON.stringify({ moneymoleRecovery: 1, key: record.passphrase, storageIdentity: record.storageIdentity, payload: JSON.parse(text) });
 }
 export async function unpackRecovery(wallet: string, text: string, password: string) {
   if (text.length > 3_000_000) throw new Error("Recovery file is too large.");
   const value = JSON.parse(text);
   if (value.moneymoleRecovery !== 1) return { text, password };
-  return { text: JSON.stringify(value.payload), password: await unwrapPassphrase(wallet, value.key, password) };
+  if (value.storageIdentity !== undefined) storageIdentity(wallet, value.storageIdentity);
+  return { text: JSON.stringify(value.payload), password: await unwrapPassphrase(wallet, value.key, password), ...(value.storageIdentity ? { storageIdentity: value.storageIdentity as string } : {}) };
 }

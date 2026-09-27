@@ -2,6 +2,43 @@ import { mkdir } from "node:fs/promises";
 import { test, expect } from "@playwright/test";
 import { installPaymentFixture } from "./support/payment-fixture";
 
+test("forgotten phrase starts a separate workspace and preserves recoverable old payments", async ({page}) => {
+  test.setTimeout(90_000);
+  const {contract} = await installPaymentFixture(page);
+  await page.goto("/");
+  await page.getByRole("button", {name:"Connect Wallet",exact:true}).click();
+  await page.getByRole("button", {name:"1AM",exact:true}).click();
+  await page.getByRole("button", {name:"Use recovery passphrase instead"}).click();
+  await page.getByLabel("Local recovery passphrase", {exact:true}).fill("original7");
+  await page.getByRole("button", {name:"Secure MoneyMole",exact:true}).click();
+  await page.getByLabel("Escrow address", {exact:true}).fill(contract);
+  await page.getByRole("button", {name:"Use escrow",exact:true}).click();
+  await expect(page.getByRole("button", {name:"Save payment draft"})).toBeVisible({timeout:60_000});
+  await page.getByRole("button", {name:"Save payment draft"}).click();
+  await expect(page.getByRole("button", {name:"Prepare funding",exact:true})).toBeVisible();
+  await page.getByRole("button", {name:"Lock workspace"}).click();
+  await page.getByRole("button", {name:"Login with Passkey"}).click();
+  await expect(page.getByText("No passkey is linked to these records.", {exact:false})).toBeVisible();
+  await page.getByText("Start a new local workspace", {exact:true}).click();
+  await expect(page.getByRole("button", {name:"Create new workspace with passkey"})).toBeDisabled();
+  await page.getByRole("checkbox").check();
+  await page.getByText("Use a new recovery passphrase instead", {exact:true}).click();
+  await page.getByLabel("New recovery passphrase", {exact:true}).fill("newpass7");
+  await page.getByRole("button", {name:"Create new workspace",exact:true}).click();
+  await page.getByLabel("Escrow address", {exact:true}).fill(contract);
+  await page.getByRole("button", {name:"Use escrow",exact:true}).click();
+  await expect(page.getByRole("button", {name:"Save payment draft"})).toBeVisible();
+  await expect(page.getByLabel("Select payment")).toHaveCount(0);
+  await page.getByRole("button", {name:"Lock workspace"}).click();
+  await page.getByText("Switch to a preserved workspace", {exact:true}).click();
+  await page.getByRole("button", {name:/Workspace saved/}).first().click();
+  await page.getByRole("button", {name:"Use recovery passphrase instead"}).click();
+  await page.getByLabel("Local recovery passphrase", {exact:true}).fill("original7");
+  await page.getByRole("button", {name:"Unlock MoneyMole",exact:true}).click();
+  await expect(page.getByLabel("Select payment")).toBeVisible();
+  expect(await page.evaluate(() => (window as unknown as {syntheticTransactionCalls:number}).syntheticTransactionCalls)).toBe(0);
+});
+
 test("one local unlock survives claim-to-home navigation and Tools", async ({page}) => {
   const {contract} = await installPaymentFixture(page);
   await page.goto("/claim");
@@ -15,15 +52,15 @@ test("one local unlock survives claim-to-home navigation and Tools", async ({pag
   await expect(page.getByRole("button", {name:"Verify and save claim"})).toBeVisible({timeout:60_000});
   await page.getByRole("link", {name:"MoneyMole home"}).click();
   await expect(page.getByRole("button", {name:"Save payment draft"})).toBeVisible();
-  await expect(page.getByRole("button", {name:"Continue with Passkey"})).toHaveCount(0);
+  await expect(page.getByRole("button", {name:/(Continue|Login) with Passkey/})).toHaveCount(0);
   await page.getByRole("button", {name:"Open workspace tools"}).click();
   await expect(page.getByRole("heading", {name:"Security",exact:true})).toBeVisible();
   await expect(page.getByLabel("Local recovery passphrase", {exact:true})).toHaveCount(0);
   await page.keyboard.press("Escape");
   await page.getByRole("button", {name:"Activity",exact:true}).click();
-  await expect(page.getByRole("button", {name:"Continue with Passkey"})).toHaveCount(0);
+  await expect(page.getByRole("button", {name:/(Continue|Login) with Passkey/})).toHaveCount(0);
   await page.getByRole("button", {name:"Lock workspace"}).click();
-  await expect(page.getByRole("button", {name:"Continue with Passkey"})).toBeVisible();
+  await expect(page.getByRole("button", {name:/(Continue|Login) with Passkey/})).toBeVisible();
 });
 
 test("focused synthetic payment workspace saves, validates and recovers a real encrypted draft", async ({page}) => {
@@ -34,7 +71,7 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await page.goto("/");
   await page.getByRole("button",{name:"Connect Wallet"}).click();
   await page.getByRole("button",{name:"1AM",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Continue with Passkey"})).toBeVisible();
+  await expect(page.getByRole("button",{name:/(Continue|Login) with Passkey/})).toBeVisible();
   await page.getByRole("button",{name:"Use recovery passphrase instead"}).click();
   await expect(page.getByText("At least 7 characters.",{exact:false})).toBeVisible();
   await expect(page.getByText("Create / recover a payment escrow",{exact:true})).toHaveCount(0);

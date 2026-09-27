@@ -141,29 +141,29 @@ export class OneAmSession {
     const { walletContext } = await import("./payment-session");
     return (await walletContext(this.#api, () => this.check())).walletId;
   }
-  async prepareIssuer(password: string) {
+  async prepareIssuer(password: string, localIdentity?: string) {
     await this.check();
     if (!this.#api) throw new Error("Reconnect 1AM.");
     const { prepareIssuer } = await import("./issuer-deployment");
-    return prepareIssuer(this.#api, password);
+    return prepareIssuer(this.#api, password, localIdentity);
   }
-  async preparePaymentDeployment(password: string) {
+  async preparePaymentDeployment(password: string, localIdentity?: string) {
     await this.check(); if (!this.#api) throw new Error("Reconnect 1AM");
     const { walletContext } = await import("./payment-session");
     const { openPaymentDeployment } = await import("./payment-deployment");
-    return openPaymentDeployment(await walletContext(this.#api, () => this.check()), password);
+    return openPaymentDeployment(await walletContext(this.#api, () => this.check(), localIdentity), password);
   }
-  async openPayments(contract: string, password: string) {
+  async openPayments(contract: string, password: string, localIdentity?: string) {
     await this.check(); if (!this.#api) throw new Error("Reconnect 1AM");
     const { walletContext } = await import("./payment-session");
     const { openPayments } = await import("./payments");
-    return openPayments(await walletContext(this.#api, () => this.check()), contract, password);
+    return openPayments(await walletContext(this.#api, () => this.check(), localIdentity), contract, password);
   }
-  async restoreAdmin(kind: "issuer" | "escrow", password: string, text: string, originalPassword: string) {
+  async restoreAdmin(kind: "issuer" | "escrow", password: string, text: string, originalPassword: string, localIdentity?: string) {
     await this.check(); if (!this.#api) throw new Error("Reconnect 1AM");
     const { walletContext } = await import("./payment-session");
     const { restoreAdmin } = await import("./admin-recovery");
-    return restoreAdmin(await walletContext(this.#api, () => this.check()), kind, password, text, originalPassword);
+    return restoreAdmin(await walletContext(this.#api, () => this.check(), localIdentity), kind, password, text, originalPassword);
   }
 }
 

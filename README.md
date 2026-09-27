@@ -119,6 +119,15 @@ port to agree. Unused NEXT_PUBLIC values do not configure payments.
 
 ## Send, claim and verify
 
+Forgot the local recovery passphrase? Use **Login with Passkey** if a passkey was
+already enrolled, then replace the passphrase in **Tools → Security**. **Forgot
+recovery passphrase?** also accepts a wrapped MoneyMole backup with its export
+passphrase. Without either unlock method, old encrypted records cannot be decrypted.
+The confirmed **Start a new local workspace** flow preserves the old records and
+authentication metadata in this browser and creates a separate empty workspace.
+Use **Switch to a preserved workspace** if the original unlock material is found.
+No wallet, escrow deployment or transaction is created by this reset.
+
 1. Chrome/A and Brave/B: real independent 1AM wallets on Preprod. A holds the NIGHT
    to send; both have enough available DUST. Record NIGHT balances A0 and B0.
 2. A clicks **Connect Wallet**, selects **1AM** (or detected **Lace**), and unlocks

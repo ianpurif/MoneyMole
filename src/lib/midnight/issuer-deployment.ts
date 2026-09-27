@@ -1,4 +1,5 @@
 import { requirePassphrase } from "../private-state/passphrase";
+import { storageIdentity } from "../private-state/storage-identity";
 import "client-only";
 import preprod from "../../../config/preprod.json";
 import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
@@ -34,14 +35,14 @@ type Draft = { version: 1; address: string; authority: string; maintenanceKey: s
 export type DeploymentReview = { address: string; phase: Draft["phase"]; transactionId?: string; blockHash?: string; transactionHash?: string };
 
 /** No transaction is submitted while preparing. Secrets never leave this client module. */
-export async function prepareIssuer(api: ConnectedAPI, password: string) {
+export async function prepareIssuer(api: ConnectedAPI, password: string, localIdentity?: string) {
   requirePassphrase(password);
   if ((await api.getConfiguration()).networkId !== "preprod") throw new Error("Select Preprod.");
   const addresses = await api.getShieldedAddresses();
   const coinKey = ShieldedCoinPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedCoinPublicKey)).toHexString();
   const encKey = ShieldedEncryptionPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedEncryptionPublicKey)).toHexString();
   const walletId = hex(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(coinKey))));
-  const namespace = { network: "preprod" as const, contractAddress: "issuer-deployment-staging-v1", walletIdentity: walletId, schemaVersion: 1 };
+  const namespace = { network: "preprod" as const, contractAddress: "issuer-deployment-staging-v1", walletIdentity: storageIdentity(walletId, localIdentity), schemaVersion: 1 };
   const store = await BrowserPrivateStore.unlock(namespace, password, !await BrowserPrivateStore.exists(namespace));
   let revision = 0, draft: Draft;
   const saved = await store.read("deployment");

@@ -279,6 +279,14 @@ details[open] > summary::after { content: "−"; }
 .recovery-access form .small-note { margin: 9px 0 13px; line-height: 1.5; }
 .recovery-status { margin: 13px 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .recovery-error { color: #91394d; font-size: 12px; margin: 10px 0; }
+.forgot-recovery { margin-top: 15px; border-top: 1px solid var(--border); padding-top: 14px; font-size: 12px; }
+.forgot-recovery h3 { font-weight: 600; font-size: 14px; }
+.forgot-recovery p { margin: 9px 0 13px; line-height: 1.6; color: var(--muted); }
+.forgot-recovery details { margin-top: 16px; }
+.forgot-recovery summary { font-size: 12px; cursor: pointer; }
+.reset-confirmation { display: flex; align-items: flex-start; gap: 9px; line-height: 1.6; margin: 14px 0; }
+.reset-confirmation input { margin-top: 3px; flex: none; }
+.preserved-workspace { display: block; margin: 12px 0; text-align: left; }
 .payment-app-disconnected { height: auto; min-height: 0; }
 .payment-app-disconnected .wallet-scroll { flex: none; overflow: visible; padding-block: 22px 6px; }
 .payment-app-disconnected .disconnected-action:empty { display: none; }
