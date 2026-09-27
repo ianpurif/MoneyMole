@@ -29,6 +29,6 @@ export async function verifyEscrow(address) {
   const data = await query(`query($address:HexEncoded!){contractAction(address:$address){state transaction{block{height hash}}}}`, { address });
   assert(data.contractAction); await finality(data.contractAction.transaction.block);
   const state = ContractState.deserialize(Buffer.from(data.contractAction.state, "hex")); assert.equal(state.operations().length, 2);
-  for (const c of ["fund", "claim"]) assert.deepEqual(Buffer.from(state.operation(c).verifierKey), readFileSync(at(`managed/private-payments/keys/${c}.verifier`)));
+  for (const c of ["fund", "claim"]) assert.deepEqual(Buffer.from(state.operation(c).verifierKey), readFileSync(at(`managed/night-payments/keys/${c}.verifier`)));
   return state;
 }

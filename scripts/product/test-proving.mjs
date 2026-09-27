@@ -8,6 +8,7 @@ import { runRuntimeCases } from "../../tests/contracts/runtime.mjs";
 import { at, saveJson, hashFile } from "../lib.mjs";
 import { run as verify } from "./verify-artifacts.mjs";
 import { proveIssuerTransaction } from "../../tests/contracts/issuer-transaction.mjs";
+import { proveNightTransactions } from "../../tests/contracts/night-transaction.mjs";
 
 class LocalKeys extends ZKConfigProvider {
   constructor(payment = "private-payments") { super(); this.payment = payment; }
@@ -44,7 +45,9 @@ export async function run() {
     }
     stage = "synthetic issuer transaction proving";
     const issuerTransaction = await proveIssuerTransaction(new LocalKeys(), provider);
-    saveJson(path, { scope: "local_circuit_constraint_check_and_proof_generation_synthetic_only", result: "passed", observedAt: new Date().toISOString(), checks, issuerTransaction,
+    stage = "synthetic native NIGHT transaction construction and proving";
+    const nightTransaction = await proveNightTransactions(new LocalKeys("night-payments"), httpClientProvingProvider(preprod.proofServer, new LocalKeys("night-payments"), { timeout: 180000 }));
+    saveJson(path, { scope: "local_circuit_constraint_check_and_proof_generation_synthetic_only", result: "passed", observedAt: new Date().toISOString(), checks, issuerTransaction, nightTransaction,
       subjects: ["tests/contracts/night-runtime.mjs", "contracts/night-payments.compact", "scripts/product/test-proving.mjs", "tests/contracts/runtime.mjs", "contracts/private-payments.compact", "contracts/issuance/test-asset.compact", "compose.yaml"].map(path => ({ path, sha256: hashFile(path) })),
       limitations: ["Not a sealed transaction or independent proof verification", "No ledger-qualified input", "No wallet balance, network submission or receiver spend"] });
     return { status: "passed", evidencePaths: [path] };
