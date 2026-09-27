@@ -1,5 +1,38 @@
 # Current execution state
 
+## Wallet selection, balances and focused actions — 2026-09-27
+
+Connect now discovers supported API v4 wallets and offers explicit 1AM/Lace choices.
+The debit card shows total native NIGHT and current DUST before encrypted records
+are unlocked. Bounded reads refresh while visible every 15 seconds, on focus,
+during reconciliation and after operation attempts. Unavailable totals are never
+shown as zero, and changed wallet identity clears the old totals.
+
+Unlock/passphrase guidance is a toast. Tools owns escrow creation/recovery and
+encrypted payment import. Send owns funding/sharing/controlled spending; Receive
+owns claims; Activity owns transaction history, receipts and recovery exports.
+Existing encrypted storage, transaction finality and original issuer are preserved.
+
+Fresh local checks passed: lint, types, production build, 57 unit tests, 25 contract
+cases, 22 integration tests and 21 production browser checks. All five Compact
+targets compiled; artifacts, synthetic local proofs, zero-finding dependency audit,
+read-only original issuer and browser prover/indexer/RPC connectivity passed.
+Evidence: docs/evidence/ui-cleanup-verification.json. No real wallet approval,
+deployment or native NIGHT transfer was performed. Live deployment/product gates
+still return 2 for missing owner-approved records; local fixtures are not acceptance.
+After rebinding changed subjects, all 53 utility tests, offline consistency and
+requirements/report checks passed. The stale initial evidence failure is resolved.
+
+Publication and source-bound remote CI for this UI revision are pending.
+
+Use http://localhost:3000, click Connect, choose your wallet and personally approve
+Preprod to check real-extension behavior. No passphrase/seed belongs in chat.
+No new deployment is needed to inspect wallet balances or this UI. The existing
+manual NIGHT acceptance flow remains in docs/OWNER-TESTING.md.
+
+Unrelated .codex/config.toml, REVISION.md and public/images/debit-card-bg.png were
+left as found. Earlier checkpoints below describe their own revisions only.
+
 ## Wallet and card verification — 2026-09-27
 
 The current application is http://localhost:3000. Wallet checks now distinguish
