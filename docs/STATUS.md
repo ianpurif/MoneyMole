@@ -1,5 +1,52 @@
 # Current execution state
 
+## Wallet and card verification — 2026-09-27
+
+The current application is http://localhost:3000. Wallet checks now distinguish
+transient failures from confirmed session invalidation, and authorized 1AM sessions
+survive client navigation. DUST readiness no longer determines connection success.
+A full reload still requires an explicit Connect action: connector v4 has no passive
+restore method. The separate private-workspace visibility/five-minute lock remains.
+
+The centered main card has the requested heading and two-line copy, a branded
+wallet surface containing Send/Receive/Activity and workspace controls, fixed outer
+height, and internal scrolling. Switching actions resets the inner scroll position.
+
+All final local results are recorded in docs/evidence/wallet-card-verification.json:
+clean npm ci, zero audit findings, lint/types/build, 53 unit tests, 25 contract cases,
+22 integration tests, 18 browser tests, five compiler targets, artifact validation,
+synthetic proving and read-only original issuer verification. Browser CORS/prover,
+indexer and RPC access passed at localhost; Windows HTTP reachability also passed.
+53 utility checks and requirements/report validation passed after rebinding evidence.
+These are engineering checks, not observed real 1AM or live NIGHT acceptance.
+
+The preparation wrapper initially rejected stale evidence; the evidence/report
+checks were corrected and rerun. Its custom Codex agent/MCP checks remain separate
+auxiliary blockers; no subagents were delegated. TCP-only readiness, absent real
+NIGHT deployment and live product acceptance continue to exit 2 as expected.
+
+Publication/remote CI for this revision is pending below. Historical migration
+records remain intact and must not be treated as current source verification.
+
+## Exact next owner action for this wallet fix
+
+Open http://localhost:3000 in Chrome with 1AM, click Check for 1AM then Connect 1AM,
+and personally approve Preprod. Observe the session while idle and after switching
+focus or navigating home. Do not deploy or transfer funds for this connection check.
+Only the in-app browser is exposed to this session's UI controls, so real extension
+approval/stability remains unobserved. The new UI is open in the in-app preview.
+
+Existing encrypted records at the former 127.0.0.1 origin were not changed; use the
+existing encrypted export/import workflow if recovery must move to localhost.
+See docs/USAGE.md. No wallet credentials, claim secrets or private records were read.
+The original issuer/deployment and legacy namespaces remain preserved. Local
+.codex/config.toml changes and REVISION.md predate this work and remain untouched.
+
+## Historical checkpoints
+
+The following sections describe earlier revisions and their own evidence only.
+They do not override the localhost/session handoff above.
+
 ## Native NIGHT engineering complete — 2026-09-27
 
 The current product escrows native Preprod NIGHT, with DUST only for fees. It uses

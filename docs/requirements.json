@@ -41,13 +41,13 @@
           "result": "passed",
           "scope": "clean_install_and_zero_reported_vulnerabilities",
           "command": "npm ci --no-audit --no-fund; npm run audit:deps",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "package.json",
-              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+              "sha256": "8c6f0fb1c64588d0e9ef440fc78dfe2a5910460a21a0791af3e9677a16cab418"
             },
             {
               "path": "package-lock.json",
@@ -95,9 +95,9 @@
           "result": "passed",
           "scope": "native_NIGHT_local_application_build_and_synthetic_browser_checks_not_live_payment",
           "command": "npm run lint; npm run typecheck; npm run build; npm run test:browser",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": ".gitattributes",
@@ -106,6 +106,10 @@
             {
               "path": ".github/workflows/ci.yml",
               "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "README.md",
+              "sha256": "8ad6cf0686c9c5bec4985d9bde2ed6f2de2cb250d83591b154a0ebef3c5f699c"
             },
             {
               "path": "compose.yaml",
@@ -140,6 +144,26 @@
               "sha256": "6d8823166f2f2fbf1e328159d6c50b43e834ce452690801a83a4ad002c805bb6"
             },
             {
+              "path": "docs/OWNER-TESTING.md",
+              "sha256": "420722f27ea910a416422ec8f58a2fbe1804f58df4c03eef7b3ff2c159ceb774"
+            },
+            {
+              "path": "docs/PRIVACY.md",
+              "sha256": "d2a35abb886fb6d241b3ede395281c971181b406e44423baf35d42a0b51e63dd"
+            },
+            {
+              "path": "docs/RUNBOOK.md",
+              "sha256": "2473ca291a3488131faadbd3f0faf91da401865e8f5d3b6d50e4a155b6219444"
+            },
+            {
+              "path": "docs/TESTING.md",
+              "sha256": "c716648cca216579a4e12fe50a31781924d5231ea34a16f8ea89e698db1007fe"
+            },
+            {
+              "path": "docs/USAGE.md",
+              "sha256": "936d13e111d222335dfcb99166a828993964d0a60187c695ae73ebfb24ee5837"
+            },
+            {
               "path": "eslint.config.mjs",
               "sha256": "ed7da661d4306ef50f89c3001a79d18adc58a6c9519c086399c3cc17990917c7"
             },
@@ -153,11 +177,11 @@
             },
             {
               "path": "package.json",
-              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+              "sha256": "8c6f0fb1c64588d0e9ef440fc78dfe2a5910460a21a0791af3e9677a16cab418"
             },
             {
               "path": "playwright.config.ts",
-              "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+              "sha256": "3294f43b46a778fe4d7c42ee1c7f42e926ecddec657ac3dfba3f26edd469068d"
             },
             {
               "path": "postcss.config.mjs",
@@ -225,7 +249,7 @@
             },
             {
               "path": "scripts/product/deploy-preprod.mjs",
-              "sha256": "5c66bd3f866f2356465837db262363e64d3e7518f8483794830e9c478fef4547"
+              "sha256": "171678aa31719d455a75072455ee6bd326e2821d5ba8d0871a7f9a40762e4e2b"
             },
             {
               "path": "scripts/product/preprod-observer.mjs",
@@ -281,7 +305,7 @@
             },
             {
               "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+              "sha256": "5c6d7ec3669aa2694cce969839bc00b11b6f291ada97c520cc06a22c70fb5aee"
             },
             {
               "path": "scripts/verify-issuer.mjs",
@@ -301,15 +325,15 @@
             },
             {
               "path": "src/app/globals.css",
-              "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+              "sha256": "d3659d87f8cc2f67514c847ba3d459aed78bff6fded0d1a50ca5d0faed7f2592"
             },
             {
               "path": "src/app/layout.tsx",
-              "sha256": "578518d27ad78c6060a6f54c6b58d8a891c5137acbcccb5f904ca0e4950152ef"
+              "sha256": "68842f4433ecb717a5d778d319d8a657f033e82a439b5e1b114a9bda6af3035a"
             },
             {
               "path": "src/app/page.tsx",
-              "sha256": "13db2fda6b2953fd118cc7a7c21947a0de50953fdd0e78a49ad7394cd8f8b911"
+              "sha256": "486d0eaec94b40f54615691c67ce8b9e97c522924d432e0a84c1d4c3dde7f36a"
             },
             {
               "path": "src/components/admin-recovery.tsx",
@@ -341,7 +365,7 @@
             },
             {
               "path": "src/components/payment-workspace.tsx",
-              "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+              "sha256": "4ef2c8946cb89aaab592a4bfa121ac3ebbfaca53b3d600d8ca1f92fe54cf1599"
             },
             {
               "path": "src/components/product-feedback.tsx",
@@ -349,15 +373,23 @@
             },
             {
               "path": "src/components/product-shell.tsx",
-              "sha256": "102d9a8a5f0fe2a972bfb8da6127d50881cb25348bbd4efb4ac5d6a861f70353"
+              "sha256": "16b55d5ba02451505a53bf84f5bb9bc38d025d58c1c04ca7d985051bca3312ef"
             },
             {
               "path": "src/components/ui/button.tsx",
               "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
             },
             {
+              "path": "src/components/wallet-card.tsx",
+              "sha256": "84dd04ab6e0900e88b848cf42c8036709883f0fc49dc3f3d71209af4577d46a4"
+            },
+            {
               "path": "src/components/wallet-panel.tsx",
-              "sha256": "24fccb04545b6fe4887eb9c216aff1d4f0a15fec9917dd6afcae0fa2a43009e4"
+              "sha256": "4ee016058592df7957102a57b9d128b98ecb5f11e386e32893f733f0c12d2321"
+            },
+            {
+              "path": "src/components/wallet-provider.tsx",
+              "sha256": "6b3ce0b2dcd91545a162f69b6b6f2c77f1d8c0a426c9c21d4309ea0f49b08145"
             },
             {
               "path": "src/domain/amount.ts",
@@ -393,7 +425,7 @@
             },
             {
               "path": "src/lib/midnight/oneam.ts",
-              "sha256": "904bdb71910d14c51e669ca42c6ecb8a4aeb4d9ac07640e48d13c7cb5181a4ef"
+              "sha256": "4299a69132262a14a8d0b8ea19c77a9355650625aa34c03104abd841d3acc956"
             },
             {
               "path": "src/lib/midnight/payment-codec.ts",
@@ -501,7 +533,7 @@
             },
             {
               "path": "tests/browser/redesign.spec.ts",
-              "sha256": "ead078fa5455a6d6aeb1f54736f3c96fc1400ced916318beda7ebc2d4c4e0c08"
+              "sha256": "edc812c0f8a40c2477a3079c2de2fb5789c6115eda977601af676877f38f1a33"
             },
             {
               "path": "tests/browser/shell.spec.ts",
@@ -510,6 +542,10 @@
             {
               "path": "tests/browser/support/payment-fixture.ts",
               "sha256": "11b95bf926f34d1204e182bb5c4636ac29775d6e2e112f5c7dee81be9a4ea551"
+            },
+            {
+              "path": "tests/browser/wallet-session.spec.ts",
+              "sha256": "89fd4897de78d19632139a446cd2ef50b91019f17dfc98a17c0eb2444538192d"
             },
             {
               "path": "tests/contracts/issuer-transaction.mjs",
@@ -565,7 +601,7 @@
             },
             {
               "path": "tests/unit/oneam.test.ts",
-              "sha256": "4c3bc15a5b7a3598a8ac574528377ab178ffb9d945e711587629d97b7cd95ebc"
+              "sha256": "0f8ff969f4ffa7462779cb1c68d58dd08418d28da117f3ffffbfb195c39aa4af"
             },
             {
               "path": "tests/unit/payment-codec.test.ts",
@@ -1228,13 +1264,13 @@
           "result": "passed",
           "scope": "observed_Node_22_16_0_npm_10_9_2",
           "command": "npm run doctor",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "package.json",
-              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+              "sha256": "8c6f0fb1c64588d0e9ef440fc78dfe2a5910460a21a0791af3e9677a16cab418"
             },
             {
               "path": "toolchain.lock.json",
@@ -1278,9 +1314,9 @@
           "result": "passed",
           "scope": "pinned_local_prover_real_synthetic_proofs_and_browser_CORS",
           "command": "npm run doctor; npm run test:proving; npm run verify:connectivity",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "compose.yaml",
@@ -1300,7 +1336,7 @@
             },
             {
               "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+              "sha256": "5c6d7ec3669aa2694cce969839bc00b11b6f291ada97c520cc06a22c70fb5aee"
             }
           ]
         }
@@ -1608,17 +1644,17 @@
           "result": "passed",
           "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
           "command": "Source/UI/config review and local verification",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "README.md",
-              "sha256": "9403db95eed3cba9ec1cf3dd4a14a99df2692e86ba602f7b64896df57a210cf7"
+              "sha256": "8ad6cf0686c9c5bec4985d9bde2ed6f2de2cb250d83591b154a0ebef3c5f699c"
             },
             {
               "path": "docs/OWNER-TESTING.md",
-              "sha256": "26db494391704d93439e05cba24f31796e910655eb14441540256dbd48e1a52c"
+              "sha256": "420722f27ea910a416422ec8f58a2fbe1804f58df4c03eef7b3ff2c159ceb774"
             },
             {
               "path": "docs/PRIVACY.md",
@@ -1960,7 +1996,7 @@
       "level": "Level 3",
       "title": "Push and pull-request compile/test workflow",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-MANAGED",
         "PREP-LOCK"
@@ -2513,7 +2549,7 @@
       "level": "Level 3",
       "title": "Production build",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L3-CI"
       ],
@@ -2526,9 +2562,9 @@
           "result": "passed",
           "scope": "native_NIGHT_production_build",
           "command": "npm run build",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": ".gitattributes",
@@ -2537,6 +2573,10 @@
             {
               "path": ".github/workflows/ci.yml",
               "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "README.md",
+              "sha256": "8ad6cf0686c9c5bec4985d9bde2ed6f2de2cb250d83591b154a0ebef3c5f699c"
             },
             {
               "path": "compose.yaml",
@@ -2571,6 +2611,26 @@
               "sha256": "6d8823166f2f2fbf1e328159d6c50b43e834ce452690801a83a4ad002c805bb6"
             },
             {
+              "path": "docs/OWNER-TESTING.md",
+              "sha256": "420722f27ea910a416422ec8f58a2fbe1804f58df4c03eef7b3ff2c159ceb774"
+            },
+            {
+              "path": "docs/PRIVACY.md",
+              "sha256": "d2a35abb886fb6d241b3ede395281c971181b406e44423baf35d42a0b51e63dd"
+            },
+            {
+              "path": "docs/RUNBOOK.md",
+              "sha256": "2473ca291a3488131faadbd3f0faf91da401865e8f5d3b6d50e4a155b6219444"
+            },
+            {
+              "path": "docs/TESTING.md",
+              "sha256": "c716648cca216579a4e12fe50a31781924d5231ea34a16f8ea89e698db1007fe"
+            },
+            {
+              "path": "docs/USAGE.md",
+              "sha256": "936d13e111d222335dfcb99166a828993964d0a60187c695ae73ebfb24ee5837"
+            },
+            {
               "path": "eslint.config.mjs",
               "sha256": "ed7da661d4306ef50f89c3001a79d18adc58a6c9519c086399c3cc17990917c7"
             },
@@ -2584,11 +2644,11 @@
             },
             {
               "path": "package.json",
-              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+              "sha256": "8c6f0fb1c64588d0e9ef440fc78dfe2a5910460a21a0791af3e9677a16cab418"
             },
             {
               "path": "playwright.config.ts",
-              "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+              "sha256": "3294f43b46a778fe4d7c42ee1c7f42e926ecddec657ac3dfba3f26edd469068d"
             },
             {
               "path": "postcss.config.mjs",
@@ -2656,7 +2716,7 @@
             },
             {
               "path": "scripts/product/deploy-preprod.mjs",
-              "sha256": "5c66bd3f866f2356465837db262363e64d3e7518f8483794830e9c478fef4547"
+              "sha256": "171678aa31719d455a75072455ee6bd326e2821d5ba8d0871a7f9a40762e4e2b"
             },
             {
               "path": "scripts/product/preprod-observer.mjs",
@@ -2712,7 +2772,7 @@
             },
             {
               "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+              "sha256": "5c6d7ec3669aa2694cce969839bc00b11b6f291ada97c520cc06a22c70fb5aee"
             },
             {
               "path": "scripts/verify-issuer.mjs",
@@ -2732,15 +2792,15 @@
             },
             {
               "path": "src/app/globals.css",
-              "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+              "sha256": "d3659d87f8cc2f67514c847ba3d459aed78bff6fded0d1a50ca5d0faed7f2592"
             },
             {
               "path": "src/app/layout.tsx",
-              "sha256": "578518d27ad78c6060a6f54c6b58d8a891c5137acbcccb5f904ca0e4950152ef"
+              "sha256": "68842f4433ecb717a5d778d319d8a657f033e82a439b5e1b114a9bda6af3035a"
             },
             {
               "path": "src/app/page.tsx",
-              "sha256": "13db2fda6b2953fd118cc7a7c21947a0de50953fdd0e78a49ad7394cd8f8b911"
+              "sha256": "486d0eaec94b40f54615691c67ce8b9e97c522924d432e0a84c1d4c3dde7f36a"
             },
             {
               "path": "src/components/admin-recovery.tsx",
@@ -2772,7 +2832,7 @@
             },
             {
               "path": "src/components/payment-workspace.tsx",
-              "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+              "sha256": "4ef2c8946cb89aaab592a4bfa121ac3ebbfaca53b3d600d8ca1f92fe54cf1599"
             },
             {
               "path": "src/components/product-feedback.tsx",
@@ -2780,15 +2840,23 @@
             },
             {
               "path": "src/components/product-shell.tsx",
-              "sha256": "102d9a8a5f0fe2a972bfb8da6127d50881cb25348bbd4efb4ac5d6a861f70353"
+              "sha256": "16b55d5ba02451505a53bf84f5bb9bc38d025d58c1c04ca7d985051bca3312ef"
             },
             {
               "path": "src/components/ui/button.tsx",
               "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
             },
             {
+              "path": "src/components/wallet-card.tsx",
+              "sha256": "84dd04ab6e0900e88b848cf42c8036709883f0fc49dc3f3d71209af4577d46a4"
+            },
+            {
               "path": "src/components/wallet-panel.tsx",
-              "sha256": "24fccb04545b6fe4887eb9c216aff1d4f0a15fec9917dd6afcae0fa2a43009e4"
+              "sha256": "4ee016058592df7957102a57b9d128b98ecb5f11e386e32893f733f0c12d2321"
+            },
+            {
+              "path": "src/components/wallet-provider.tsx",
+              "sha256": "6b3ce0b2dcd91545a162f69b6b6f2c77f1d8c0a426c9c21d4309ea0f49b08145"
             },
             {
               "path": "src/domain/amount.ts",
@@ -2824,7 +2892,7 @@
             },
             {
               "path": "src/lib/midnight/oneam.ts",
-              "sha256": "904bdb71910d14c51e669ca42c6ecb8a4aeb4d9ac07640e48d13c7cb5181a4ef"
+              "sha256": "4299a69132262a14a8d0b8ea19c77a9355650625aa34c03104abd841d3acc956"
             },
             {
               "path": "src/lib/midnight/payment-codec.ts",
@@ -2932,7 +3000,7 @@
             },
             {
               "path": "tests/browser/redesign.spec.ts",
-              "sha256": "ead078fa5455a6d6aeb1f54736f3c96fc1400ced916318beda7ebc2d4c4e0c08"
+              "sha256": "edc812c0f8a40c2477a3079c2de2fb5789c6115eda977601af676877f38f1a33"
             },
             {
               "path": "tests/browser/shell.spec.ts",
@@ -2941,6 +3009,10 @@
             {
               "path": "tests/browser/support/payment-fixture.ts",
               "sha256": "11b95bf926f34d1204e182bb5c4636ac29775d6e2e112f5c7dee81be9a4ea551"
+            },
+            {
+              "path": "tests/browser/wallet-session.spec.ts",
+              "sha256": "89fd4897de78d19632139a446cd2ef50b91019f17dfc98a17c0eb2444538192d"
             },
             {
               "path": "tests/contracts/issuer-transaction.mjs",
@@ -2996,7 +3068,7 @@
             },
             {
               "path": "tests/unit/oneam.test.ts",
-              "sha256": "4c3bc15a5b7a3598a8ac574528377ab178ffb9d945e711587629d97b7cd95ebc"
+              "sha256": "0f8ff969f4ffa7462779cb1c68d58dd08418d28da117f3ffffbfb195c39aa4af"
             },
             {
               "path": "tests/unit/payment-codec.test.ts",
@@ -3380,17 +3452,17 @@
           "result": "passed",
           "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
           "command": "Source/UI/config review and local verification",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "README.md",
-              "sha256": "9403db95eed3cba9ec1cf3dd4a14a99df2692e86ba602f7b64896df57a210cf7"
+              "sha256": "8ad6cf0686c9c5bec4985d9bde2ed6f2de2cb250d83591b154a0ebef3c5f699c"
             },
             {
               "path": "docs/USAGE.md",
-              "sha256": "b03ba6147d985bef1325e2f51630cab8cbd7caca5465cec6f0efd0c8c1f7a192"
+              "sha256": "936d13e111d222335dfcb99166a828993964d0a60187c695ae73ebfb24ee5837"
             },
             {
               "path": "docs/ARCHITECTURE.md",
@@ -3435,7 +3507,7 @@
       "level": "Level 4",
       "title": "Product repository pipeline",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L3-CI"
       ],
@@ -4089,13 +4161,13 @@
           "result": "passed",
           "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
           "command": "Source/UI/config review and local verification",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "docs/OWNER-TESTING.md",
-              "sha256": "26db494391704d93439e05cba24f31796e910655eb14441540256dbd48e1a52c"
+              "sha256": "420722f27ea910a416422ec8f58a2fbe1804f58df4c03eef7b3ff2c159ceb774"
             },
             {
               "path": "docs/PRIVACY.md",
@@ -4103,7 +4175,7 @@
             },
             {
               "path": "docs/RUNBOOK.md",
-              "sha256": "3b5590b600434aeb18eae3b9a00248d12aaf0fff89dfbb96aa8066cd5d9ba049"
+              "sha256": "2473ca291a3488131faadbd3f0faf91da401865e8f5d3b6d50e4a155b6219444"
             }
           ]
         }
@@ -4346,7 +4418,7 @@
       "level": "External metadata",
       "title": "Public repository",
       "owner": "owner",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Owner-supplied repository URL is independently checked for public access.",
       "commands": [
@@ -4419,9 +4491,9 @@
           "result": "passed",
           "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
           "command": "Source/UI/config review and local verification",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/wallet-card-verification.json",
+          "sha256": "82197f398e8bdc0331bb76993a61d917249eadefd59f9b0283763a1a12346f70",
+          "observedAt": "2026-09-27T13:56:50.371232+00:00",
           "subjects": [
             {
               "path": "docs/ARCHITECTURE.md",
@@ -4429,7 +4501,7 @@
             },
             {
               "path": "package.json",
-              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+              "sha256": "8c6f0fb1c64588d0e9ef440fc78dfe2a5910460a21a0791af3e9677a16cab418"
             },
             {
               "path": "src/lib/server/artifacts.ts",
