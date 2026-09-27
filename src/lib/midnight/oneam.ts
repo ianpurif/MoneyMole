@@ -18,6 +18,32 @@ export function discoverOneAm(registry: unknown): InitialAPI[] {
   return matches.length === 1 ? matches : [];
 }
 
+export class WalletSessionInvalid extends Error {
+  constructor() { super("Wallet session invalidated. Reconnect 1AM on Preprod."); }
+}
+export class WalletReadUnavailable extends Error {
+  constructor() { super("1AM is temporarily unavailable. Your connection is retained; try again shortly."); }
+}
+function isDisconnected(error: unknown): boolean {
+  return !!error && typeof error === "object" && "type" in error && error.type === "DAppConnectorAPIError" && "code" in error && error.code === "Disconnected";
+}
+/** Bound read-only calls, never authorization or transaction requests. */
+async function readWallet<T>(read: () => Promise<T>): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try { return await Promise.race([read(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new WalletReadUnavailable()), 8000); })]); }
+  finally { clearTimeout(timer); }
+}
+async function identity(api: ConnectedAPI) {
+  const status = await readWallet(() => api.getConnectionStatus());
+  if (status.status === "disconnected" || (status.status === "connected" && status.networkId !== "preprod")) throw new WalletSessionInvalid();
+  if (status.status !== "connected") throw new WalletReadUnavailable();
+  const config = await readWallet(() => api.getConfiguration());
+  if (config.networkId !== "preprod") throw new WalletSessionInvalid();
+  const { unshieldedAddress } = await readWallet(() => api.getUnshieldedAddress());
+  if (!unshieldedAddress) throw new WalletReadUnavailable();
+  return unshieldedAddress;
+}
+
 export class OneAmSession {
   #api: ConnectedAPI | null;
   #address: string;
@@ -26,27 +52,41 @@ export class OneAmSession {
   static async connect(provider: InitialAPI): Promise<OneAmSession> {
     if (discoverOneAm({ provider }).length !== 1) throw new Error("A supported 1AM API v4 provider is required.");
     const api = await provider.connect("preprod");
-    const status = await api.getConnectionStatus();
-    const config = await api.getConfiguration();
-    if (status.status !== "connected" || status.networkId !== "preprod" || config.networkId !== "preprod") throw new Error("Select Preprod in 1AM and connect again.");
-    const addresses = await api.getUnshieldedAddress();
-    if (!addresses.unshieldedAddress) throw new Error("1AM has no unshielded NIGHT address available.");
-    const session = new OneAmSession(api, addresses.unshieldedAddress);
-    await session.check();
-    return session;
+    // The extension can still be initializing immediately after approval. Retry
+    // only reads on this authorized API; never invoke connect a second time.
+    for (let attempt = 0; ; attempt++) {
+      try { return new OneAmSession(api, await identity(api)); }
+      catch (error) {
+        if (error instanceof WalletSessionInvalid || isDisconnected(error)) throw new WalletSessionInvalid();
+        if (attempt === 2) throw new WalletReadUnavailable();
+        await new Promise(resolve => setTimeout(resolve, 400 * (attempt + 1)));
+      }
+    }
   }
-  async check(): Promise<{ dustAvailable: boolean }> {
+  async check(): Promise<void> {
     const api = this.#api;
-    if (!api) throw new Error("Reconnect 1AM.");
+    if (!api) throw new WalletSessionInvalid();
     try {
-      const status = await api.getConnectionStatus();
-      if (status.status !== "connected" || status.networkId !== "preprod") throw new Error("connection_changed");
-      const addresses = await api.getUnshieldedAddress();
-      if (addresses.unshieldedAddress !== this.#address) throw new Error("account_changed");
-      const dust = await api.getDustBalance();
-      if (this.#api !== api || typeof dust.balance !== "bigint" || dust.balance < 0n) throw new Error("invalid_session");
-      return { dustAvailable: dust.balance > 0n };
-    } catch { this.disconnect(); throw new Error("Wallet connection changed or unavailable. Reconnect 1AM."); }
+      const address = await identity(api);
+      if (this.#api !== api || address !== this.#address) throw new WalletSessionInvalid();
+    } catch (error) {
+      if (!this.#api || error instanceof WalletSessionInvalid || isDisconnected(error)) { this.disconnect(); throw new WalletSessionInvalid(); }
+      // Transport/readiness errors do not revoke authorization. Operations still
+      // fail closed because this check rejects until identity can be verified.
+      throw new WalletReadUnavailable();
+    }
+  }
+  async dustAvailable(): Promise<boolean | null> {
+    const api = this.#api;
+    if (!api) throw new WalletSessionInvalid();
+    try {
+      const dust = await readWallet(() => api.getDustBalance());
+      if (this.#api !== api) throw new WalletSessionInvalid();
+      return typeof dust.balance === "bigint" && dust.balance >= 0n ? dust.balance > 0n : null;
+    } catch (error) {
+      if (!this.#api || error instanceof WalletSessionInvalid || isDisconnected(error)) { this.disconnect(); throw new WalletSessionInvalid(); }
+      return null;
+    }
   }
   /** Connector v4 has no revoke method; forget only this browser's session. */
   disconnect(): void { this.#api = null; this.#address = ""; }
