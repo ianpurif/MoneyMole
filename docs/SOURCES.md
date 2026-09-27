@@ -154,3 +154,15 @@ imagery, third-party runtime resources, tracking, fonts or endorsement assets ad
 - Installed dapp-connector-api 4.0.1 supports getUnshieldedAddress,
   getUnshieldedBalances and makeTransfer kind unshielded. Real 1AM approval and
   network settlement remain owner-observed gates, not inferred from types.
+
+## Wallet totals and selection — checked 2026-09-27
+
+- https://docs.midnight.network/glossary defines 1 DUST = 10^15 SPECK and
+  1 NIGHT = 10^6 STAR. The UI formats both with integer arithmetic.
+- Installed dapp-connector-api 4.0.1 `dist/api.d.ts` defines registry metadata,
+  `connect(networkId)`, native unshielded balances and DUST `{balance, cap}`.
+  Display the current balance, not the cap. There is no balance subscription API;
+  refresh via bounded reads, focus/visibility and completed operation attempts.
+- The owner explicitly requested 1AM and Lace selection for this UI revision.
+  Provider metadata is self-reported, not wallet identity proof. No wallet is
+  chosen automatically and synthetic connector checks are not live acceptance.

@@ -121,7 +121,8 @@ port to agree. Unused NEXT_PUBLIC values do not configure payments.
 
 1. Chrome/A and Brave/B: real independent 1AM wallets on Preprod. A holds the NIGHT
    to send; both have enough available DUST. Record NIGHT balances A0 and B0.
-2. A connects, expands **Create / recover a payment escrow**, enters a private
+2. A clicks **Connect**, selects **1AM** (or detected **Lace**), then opens
+   **Tools → Create / recover a payment escrow** and enters a private
    local passphrase, and chooses **Prepare / unlock escrow**. Approve a new NIGHT
    deployment only if no compatible v2 record exists; **Check deployment** until
    chain verified. Save public record and encrypted escrow recovery.
@@ -131,7 +132,8 @@ port to agree. Unused NEXT_PUBLIC values do not configure payments.
 4. **Show claim link / QR**, share privately with B, then close A's session. B opens
    the mm2 fragment link (scrubbed locally), unlocks, **Verify and save claim**,
    saves recovery, **Prepare claim**, then **Approve claim of 1**. Reconcile: B = B0 + 1.
-5. B uses **Controlled spendability check**, enters A's unshielded NIGHT address,
+5. B chooses **Send received NIGHT**, then **Controlled spendability check** in
+   Send, enters A's unshielded NIGHT address,
    approves the exact spend and reconciles: B = B0, A = A0, DUST fees separate.
 6. Reload/unlock/reconcile, independently import encrypted recovery on another
    local origin, test rejected replay and scan the QR privately. Export sanitized
@@ -140,6 +142,12 @@ port to agree. Unused NEXT_PUBLIC values do not configure payments.
 No custom-token issuance is part of these steps. Old mm1 links are rejected and
 old encrypted records stay untouched. Use historical revision 16aa745 in a separate
 checkout if legacy asset recovery is ever needed; never reinterpret its units.
+
+The card displays total NIGHT and current DUST before recovery unlock, refreshing
+on a visible 15-second interval, focus and transaction operations. Send contains
+funding/sharing; Receive contains claims; Activity contains history, receipts and
+encrypted exports. Escrow setup and encrypted imports live in Tools. See
+[usage](docs/USAGE.md) for recovery and balance availability behavior.
 
 ## Privacy, recovery and architecture
 

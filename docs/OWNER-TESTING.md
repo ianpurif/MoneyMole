@@ -45,7 +45,7 @@ Preprod services. Do not put any wallet credential in an environment file.
 
 Chrome = Wallet A (sender), Brave = Wallet B (receiver), both real 1AM.xyz and both
 on Preprod. Use separate independently created wallets, not two views of the same
-account. Open the app in each browser, **Check for 1AM → Connect 1AM**, and approve
+account. Open the app in each browser, **Connect → 1AM**, and approve
 connection manually. Confirm Preprod and DUST readiness in each wallet.
 
 A needs at least the test amount of native Preprod NIGHT (use **1 NIGHT**) and
@@ -63,8 +63,8 @@ transfers during the test so exact balance deltas remain attributable.
 
 ## 3. Deploy or recover a compatible NIGHT escrow
 
-In Chrome/A, the locked payment workspace contains **Create / recover a payment
-escrow**. Expand it. Enter a separate local recovery passphrase (at least 16
+In Chrome/A, open **Tools → Create / recover a payment escrow**.
+Expand it. Enter a separate local recovery passphrase (at least 16
 characters; never a wallet seed). Click **Prepare / unlock escrow**. This prepares
 an unsigned native NIGHT deployment or opens the existing v2 staging record.
 
@@ -93,10 +93,11 @@ never infer failure from a locked or closed tab.
 In Chrome/A, enter the verified **Preprod escrow address** and a local payment
 recovery passphrase, then **Unlock payment workspace**. Check the available NIGHT
 balance. Select **Send**, enter **1** in **Amount in NIGHT**, and click **Save
-payment draft**. Expected: Activity displays **Sending 1 NIGHT**, draft.
+payment draft**. Expected: Send displays **Sending 1 NIGHT**, draft.
 
-Expand **Recovery & receipts → Save encrypted recovery** before authorizing.
-Choose **Prepare funding**; keep the tab visible while the local prover runs.
+In Activity, select the payment and expand **Recovery & receipts → Save encrypted
+recovery** before authorizing. Use **Open in Send**, then **Prepare funding**;
+keep the tab visible while the local prover runs.
 Expected: prepared, **Approve funding of 1** appears. Click it and approve in 1AM
 only if the review is Preprod and deposits 1 NIGHT into the intended escrow, with
 DUST as fees. Click **Reconcile** until funding is finalized and verified.
@@ -118,8 +119,9 @@ removed from the address bar, the claim is captured locally and its escrow is
 selected. If pasting manually, choose **Receive**, expand **Select escrow from a
 claim link**, paste, then **Use claim escrow**. Unlock B's workspace with B's own
 local passphrase; choose **Verify and save claim**. Expected: verified funded
-claim saved encrypted; Activity displays **Receiving 1 NIGHT**. Save encrypted
-recovery immediately. Anyone with the link can compete to claim, including A.
+claim saved encrypted; Receive displays **Receiving 1 NIGHT**. Save encrypted
+recovery from Activity, then **Open in Receive**. Anyone with the link can compete
+to claim, including A.
 
 ## 6. Wallet B claims that NIGHT
 
@@ -137,7 +139,8 @@ already claimed/refuse another claim. No second NIGHT payout is allowed.
 
 ## 7. Spend the received NIGHT
 
-On B's confirmed claim, expand **Controlled spendability check**. Enter A's actual
+On B's confirmed claim in Receive, choose **Send received NIGHT**, then expand
+**Controlled spendability check** in Send. Enter A's actual
 Preprod unshielded NIGHT address in **Destination NIGHT address**. Click **Approve
 controlled spend of 1**, review and approve in 1AM, then **Reconcile**.
 Expected: **Spend: finalized · verified**, B NIGHT returns to B0 and A returns to
@@ -156,7 +159,7 @@ file must fail without erasing the originals.
 For independent import QA without deleting existing data, start the same built
 app in another terminal on port 3001. Use the same wallet with that new origin,
 manually approve its connection, select the same NIGHT escrow, create a local
-passphrase, then **Activity → Import encrypted payment recovery**. Enter the
+passphrase, then **Tools → Import encrypted payment recovery**. Enter the
 original export passphrase and choose the previously saved encrypted JSON.
 Expected: imported local record first; **Reconcile** re-establishes its exact
 chain state. No sign/submit should be needed. Stop the extra server afterward.
