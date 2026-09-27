@@ -61,8 +61,8 @@ Engineering readiness and challenge qualification are separate. No score is infe
 |---|---|---|---|---|
 | L3-APP | Functional private payment application | implemented | CORE-CLAIM, CORE-PRIVACY, CORE-LINK, CORE-STATE, CORE-TX, CORE-FEES, CORE-REPLAY, L2-PREPROD | Complete real funded link and independent claim pass with truthful privacy boundaries. |
 | L3-TESTS | At least three meaningful tests | verified | L1-TESTS | At least three nontrivial product tests pass; utility-only tests do not satisfy this. |
-| L3-CI | Push and pull-request compile/test workflow | verified | L1-MANAGED, PREP-LOCK | Real remote pipeline installs from lockfile, compiles Compact, verifies artifacts, tests, lints, typechecks and builds. |
-| L3-BUILD | Production build | verified | L3-CI | Production application build succeeds with implemented payment routes. |
+| L3-CI | Push and pull-request compile/test workflow | implemented | L1-MANAGED, PREP-LOCK | Real remote pipeline installs from lockfile, compiles Compact, verifies artifacts, tests, lints, typechecks and builds. |
+| L3-BUILD | Production build | implemented | L3-CI | Production application build succeeds with implemented payment routes. |
 | L3-PROPOSAL | Product proposal | implemented | None | Truthful technical proposal describes this payment product and current readiness. |
 | L3-APPROVAL | Payment-category eligibility approval | owner_pending | None | Actual organizer submission and approval for this product, with the applicable idea-list reference; a local proposal is not approval. |
 | L3-COMMITS | Ten meaningful owner commits | verified | None | Inspect at least 10 substantive authorized development commits. |
@@ -73,7 +73,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 |---|---|---|---|---|
 | L4-MVP | Working Preprod MVP | owner_pending | L3-APP, L2-PREPROD | Independent funded, claimed and spendable payment is verified on Preprod. |
 | L4-DOCS | Setup and implemented usage documentation | verified | L1-DOCS | Documentation matches actual wallet, link, claim and recovery behavior. |
-| L4-PIPELINE | Product repository pipeline | verified | L3-CI | Successful actual run in the supplied product repository is recorded. |
+| L4-PIPELINE | Product repository pipeline | implemented | L3-CI | Successful actual run in the supplied product repository is recorded. |
 | L4-ADDRESS | Verified product address | owner_pending | L2-PREPROD | Current address matches finalized deployed source/build and outstanding-payment history. |
 | L4-X | Owner-supplied product X reference | owner_pending | None | Record only a supplied and externally checked product profile reference. |
 | L4-COMMITS | Fifteen meaningful owner commits | verified | None | Inspect at least 15 substantive authorized development commits. |

@@ -1,0 +1,364 @@
+{
+  "scope": "local_frontend_revision_and_regression_not_live_payment_acceptance",
+  "observedAt": "2026-09-27T08:40:01.266833+00:00",
+  "result": "passed_with_live_acceptance_blocked",
+  "checks": [
+    {
+      "command": "npm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:unit",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:integration",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run verify:artifacts",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:contracts",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:proving",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run doctor",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run audit:deps",
+      "exitCode": 0
+    },
+    {
+      "command": "npm ci --no-audit --no-fund",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:browser",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run verify:connectivity",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run verify:issuer",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run compile:probe",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run compile:coin-probe",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run compile:contracts",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run compile:issuance",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run verify:deployment",
+      "exitCode": 2
+    },
+    {
+      "command": "npm run test:preprod",
+      "exitCode": 2
+    },
+    {
+      "command": "npm run verify:product",
+      "exitCode": 2
+    },
+    {
+      "command": "npm run check:offline",
+      "exitCode": 0
+    }
+  ],
+  "tests": {
+    "unit": 38,
+    "contract": 13,
+    "integration": 20,
+    "browser": 15
+  },
+  "visualReview": {
+    "iterations": 3,
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "screenshots": "reports/revision/ (ignored local empty or synthetic sessions only)",
+    "observations": [
+      "No horizontal overflow",
+      "Primary action visible at 320x740 and 390x844",
+      "Connected mobile removes introductory copy",
+      "Reviewed locked, send, receive, draft, missing-wallet and tools views",
+      "CSP violations corrected without policy relaxation"
+    ]
+  },
+  "publicRepository": {
+    "scope": "public_repository_availability_only_no_publication_or_ci_claim",
+    "observedAt": "2026-09-27T08:29:50.057Z",
+    "result": "passed",
+    "url": "https://github.com/ianpurif/MoneyMole",
+    "private": false,
+    "defaultBranch": "main"
+  },
+  "limitations": [
+    "No push or remote CI for this local revision",
+    "No real extension approvals, deployment, issuance or live transaction",
+    "Synthetic browser chain/connector fixtures prove UI and browser encryption only",
+    "Original issuer and recovery records preserved",
+    "Synthetic local proofs do not establish sealed transaction finality or payment acceptance"
+  ],
+  "subjects": [
+    {
+      "path": "config/preprod.json",
+      "sha256": "324974cfa7825c484b9f2636a0519118bf67ca16c17cb1b87cc03d9d5c6c3241"
+    },
+    {
+      "path": "next.config.ts",
+      "sha256": "3388ced5de4e0daa827ecf52c2541017a40494089e64de74b0d3653e7958f6f3"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+    },
+    {
+      "path": "package.json",
+      "sha256": "20847de96f33c49948dd26faf34978152c2ace011c79e734428f3be40c65dc1a"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+    },
+    {
+      "path": "public/images/moneymole_logo.png",
+      "sha256": "167a789cd43ee5c35997fe9d50040b53b1602972b3da06b0dabe9e1a7e99f701"
+    },
+    {
+      "path": "scripts/sonner-styles.cjs",
+      "sha256": "6b2dc68f845e342bcdcae1ea79714c71540b5f89dbe9383900697dbbd60485cf"
+    },
+    {
+      "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
+      "sha256": "f32eb6701d277322953ae3ffee463363c87d0c3a73e4d86fb3af067518c7a303"
+    },
+    {
+      "path": "src/app/api/build/route.ts",
+      "sha256": "72615f4afc54cf2cc45295df627ec23ddece50374a24dc2275e8a0e85af531c3"
+    },
+    {
+      "path": "src/app/claim/page.tsx",
+      "sha256": "cbb90cf126ef9feb6ed636efe6e9873de20459a14708ad7f556911817c33c44b"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "sha256": "140a08d0f84a5453d6c0bfd6d1ae089cdfe4539a17e92686602be35838b9d3b2"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "sha256": "cc39381830762ee7c714be994b8ec6f15ae1c9b054867816dabf518c4895c896"
+    },
+    {
+      "path": "src/components/admin-recovery.tsx",
+      "sha256": "04a226dcb5a18ae205cc8d9335350a83682d0a7a320ff696bed02e02652a38e1"
+    },
+    {
+      "path": "src/components/claim-capture.tsx",
+      "sha256": "44f4cc50cc2ea80fb95a7a732363fd71572bd8805c58fbea64cd2524b38f1ae1"
+    },
+    {
+      "path": "src/components/context-sheet.tsx",
+      "sha256": "f195fa609b19a0f4163c199910a528e160e2053e8d66b33827cf549e79cb58ea"
+    },
+    {
+      "path": "src/components/download.ts",
+      "sha256": "623ffa44fbaa2171dc62a1bc2fac6cd2bebc04f85dc678609a71ed11bb448d16"
+    },
+    {
+      "path": "src/components/issuance-setup.tsx",
+      "sha256": "e14425fcb4c4726b85b756564d9dcef12860cf39f0bcec3aec876ec8b81a91a4"
+    },
+    {
+      "path": "src/components/issuer-setup.tsx",
+      "sha256": "8231e5734962074e559d741183675f9fd3cdd096d300af217fd48bf696f967a2"
+    },
+    {
+      "path": "src/components/payment-deployment.tsx",
+      "sha256": "47fd7322e27a6c09abbd9a2d30859c278ae1eac276c7fa637b589f6f30ef5d5e"
+    },
+    {
+      "path": "src/components/payment-workspace.tsx",
+      "sha256": "d2de161bfcab56f476f3bed0b101593d4cce914eca198be1b1b0ff6c14090601"
+    },
+    {
+      "path": "src/components/product-feedback.tsx",
+      "sha256": "ab7a591d67ca1699e27ac313bc96fcdf48af34d77d3761f5c27e91fc68041a1a"
+    },
+    {
+      "path": "src/components/product-shell.tsx",
+      "sha256": "6fd9c6eb57021a57da3a8b79068b937cb74f21b87345e19d19d92a4a29c10456"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
+    },
+    {
+      "path": "src/components/wallet-panel.tsx",
+      "sha256": "b1c2eae78d52c24cbe7f5c001e9a6a031448555930420ee9b240e024d4dc59f8"
+    },
+    {
+      "path": "src/domain/amount.ts",
+      "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
+    },
+    {
+      "path": "src/domain/payment.ts",
+      "sha256": "11247ff7e8913f813238e568650065e80d0d07e739158f708b7c1e48244c8f23"
+    },
+    {
+      "path": "src/domain/transaction.ts",
+      "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+    },
+    {
+      "path": "src/lib/midnight/admin-recovery.ts",
+      "sha256": "bbdc93e5c34495a7d86f49913121490fa65d6b22f8e81e1b33a2eb2daca6ea20"
+    },
+    {
+      "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+      "sha256": "440d95ae6bca8bc053e24d209327ba0fc931c2b8b89df0d1b2dd8793a29f1db9"
+    },
+    {
+      "path": "src/lib/midnight/issuer-deployment.ts",
+      "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
+    },
+    {
+      "path": "src/lib/midnight/issuer-issuance.ts",
+      "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
+    },
+    {
+      "path": "src/lib/midnight/oneam.ts",
+      "sha256": "a6448efd6fb77952341851afe39d6f5e3499da06e9e94171a8eeeead3d429578"
+    },
+    {
+      "path": "src/lib/midnight/payment-codec.ts",
+      "sha256": "bffdd5e78184b0132f9d6bb713a7692c88785347dcac419de5126e988447a22d"
+    },
+    {
+      "path": "src/lib/midnight/payment-contract.ts",
+      "sha256": "cfef4c8fde1ccfd82ee515c9771885d23a526138e5e712b7d507545bea1e7f51"
+    },
+    {
+      "path": "src/lib/midnight/payment-crypto.ts",
+      "sha256": "975dd7639e59a83e011255986045d3ac756e2e8322b405cc0047a7eef7722b79"
+    },
+    {
+      "path": "src/lib/midnight/payment-deployment.ts",
+      "sha256": "42c52f0a44995ec557ca1b6bd185a37352f26fb2f2e5ba1e39590f2f5d51a7bf"
+    },
+    {
+      "path": "src/lib/midnight/payment-network.ts",
+      "sha256": "731f9d187119edac3f96cfa8ac29256e4051642f3dd9e93b942a5277f623eccc"
+    },
+    {
+      "path": "src/lib/midnight/payment-session.ts",
+      "sha256": "6867b45410dd5363a3fb0ac2e5e7efb58b467ec7802e8658ea9f0faaf4aabba9"
+    },
+    {
+      "path": "src/lib/midnight/payments.ts",
+      "sha256": "0ec8f6e5ab6f5b0ea81693b3fccbb5f435b8a2cf930c0174dd406fe1d1b713d8"
+    },
+    {
+      "path": "src/lib/midnight/port.ts",
+      "sha256": "b480603934613da5e950abbbf0ec7a047102813bf220feb1c6b9c9307ef824d6"
+    },
+    {
+      "path": "src/lib/midnight/proof-lock.ts",
+      "sha256": "2ab026d5ca4262a19fa4ace2dcf483b824d5316cae8c4b82eae4be30e5cffbe6"
+    },
+    {
+      "path": "src/lib/private-state/crypto.ts",
+      "sha256": "58ac38215df410c0982ccab9edf4ee0afb528100610049d5f28d2665ff9f527b"
+    },
+    {
+      "path": "src/lib/private-state/indexed-db.ts",
+      "sha256": "3e089d0bdbab523a611975eb960443d7ed2da70a649735a1daef72cfb7af327b"
+    },
+    {
+      "path": "src/lib/private-state/port.ts",
+      "sha256": "e6aad6534fa3cfb3cc2c53c0e109253fdef9535446133429e61560ec7852ba44"
+    },
+    {
+      "path": "src/lib/private-state/transaction-journal.ts",
+      "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+    },
+    {
+      "path": "src/lib/server/artifacts.ts",
+      "sha256": "80a17626114a104d1fe7a8dbb6e2cafdcbe198f91c67a2c819fb8c38bff91844"
+    },
+    {
+      "path": "src/lib/server/build-metadata.ts",
+      "sha256": "154cd8b9a09b5488f06c0e69d7cca14ea1f98da76c5386c1d091a9dcea4571e6"
+    },
+    {
+      "path": "src/lib/server/security.ts",
+      "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "sha256": "abd847ac1328863c30b22ad0466d9bb09938291c57e2619f622d2fecbb52196d"
+    },
+    {
+      "path": "src/proxy.ts",
+      "sha256": "05475f2e476e117474cfd628fa0bf958f90e79938561a81d97f09b6579c0d373"
+    },
+    {
+      "path": "tests/browser/claim.spec.ts",
+      "sha256": "238fcfb0566c4f7721f998a45471ccf84aa914fbfacaeb1250454a65dad3ab57"
+    },
+    {
+      "path": "tests/browser/redesign.spec.ts",
+      "sha256": "7c116f7978929ee0a73e38bfc2bc8e70251e0927abed1768fbf4b3c70dae20d8"
+    },
+    {
+      "path": "tests/browser/shell.spec.ts",
+      "sha256": "6bae5315ee2526ebda9dec6ffb76935036e8cda73b8ef599d107e3fe90913271"
+    },
+    {
+      "path": "tests/browser/support/payment-fixture.ts",
+      "sha256": "1604d499f0d6fba25b6ec2f893ee70a1b8426c87e623d3c7def76785cc929648"
+    },
+    {
+      "path": "toolchain.lock.json",
+      "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+    }
+  ],
+  "offlineChecks": {
+    "result": "passed",
+    "checkCount": 46,
+    "observedAt": "2026-09-27T08:40:11.367Z"
+  }
+}

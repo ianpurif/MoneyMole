@@ -9,6 +9,12 @@ claim the existing value once. Encrypted browser recovery preserves interrupted
 work; chain reconciliation distinguishes submission, finality and wallet credit.
 Claiming does not mint tokens. Test units are non-redeemable.
 
+> Local frontend revision: focused Send / Receive / Activity, contextual tools and
+> recovery, and a redesigned homepage. See [revision notes](docs/FRONTEND-REVISION.md)
+> and [current local verification](docs/evidence/revision-verification.json).
+> This revision is intentionally unpushed; the CI badge and publication evidence
+> below cover the previously published revision.
+
 ## Verification at a glance
 
 Evidence checked on **27 September 2026**. **Highest scoped Level passed: Level 1.** Local engineering verification passes;
@@ -22,7 +28,7 @@ is not proof that funding, claiming or receiver spending has succeeded.
 | Real deployed contract | Test-asset issuer below; canonical finality and deployed verifier checked against actual Preprod |
 | Payment escrow | Implemented; no finalized public deployment record or real funding/claim/spend receipts supplied yet |
 | CI | [Current main workflow](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml) · [verified publication and actual CI](docs/evidence/publication-verification.json); the badge is live, evidence snapshots identify the revision tested |
-| Local evidence | [Fresh complete verification](docs/evidence/submission-verification.json) · [source-bound engineering evidence](docs/evidence/local-verification.json) |
+| Local evidence | [Current frontend verification](docs/evidence/revision-verification.json) · [Previous submission verification](docs/evidence/submission-verification.json) · [source-bound engineering evidence](docs/evidence/local-verification.json) |
 | Meaningful history | [35 reviewed substantive published commits](docs/evidence/commit-audit.json), excluding audit/docs-only commits; every Level threshold is exceeded |
 | Full requirement map | [Level audit](docs/LEVEL-AUDIT.md) · [authoritative requirement states](docs/requirements.json) |
 
@@ -75,7 +81,7 @@ an assertion of full organizer acceptance. Level 6 uses the stricter **30** comm
 |---|---|---|
 | 1 | Exact installed toolchain; all four Compact targets compile; passing tests; generated circuits/keys; real issuer address and transaction above; initial idea, setup and public/private explanation here; public repository; ≥5 meaningful commits | **PASS** — required README sections and deployment evidence are public; [verified publication](docs/evidence/publication-verification.json) |
 | 2 | [1AM connect/disconnect](src/lib/midnight/oneam.ts); [frontend circuit flows](src/lib/midnight/payments.ts); bounded privacy model below; real Preprod issuer; ≥8 meaningful commits | **NOT PASSED:** actual frontend circuit finality, installed-wallet disconnect/reconnect and live privacy behavior remain unverified |
-| 3 | [Payment dApp](src/components/payment-workspace.tsx); 38 unit, 13 contract, 20 integration and 7 browser checks; [workflow](.github/workflows/ci.yml) and actual passing runs; complete privacy model; ≥10 meaningful commits | **NOT PASSED:** independent-wallet payment acceptance remains pending; proposal/approval evidence is owner-excluded |
+| 3 | [Payment dApp](src/components/payment-workspace.tsx); 38 unit, 13 contract, 20 integration and 15 local browser checks; [workflow](.github/workflows/ci.yml) and actual passing runs; complete privacy model; ≥10 meaningful commits | **NOT PASSED:** independent-wallet payment acceptance remains pending; proposal/approval evidence is owner-excluded |
 | 4 | Same Preprod product; setup/usage here; actual product CI; ≥15 meaningful commits | **NOT PASSED:** a working payment escrow and finalized funding/claim/spend evidence are still needed |
 | 5 | Same product extended with encrypted recovery/import, reconciliation and safe failed-attempt retries; maintained docs; ≥20 meaningful commits | **NOT PASSED:** working Level 4 baseline and real funded-state continuity remain unverified |
 | 6 | Same product with regression/security hardening, strict configuration and deployment preservation; maintained docs; 35 reviewed commits ≥30 | **NOT PASSED:** real payment/privacy/recovery acceptance remains unverified |
@@ -193,7 +199,7 @@ into MoneyMole. Each browser uses an owner-chosen recovery passphrase of at leas
 Each **Approve** action requires a separate personal confirmation in 1AM.
 
 1. **Chrome / A:** choose **Check for 1AM → Connect 1AM**. Expect Preprod connection
-   and truthful DUST readiness. Expand **Test asset issuer administration**, enter
+   and truthful DUST readiness. Open **Tools**, expand **Test asset issuer administration**, enter
    the original local recovery passphrase and **Prepare / unlock issuer deployment**.
    Confirm the recorded issuer address above; **Check deployment** reconciles it.
    Restore its encrypted backup if needed; do not deploy another issuer.
@@ -204,8 +210,9 @@ Each **Approve** action requires a separate personal confirmation in 1AM.
    compatible existing escrow; approve its first deployment only if none exists.
    **Check deployment**, then save its **public deployment record** and encrypted
    recovery. Expect a verified Preprod escrow before funding.
-4. Enter that escrow and **Unlock payment workspace**. Under **Send payment**,
-   enter **10** whole test units, **Save payment draft**, save encrypted recovery,
+4. Enter that escrow and **Unlock payment workspace**. Under **Send**,
+   enter **10** whole test units and **Save payment draft**. In **Activity**, use
+   **Recovery & receipts** to save encrypted recovery, then
    **Prepare funding**, then **Approve funding of 10**. **Reconcile** until finalized.
    Sharing must remain unavailable until actual funding and coin qualification.
 5. Generate/copy the private link or scan the local QR privately. Close A.

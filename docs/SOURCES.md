@@ -121,3 +121,23 @@ These observations establish public availability/history/CI only. They do not
 establish wallet acceptance or organizer eligibility, and do not cover later local
 audit documentation. The owner's accepted 1AM substitution and deferred X profile
 are scope instructions, not independently sourced organizer approval of the idea.
+
+## Frontend revision research, 2026-09-27
+
+- https://app.uniswap.org/ — requested product-first reference. The research browser
+  received a blank JavaScript application; no exact current layout is claimed as
+  independently inspected. MoneyMole adapts the owner's requested focused action
+  model instead of copying interface assets.
+- https://developer.apple.com/design/human-interface-guidelines/layout — requested
+  hierarchy/layout reference; documentation required JavaScript in retrieval.
+- https://motion.dev/docs/react-animation and
+  https://motion.dev/docs/react-accessibility — reviewed animation and reduced-motion
+  guidance. MoneyMole only needs short state fades and a contextual sheet, implemented
+  with CSS and reduced-motion overrides; no Motion dependency is retained.
+- https://sonner.emilkowal.ski/ — reviewed toast API and custom styling. Installed
+  Sonner 2.0.8 source/types confirm exported CSS and runtime style injection. The
+  narrowly scoped build loader removes the latter; the normal CSS pipeline and
+  client-only Toaster preserve the nonce CSP without unsafe-inline.
+
+The only image is the owner's supplied public/images/moneymole_logo.png. No stock
+imagery, third-party runtime resources, tracking, fonts or endorsement assets added.

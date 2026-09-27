@@ -26,7 +26,7 @@ transaction. Run proofs sequentially across Chrome/Brave and CLI jobs.
 
 ## Reuse the issuer and issue the test supply
 
-Chrome / Wallet A: expand **Test asset issuer administration**, enter the existing
+Chrome / Wallet A: open **Tools**, then expand **Test asset issuer administration**, enter the existing
 local passphrase and select **Prepare / unlock issuer deployment**. Confirm it
 recovers issuer `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`.
 If the browser record is missing, use **Restore encrypted issuer recovery** with
@@ -60,11 +60,11 @@ Chrome / Wallet A:
 1. Enter the escrow address and passphrase; **Unlock payment workspace**.
 2. Check the shielded test balance. DUST pays fees separately; the wallet presents
    the actual fee request.
-3. Under **Send payment**, enter whole test units and **Save payment draft**.
-4. Select the saved draft, **Prepare funding**, then **Approve funding of [amount]**.
+3. Under **Send**, enter whole test units and **Save payment draft**.
+4. Saving opens **Activity** with the draft selected. Choose **Prepare funding**, then **Approve funding of [amount]**.
    Review and approve the actual 1AM request.
 5. **Reconcile** until finalized funding and coin qualification are confirmed.
-6. **Save encrypted recovery**. **Show claim link / QR** becomes available only
+6. Expand **Recovery & receipts** to **Save encrypted recovery**. **Show claim link / QR** becomes available only
    for finalized, unclaimed funding. Copy privately or scan the locally generated QR.
 
 Anyone with the link can claim, including the sender. There is no refund, expiry
@@ -77,8 +77,8 @@ Brave / independent Wallet B:
 1. Open the complete link. Its fragment is captured in memory and removed from
    the address bar. Connect 1AM; the claim selects its escrow automatically.
 2. Enter a local recovery passphrase and **Unlock payment workspace**.
-3. Under **Receive payment**, choose **Verify and save claim**. If pasting instead,
-   **Use claim escrow** selects its address before unlocking.
+3. Under **Receive**, choose **Verify and save claim**. If pasting instead,
+   expand **Select escrow from a claim link**, paste it, and choose **Use claim escrow** before unlocking.
 4. **Save encrypted recovery**, **Prepare claim**, and explicitly **Approve claim
    of [amount]** in 1AM.
 5. **Reconcile** until claim input/output settlement and wallet synchronization
@@ -113,3 +113,17 @@ Local prover failures never fall back to a remote service. Confirm the expected
 loopback service and browser access using the owner testing procedure. Funded notes
 remain at their original address when an escrow reaches capacity. Keep that
 deployment and its artifacts available for claims.
+
+## Focused interface
+
+Send, Receive and Activity share one local wallet session. Only the selected task
+is shown. Connecting leads to the local workspace unlock; it does not fund a
+payment. Activity holds saved drafts and receipts, with transaction identifiers,
+recovery downloads and spendability checks disclosed on demand. **Lock workspace**
+clears decrypted state. The **Tools** sheet contains separate issuer administration;
+closing it locks its in-memory controller while keeping encrypted records.
+
+Brief clipboard and connection notifications use Sonner. Proof, authorization,
+pending finality and recovery messages stay beside the payment as persistent
+status. Unknown outcomes still require reconciliation, and sharing is unavailable
+until finalized funding is verified.

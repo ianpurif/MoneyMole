@@ -1,5 +1,35 @@
 # Current execution state
 
+## Frontend revision — 2026-09-27, local only
+
+REVISION.md is implemented: product-first home, focused Send / Receive / Activity,
+contextual unlock/recovery/issuer tools, logo-led visual system, responsive layouts,
+short reduced-motion-aware transitions and customized Sonner feedback. The unchanged
+nonce CSP passes production browser checks, including optimized logos and toasts.
+
+Fresh validation: clean npm ci, zero-vulnerability audit, lint, types, production
+build, 38 unit / 13 generated-contract / 20 integration / 15 production-browser
+tests, all four Compact compiles, artifacts, real synthetic local proving,
+browser prover/indexer/RPC connectivity and read-only issuer verification passed.
+Desktop and mobile renders were inspected and refined across three visual passes.
+Browser fixtures prove local UI/encryption only. The full report is
+docs/evidence/revision-verification.json; design/QA notes are in
+docs/FRONTEND-REVISION.md. The production preview runs at http://127.0.0.1:3000.
+
+Nothing was pushed, following REVISION.md. Existing publication/CI records below
+are historical and do not cover this local revision. L3-CI and L4-PIPELINE are
+implemented, awaiting a permitted future remote run; L3-BUILD retains the same
+CI prerequisite while its fresh local build is recorded as passed. No new Level
+or live payment acceptance is claimed. verify:deployment, test:preprod and
+verify:product still return 2 for absent real escrow/payment/acceptance records.
+
+No wallet prompt was approved, deployment recreated, supply issued or live
+transaction sent. Existing issuer identity and private recovery remain intact.
+For future owner acceptance, follow the updated docs/USAGE.md: issuer administration
+is now under Tools. The previous owner handoff below is historical.
+
+## Previous published checkpoint
+
 Snapshot: 2026-09-27T05:56:41.575Z. **Highest scoped Level passed: Level 1.**
 All local application verification passed again. Levels 2–6 remain **NOT PASSED**
 because actual independent-wallet payment/privacy/recovery acceptance is missing.
