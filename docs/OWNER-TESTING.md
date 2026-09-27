@@ -6,6 +6,19 @@ unshielded: amounts and addresses are public. Use Preprod only. DUST pays fees.
 Every connection, deployment and transaction approval is your own manual action.
 Never give an agent a seed, private key, recovery passphrase or bearer link.
 
+## Current payment controls
+
+The payment modal replaces the separate draft, preparation, approval and reconcile
+buttons referenced in the detailed acceptance checklist below. Use **Send NIGHT**
+or **Receive NIGHT** to save/check/prepare, then explicitly **Approve payment in
+wallet** or **Approve claim in wallet**. Submission and confirmation follow inside
+the modal. **Open payment** resumes a saved record; **Check confirmation** performs
+read-only reconciliation. Close and resume without creating a second draft or
+reproving a saved proof. Activity still contains encrypted exports and receipts.
+The optional controlled spend is now **Send received NIGHT** inside the confirmed
+receive modal; it uses the same submission/confirmation progression. No wallet
+approval should be automated during these checks.
+
 ## 1. Start the local prerequisites
 
 Use Docker Desktop with WSL2 integration, Linux Node 22.16.0 / npm 10.9.2, Compact

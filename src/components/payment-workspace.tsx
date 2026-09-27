@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import QRCode from "qrcode";
 import { toast } from "sonner";
 import { parseAmount, formatAmount } from "@/domain/amount";
 import type { OneAmSession } from "@/lib/midnight/oneam";
@@ -17,6 +15,8 @@ import { useRecovery } from "./recovery-provider";
 import { RecoveryAccess } from "./recovery-access";
 import { validPassphrase } from "@/lib/private-state/passphrase";
 import { RecoveryWorkspaceMismatch } from "@/lib/private-state/storage-identity";
+import { PaymentWizard } from "./payment-wizard";
+import { paymentErrorMessage } from "@/lib/midnight/payment-errors";
 const night = (atomic: string) => formatAmount(BigInt(atomic), 6);
 export function PaymentWorkspace({
   session,
@@ -33,7 +33,8 @@ export function PaymentWorkspace({
   initialAction?: "send" | "receive" | "activity";
   initialAmount?: string;
 }) {
-  const { balances, refreshBalances } = useWallet();
+  const { balances, balancesStale } = useWallet();
+  const [wizardOpen, setWizardOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const recovery = useRecovery();
   const paymentController = recovery?.payments ?? null;
@@ -49,10 +50,7 @@ export function PaymentWorkspace({
   const [records, setRecords] = useState<PaymentView[]>([]),
     [selected, setSelected] = useState("");
   const [message, setMessage] = useState("");
-  const [link, setLink] = useState(""),
-    [qr, setQr] = useState("");
-  const [recipient, setRecipient] = useState(""),
-    [importPassword, setImportPassword] = useState("");
+  const [importPassword, setImportPassword] = useState("");
   const [tab, setTab] = useState<"send" | "receive" | "activity">(
     initialAction,
   );
@@ -73,8 +71,7 @@ export function PaymentWorkspace({
     recovery?.lock();
     setRecords([]);
     setSelected("");
-    setLink("");
-    setQr("");
+
     setClaim("");
     setImportPassword("");
     setBusy(false);
@@ -87,7 +84,7 @@ export function PaymentWorkspace({
     const lifetime = generation, attempt = ++lifetime.current;
     queueMicrotask(() => {
       if (attempt !== lifetime.current) return;
-      setRecords([]); setSelected(""); setLink(""); setQr(""); setBusy(false);
+      setRecords([]); setSelected(""); setBusy(false);
       if (paymentController) {
         setAsset(paymentController.asset);
         void paymentController.list().then(list => { if (attempt === lifetime.current) setRecords(list); }).catch(() => { if (attempt === lifetime.current) setMessage("Saved records are unavailable. Unlock again to retry."); });
@@ -96,7 +93,7 @@ export function PaymentWorkspace({
     return () => { lifetime.current++; };
   }, [paymentController]);
   useEffect(() => { let active = true; queueMicrotask(() => { if (active && recovery?.escrow) setContract(recovery.escrow); }); return () => { active = false; }; }, [recovery, recovery?.escrow]);
-  useEffect(() => { let active = true; queueMicrotask(() => { if (active) { setClaim(recovery?.pendingClaim ?? ""); setLink(""); setQr(""); setImportPassword(""); } }); return () => { active = false; }; }, [recovery, recovery?.pendingClaim, recovery?.authenticated]);
+  useEffect(() => { let active = true; queueMicrotask(() => { if (active) { setClaim(recovery?.pendingClaim ?? ""); setImportPassword(""); } }); return () => { active = false; }; }, [recovery, recovery?.pendingClaim, recovery?.authenticated]);
   useEffect(() => {
     if (!claimToken || !recovery) return;
     let active = true;
@@ -126,7 +123,6 @@ export function PaymentWorkspace({
       attempt = generation.current;
     if (!c) return;
     const list = await c.list();
-    await refreshBalances();
     if (attempt === generation.current) {
       setRecords(list);
     }
@@ -134,15 +130,14 @@ export function PaymentWorkspace({
   async function operate(action: () => Promise<void>) {
     const attempt = generation.current;
     setBusy(true);
-    setLink("");
-    setQr("");
+
     try {
       await action();
       if (attempt === generation.current) await refresh();
     } catch (error) {
       if (attempt === generation.current) {
         setMessage(
-          error instanceof RecoveryWorkspaceMismatch ? error.message : "The operation could not finish. Check the wallet, balance, local prover and connection. Unlock if needed. Preserve saved records and reconcile any transaction identifier before retrying.",
+          error instanceof RecoveryWorkspaceMismatch ? error.message : paymentErrorMessage(error, "network"),
         );
         try {
           await refresh();
@@ -151,77 +146,19 @@ export function PaymentWorkspace({
         }
       }
     } finally {
-      await refreshBalances();
       if (attempt === generation.current) setBusy(false);
     }
   }
-  async function poll(id: string) {
-    const c = controller.current,
-      attempt = generation.current;
-    if (!c) return;
-    for (let n = 0; n < 12 && attempt === generation.current; n++) {
-      const result = await c.reconcile(id);
-      await refresh();
-      if (attempt !== generation.current) return;
-      if (result.phase === "failed") {
-        setMessage(
-          "The transaction failed on the finalized chain. If Retry failed claim is available, reset it and prepare a fresh proof; the failed attempt stays in recovery history.",
-        );
-        return;
-      }
-      if (result.role === "sender" && result.funded) {
-        setMessage(
-          result.spent
-            ? "This payment has already been claimed."
-            : "NIGHT funding is finalized and the escrow deposit is verified. Sharing is available.",
-        );
-        return;
-      }
-      if (result.spendTransactionId) {
-        if (result.spendVerified) {
-          setMessage(
-            "Controlled spend finalized and the receiver NIGHT balance returned to its starting balance.",
-          );
-          return;
-        }
-        if (result.spendPhase === "failed") {
-          setMessage(
-            "The controlled spend failed on-chain. Use Retry failed spend to preserve the failed attempt and request a new approval.",
-          );
-          return;
-        }
-      } else if (
-        result.role === "receiver" &&
-        result.claimed &&
-        result.walletSynced
-      ) {
-        setMessage(
-          "Claim confirmed and receiver balance synchronized. A controlled spend can establish spendability.",
-        );
-        return;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-    }
-    if (attempt === generation.current)
-      setMessage(
-        "Confirmation or wallet synchronization is pending. Use Reconcile; do not submit again.",
-      );
+  function openPayment(id?: string) {
+    const flow = recovery!.getPaymentFlow();
+    setWizardOpen(true);
+    if (!flow.busy && id) void flow.resume(id);
   }
-  async function showShare() {
-    if (!controller.current || !current) return;
-    const attempt = generation.current;
-    const value = await controller.current.share(current.id);
-    const dataUrl = await QRCode.toDataURL(value, {
-      errorCorrectionLevel: "M",
-      margin: 4,
-      width: 320,
-    });
-    if (attempt !== generation.current) return;
-    setLink(value);
-    setQr(dataUrl);
-    setMessage(
-      "Anyone with this link can claim, including you. Share it privately. There is no expiry or refund.",
-    );
+  function closeWizard() {
+    setWizardOpen(false);
+    const id = recovery?.paymentFlow?.payment?.id;
+    if (id) setSelected(id);
+    void refresh().catch(() => {});
   }
   return (
     <section aria-label="Payments" className="workspace" aria-busy={busy}>
@@ -229,14 +166,14 @@ export function PaymentWorkspace({
         action={tab}
         onAction={(value) => {
           setTab(value);
-          setLink("");
-          setQr("");
+
           setSelected("");
           setMessage("");
         }}
         disabled={busy}
         connected
         balances={balances}
+        balancesStale={balancesStale}
         walletName={session.name}
         controls={
           <>
@@ -303,6 +240,7 @@ export function PaymentWorkspace({
           <Button disabled={recovery.busy || !/^[a-f0-9]{64}$/.test(contract)} onClick={() => void recovery.selectEscrow(contract)}>Use escrow</Button>
           <p role="status" className="small-note">{recovery.message || "Use an existing escrow, or create / recover one in Tools."}</p>
         </div>}
+        {unlocked && recovery?.paymentFlow && <Button variant="outline" onClick={() => setWizardOpen(true)}>Resume payment</Button>}
         {unlocked && (
           <div key={tab} className="state-view">
             {tab === "send" ? (
@@ -338,18 +276,12 @@ export function PaymentWorkspace({
                 <Button
                   className="primary-action"
                   disabled={!unlocked || busy || !amountValid}
-                  onClick={() =>
-                    void operate(async () => {
-                      const v = await controller.current!.create(amount);
-                      setSelected(v.id);
-
-                      setMessage(
-                        "Private draft saved. Prepare its proof, then approve funding.",
-                      );
-                    })
-                  }
+                  onClick={() => {
+                    const flow = recovery!.getPaymentFlow(); setWizardOpen(true);
+                    if (!flow.busy) void flow.start({ amount });
+                  }}
                 >
-                  Save payment draft
+                  Send NIGHT
                 </Button>
               </div>
             ) : tab === "receive" ? (
@@ -373,20 +305,14 @@ export function PaymentWorkspace({
                 <div className="flex flex-wrap gap-2">
                   <Button
                     disabled={!unlocked || busy || !claim}
-                    onClick={() =>
-                      void operate(async () => {
-                        const v = await recovery!.receiveClaim(
-                          extractClaim(claim),
-                        );
-                        setSelected(v.id);
-                        setClaim("");
-                        setMessage(
-                          "Funded claim verified and saved encrypted. Prepare the claim proof and approve with the receiver wallet.",
-                        );
-                      })
-                    }
+                    onClick={() => {
+                      try {
+                        const flow = recovery!.getPaymentFlow(); setWizardOpen(true);
+                        if (!flow.busy) void flow.start({ claim: extractClaim(claim) });
+                      } catch { setMessage("Paste the original MoneyMole claim link to continue."); }
+                    }}
                   >
-                    Verify and save claim
+                    Receive NIGHT
                   </Button>
                 </div>
               </div>
@@ -419,8 +345,7 @@ export function PaymentWorkspace({
                       value={selected}
                       onChange={(e) => {
                         setSelected(e.target.value);
-                        setLink("");
-                        setQr("");
+
                       }}
                     >
                       <option value="">Select a saved payment</option>
@@ -467,118 +392,7 @@ export function PaymentWorkspace({
                         </p>
                       )}
                     </details>}
-                    <div className="transaction-actions">
-                      {tab !== "activity" && (current.role === "sender" ? tab === "send" : tab === "receive") && <>
-                      <Button
-                        variant="outline"
-                        hidden={
-                          !!current.transactionId ||
-                          current.phase === "outcome_unknown" ||
-                          ["prepared", "authorization_requested"].includes(
-                            current.phase,
-                          )
-                        }
-                        disabled={busy || !!current.transactionId}
-                        onClick={() =>
-                          void operate(async () => {
-                            setMessage(
-                              "Preparing with the trusted local prover. Keep this tab visible.",
-                            );
-                            await controller.current!.prepare(current.id);
-                            setMessage(
-                              "Proof prepared. Review the amount and approve the transaction in your wallet.",
-                            );
-                          })
-                        }
-                      >
-                        Prepare{" "}
-                        {current.role === "sender" ? "funding" : "claim"}
-                      </Button>
-                      <Button
-                        hidden={
-                          !!current.transactionId ||
-                          !["prepared", "authorization_requested"].includes(
-                            current.phase,
-                          )
-                        }
-                        disabled={
-                          busy ||
-                          !!current.transactionId ||
-                          !["prepared", "authorization_requested"].includes(
-                            current.phase,
-                          )
-                        }
-                        onClick={() =>
-                          void operate(async () => {
-                            setMessage(
-                              "Review and approve this payment transaction in your wallet.",
-                            );
-                            await controller.current!.approve(current.id);
-                            await poll(current.id);
-                          })
-                        }
-                      >
-                        Approve{" "}
-                        {current.role === "sender" ? "funding" : "claim"} of{" "}
-                        {night(current.amount)}
-                      </Button>
-                      </>}
-                      <Button
-                        variant="outline"
-                        disabled={busy}
-                        onClick={() => void operate(() => poll(current.id))}
-                      >
-                        Reconcile
-                      </Button>
-                      {tab === "receive" && current.claimRetryAvailable && (
-                        <Button
-                          variant="outline"
-                          disabled={busy}
-                          onClick={() =>
-                            void operate(async () => {
-                              await controller.current!.retryFailed(
-                                current.id,
-                                "claim",
-                              );
-                              setMessage(
-                                "Failed claim archived. Prepare a fresh claim proof, then approve it in your wallet.",
-                              );
-                            })
-                          }
-                        >
-                          Retry failed claim
-                        </Button>
-                      )}
-                      {tab === "send" && current.spendRetryAvailable && (
-                        <Button
-                          variant="outline"
-                          disabled={busy}
-                          onClick={() =>
-                            void operate(async () => {
-                              await controller.current!.retryFailed(
-                                current.id,
-                                "spend",
-                              );
-                              setMessage(
-                                "Failed spend archived. Review the destination and approve a new controlled spend.",
-                              );
-                            })
-                          }
-                        >
-                          Retry failed spend
-                        </Button>
-                      )}
-                      {tab === "send" && current.role === "sender" &&
-                        current.funded &&
-                        !current.spent && (
-                          <Button
-                            disabled={busy || !current.funded || current.spent}
-                            onClick={() => void operate(showShare)}
-                          >
-                            Show claim link / QR
-                          </Button>
-                        )}
-                    </div>
+                    <Button disabled={busy} onClick={() => openPayment(current.id)}>Open payment</Button>
                     {tab === "activity" && <Button variant="outline" disabled={busy} onClick={() => { setTab(current.role === "sender" ? "send" : "receive"); setMessage(""); }}>
                       {current.role === "sender" ? "Open in Send" : "Open in Receive"}
                     </Button>}
@@ -622,101 +436,7 @@ export function PaymentWorkspace({
                         </Button>
                       </div>
                     </details>}
-                    {tab === "receive" && current.role === "receiver" && current.claimed && <Button variant="outline" disabled={busy} onClick={() => { setTab("send"); setMessage(""); }}>Send received NIGHT</Button>}
-                    {tab === "send" && current.role === "receiver" && current.claimed && (
-                      <details>
-                        <summary className="cursor-pointer font-medium">
-                          Controlled spendability check
-                        </summary>
-                        <p className="mt-2 text-muted">
-                          Sends the received {night(current.amount)} NIGHT to
-                          another Preprod unshielded wallet. Keep both wallets
-                          free of unrelated transfers so the recorded balance
-                          change can be verified.
-                        </p>
-                        <label className="field">
-                          Destination NIGHT address
-                          <input
-                            value={recipient}
-                            onChange={(e) =>
-                              setRecipient(e.target.value.trim())
-                            }
-                            autoComplete="off"
-                            spellCheck={false}
-                            disabled={busy}
-                          />
-                        </label>
-                        <Button
-                          disabled={
-                            busy ||
-                            !current.walletSynced ||
-                            !!current.spendTransactionId ||
-                            !recipient
-                          }
-                          onClick={() =>
-                            void operate(async () => {
-                              await controller.current!.spend(
-                                current.id,
-                                recipient,
-                              );
-                              await poll(current.id);
-                            })
-                          }
-                        >
-                          Approve controlled spend of {night(current.amount)}
-                        </Button>
-                        <p className="mt-2">
-                          Spend: {current.spendPhase ?? "not submitted"} ·{" "}
-                          {current.spendVerified ? "verified" : "not verified"}
-                        </p>
-                        {current.spendTransactionId && (
-                          <p className="break-all">
-                            Spend identifier: {current.spendTransactionId}
-                          </p>
-                        )}
-                      </details>
-                    )}
-                  </div>
-                )}
-                {tab === "send" && link && (
-                  <div className="mt-5 space-y-3">
-                    <label className="field">
-                      Private bearer link
-                      <textarea readOnly value={link} rows={3} />
-                    </label>
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        void navigator.clipboard
-                          .writeText(link)
-                          .then(() => {
-                            setMessage("Bearer link copied. Share privately.");
-                            toast.success("Private link copied", {
-                              description:
-                                "Anyone holding it can claim. Share privately.",
-                            });
-                          })
-                          .catch(() => {
-                            setMessage(
-                              "Clipboard unavailable. Select and copy the link manually.",
-                            );
-                            toast.error("Clipboard unavailable", {
-                              description: "Select and copy the link manually.",
-                            });
-                          })
-                      }
-                    >
-                      Copy private link
-                    </Button>
-                    {qr && (
-                      <Image
-                        unoptimized
-                        src={qr}
-                        width={320}
-                        height={320}
-                        alt="Private payment claim QR generated on this device"
-                      />
-                    )}
+
                   </div>
                 )}
 
@@ -729,6 +449,7 @@ export function PaymentWorkspace({
           {message}
         </p>}
       </div>
+      {wizardOpen && recovery?.paymentFlow && <PaymentWizard flow={recovery.paymentFlow} onClose={closeWizard} />}
       {toolsOpen && <ContextSheet title="Tools" onClose={() => setToolsOpen(false)}>
         <RecoveryAccess security />
         <PaymentDeployment session={session} />
@@ -770,7 +491,7 @@ export function PaymentWorkspace({
                           setToolsOpen(false);
                           setImportPassword("");
                           setMessage(
-                            "Encrypted record imported. Reconcile before relying on its state.",
+                            "Encrypted record imported. Open payment to verify its current state.",
                           );
                         });
                         e.target.value = "";

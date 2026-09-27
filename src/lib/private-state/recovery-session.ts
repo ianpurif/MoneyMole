@@ -5,6 +5,7 @@ import { requirePassphrase } from "./passphrase";
 import { decodeClaim } from "../midnight/payment-codec";
 import { createPasskey, unlockPasskey, readAuth, saveAuth, wrapPassphrase, unwrapPassphrase, packageRecovery, unpackRecovery, preserveAndSelectAuth, preservedWorkspaces, type LocalAuthRecord } from "./local-auth";
 import { storageIdentity, RecoveryWorkspaceMismatch } from "./storage-identity";
+import { PaymentFlow } from "../midnight/payment-flow";
 
 /** One in-memory owner per connected wallet. No secrets in React state or web storage. */
 export class RecoverySession {
@@ -16,6 +17,7 @@ export class RecoverySession {
   #revision = 0;
   #working = false;
   payments: Awaited<ReturnType<OneAmSession["openPayments"]>> | null = null;
+  paymentFlow: PaymentFlow | null = null;
   deployment: Awaited<ReturnType<OneAmSession["preparePaymentDeployment"]>> | null = null;
   issuer: Awaited<ReturnType<OneAmSession["prepareIssuer"]>> | null = null;
   escrow = "";
@@ -28,7 +30,18 @@ export class RecoverySession {
   snapshot = () => this.#revision;
   changed() { this.#revision++; for (const listener of this.#listeners) listener(); }
   get authenticated() { return !!this.#secret; }
-  get busy() { return this.#working; }
+  get busy() { return this.#working || !!this.paymentFlow?.busy; }
+  getPaymentFlow() {
+    if (!this.payments) throw new Error("Unlock your escrow first.");
+    return this.paymentFlow ??= new PaymentFlow(this.payments, () => {
+      if (this.paymentFlow?.payment?.role === "receiver") this.pendingClaim = "";
+      this.changed();
+    }, async token => {
+      const epoch = this.#epoch, payload = await decodeClaim(token); this.#assert(epoch);
+      await this.#openPayments(payload.contract, epoch, true); this.#assert(epoch);
+      this.changed(); return this.payments!;
+    });
+  }
   get hasPasskey() { try { return !!readAuth(this.walletId)?.passkey; } catch { return false; } }
   get hasFallback() { try { return !!readAuth(this.walletId)?.passphrase; } catch { return false; } }
   get localIdentity() { return this.#activeIdentity ?? storageIdentity(this.walletId, readAuth(this.walletId)?.storageIdentity); }
@@ -52,6 +65,7 @@ export class RecoverySession {
     this.changed();
   }
   lock = () => {
+    this.paymentFlow?.dispose(); this.paymentFlow = null;
     this.#epoch++; this.#secret = ""; this.#release?.(); this.#release = undefined;
     this.payments?.lock(); this.deployment?.lock(); this.issuer?.lock();
     this.payments = null; this.deployment = null; this.issuer = null; this.pendingClaim = "";
@@ -148,13 +162,14 @@ export class RecoverySession {
       saveAuth(this.walletId, { ...readAuth(this.walletId), version: 1, passphrase }); this.message = "Recovery passphrase saved. Keep it somewhere safe.";
     });
   }
-  async #openPayments(address: string, epoch: number) {
+  async #openPayments(address: string, epoch: number, preserveFlow = false) {
     this.#assert(epoch);
     if (!this.#secret) throw new Error("Unlock MoneyMole first.");
     if (!/^[a-f0-9]{64}$/.test(address)) throw new Error("Choose a valid escrow address.");
     if (this.payments?.contract === address) return;
     const opened = await this.wallet.openPayments(address, this.#secret, this.localIdentity);
     if (epoch !== this.#epoch) { opened.lock(); throw new Error("MoneyMole was locked. Unlock to continue."); }
+    if (!preserveFlow) { this.paymentFlow?.dispose(); this.paymentFlow = null; }
     this.payments?.lock(); this.payments = opened; this.escrow = address;
     localStorage.setItem(`moneymole/escrow/v3/${this.localIdentity}`, address);
   }

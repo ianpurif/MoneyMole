@@ -320,3 +320,16 @@ details[open] > summary::after { content: "−"; }
   .card-network { padding: 6px 8px; font-size: 7px; }
   .payment-app-disconnected { height: auto; }
 }
+.payment-wizard { display: grid; gap: 1.1rem; }
+.context-sheet:has(.payment-wizard) { margin: auto; width: min(520px, calc(100% - 24px)); height: auto; max-height: calc(100dvh - 32px); border-radius: 22px; box-shadow: 0 24px 100px #19132640; }
+.context-sheet:has(.payment-wizard)[open] { animation: none; }
+.wizard-amount { font-size: 2.25rem; font-weight: 600; letter-spacing: -.04em; }
+.wizard-amount span { font-size: .8rem; letter-spacing: .15em; color: var(--muted); }
+.wizard-steps { display: grid; gap: .7rem; padding: 0; list-style: none; }
+.wizard-steps li { display: flex; align-items: center; gap: .8rem; color: var(--muted); font-size: .875rem; }
+.wizard-steps li > span { display: grid; place-items: center; border: 1px solid currentColor; border-radius: 50%; width: 1.6rem; height: 1.6rem; font-size: .7rem; }
+.wizard-steps li[aria-current="step"] { color: var(--foreground); font-weight: 600; }
+.wizard-steps li[data-complete="true"] { color: #a59aeb; }
+.wizard-status { min-height: 2.5rem; font-size: .9rem; }
+.wizard-share { display: grid; gap: .8rem; }
+.wizard-share img { max-width: 100%; height: auto; border-radius: 12px; }

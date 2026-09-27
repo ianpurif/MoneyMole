@@ -1,8 +1,9 @@
 import { beforeEach, afterEach, expect, it, vi } from "vitest";
 import { IDBFactory } from "fake-indexeddb";
 import { openPayments } from "../../src/lib/midnight/payments";
-import { paymentAsset, openStore, readRecord, type WalletContext } from "../../src/lib/midnight/payment-session";
+import { paymentAsset, openStore, readRecord, submitOnce, type WalletContext } from "../../src/lib/midnight/payment-session";
 import { encodeClaim, type ClaimPayload } from "../../src/lib/midnight/payment-codec";
+import { PaymentFlow } from "../../src/lib/midnight/payment-flow";
 
 // Production controller + real AES-GCM/IndexedDB records. Only protocol/network,
 // proving and wallet boundaries are synthetic; this suite never proves settlement.
@@ -10,6 +11,7 @@ const h = vi.hoisted(() => ({
   spent: false, balance: 0n, nextId: "10".repeat(32), down: false,
   observations: new Map<string, unknown>(), beforeSubmit: undefined as undefined | (() => Promise<void>),
   loseResponse: false, guard: vi.fn(async () => {}), submit: vi.fn(), balanceTx: vi.fn(), transfer: vi.fn(),
+  proofFails: false, proofs: 0, notePresent: true,
 }));
 vi.mock("../../src/lib/midnight/payment-network", () => {
   return { PaymentKeys: class {},
@@ -19,14 +21,14 @@ vi.mock("../../src/lib/midnight/payment-network", () => {
   };
 });
 vi.mock("../../src/lib/midnight/payment-contract", () => ({
-  paymentContract: () => ({}), ledger: () => ({ notes: { findPathForLeaf: () => ({}), isFull: () => false }, spent: { member: () => h.spent } }),
+  paymentContract: () => ({}), ledger: () => ({ notes: { findPathForLeaf: () => h.notePresent ? {} : undefined, isFull: () => false }, spent: { member: () => h.spent } }),
 }));
 vi.mock("../../src/lib/midnight/night-settlement", () => ({ verifyNightCall: vi.fn(), verifyNightSpend: vi.fn() }));
 vi.mock("@midnight-ntwrk/compact-runtime", async importOriginal => ({
   ...await importOriginal<object>(), ContractState: { deserialize: () => ({ data: {} }) },
 }));
 vi.mock("@midnight-ntwrk/midnight-js-contracts", () => ({ createUnprovenCallTxFromInitialStates: async (_: unknown, args: { initialPrivateState: { payload: ClaimPayload } }) => ({
-  private: { unprovenTx: { prove: async () => ({ serialize: () => new Uint8Array([0xaa, 0xbb]) }) },
+  private: { unprovenTx: { prove: async () => { h.proofs++; if (h.proofFails) throw new Error("synthetic proof unavailable"); return { serialize: () => new Uint8Array([0xaa, 0xbb]) }; } },
     newCoins: [{ type: args.initialPrivateState.payload.asset, value: BigInt(args.initialPrivateState.payload.amount) }] },
 }) }));
 vi.mock("@midnight-ntwrk/midnight-js-protocol/ledger", async importOriginal => ({
@@ -66,9 +68,80 @@ beforeEach(() => {
   vi.stubGlobal("document", Object.assign(new EventTarget(), { visibilityState: "visible" }));
   vi.stubGlobal("navigator", { locks: { request: async (_: string, __: unknown, action: () => Promise<unknown>) => action() } });
   h.spent = false; h.balance = 0n; h.nextId = "10".repeat(32); h.down = false; h.loseResponse = false; h.beforeSubmit = undefined;
+  h.proofFails = false; h.proofs = 0; h.notePresent = true;
   h.observations.clear(); h.observations.set(fundingId, observation(fundingId));
   h.guard.mockResolvedValue(); h.balanceTx.mockResolvedValue({ tx: "ccdd" }); h.transfer.mockResolvedValue({ tx: "ccdd" });
   h.submit.mockImplementation(async () => { await h.beforeSubmit?.(); if (h.loseResponse) throw new Error("synthetic acknowledgment lost"); });
+});
+
+it("saves and inspects a sender draft without wallet or network refreshes", async () => {
+  const c = await open(); h.down = true; h.guard.mockRejectedValue(new Error("synthetic wallet offline"));
+  const draft = await c.create("1");
+  expect((await c.reconcile(draft.id)).phase).toBe("draft");
+  expect(h.guard).not.toHaveBeenCalled(); expect(h.balanceTx).not.toHaveBeenCalled();
+});
+
+it("wizard preserves one encrypted draft through balance and proof retries, then resumes the prepared proof", async () => {
+  const c = await open(), flow = new PaymentFlow(c);
+  await flow.start({amount:"1"});
+  const id = flow.payment!.id;
+  expect(flow.stage).toBe("balance"); expect(flow.error).toContain("more NIGHT"); expect(await c.list()).toHaveLength(1);
+  await flow.start({amount:"2"}); expect(flow.payment!.id).toBe(id); expect(flow.payment!.amount).toBe("1000000"); expect(await c.list()).toHaveLength(1);
+  h.balance = 1_000_000n; h.proofFails = true; await flow.retry();
+  expect(flow.stage).toBe("prepare"); expect(flow.error).toContain("local proof service");
+  expect(flow.payment!.id).toBe(id); expect(await c.list()).toHaveLength(1);
+  h.proofFails = false; await flow.retry(); expect(flow.stage).toBe("authorization"); expect(h.proofs).toBe(2);
+  flow.dispose(); c.lock();
+  const recovered = await open(), reopened = new PaymentFlow(recovered); await reopened.resume(id);
+  expect(reopened.stage).toBe("authorization"); expect(h.proofs).toBe(2); expect(h.balanceTx).not.toHaveBeenCalled(); reopened.dispose();
+});
+
+it("wizard recovers a lost submission response through confirmation without another approval or submission", async () => {
+  h.balance = 2_000_000n; const c = await open(), flow = new PaymentFlow(c);
+  await flow.start({amount:"1"}); const id = flow.payment!.id;
+  h.loseResponse = true; await Promise.all([flow.authorize(), flow.authorize()]);
+  expect(flow.stage).toBe("confirmation"); expect(flow.payment!.transactionId).toBe(h.nextId);
+  expect((await saved(id)).tx.phase).toBe("outcome_unknown");
+  flow.dispose(); c.lock(); h.loseResponse = false; h.observations.set(h.nextId, observation(h.nextId));
+  vi.stubGlobal("location", {origin:"http://localhost:3000"});
+  const recovered = new PaymentFlow(await open()); await recovered.resume(id);
+  expect(recovered.stage).toBe("success"); expect(recovered.link).toContain("/claim#mm2.");
+  expect(h.balanceTx).toHaveBeenCalledTimes(1); expect(h.submit).toHaveBeenCalledTimes(1); recovered.dispose();
+});
+
+it("archives only a confirmed complete failed funding attempt before allowing a fresh proof", async () => {
+  h.balance = 2_000_000n; const c = await open(), draft = await c.create("1"); await c.prepare(draft.id); await c.approve(draft.id);
+  h.observations.set(h.nextId, observation(h.nextId, "PARTIAL_SUCCESS"));
+  await expect(c.retryFailed(draft.id,"fund")).rejects.toThrow();
+  h.notePresent = false; h.observations.set(h.nextId, observation(h.nextId,"FAILURE"));
+  expect((await c.reconcile(draft.id)).fundingRetryAvailable).toBe(true);
+  const reset = await c.retryFailed(draft.id,"fund"); expect(reset.phase).toBe("draft"); expect(reset.failedAttempts).toBe(1);
+  expect((await saved(draft.id)).payload.fundingId).toBe("00".repeat(32));
+});
+
+it("bounds a stalled submission acknowledgement without retrying the wallet call", async () => {
+  vi.useFakeTimers();
+  try {
+    h.submit.mockImplementationOnce(() => new Promise(() => {}));
+    const result = expect(submitOnce(wallet.api, "synthetic-transaction")).rejects.toThrow("Confirmation is still pending");
+    await vi.advanceTimersByTimeAsync(30_001); await result;
+    expect(h.submit).toHaveBeenCalledTimes(1);
+  } finally { vi.useRealTimers(); }
+});
+
+it("wizard resumes an interrupted received-NIGHT transfer instead of declaring the earlier claim done", async () => {
+  const { c, id } = await claim(); await c.approve(id);
+  h.spent = true; h.balance = 10n; h.observations.set(h.nextId, observation(h.nextId));
+  const flow = new PaymentFlow(c); await flow.resume(id); expect(flow.stage).toBe("success");
+  const { UnshieldedAddress } = await import("@midnight-ntwrk/wallet-sdk-address-format");
+  const destination = UnshieldedAddress.codec.encode("preprod", new UnshieldedAddress(Buffer.alloc(32, 48))).asString();
+  h.nextId = "17".repeat(32); h.loseResponse = true; await flow.spend(destination);
+  expect(flow.stage).toBe("confirmation"); expect(flow.payment?.spendTransactionId).toBe(h.nextId);
+  expect(flow.payment?.spendVerified).toBe(false); flow.dispose(); c.lock();
+  h.loseResponse = false; h.observations.set(h.nextId, observation(h.nextId)); h.balance = 0n;
+  const recovered = new PaymentFlow(await open()); await recovered.resume(id);
+  expect(recovered.stage).toBe("success"); expect(recovered.payment?.spendVerified).toBe(true);
+  expect(h.transfer).toHaveBeenCalledTimes(1); expect(h.submit).toHaveBeenCalledTimes(2); recovered.dispose();
 });
 afterEach(() => { for (const c of controllers.splice(0)) c.lock(); vi.unstubAllGlobals(); });
 

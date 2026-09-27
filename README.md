@@ -139,13 +139,15 @@ No wallet, escrow deployment or transaction is created by this reset.
    chain verified. Save public record and encrypted escrow recovery.
 3. **Use escrow** with the verified address; recovered escrow state is shared across
    Send, Receive, Activity and Tools. In **Send**, enter **1**
-   NIGHT, **Save payment draft**, save encrypted recovery, **Prepare funding**,
-   then **Approve funding of 1** in 1AM. **Reconcile**: A = A0 - 1; escrow +1.
-4. **Show claim link / QR**, share privately with B, then close A's session. B opens
-   the mm2 fragment link (scrubbed locally), unlocks, **Verify and save claim**,
-   saves recovery, **Prepare claim**, then **Approve claim of 1**. Reconcile: B = B0 + 1.
-5. B chooses **Send received NIGHT**, then **Controlled spendability check** in
-   Send, enters A's unshielded NIGHT address,
+   NIGHT and click **Send NIGHT**. The modal saves the encrypted draft, checks funds,
+   and prepares the proof. Choose **Approve payment in wallet**, review in 1AM,
+   and wait for confirmation in the same modal: A = A0 - 1; escrow +1.
+4. The confirmed modal shows the private claim link / QR. Share with B, then close
+   A's session. B opens the mm2 fragment link (scrubbed locally), unlocks, and clicks
+   **Receive NIGHT**. The modal verifies and prepares the claim; B chooses
+   **Approve claim in wallet** and waits for confirmation: B = B0 + 1.
+5. In the confirmed receive modal, B expands **Send received NIGHT** and enters
+   A's unshielded NIGHT address,
    approves the exact spend and reconciles: B = B0, A = A0, DUST fees separate.
 6. Reload/unlock/reconcile, independently import encrypted recovery on another
    local origin, test rejected replay and scan the QR privately. Export sanitized
@@ -155,8 +157,15 @@ No custom-token issuance is part of these steps. Old mm1 links are rejected and
 old encrypted records stay untouched. Use historical revision 16aa745 in a separate
 checkout if legacy asset recovery is ever needed; never reinterpret its units.
 
+Close a payment modal and use **Resume payment** or **Activity → Open payment**
+to continue its saved phase. Confirmation retries never submit again. A confirmed
+complete failed attempt can be retried only after fresh chain checks; unknown or
+partial outcomes stay at confirmation. Backups remain in Activity → Recovery & receipts.
+
 The card displays total NIGHT and current DUST before recovery unlock, refreshing
-on a visible 15-second interval, focus and transaction operations. Send contains
+on a visible 15-second interval, focus and transaction operations. Temporary read
+failures retain the last known totals with an updating label; spending checks use
+fresh wallet reads. Send contains
 funding/sharing; Receive contains claims; Activity contains history, receipts and
 encrypted exports. Escrow setup and encrypted imports live in Tools. See
 [usage](docs/USAGE.md) for recovery and balance availability behavior.

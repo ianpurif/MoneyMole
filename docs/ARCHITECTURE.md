@@ -36,6 +36,29 @@ approved compatible escrow for new funding. There is no expiry/refund/admin drai
 
 ## Wallet and settlement
 
+PaymentFlow is a shared, in-memory coordinator owned by RecoverySession. The modal
+advances through encrypted draft saving, fresh balance checks, proof preparation,
+explicit wallet approval, submission and finalized reconciliation. It resumes from
+the existing encrypted record rather than persisting a second UI state machine.
+An already prepared proof is reused; a saved transaction ID always resumes at
+confirmation. Claim links may switch the shared escrow without another local
+unlock or disposing the active wizard. Optional spending of received NIGHT uses
+the same modal, including its own saved identifier and confirmation result.
+
+Draft creation and draft inspection do not query wallet balances or a placeholder
+transaction ID. Display refreshes are coalesced and preserve labelled last-known
+totals, while spending decisions require fresh validated wallet reads. Read/prover,
+artifact, storage, approval and confirmation failures receive client-side safe
+messages; raw errors and private payloads are never logged or exposed.
+
+Web Locks serialize payment mutations across tabs, alongside encrypted record CAS.
+Submission acknowledgement waiting is bounded without cancelling or retrying the
+request; a missing response preserves outcome_unknown and its durable identifier.
+Only observed canonical complete FAILURE plus an absent funding note permits a
+new funding attempt. The old attempt is atomically archived. Partial/unknown
+outcomes never authorize another submission. This is an ordered, resumable UX,
+not a claim that browser actions and network settlement form one atomic transaction.
+
 oneam.ts discovers the real 1AM provider and requires an explicit connection.
 payment-session.ts binds shielded SDK keys plus the unshielded NIGHT address to
 Preprod and the current account. getUnshieldedBalances supplies native NIGHT;

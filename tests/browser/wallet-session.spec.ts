@@ -72,9 +72,11 @@ test("stalled recovery stops retrying and can resume on the same authorized sess
 
 test("temporary failures and minutes of polling retain one authorized session", async ({page}) => {
   await fixture(page); await page.clock.install(); await page.goto("/"); await connect(page);
-  await expect(page.locator(".connection-status")).toContainText("Balance temporarily unavailable");
+  await expect(page.locator(".connection-status")).toContainText("Refreshing wallet totals");
   await mode(page, "offline");
   await expect(page.locator(".connection-status")).toContainText("Connection retained");
+  await expect(page.getByLabel("Total NIGHT", {exact:true})).toHaveText("1.234567");
+  await expect(page.getByText("Updating balances", {exact:false})).toBeVisible();
   await page.clock.runFor(180_000);
   expect((await probe(page)).reads).toBeGreaterThanOrEqual(14);
   await expect(page.getByRole("button", {name:"Disconnect",exact:true})).toBeVisible();
@@ -90,7 +92,7 @@ test("temporary failures and minutes of polling retain one authorized session", 
 test("totals refresh while records stay locked, without reauthorization", async ({page}) => {
   await fixture(page); await page.clock.install(); await page.goto("/"); await connect(page);
   await expect(page.getByLabel("Total NIGHT",{exact:true})).toHaveText("1.234567");
-  await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("Unavailable");
+  await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("…");
   await page.evaluate(() => {
     const p=(window as unknown as {walletProbe:WalletProbe}).walletProbe;
     p.night="0";p.dust="1234567890123456";p.dustFails=false;
@@ -101,7 +103,7 @@ test("totals refresh while records stay locked, without reauthorization", async 
   await page.evaluate(() => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.night="9007199254740993123456"; window.dispatchEvent(new Event("focus")); });
   await expect(page.getByLabel("Total NIGHT",{exact:true})).toHaveText("9007199254740993.123456");
   expect((await probe(page)).calls).toBe(1);
-  await expect(page.getByRole("button",{name:"Save payment draft"})).toHaveCount(0);
+  await expect(page.getByRole("button",{name:"Send NIGHT"})).toHaveCount(0);
   await page.getByRole("button",{name:"Disconnect",exact:true}).click();
   await expect(page.getByLabel("Total NIGHT",{exact:true})).toHaveCount(0);
 });
@@ -146,7 +148,7 @@ test("client navigation retains authorization; disconnect and reload never promp
 });
 test("switching wallet accounts invalidates the old payment workspace", async ({page}) => {
   await fixture(page); await page.goto("/"); await connect(page);
-  await expect(page.locator(".connection-status")).toContainText("Balance temporarily unavailable");
+  await expect(page.locator(".connection-status")).toContainText("Refreshing wallet totals");
   await mode(page, "changed");
   await expect(page.getByRole("button", {name:"Unlock payment workspace"})).toHaveCount(0);
   await expect(page.locator(".connection-status")).toContainText("invalidated");

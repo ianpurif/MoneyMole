@@ -1,5 +1,36 @@
 # Current execution state
 
+## Resumable payment modal — 2026-09-28
+
+Replaced the separate save/prepare/approve/reconcile/share controls with one modal
+owned by the shared recovery session. Funding, claims and optional sending of
+received NIGHT retain their encrypted records, proofs and transaction identifiers
+across closure/reload. Authorization remains explicit; unknown submissions resume
+confirmation without a second wallet call. Known complete failed funding may be
+reset only after fresh finality and absent-note checks, with attempt history saved.
+
+Confirmed defects fixed: duplicate display refreshes erased good totals after
+draft operations; local sender drafts unnecessarily depended on wallet reads and
+queried the zero transaction placeholder during reconciliation; all operational
+errors were collapsed into one generic message. Draft work is now local, display
+refreshes retain labelled last-known totals, and failures remain at a useful modal
+step with a safe message. Readiness still requires fresh balances. Mutation locks,
+CAS and bounded submission acknowledgement protect retries and concurrent tabs.
+
+Validation: 62 focused unit/integration cases passed, including actual encrypted
+records, lost/stalled acknowledgements, duplicate clicks, completed proof reuse,
+failed-attempt history and claim escrow switching. Nineteen applicable synthetic
+browser scenarios passed; the additional opt-in real local prover browser scenario
+passed /check and /prove and resumed the same encrypted proof after reload without
+reproving or wallet authorization. TypeScript and targeted lint passed. The public
+transaction query was also checked read-only with a synthetic zero identifier.
+
+The reported real-wallet preparation failure was not reproduced by the synthetic
+real-prover check; its former generic message did not identify a cause. Real 1AM
+approval, submission and independent-wallet settlement remain unobserved for this
+revision. No deployment, real wallet prompt or live transaction was executed.
+Frontend remains http://localhost:3000; existing issuer and private records remain.
+
 ## Connected-wallet initialization recovery — 2026-09-28
 
 Fixed the one-shot RecoveryProvider initialization that silently discarded a

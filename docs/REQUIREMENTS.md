@@ -60,7 +60,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | ID | Requirement | State | Dependencies | Acceptance |
 |---|---|---|---|---|
 | L3-APP | Functional private payment application | implemented | CORE-CLAIM, CORE-PRIVACY, CORE-LINK, CORE-STATE, CORE-TX, CORE-FEES, CORE-REPLAY, L2-PREPROD | Complete real funded link and independent claim pass with truthful privacy boundaries. |
-| L3-TESTS | At least three meaningful tests | verified | L1-TESTS | At least three nontrivial product tests pass; utility-only tests do not satisfy this. |
+| L3-TESTS | At least three meaningful tests | implemented | L1-TESTS | At least three nontrivial product tests pass; utility-only tests do not satisfy this. |
 | L3-CI | Push and pull-request compile/test workflow | implemented | L1-MANAGED, PREP-LOCK | Real remote pipeline installs from lockfile, compiles Compact, verifies artifacts, tests, lints, typechecks and builds. |
 | L3-BUILD | Production build | implemented | L3-CI | Production application build succeeds with implemented payment routes. |
 | L3-PROPOSAL | Product proposal | verified | None | Truthful technical proposal describes this payment product and current readiness. |

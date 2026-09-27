@@ -6,7 +6,7 @@ import { useWallet } from "./wallet-provider";
 const Context = createContext<RecoverySession | null>(null);
 const InitializationContext = createContext({ message: "Preparing local recovery…", pending: true, retry: () => {} });
 export function RecoveryProvider({ children }: { children: ReactNode }) {
-  const { connected } = useWallet();
+  const { connected, refreshBalances } = useWallet();
   const [value, setValue] = useState<{ wallet: typeof connected; recovery: RecoverySession } | null>(null);
   const [attempt, setAttempt] = useState(0);
   const [initialization, setInitialization] = useState({ wallet: connected, message: "Preparing local recovery…", pending: true });
@@ -55,7 +55,13 @@ export function RecoveryProvider({ children }: { children: ReactNode }) {
     const expire = () => { if (Date.now() - last >= 5 * 60_000 && recovery.authenticated) recovery.lock(); };
     const activity = () => { expire(); if (document.visibilityState === "visible") last = Date.now(); };
     const timeout = setInterval(expire, 1000);
-    const unsubscribe = recovery.subscribe(() => { if (recovery.busy) last = Date.now(); });
+    let lastPaymentStep = "";
+    const unsubscribe = recovery.subscribe(() => {
+      if (recovery.busy) last = Date.now();
+      const flow = recovery.paymentFlow, step = `${flow?.payment?.id ?? ""}/${flow?.stage ?? ""}`;
+      if (step !== lastPaymentStep && (flow?.stage === "confirmation" || flow?.stage === "success")) void refreshBalances(flow.stage === "success");
+      lastPaymentStep = step;
+    });
     window.addEventListener("pointerdown", activity); window.addEventListener("keydown", activity);
     window.addEventListener("pagehide", recovery.lock);
     window.addEventListener("focus", expire); document.addEventListener("visibilitychange", expire);
@@ -66,7 +72,7 @@ export function RecoveryProvider({ children }: { children: ReactNode }) {
     };
     window.addEventListener("storage", changedElsewhere);
     return () => { clearInterval(timeout); unsubscribe(); window.removeEventListener("pointerdown", activity); window.removeEventListener("keydown", activity); window.removeEventListener("pagehide", recovery.lock); window.removeEventListener("focus", expire); document.removeEventListener("visibilitychange", expire); window.removeEventListener("storage", changedElsewhere); };
-  }, [recovery]);
+  }, [recovery, refreshBalances]);
   const status = initialization.wallet === connected ? initialization : { message: "Preparing local recovery…", pending: true };
   return <InitializationContext.Provider value={{ ...status, retry: () => setAttempt(value => value + 1) }}><Context.Provider value={recovery}>{children}</Context.Provider></InitializationContext.Provider>;
 }

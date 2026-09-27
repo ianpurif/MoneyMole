@@ -50,7 +50,7 @@ function isDisconnected(error: unknown): boolean {
   return !!error && typeof error === "object" && "type" in error && error.type === "DAppConnectorAPIError" && "code" in error && error.code === "Disconnected";
 }
 /** Bound read-only calls, never authorization or transaction requests. */
-async function readWallet<T>(read: () => Promise<T>): Promise<T> {
+export async function readWallet<T>(read: () => Promise<T>): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try { return await Promise.race([read(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new WalletReadUnavailable()), 8000); })]); }
   finally { clearTimeout(timer); }

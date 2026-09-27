@@ -71,7 +71,7 @@ test("disconnected visitor cannot start a payment", async ({ page }) => {
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Send NIGHT" })).toHaveCount(0);
   await expect(page.getByText("Live acceptance of this implementation is pending.", { exact: false })).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -100,7 +100,7 @@ test("synthetic connector exercises explicit authorization without API requests"
   expect(await page.evaluate(() => (window as unknown as { syntheticConnectCalls: number }).syntheticConnectCalls)).toBe(0);
   await page.getByRole("button", { name: "1AM" }).click();
   await expect(page.getByText("1AM connected", {exact:true}).first()).toBeVisible();
-  await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Send NIGHT" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Secure MoneyMole", exact: true })).toBeVisible();
   expect(apiRequests).toEqual([]);
   await page.getByRole("button", { name: "Disconnect", exact: true }).click();

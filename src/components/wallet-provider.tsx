@@ -10,25 +10,35 @@ function useWalletState() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [balances, setBalances] = useState<WalletBalances>({ night: null, dust: null });
+  const [balancesStale, setBalancesStale] = useState(true);
   const session = useRef<OneAmSession | null>(null), generation = useRef(0);
   const refreshId = useRef(0);
+  const refreshing = useRef<{ wallet: OneAmSession; promise: Promise<void> } | null>(null);
 
-  const refreshBalances = useCallback(async () => {
+  const refreshBalances = useCallback(function refresh(afterCurrent = false): Promise<void> {
+    if (session.current && refreshing.current?.wallet === session.current) {
+      return afterCurrent ? refreshing.current.promise.then(() => refresh()) : refreshing.current.promise;
+    }
     const current = session.current, id = ++refreshId.current;
-    if (!current) return;
+    if (!current) return Promise.resolve();
+    const promise = (async () => {
     try {
       const next = await current.balances();
       if (session.current !== current || id !== refreshId.current) return;
-      setBalances(next);
-      setMessage(next.night === null || next.dust === null ? "Balance temporarily unavailable. Retrying shortly." : "");
+      setBalances(previous => ({ night: next.night ?? previous.night, dust: next.dust ?? previous.dust }));
+      setBalancesStale(next.night === null || next.dust === null);
+      setMessage(next.night === null || next.dust === null ? "Refreshing wallet totals. Last known balances stay visible." : "");
     } catch (error) {
       if (session.current !== current || id !== refreshId.current) return;
-      setBalances({ night: null, dust: null });
+      setBalancesStale(true);
       if (error instanceof WalletSessionInvalid) {
+        setBalances({ night: null, dust: null });
         session.current = null; setConnected(null); toast.dismiss();
         setMessage("Wallet invalidated this session or changed account/network. Connect again on Preprod.");
-      } else setMessage("Wallet temporarily unavailable. Connection retained; retrying shortly.");
+      } else setMessage("Wallet is reconnecting. Connection retained; saved payments are unchanged.");
     }
+    })().finally(() => { if (refreshing.current?.promise === promise) refreshing.current = null; });
+    refreshing.current = { wallet: current, promise }; return promise;
   }, []);
 
   useEffect(() => () => { generation.current++; session.current?.disconnect(); session.current = null; }, []);
@@ -55,7 +65,7 @@ function useWalletState() {
       const current = await OneAmSession.connect(provider);
       if (attempt !== generation.current) { current.disconnect(); return; }
       session.current = current; setConnected(current);
-      setBalances({ night: null, dust: null }); setMessage("");
+      setBalances({ night: null, dust: null }); setBalancesStale(true); setMessage("");
       toast.success(`${current.name} connected`, { description: "Your wallet is on Preprod." });
     } catch (error) { if (attempt === generation.current) setMessage(walletErrorMessage(error)); }
     finally { if (attempt === generation.current) setBusy(false); }
@@ -66,10 +76,10 @@ function useWalletState() {
   }
   function disconnect() {
     generation.current++; session.current?.disconnect(); session.current = null;
-    setConnected(null); setBalances({ night: null, dust: null }); setBusy(false); toast.dismiss();
+    setConnected(null); setBalances({ night: null, dust: null }); setBalancesStale(true); setBusy(false); toast.dismiss();
     setMessage("Browser session cleared.");
   }
-  return { connected, busy, message, setMessage, balances, refreshBalances, connect, cancel, disconnect };
+  return { connected, busy, message, setMessage, balances, balancesStale, refreshBalances, connect, cancel, disconnect };
 }
 const WalletContext = createContext<ReturnType<typeof useWalletState> | null>(null);
 /** Root-layout lifetime: client navigation keeps authorization in memory only.

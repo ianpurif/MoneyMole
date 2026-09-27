@@ -11,6 +11,8 @@ import { hex, unhex } from "./payment-codec";
 import { PaymentKeys, observeTransaction } from "./payment-network";
 import { withLocalProver } from "./proof-lock";
 import { bech32m } from "@scure/base";
+import { PaymentError, paymentStep } from "./payment-errors";
+import { readWallet } from "./oneam";
 
 export const ISSUER = preprod.issuerAddress;
 export function paymentAsset() { return nativeToken().raw; }
@@ -31,7 +33,7 @@ export async function walletContext(api: ConnectedAPI, check: () => Promise<unkn
   const address = validateRecipient((await api.getUnshieldedAddress()).unshieldedAddress);
   const unshieldedKey = UnshieldedAddress.codec.decode("preprod", MidnightBech32m.parse(address)).hexString;
   const walletId = hex(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(coinKey))));
-  async function guard() { await check(); if ((await api.getConfiguration()).networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress || (await api.getUnshieldedAddress()).unshieldedAddress !== address) throw new Error("Reconnect the original Preprod wallet"); }
+  async function guard() { return paymentStep("wallet", async () => { await check(); if ((await readWallet(() => api.getConfiguration())).networkId !== "preprod" || (await readWallet(() => api.getShieldedAddresses())).shieldedAddress !== addresses.shieldedAddress || (await readWallet(() => api.getUnshieldedAddress())).unshieldedAddress !== address) throw new Error("Reconnect the original Preprod wallet"); }); }
   return { api, coinKey, encKey, walletId: storageIdentity(walletId, localIdentity), guard, address, unshieldedKey };
 }
 export type WalletContext = Awaited<ReturnType<typeof walletContext>>;
@@ -45,26 +47,37 @@ export async function readRecord<T>(store: BrowserPrivateStore, key: string) {
 }
 export async function writeRecord(store: BrowserPrivateStore, key: string, value: unknown, revision: number) {
   const bytes = new TextEncoder().encode(JSON.stringify(value));
-  try { return await store.write(key, bytes, revision); } finally { bytes.fill(0); }
+  try { return await paymentStep("storage", () => store.write(key, bytes, revision)); } finally { bytes.fill(0); }
 }
 export async function provePayment(tx: UnprovenTransaction) {
   const action = async () => hex((await tx.prove(httpClientProvingProvider(preprod.proofServer, new PaymentKeys(), { timeout: 180000 }), CostModel.initialCostModel())).serialize());
-  return withLocalProver(action);
+  return paymentStep("prover", () => withLocalProver(action));
 }
-export async function submitPrepared(wallet: WalletContext, tx: TxRecord, persist: () => Promise<void>) {
+/** Bounds acknowledgement waiting, never cancels or retries a submission. */
+export async function submitOnce(api: ConnectedAPI, transaction: string) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    await Promise.race([api.submitTransaction(transaction), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new PaymentError("pending")), 30_000); })]);
+  } finally { clearTimeout(timer); }
+}
+export async function submitPrepared(wallet: WalletContext, tx: TxRecord, persist: () => Promise<void>, onStage?: (stage: "authorization" | "submission") => void) {
   await wallet.guard(); validateTx(tx);
   if (!["prepared", "authorization_requested"].includes(tx.phase) || tx.transactionId || !tx.transaction) throw new Error("Reconcile the existing transaction before another submission");
   const original = Transaction.deserialize("signature", "proof", "pre-binding", unhex(tx.transaction));
   const originalActions = [...(original.intents?.values() ?? [])].flatMap(i => i.actions).map(a => a.toString());
   tx.phase = "authorization_requested"; await persist();
-  const balanced = await wallet.api.balanceUnsealedTransaction(tx.transaction);
+  onStage?.("authorization");
+  const balanced = await paymentStep("approval", () => wallet.api.balanceUnsealedTransaction(tx.transaction!));
   await wallet.guard();
   const sealed = Transaction.deserialize("signature", "proof", "binding", unhex(balanced.tx));
   const actions = [...(sealed.intents?.values() ?? [])].flatMap(i => i.actions).map(a => a.toString());
   if (JSON.stringify(actions) !== JSON.stringify(originalActions)) throw new Error("Wallet changed the reviewed contract action");
   const identifier = sealed.identifiers()[0]; if (!identifier) throw new Error("Missing transaction identifier");
   tx.transactionId = identifier; tx.phase = "outcome_unknown"; await persist();
-  await wallet.api.submitTransaction(balanced.tx);
+  onStage?.("submission");
+  // A missing acknowledgement is UNKNOWN, never a failed transfer. Stop waiting
+  // without cancelling/repeating the request; the saved ID is reconciled next.
+  await submitOnce(wallet.api, balanced.tx);
   tx.phase = "submitted"; delete tx.transaction; await persist();
 }
 export async function reconcileTx(tx: TxRecord, persist: () => Promise<void>) {

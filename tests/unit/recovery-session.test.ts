@@ -4,6 +4,7 @@ import { BrowserPrivateStore } from "../../src/lib/private-state/indexed-db";
 import { RecoverySession } from "../../src/lib/private-state/recovery-session";
 import type { OneAmSession } from "../../src/lib/midnight/oneam";
 import { readAuth, packageRecovery, preservedWorkspaces } from "../../src/lib/private-state/local-auth";
+import { encodeClaim } from "../../src/lib/midnight/payment-codec";
 const walletId = "synthetic-wallet", address = "a".repeat(64), password = "existing synthetic local passphrase";
 const namespace = (contractAddress: string, identity = walletId) => ({ network: "preprod" as const, contractAddress, walletIdentity: identity, schemaVersion: 2 });
 beforeEach(() => {
@@ -29,6 +30,19 @@ function fakeWallet() {
   };
 }
 describe("shared recovery session with real encrypted local stores, synthetic wallet only", () => {
+  it("keeps one unlocked session and wizard when a claim selects a different escrow", async () => {
+    const target = "b".repeat(64);
+    const payment = { id:"r_" + "1".repeat(64), role:"receiver", amount:"10", phase:"draft", funded:true, claimed:false, walletSynced:false, spent:false, spendVerified:false, claimRetryAvailable:false, spendRetryAvailable:false, failedAttempts:0 };
+    const initial = {contract:address, lock:vi.fn()};
+    const receiving = {contract:target,lock:vi.fn(),receive:vi.fn(async()=>payment),readiness:vi.fn(async()=>10n),prepare:vi.fn(async()=>({...payment,phase:"prepared"})),list:vi.fn(async()=>[payment])};
+    const wallet = { openPayments:vi.fn(async (contract: string)=>contract === address ? initial : receiving) } as unknown as OneAmSession;
+    const recovery = new RecoverySession(wallet,walletId); await recovery.initialize(); await recovery.unlockWithPassphrase(password); await recovery.selectEscrow(address);
+    const flow = recovery.getPaymentFlow();
+    const token = await encodeClaim({version:2,network:"preprod",contract:target,asset:"00".repeat(32),amount:"10",nonce:"01".repeat(32),authority:"02".repeat(32),fundingId:"03".repeat(32)});
+    await flow.start({claim:token});
+    expect(flow.stage).toBe("authorization"); expect(recovery.escrow).toBe(target); expect(recovery.paymentFlow).toBe(flow);
+    expect(recovery.authenticated).toBe(true); expect(initial.lock).toHaveBeenCalledOnce(); expect(receiving.receive).toHaveBeenCalledOnce(); recovery.lock();
+  });
   it("surfaces damaged authentication metadata without hanging initialization or replacing it", async () => {
     const key = `moneymole/auth/v1/${walletId}`;
     localStorage.setItem(key, "damaged synthetic metadata");

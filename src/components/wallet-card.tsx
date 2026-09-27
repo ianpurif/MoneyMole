@@ -4,14 +4,14 @@ import type { ReactNode } from "react";
 import { BrandImage } from "./product-shell";
 
 export type PaymentAction = "send" | "receive" | "activity";
-export function WalletCard({ action, onAction, disabled, connected, balances, walletName, controls }: {
+export function WalletCard({ action, onAction, disabled, connected, balances, balancesStale = false, walletName, controls }: {
   action: PaymentAction; onAction: (action: PaymentAction) => void; disabled: boolean;
-  connected: boolean; balances?: { night: string | null; dust: string | null }; walletName?: string; controls?: ReactNode;
+  connected: boolean; balances?: { night: string | null; dust: string | null }; balancesStale?: boolean; walletName?: string; controls?: ReactNode;
 }) {
   return <div className="wallet-card" aria-label="MoneyMole wallet card">
     <div className="wallet-card-brand"><span><BrandImage size={32} alt="MoneyMole logo" /><span className="card-stitched-wordmark">MoneyMole</span></span><span className="card-network"><i aria-hidden="true" />PREPROD</span></div>
     <div className="wallet-card-body"><div className="card-account">
-      {connected ? <dl className="card-balances">{(["night", "dust"] as const).map(asset => <div key={asset} className={`card-balance card-balance-${asset}`}><dt className="card-caption"><span className={`card-asset-icon card-asset-${asset}`} aria-hidden="true" />Total {asset.toUpperCase()}</dt><dd className={`card-value${(balances?.[asset]?.length ?? 0) > 13 ? " balance-precise" : ""}`} aria-label={`Total ${asset.toUpperCase()}`}>{balances?.[asset] ?? "Unavailable"}</dd></div>)}</dl> : <><span className="card-caption">YOUR NIGHT WALLET</span><p className="card-value card-welcome">On your terms.</p></>}
+      {connected ? <><dl className="card-balances">{(["night", "dust"] as const).map(asset => <div key={asset} className={`card-balance card-balance-${asset}`}><dt className="card-caption"><span className={`card-asset-icon card-asset-${asset}`} aria-hidden="true" />Total {asset.toUpperCase()}</dt><dd className={`card-value${(balances?.[asset]?.length ?? 0) > 13 ? " balance-precise" : ""}`} aria-label={`Total ${asset.toUpperCase()}`}>{balances?.[asset] ?? "…"}</dd></div>)}</dl>{balancesStale && <span className="small-note">Updating balances · showing last known totals</span>}</> : <><span className="card-caption">YOUR NIGHT WALLET</span><p className="card-value card-welcome">On your terms.</p></>}
       <span className="card-connection"><span className={connected ? "card-dot online" : "card-dot"} />{connected ? `${walletName} connected` : "Connect your wallet"}</span>
     </div><span className="card-chip" aria-hidden="true"><i /><i /><i /></span></div>
     <div className="card-controls">{controls ?? <span>Native NIGHT <span aria-hidden="true">·</span> DUST fees</span>}</div>

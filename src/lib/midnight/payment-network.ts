@@ -5,22 +5,27 @@ import { Event, LedgerParameters, Transaction, ZswapChainState } from "@midnight
 import { ZKConfigProvider, createZKIR, createProverKey, createVerifierKey } from "@midnight-ntwrk/midnight-js-types";
 import { hex, unhex } from "./payment-codec";
 import { ledger } from "../../../managed/night-payments/contract/index.js";
+import { paymentStep } from "./payment-errors";
 
 export const INDEXER = preprod.indexerHttp;
 export type Block = { height: number; hash: string };
 export type ObservedTx = { hash: string; raw: string; identifiers: string[]; block: Block; transactionResult: { status: string }; contractActions: { address: string; state: string }[]; zswapLedgerEvents: { raw: string }[] };
 export async function query<T>(query: string, variables: Record<string, unknown>): Promise<T> {
+  return paymentStep("network", async () => {
   const response = await fetch(INDEXER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables }), signal: AbortSignal.timeout(20000), cache: "no-store" });
   if (!response.ok) throw new Error("Preprod indexer unavailable; retry reconciliation");
   const body = await response.json() as { data?: T; errors?: unknown };
   if (body.errors || !body.data) throw new Error("Preprod observation unavailable; retry reconciliation");
   return body.data;
+  });
 }
 async function rpc<T>(method: string, params: unknown[]): Promise<T> {
+  return paymentStep("network", async () => {
   const response = await fetch(preprod.nodeRpc, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }), signal: AbortSignal.timeout(15000) });
   const body = await response.json() as { result?: T; error?: unknown };
   if (!response.ok || body.error || body.result === undefined) throw new Error("Preprod finality unavailable; retry reconciliation");
   return body.result;
+  });
 }
 export async function finalized(block: Block) {
   if (!Number.isSafeInteger(block.height) || block.height < 0 || !/^[a-f0-9]{64}$/.test(block.hash)) throw new Error("Invalid public block observation");
@@ -47,12 +52,14 @@ export function outputObservations(tx: ObservedTx) {
 }
 export class PaymentKeys extends ZKConfigProvider<"fund" | "claim"> {
   async read(kind: string, circuit: string) {
+    return paymentStep("artifacts", async () => {
     if (!["fund", "claim"].includes(circuit)) throw new Error("Invalid circuit");
-    const response = await fetch(`/api/artifacts/night-payments/${kind}/${circuit}`, { cache: "no-store" });
+    const response = await fetch(`/api/artifacts/night-payments/${kind}/${circuit}`, { cache: "no-store", signal: AbortSignal.timeout(20_000) });
     if (!response.ok) throw new Error("Compiled payment artifacts unavailable");
     const bytes = new Uint8Array(await response.arrayBuffer());
     if (hex(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))) !== response.headers.get("X-Artifact-SHA256")) throw new Error("Artifact integrity check failed");
     return bytes;
+    });
   }
   async getZKIR(c: "fund" | "claim") { return createZKIR(await this.read("bzkir", c)); }
   async getProverKey(c: "fund" | "claim") { return createProverKey(await this.read("prover", c)); }

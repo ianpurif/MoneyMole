@@ -10,16 +10,20 @@
    private local passphrase, approve a new NIGHT deployment only if none exists,
    then Check deployment. Save its public record and encrypted backup. Legacy
    issuer/test-token escrows cannot be reused as NIGHT escrows.
-4. Select the confirmed NIGHT escrow and Unlock payment workspace. Send an exact
-   amount with up to six decimal places (example: 1 NIGHT). In Send, Save payment
-   draft, Prepare funding, Approve funding of 1, then Reconcile. Activity contains
-   transaction details and Recovery & receipts, including Save encrypted recovery.
-5. After funding finality, Show claim link / QR. Privately deliver it to B and close
-   A's workspace. B opens the fragment link or uses Receive / Use claim escrow,
-   unlocks its own local records, then Verify and save claim.
-6. In Receive, B selects the saved claim, Prepare claim, Approve claim of 1, then Reconcile. B receives
-   precisely the escrowed NIGHT; no mint occurs. Check baseline + amount in 1AM.
-7. B selects **Send received NIGHT**, expands Controlled spendability check in Send, enters A's unshielded NIGHT address,
+4. Unlock MoneyMole once and select the confirmed NIGHT escrow. Enter an amount
+   with up to six decimals and choose **Send NIGHT**. One modal saves the encrypted
+   draft, checks NIGHT/DUST, prepares the proof and waits for your approval.
+   Choose **Approve payment in wallet**, review in 1AM and stay in the modal for
+   submission and confirmation. It shows a private link/QR only after finality.
+5. Share that link privately with B. B opens it, unlocks local recovery, and chooses
+   **Receive NIGHT**. The same modal verifies/saves the claim and prepares its proof.
+6. B chooses **Approve claim in wallet** and waits for confirmation. B receives the
+   exact escrowed NIGHT; no mint occurs. Check baseline + amount independently in 1AM.
+   Close and **Resume payment**, or select a record in Activity and **Open payment**,
+   to resume. **Retry this step** preserves the draft/proof; **Check confirmation**
+   only observes the saved transaction and never resubmits it. Encrypted exports
+   and public receipts remain in Activity → Recovery & receipts.
+7. In the confirmed receive modal, B expands **Send received NIGHT**, enters A's unshielded NIGHT address,
    approves the exact spend, and reconciles. B returns to baseline, A recovers the
    payment; DUST fees remain separate. Save updated recovery and public receipts.
 8. Reload/unlock/reconcile both saved records. For import, use the same wallet and
@@ -42,8 +46,8 @@ records or revoking extension permissions.
 
 Connector v4 has no passive restore method. A full reload or a new tab requires an
 explicit Connect and wallet selection; the app never opens authorization prompts on its own.
-The private payment workspace independently locks when the tab is hidden or after
-five minutes. Unlocking those records is separate from connecting the wallet.
+The shared private workspace locks after five minutes without interaction, on
+disconnect or when the page closes. A wallet prompt does not independently lock it. Unlocking those records is separate from connecting the wallet.
 
 Browser storage is origin-specific. Records previously saved at 127.0.0.1 are not
 visible at localhost and have not been deleted. If needed, open the original origin,
@@ -54,10 +58,12 @@ or enter a wallet seed. Keep the encrypted export private.
 The wallet card shows total native NIGHT and current DUST (not its generation cap),
 even before local records are unlocked. Totals refresh every 15 seconds while visible,
 on focus/return, during reconciliation and after payment or deployment operations.
-An unavailable read displays Unavailable, never a fabricated zero.
+Temporary failed reads preserve last known totals with an updating label. Before
+the first reading the card shows an ellipsis, never a fabricated zero. Payment
+readiness always checks fresh balances, never the cached display.
 
-Send owns drafts, funding, sharing and controlled spending. Receive owns claim
-entry, preparation and approval. Activity owns history, transaction details and
+Send and Receive open the shared payment modal. It owns draft saving, funding,
+claiming, sharing and optional sending of received NIGHT. Activity owns history, transaction details and
 receipts, with links back to the appropriate action. Tools contains escrow setup,
 encrypted payment import (after unlock) and workspace metadata. Recovery guidance
 appears in a toast on connection and passphrase focus. Tabs scroll inside the fixed
