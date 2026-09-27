@@ -2,6 +2,8 @@ import { expect, it, vi } from "vitest";
 import type { ConnectedAPI, InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { discoverOneAm, discoverMidnightWallets, OneAmSession, WalletReadUnavailable, walletErrorMessage } from "../../src/lib/midnight/oneam";
 import { nativeToken } from "@midnight-ntwrk/midnight-js-protocol/ledger";
+import { ShieldedCoinPublicKey, MidnightBech32m } from "@midnight-ntwrk/wallet-sdk-address-format";
+import { localWalletIdentity, NATIVE_NIGHT_ASSET } from "../../src/lib/midnight/wallet-public";
 
 function fixture(network = "preprod") {
   let address = "synthetic-shielded-address";
@@ -11,10 +13,45 @@ function fixture(network = "preprod") {
     getUnshieldedAddress: async () => ({ unshieldedAddress: address }),
     getDustBalance: async () => ({ balance: 1n, cap: 1n }),
     getUnshieldedBalances: async () => ({ [nativeToken().raw]: 1234567n }),
+    getShieldedAddresses: async () => ({ shieldedCoinPublicKey: ShieldedCoinPublicKey.codec.encode("preprod", ShieldedCoinPublicKey.fromHexString("01".repeat(32))).asString() }),
   } as unknown as ConnectedAPI;
   const provider: InitialAPI = { name: "1AM", rdns: "com.midnight.1am", icon: "", apiVersion: "4.0.1", connect: async () => api };
   return { provider, api, changeAccount: () => { address = "another-synthetic-address"; } };
 }
+it("preserves the exact SDK wallet namespace without loading payment infrastructure", async () => {
+  expect(NATIVE_NIGHT_ASSET).toBe(nativeToken().raw);
+  const f = fixture(), session = await OneAmSession.connect(f.provider);
+  const { shieldedCoinPublicKey } = await f.api.getShieldedAddresses();
+  const original = ShieldedCoinPublicKey.codec.decode("preprod", MidnightBech32m.parse(shieldedCoinPublicKey)).toHexString();
+  const expected = Buffer.from(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(original))).toString("hex");
+  expect(await session.localIdentity()).toBe(expected);
+  const wrongNetwork = ShieldedCoinPublicKey.codec.encode("mainnet", ShieldedCoinPublicKey.fromHexString(original)).asString();
+  await expect(localWalletIdentity(wrongNetwork)).rejects.toThrow();
+  await expect(localWalletIdentity(shieldedCoinPublicKey.slice(0, -1))).rejects.toThrow();
+});
+it("coalesces simultaneous status reads without caching later authorization checks", async () => {
+  const f = fixture(), session = await OneAmSession.connect(f.provider);
+  const status = vi.spyOn(f.api, "getConnectionStatus");
+  await Promise.all([session.check(), session.check(), session.check()]);
+  expect(status).toHaveBeenCalledTimes(1);
+  f.changeAccount(); await expect(session.check()).rejects.toThrow("Reconnect");
+});
+it("bounds recovery identity reads and succeeds after a temporary failure", async () => {
+  vi.useFakeTimers();
+  try {
+    const f = fixture(), session = await OneAmSession.connect(f.provider);
+    vi.spyOn(f.api, "getShieldedAddresses").mockImplementationOnce(() => new Promise(() => {}));
+    const result = expect(session.localIdentity()).rejects.toBeInstanceOf(WalletReadUnavailable);
+    await vi.advanceTimersByTimeAsync(8001); await result;
+    await expect(session.localIdentity()).resolves.toMatch(/^[a-f0-9]{64}$/);
+  } finally { vi.useRealTimers(); vi.restoreAllMocks(); }
+});
+it("rejects a recovered identity if the account changed during the read", async () => {
+  const f = fixture(), session = await OneAmSession.connect(f.provider);
+  const original = await f.api.getShieldedAddresses();
+  vi.spyOn(f.api, "getShieldedAddresses").mockImplementationOnce(async () => { f.changeAccount(); return original; });
+  await expect(session.localIdentity()).rejects.toThrow("Reconnect");
+});
 it("discovers supported 1AM APIs under opaque keys without connecting", () => {
   const { provider } = fixture();
   expect(discoverOneAm({ opaque: provider })).toEqual([provider]);

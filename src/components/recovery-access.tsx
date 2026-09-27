@@ -1,15 +1,16 @@
 "use client";
 import { useId, useState } from "react";
 import { validPassphrase } from "@/lib/private-state/passphrase";
-import { useRecovery } from "./recovery-provider";
+import { useRecovery, useRecoveryInitialization } from "./recovery-provider";
 import { Button } from "./ui/button";
 import { ForgotRecovery } from "./forgot-recovery";
 
 export function RecoveryAccess({ security = false }: { security?: boolean }) {
   const recovery = useRecovery(), id = useId();
+  const initialization = useRecoveryInitialization();
   const [alternative, setAlternative] = useState(false), [password, setPassword] = useState(""), [error, setError] = useState("");
   const [forgot, setForgot] = useState(false);
-  if (!recovery) return <p role="status" className="small-note">Preparing local recovery… If this continues, reconnect your wallet.</p>;
+  if (!recovery) return <div className="recovery-access"><p role="status" className="small-note">{initialization.message}</p>{!initialization.pending && <Button onClick={initialization.retry}>Retry local recovery</Button>}</div>;
   if (recovery.authenticated && !security) return null;
   security = security && recovery.authenticated;
   const title = security ? "Security" : recovery.existing ? "Unlock MoneyMole" : "Secure MoneyMole";

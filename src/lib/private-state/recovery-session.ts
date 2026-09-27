@@ -43,11 +43,12 @@ export class RecoverySession {
     } catch { return []; }
   }
   async initialize() {
-    try { this.existing = !!readAuth(this.walletId) || (await BrowserPrivateStore.namespaces(this.localIdentity)).length > 0; }
-    catch { this.existing = true; this.message = "Local authentication data is unavailable or damaged. Preserve this browser’s data and your recovery backup."; }
-    const saved = localStorage.getItem(`moneymole/escrow/v3/${this.localIdentity}`) ?? (this.localIdentity === this.walletId ? localStorage.getItem("moneymole/night-escrow/v2") : null);
     this.escrow = "";
-    if (saved && /^[a-f0-9]{64}$/.test(saved)) this.escrow = saved;
+    try {
+      this.existing = !!readAuth(this.walletId) || (await BrowserPrivateStore.namespaces(this.localIdentity)).length > 0;
+      const saved = localStorage.getItem(`moneymole/escrow/v3/${this.localIdentity}`) ?? (this.localIdentity === this.walletId ? localStorage.getItem("moneymole/night-escrow/v2") : null);
+      if (saved && /^[a-f0-9]{64}$/.test(saved)) this.escrow = saved;
+    } catch { this.existing = true; this.message = "Local authentication data is unavailable or damaged. Preserve this browser’s data and your recovery backup."; }
     this.changed();
   }
   lock = () => {

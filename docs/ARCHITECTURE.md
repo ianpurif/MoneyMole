@@ -113,6 +113,14 @@ the owner approves it. Public build/artifact fingerprints bind exported records.
 
 ## Configuration and legacy continuity
 
+Wallet startup uses only connector reads, Bech32m public-key decoding and WebCrypto
+hashing. It preserves the original SHA-256-of-coin-key-hex storage identity without
+loading ledger WebAssembly or transaction/prover modules. Wallet balances use the
+pinned native token identifier, covered by an SDK equivalence test. Recovery
+initialization retries transient reads up to three times, has a 30-second deadline
+per attempt, and exposes an explicit retry on the same authorized connection.
+Late results after cancellation are discarded; startup never repeats authorization.
+
 config/preprod.json owns public endpoints and paymentAsset metadata (NIGHT,
 unshielded, 6 decimals, protocolVersion 2). Browser, CSP and CLI share it. The
 remaining issuerAddress/assetDomain fields are historical only; paymentAsset()

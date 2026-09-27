@@ -1,5 +1,26 @@
 # Current execution state
 
+## Connected-wallet initialization recovery — 2026-09-28
+
+Fixed the one-shot RecoveryProvider initialization that silently discarded a
+wallet/storage failure and left every feature waiting forever. Temporary wallet
+reads now receive at most three startup attempts; stalled initialization has a
+deadline and a visible Retry local recovery action on the existing authorized
+session. Disconnect/unmount discards late results. Damaged local auth metadata
+shows a preservation message instead of throwing back into an endless spinner.
+
+Local identity and wallet totals no longer load ledger WebAssembly or payment/prover
+modules. The public-key fingerprint is byte-for-byte compatible with the original
+SDK-derived storage identity, and the native asset ID is checked against the pinned
+ledger. Concurrent identity checks share only in-flight reads; later operations
+still verify account/network and fail closed on changes.
+
+Passed: 28 focused unit cases, 8 synthetic wallet browser scenarios on localhost:3000,
+TypeScript and targeted lint. Browser coverage includes blocked WebAssembly,
+transient/stalled startup, explicit retry, balance polling, navigation and account
+invalidation. This is local regression evidence, not live extension acceptance;
+no owner wallet prompt, signing, deployment or transaction was performed.
+
 ## Forgotten local passphrase recovery — 2026-09-28
 
 Returning users can log in independently with an enrolled passkey or recovery

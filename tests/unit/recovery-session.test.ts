@@ -29,6 +29,15 @@ function fakeWallet() {
   };
 }
 describe("shared recovery session with real encrypted local stores, synthetic wallet only", () => {
+  it("surfaces damaged authentication metadata without hanging initialization or replacing it", async () => {
+    const key = `moneymole/auth/v1/${walletId}`;
+    localStorage.setItem(key, "damaged synthetic metadata");
+    const recovery = new RecoverySession(fakeWallet() as unknown as OneAmSession, walletId);
+    await expect(recovery.initialize()).resolves.toBeUndefined();
+    expect(recovery.message).toContain("unavailable or damaged");
+    expect(recovery.existing).toBe(true); expect(recovery.authenticated).toBe(false);
+    expect(localStorage.getItem(key)).toBe("damaged synthetic metadata");
+  });
   it("logs in with an enrolled passkey without the phrase, then accepts a replacement phrase", async () => {
     const recovery = new RecoverySession(fakeWallet() as unknown as OneAmSession, walletId);
     await recovery.initialize(); await recovery.unlockWithPassphrase(password); await recovery.continueWithPasskey();

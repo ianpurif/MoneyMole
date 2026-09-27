@@ -1,10 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
 import { nativeToken } from "@midnight-ntwrk/midnight-js-protocol/ledger";
+import { ShieldedCoinPublicKey } from "@midnight-ntwrk/wallet-sdk-address-format";
 
-type WalletProbe = { calls: number; reads: number; mode: string; dustFails: boolean; night: string; dust: string };
+type WalletProbe = { calls: number; reads: number; mode: string; dustFails: boolean; night: string; dust: string; shieldedReads: number; recoveryMode: string };
 async function fixture(page: Page) {
-  await page.addInitScript(asset => {
-    const probe: WalletProbe = { calls: 0, reads: 0, mode: "ready", dustFails: true, night: "1234567", dust: "1" };
+  await page.addInitScript(({asset, coin}) => {
+    const probe: WalletProbe = { calls: 0, reads: 0, mode: "ready", dustFails: true, night: "1234567", dust: "1", shieldedReads: 0, recoveryMode: "ready" };
     Object.assign(window, { walletProbe: probe, midnight: { synthetic: {
       name: "1AM", rdns: "com.midnight.1am", apiVersion: "4.0.1", icon: "",
       connect: async () => { probe.calls++; return {
@@ -16,10 +17,16 @@ async function fixture(page: Page) {
         getConfiguration: async () => ({ networkId: "preprod" }),
         getUnshieldedAddress: async () => ({ unshieldedAddress: probe.mode === "changed" ? "synthetic-other-account" : "synthetic-account" }),
         getUnshieldedBalances: async () => ({[asset]:BigInt(probe.night)}),
+        getShieldedAddresses: async () => {
+          probe.shieldedReads++;
+          if (probe.recoveryMode === "stalled") return new Promise(() => {});
+          if (probe.recoveryMode === "offline" || (probe.recoveryMode === "first-fails" && probe.shieldedReads === 1)) throw new Error("Synthetic identity not ready");
+          return { shieldedCoinPublicKey: coin };
+        },
         getDustBalance: async () => { if (probe.dustFails) throw new Error("Synthetic balance not ready"); return { balance: BigInt(probe.dust), cap:99999999999999999n }; },
       }; },
     } } });
-  }, nativeToken().raw);
+  }, {asset: nativeToken().raw, coin: ShieldedCoinPublicKey.codec.encode("preprod", ShieldedCoinPublicKey.fromHexString("01".repeat(32))).asString()});
 }
 const probe = (page: Page) => page.evaluate(() => (window as unknown as {walletProbe:WalletProbe}).walletProbe);
 async function mode(page: Page, value: string) {
@@ -30,6 +37,38 @@ async function connect(page: Page) {
   await page.getByRole("button", {name:"1AM",exact:true}).click();
   await expect(page.getByRole("button", {name:"Disconnect",exact:true})).toBeVisible();
 }
+
+test("recovery retries initial wallet failure and unlocks without ledger WebAssembly or another connection", async ({page}) => {
+  await fixture(page);
+  await page.route(/\.wasm(?:\?|$)/, route => route.abort());
+  await page.goto("/");
+  await page.evaluate(() => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.recoveryMode = "first-fails"; });
+  await connect(page);
+  await expect(page.getByRole("button", {name:"Use recovery passphrase instead"})).toBeVisible({timeout:15_000});
+  await expect(page.getByLabel("Total NIGHT", {exact:true})).toHaveText("1.234567");
+  await page.getByRole("button", {name:"Use recovery passphrase instead"}).click();
+  await page.getByLabel("Local recovery passphrase", {exact:true}).fill("synthetic7");
+  await page.getByRole("button", {name:"Secure MoneyMole",exact:true}).click();
+  await expect(page.getByLabel("Escrow address", {exact:true})).toBeVisible();
+  expect((await probe(page)).calls).toBe(1);
+  expect((await probe(page)).shieldedReads).toBe(2);
+});
+
+test("stalled recovery stops retrying and can resume on the same authorized session", async ({page}) => {
+  await fixture(page); await page.clock.install(); await page.goto("/");
+  await page.evaluate(() => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.recoveryMode = "stalled"; });
+  await connect(page);
+  await expect.poll(async () => (await probe(page)).shieldedReads).toBe(1);
+  await page.clock.runFor(28_000);
+  await expect(page.getByRole("button", {name:"Retry local recovery"})).toBeVisible();
+  expect((await probe(page)).shieldedReads).toBe(3);
+  await page.clock.runFor(60_000);
+  expect((await probe(page)).shieldedReads).toBe(3);
+  await page.evaluate(() => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.recoveryMode = "ready"; });
+  await page.getByRole("button", {name:"Retry local recovery"}).click();
+  await expect(page.getByRole("button", {name:"Use recovery passphrase instead"})).toBeVisible();
+  expect((await probe(page)).calls).toBe(1);
+});
 
 test("temporary failures and minutes of polling retain one authorized session", async ({page}) => {
   await fixture(page); await page.clock.install(); await page.goto("/"); await connect(page);

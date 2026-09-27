@@ -1,6 +1,7 @@
 import "client-only";
 import type { InitialAPI, ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { formatAmount } from "../../domain/amount";
+import { localWalletIdentity, NATIVE_NIGHT_ASSET } from "./wallet-public";
 
 export function walletName(provider: InitialAPI): "1AM" | "Lace" {
   return provider.rdns.toLowerCase() === "io.lace.wallet" || provider.name.trim().toLowerCase() === "lace" ? "Lace" : "1AM";
@@ -68,6 +69,7 @@ async function identity(api: ConnectedAPI) {
 export class OneAmSession {
   #api: ConnectedAPI | null;
   #address: string;
+  #checking: Promise<void> | undefined;
   private constructor(api: ConnectedAPI, address: string, readonly name: "1AM" | "Lace") { this.#api = api; this.#address = address; }
   /** Call only from an explicit user gesture. This does not sign or submit transactions. */
   static async connect(provider: InitialAPI): Promise<OneAmSession> {
@@ -84,7 +86,12 @@ export class OneAmSession {
       }
     }
   }
-  async check(): Promise<void> {
+  check(): Promise<void> {
+    // Startup and balance polling share an in-flight identity read. A completed
+    // result is never cached: every later operation verifies the wallet again.
+    return this.#checking ??= this.#check().finally(() => { this.#checking = undefined; });
+  }
+  async #check(): Promise<void> {
     const api = this.#api;
     if (!api) throw new WalletSessionInvalid();
     try {
@@ -113,10 +120,9 @@ export class OneAmSession {
     await this.check();
     const api = this.#api;
     if (!api) throw new WalletSessionInvalid();
-    const { nativeToken } = await import("@midnight-ntwrk/midnight-js-protocol/ledger");
     const values = await Promise.allSettled([
       readWallet(() => api.getUnshieldedBalances()).then(balances => {
-        const amount = balances[nativeToken().raw] ?? 0n;
+        const amount = balances[NATIVE_NIGHT_ASSET] ?? 0n;
         if (typeof amount !== "bigint") throw new WalletReadUnavailable();
         return formatAmount(amount, 6);
       }),
@@ -137,9 +143,19 @@ export class OneAmSession {
   /** Connector v4 has no revoke method; forget only this browser's session. */
   disconnect(): void { this.#api = null; this.#address = ""; }
   async localIdentity() {
-    await this.check(); if (!this.#api) throw new Error("Reconnect your wallet.");
-    const { walletContext } = await import("./payment-session");
-    return (await walletContext(this.#api, () => this.check())).walletId;
+    await this.check();
+    const api = this.#api;
+    if (!api) throw new WalletSessionInvalid();
+    try {
+      const addresses = await readWallet(() => api.getShieldedAddresses());
+      const id = await localWalletIdentity(addresses.shieldedCoinPublicKey);
+      await this.check();
+      if (this.#api !== api) throw new WalletSessionInvalid();
+      return id;
+    } catch (error) {
+      if (!this.#api || error instanceof WalletSessionInvalid || isDisconnected(error)) { this.disconnect(); throw new WalletSessionInvalid(); }
+      throw new WalletReadUnavailable();
+    }
   }
   async prepareIssuer(password: string, localIdentity?: string) {
     await this.check();
