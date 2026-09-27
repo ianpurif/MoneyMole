@@ -92,3 +92,12 @@ Do not repeat completed research unless a version, source or relevant assumption
 - S37: https://github.com/midnightntwrk/midnight-dapp-connector-api/blob/main/docs/api/_media/SPECIFICATION.md — provider metadata is self-reported and must not be treated as authenticated identity. Discover registry values, require supported API versions and explicit connection.
 
 The adapter recognizes exact 1AM brand names (1AM, 1AM.xyz, 1AM Wallet) or the existing local ecosystem integration's `com.midnight.1am` hint. These hints are not an official identity allowlist. Distinct duplicate matches fail closed; Lace is excluded and no fallback is selected. Actual installed 1AM behavior awaits owner authorization.
+
+## Tooling recheck, 2026-09-27
+- https://learn.chatgpt.com/docs/app-server — read-only model/config/MCP inspection
+  and installed protocol schema generation. The installed model catalog, not a
+  static model assumption, determines availability.
+- https://docs.midnight.network/ai-integration/kapa-mcp-server — official configured
+  endpoint remains https://midnight.mcp.kapa.ai. A fresh initialize request returned
+  HTTP 401; the installed client reported authentication required. No alternative
+  endpoint, credentials or tool invocation was invented.

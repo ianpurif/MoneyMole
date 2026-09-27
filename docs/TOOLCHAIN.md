@@ -131,3 +131,13 @@ replace audited vulnerable development versions. Vite accepts patched esbuild
 0.28.x. npm run audit:deps checks the complete graph in local readiness and CI.
 Issuer verification compares the immutable deployed runtime closure, so isolated
 build/test patches do not require issuer redeployment or rewriting its record.
+
+## Read-only tooling inspection (2026-09-27)
+The installed newer CLI (0.158.0-alpha.2) advertises all three requested model/effort
+pairs and loads the project configuration. The older local shim selected 0.149.1;
+this host now selects the existing newer binary without changing global settings.
+Custom-agent/schema session attestation remains unverified; no delegation occurred.
+The configured Midnight documentation MCP currently returns HTTP 401 on initialize,
+confirmed through the installed client and a credential-free request. This optional
+research service is not used by MoneyMole runtime or the proof service. Keep these
+auxiliary preparation results blocked rather than claiming application tests prove them.

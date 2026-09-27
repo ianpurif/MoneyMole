@@ -12,10 +12,16 @@ else {
       const server = servers.find(s => s.name === "midnight");
       const tools = server?.tools;
       const count = Array.isArray(tools) ? tools.length : tools && typeof tools === "object" ? Object.keys(tools).length : 0;
-      if (!count) throw new Error("No initialized Midnight tools observed");
+      if (!count) {
+        // Classify the failure without publishing URLs, tokens or auth metadata.
+        report.reason = /auth required|unauthorized|\b401\b/i.test(server?.toolsError ?? "")
+          ? "Remote documentation MCP requires authentication; application runtime is unaffected"
+          : "No initialized Midnight documentation tools observed";
+        throw new Error("No initialized Midnight tools observed");
+      }
       report.observedToolCount = count; report.result = "passed";
       // Do not dump tool schemas, authentication metadata or other configured servers.
     });
-  } catch { report.reason = "Configured Midnight tool listing could not be observed; inspect trusted-client connection and installed protocol"; blocked(report.reason); }
+  } catch { report.reason ??= "Configured Midnight tool listing could not be observed; inspect trusted-client connection and installed protocol"; blocked(report.reason); }
 }
 saveJson("reports/mcp-doctor.json", report); console.log(JSON.stringify(report, null, 2));
