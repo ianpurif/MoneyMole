@@ -31,7 +31,7 @@ the final command running. The ignored .local/run.sh selects this host's verifie
 WSL runtime; a fresh machine uses the equivalent npm commands after installing
 Node/Compact. The pinned Compose proof server listens at http://127.0.0.1:6300.
 Actual synthetic proof generation must pass; an open port alone proves nothing.
-The app is http://127.0.0.1:3000. Do not alternate localhost and 127.0.0.1: browser
+The app is http://localhost:3000. Do not alternate localhost and 127.0.0.1: browser
 storage and extension permissions are origin-specific.
 
 Check .env.local has PROOF_SERVER_PORT=6300. All other reviewed public endpoints
