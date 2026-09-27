@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ClaimCapture } from "@/components/claim-capture";
+import { ProductFooter, ProductHeader } from "@/components/product-shell";
 export default function ClaimPage() {
-  return <main className="mx-auto max-w-5xl px-5 py-10"><Link href="/" prefetch={false} className="text-sm underline">MoneyMole</Link><h1 className="mt-6 text-4xl font-semibold">Receive a private payment</h1><ClaimCapture /></main>;
+  return <><ProductHeader /><main id="main-content" className="claim-page"><p className="eyebrow">Someone sent something your way.</p><h1>Receive a private payment</h1><div id="payment"><ClaimCapture /></div><p className="claim-footnote">Only a finalized claim and a synchronized wallet confirm receipt.<br />Keep your link private. Anyone holding it can claim.</p></main><ProductFooter /></>;
 }

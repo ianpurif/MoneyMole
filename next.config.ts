@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     "/api/build": ["./contracts/private-payments.compact", "./managed/private-payments/contract/index.js", "./toolchain.lock.json"],
   },
   webpack(config) {
+    config.module.rules.push({ test: /sonner[\/]dist[\/]index\.(mjs|js)$/, use: [{ loader: process.cwd() + "/scripts/sonner-styles.cjs" }] });
     config.experiments = { ...config.experiments, asyncWebAssembly: true };
     config.output.environment = { ...config.output.environment, asyncFunction: true };
     return config;

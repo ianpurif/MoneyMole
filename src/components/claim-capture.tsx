@@ -17,5 +17,5 @@ export function ClaimCapture() {
       else setMessage("Open a complete claim link or paste it into Receive payment after connecting.");
     });
   }, []);
-  return <><p className="mt-5 text-sm text-muted">{message}</p><WalletPanel {...(token ? { claimToken: token } : {})} onClaimConsumed={clear} /></>;
+  return <><p className="mt-5 text-sm text-muted">{message}</p><WalletPanel initialAction="receive" {...(token ? { claimToken: token } : {})} onClaimConsumed={clear} /></>;
 }

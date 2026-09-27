@@ -4,10 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import type { InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { Button } from "@/components/ui/button";
 import { discoverOneAm, OneAmSession, walletErrorMessage } from "@/lib/midnight/oneam";
+import { toast } from "sonner";
+import { ContextSheet } from "./context-sheet";
 import { IssuerSetup } from "./issuer-setup";
 import { PaymentWorkspace } from "./payment-workspace";
 
-export function WalletPanel({ claimToken, onClaimConsumed }: { claimToken?: string; onClaimConsumed?: () => void } = {}) {
+export function WalletPanel({ claimToken, onClaimConsumed, initialAction = "send" }: { claimToken?: string; onClaimConsumed?: () => void; initialAction?: "send" | "receive" | "activity" } = {}) {
+  const [action, setAction] = useState<"send" | "receive" | "activity">(claimToken ? "receive" : initialAction);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [draftAmount, setDraftAmount] = useState("10");
   const [providers, setProviders] = useState<InitialAPI[]>([]);
   const [busy, setBusy] = useState(false);
   const [connected, setConnected] = useState<OneAmSession | null>(null);
@@ -26,7 +31,7 @@ export function WalletPanel({ claimToken, onClaimConsumed }: { claimToken?: stri
       try { await current.check(); }
       catch {
         if (session.current === current) {
-          session.current = null; setConnected(null);
+          session.current = null; setConnected(null); setToolsOpen(false); toast.dismiss();
           setMessage("Wallet connection changed. Connect again to continue.");
         }
       } finally { checking = false; }
@@ -44,7 +49,7 @@ export function WalletPanel({ claimToken, onClaimConsumed }: { claimToken?: stri
       if (attempt !== generation.current) { current.disconnect(); return; }
       const readiness = await current.check();
       if (attempt !== generation.current) { current.disconnect(); return; }
-      session.current = current; setConnected(current);
+      session.current = current; setConnected(current); toast.success("1AM connected", { description: "Your wallet is on Preprod." });
       setMessage(readiness.dustAvailable ? "Connected to Preprod. DUST is available; transaction fees have not been estimated." : "Connected to Preprod. No DUST is currently available for fees.");
     } catch (error) { if (attempt === generation.current) setMessage(walletErrorMessage(error)); }
     finally { if (attempt === generation.current) setBusy(false); }
@@ -54,18 +59,27 @@ export function WalletPanel({ claimToken, onClaimConsumed }: { claimToken?: stri
     setProviders(found);
     setMessage(found.length ? "Choose 1AM and approve the connection in your wallet." : "A single supported 1AM API v4 provider was not found. Open 1AM and disable duplicate 1AM extensions, then check again.");
   }
-  return <section aria-label="1AM connection" className="mt-8 rounded-xl border border-border p-5">
-    <h2 className="font-medium">Your wallet</h2>
-    <p role="status" className="mt-2 text-sm text-muted">{message}</p>
-    <div className="mt-4 flex flex-wrap gap-3">
-      {!connected && !busy && <Button variant="outline" onClick={discover}>Check for 1AM</Button>}
-      {!connected && providers.map((provider, index) => <Button key={index} disabled={busy} onClick={() => void connect(provider)}>Connect 1AM</Button>)}
-      {(connected || busy) && <Button variant="outline" onClick={() => {
-        generation.current++; session.current?.disconnect(); session.current = null;
-        setConnected(null); setBusy(false); setMessage("Browser session cleared. Revoke site permissions inside 1AM if needed.");
-      }}>{busy ? "Cancel connection" : "Disconnect"}</Button>}
-    </div>
-    <p className="mt-3 text-xs text-muted">Wallet authorization and private payment records stay in this browser.</p>
-    {connected && <><PaymentWorkspace session={connected} {...(claimToken ? { claimToken } : {})} {...(onClaimConsumed ? { onClaimConsumed } : {})} /><details className="mt-6"><summary className="cursor-pointer font-medium">Test asset issuer administration</summary><IssuerSetup session={connected} /></details></>}
+
+  return <section aria-label="1AM connection" className="payment-app">
+    <div className="app-toolbar"><span className="app-network"><span className="signal-dot" /> Midnight Preprod</span>{connected ? <div className="wallet-controls"><button className="quiet-button" onClick={() => setToolsOpen(true)} aria-label="Open workspace tools">Tools</button><button className="quiet-button" onClick={() => {
+      generation.current++; session.current?.disconnect(); session.current = null;
+      setConnected(null); setBusy(false); setToolsOpen(false); setMessage("Browser session cleared. Revoke site permissions inside 1AM if needed.");
+      toast.dismiss();
+    }}>Disconnect</button></div> : <span className="test-label">Test asset</span>}</div>
+    {!connected && <>
+      <div className="action-switch" role="group" aria-label="Payment action">{(["send", "receive", "activity"] as const).map(value => <button key={value} aria-pressed={action === value} onClick={() => setAction(value)}>{value === "send" ? "Send" : value === "receive" ? "Receive" : "Activity"}</button>)}</div>
+      <div key={action} className="disconnected-action state-view">
+        {action === "send" ? <><div className="flow-heading"><h2>Send a little privacy.</h2><p>One amount. One private claim link.</p></div><label className="amount-field"><span>You send</span><div><input aria-label="Whole test units" inputMode="numeric" value={draftAmount} onChange={e => setDraftAmount(e.target.value)} maxLength={39} autoComplete="off" /><span className="asset-label"><span aria-hidden="true">◈</span> TEST</span></div><small>Shielded test units · No redemption value</small></label><div className="delivery-row"><span className="delivery-icon" aria-hidden="true">↗</span><div><strong>A link they can claim</strong><span>Ready after funding is finalized</span></div><span aria-hidden="true">⌁</span></div></> : action === "receive" ? <div className="empty-action"><span className="empty-symbol" aria-hidden="true">↙</span><h2>A payment, just a link away.</h2><p>{claimToken ? "Your claim is held in this browser. Connect to verify and save it encrypted." : "Connect your wallet, then paste a private claim link to receive its funded value."}</p><span className="small-note">The sender does not need to stay online.</span></div> : <div className="empty-action"><span className="empty-symbol" aria-hidden="true">↺</span><h2>Your payments live with you.</h2><p>Connect the same wallet and unlock local recovery to see your saved payments.</p><span className="small-note">Encrypted on this device. No account needed.</span></div>}
+      </div>
+      <div className="connection-actions">
+        {!busy && providers.length === 0 && <Button className="primary-action" onClick={discover}>Check for 1AM <span aria-hidden="true">↗</span></Button>}
+        {providers.map((provider, index) => <Button className="primary-action" key={index} disabled={busy} onClick={() => void connect(provider)}>{busy ? "Waiting for 1AM…" : "Connect 1AM"}</Button>)}
+        {busy && <button className="quiet-button" onClick={() => { generation.current++; setBusy(false); setMessage("Connection cancelled. You can connect again when ready."); toast.dismiss(); }}>Cancel connection</button>}
+      </div>
+    </>}
+    {connected && <PaymentWorkspace session={connected} initialAction={action} initialAmount={draftAmount} {...(claimToken ? { claimToken } : {})} {...(onClaimConsumed ? { onClaimConsumed } : {})} />}
+    <p role="status" className={connected ? "connection-status connected" : "connection-status"}>{message}</p>
+    {!connected && <p className="app-disclaimer">Anyone with a claim link can redeem it.<br />Live acceptance of this implementation is pending.</p>}
+    {toolsOpen && connected && <ContextSheet title="Advanced setup" onClose={() => setToolsOpen(false)}><p className="sheet-intro">Reuse existing records. Deployment and issuance are separate wallet approvals.</p><details><summary>Test asset issuer administration</summary><IssuerSetup session={connected} /></details></ContextSheet>}
   </section>;
 }
