@@ -255,6 +255,30 @@ details[open] > summary::after { content: "−"; }
 .card-actions button:disabled { opacity: .55; }
 .wallet-card button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .wallet-options { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.wallet-choice-list { display: grid; gap: 10px; margin: 22px 0 18px; }
+.context-sheet:has(.wallet-choice-list) { margin: auto; width: min(420px, calc(100% - 32px)); height: fit-content; max-height: calc(100dvh - 32px); border: 1px solid #e4ddef; border-radius: 24px; box-shadow: 0 24px 80px #19132630; }
+.context-sheet:has(.wallet-choice-list) .sheet-content { padding: 25px; }
+.context-sheet:has(.wallet-choice-list) h2 { font-size: 23px; }
+.wallet-choice-row { border: 1px solid #e2ddeb; border-radius: 16px; background: #faf9fd; overflow: hidden; }
+.wallet-choice { display: flex; align-items: center; gap: 14px; width: 100%; padding: 17px; text-align: left; transition: background .15s, box-shadow .15s; }
+.wallet-choice:hover:not(:disabled) { background: #ede8f8; box-shadow: inset 0 0 0 1px #c3b5df; }
+.wallet-choice:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.wallet-choice:disabled { opacity: .6; cursor: default; }
+.wallet-choice img { object-fit: contain; border-radius: 11px; background: white; }
+.wallet-choice > span:first-of-type { flex: 1; font-size: 15px; font-weight: 600; }
+.wallet-choice small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; }
+.wallet-choice-row > a { display: block; margin: 0 17px 14px 71px; font-size: 11px; }
+.recovery-access { padding: 8px 0 17px; }
+.recovery-access h2 { font-size: 20px; font-weight: 600; letter-spacing: -.5px; margin: 0 0 7px; }
+.recovery-access > .small-note { margin-bottom: 15px; }
+.passkey-action { width: 100%; display: flex; gap: 9px; min-height: 46px; border-radius: 12px; font-size: 12px; }
+.passkey-action > span { margin-left: auto; font-size: 8px; letter-spacing: .1px; opacity: .8; }
+.recovery-alternative { display: block; margin: 13px auto; font-size: 11px; }
+.recovery-input { width: 100%; border: 1px solid #d8d1e6; border-radius: 10px; padding: 11px 12px; background: #fcfbff; }
+.recovery-input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.recovery-access form .small-note { margin: 9px 0 13px; line-height: 1.5; }
+.recovery-status { margin: 13px 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.recovery-error { color: #91394d; font-size: 12px; margin: 10px 0; }
 .payment-app-disconnected { height: auto; min-height: 0; }
 .payment-app-disconnected .wallet-scroll { flex: none; overflow: visible; padding-block: 22px 6px; }
 .payment-app-disconnected .disconnected-action:empty { display: none; }

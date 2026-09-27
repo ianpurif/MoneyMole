@@ -3,7 +3,8 @@
 import { useState, useSyncExternalStore } from "react";
 import type { InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { Button } from "@/components/ui/button";
-import { discoverMidnightWallets, walletName } from "@/lib/midnight/oneam";
+import { discoverMidnightWallets } from "@/lib/midnight/oneam";
+import { WalletConnectModal } from "./wallet-connect-modal";
 import { useWallet } from "./wallet-provider";
 import { WalletCard } from "./wallet-card";
 import { PaymentWorkspace } from "./payment-workspace";
@@ -18,7 +19,7 @@ export function WalletPanel({ claimToken, onClaimConsumed, initialAction = "send
   function discover() {
     const found = discoverMidnightWallets(window.midnight);
     setProviders(found);
-    setChoosing(found.length > 0);
+    setChoosing(true);
     setMessage(found.length ? "" : "No supported wallet found. Open 1AM or Lace, disable duplicate extensions, then Connect again.");
   }
 
@@ -30,8 +31,8 @@ export function WalletPanel({ claimToken, onClaimConsumed, initialAction = "send
         {action === "send" ? null : action === "receive" ? <div className="empty-action"><span className="empty-symbol" aria-hidden="true">↙</span><h2>A payment, just a link away.</h2><p>{claimToken ? "Your claim is held in this browser. Connect to verify and save it encrypted." : "Connect your wallet, then paste a private claim link to receive its funded value."}</p><span className="small-note">The sender does not need to stay online.</span></div> : <div className="empty-action"><span className="empty-symbol" aria-hidden="true">↺</span><h2>Your payments live with you.</h2><p>Connect the same wallet and unlock local recovery to see your saved payments.</p><span className="small-note">Encrypted on this device. No account needed.</span></div>}
       </div>
       <div className="connection-actions">
-        {!choosing && <Button className="primary-action" disabled={!hydrated || busy} onClick={discover}>Connect</Button>}
-        {choosing && <div className="wallet-options" role="group" aria-label="Choose wallet">{providers.map(provider => <Button key={walletName(provider)} disabled={busy} onClick={() => void connect(provider)}>{walletName(provider)}</Button>)}<button className="quiet-button" onClick={() => { cancel(); setChoosing(false); }}>{busy ? "Cancel connection" : "Cancel"}</button></div>}
+        <Button className="primary-action" disabled={!hydrated || busy} onClick={discover}>Connect Wallet</Button>
+        {choosing && <WalletConnectModal providers={providers} busy={busy} message={message} onSelect={provider => { void connect(provider); }} onClose={() => { cancel(); setChoosing(false); }} onRefresh={discover} />}
       </div>
       <p className="app-disclaimer">Anyone with a claim link can redeem it.<br />Live acceptance of this implementation is pending.</p>
       </div>
