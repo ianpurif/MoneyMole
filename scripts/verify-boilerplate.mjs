@@ -11,12 +11,19 @@ if (has("package-lock.json")) {
 }
 checks.push({ name: "real lockfile with dependency entries", result: resolved ? "present_requires_npm_ci" : "blocked" });
 if (resolved) {
-  const install = run("npm", ["ci", "--no-audit", "--no-fund"], { timeout: 240_000 });
-  checks.push({ name: "npm ci", result: install.ok ? "passed" : "failed", exit: install.status });
+  // WSL checkouts on Windows-backed filesystems can spend several minutes
+  // replacing a full dependency tree. Keep a finite installation-specific bound.
+  console.log("START npm ci");
+  const install = run("npm", ["ci", "--no-audit", "--no-fund"], { timeout: 900_000 });
+  checks.push({ name: "npm ci", result: install.ok ? "passed" : "failed", exit: install.status, ...(install.error ? { error: install.error } : {}) });
+  console.log(`${install.ok ? "PASS" : "FAIL"} npm ci${install.error ? ` (${install.error})` : ""}`);
+  if (!install.ok) { process.stdout.write(install.stdout); process.stderr.write(install.stderr); }
   if (install.ok) {
     for (const command of ["audit:deps", "lint", "typecheck", "test:unit", "build", "test:browser", "compile:probe"]) {
+      console.log(`START ${command}`);
       const result = run("npm", ["run", command], { timeout: command === "compile:probe" ? 620_000 : 240_000 });
       checks.push({ name: command, result: result.ok ? "passed" : result.status === 2 ? "blocked" : "failed", exit: result.status });
+      console.log(`${result.ok ? "PASS" : "FAIL"} ${command}`);
       if (!result.ok) { process.stdout.write(result.stdout); process.stderr.write(result.stderr); }
     }
   }

@@ -120,6 +120,11 @@ clients leave this flag unset. This does not change global configuration or trus
 
 In WSL, `bash .local/run.sh npm run <command>` selects the verified project-local runtime. The helper is ignored host state, not a portable installation. Windows Docker Compose is installed; Ubuntu's plugin is absent. Use `docker compose --file compose.yaml up -d proof-server` and `docker compose --file compose.yaml stop proof-server` from this repository in PowerShell. No wallet data is passed through these commands. Build before test:browser.
 
+The preparation wrapper gives a clean `npm ci` up to 15 minutes: replacing the
+dependency tree through WSL on a Windows filesystem exceeded the former four-minute
+limit. It reports timeout failures and check progress explicitly. It never accepts
+a partial install or skips the clean install to make the gate pass.
+
 WSL service commands prefer native Compose, then reuse the installed Docker Desktop
 CLI under /mnt/c when available. The Compose file path is translated with wslpath;
 arguments are passed directly without a shell. services:up/down remain scoped to
