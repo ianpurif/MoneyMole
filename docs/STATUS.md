@@ -23,7 +23,10 @@ still return 2 for missing owner-approved records; local fixtures are not accept
 After rebinding changed subjects, all 53 utility tests, offline consistency and
 requirements/report checks passed. The stale initial evidence failure is resolved.
 
-Publication and source-bound remote CI for this UI revision are pending.
+Published revision `0d293b62e923a910a1a55ef6e54de16bac20cf05` passed
+[GitHub Actions 36328708145](https://github.com/ianpurif/MoneyMole/actions/runs/36328708145); public immutable
+source files matched Git. Evidence: docs/evidence/ui-cleanup-publication.json.
+The following evidence-only commit preserves all checked application subjects.
 
 Use http://localhost:3000, click Connect, choose your wallet and personally approve
 Preprod to check real-extension behavior. No passphrase/seed belongs in chat.
