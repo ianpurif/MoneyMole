@@ -77,7 +77,7 @@ test("disconnected visitor cannot start a payment", async ({ page }) => {
 });
 
 test("synthetic connector exercises explicit authorization without API requests", async ({ page }) => {
-  await page.addInitScript(() => {
+  await page.addInitScript(coinPublicKey => {
     Object.assign(window, { syntheticConnectCalls: 0, midnight: { opaque: {
       name: "1AM", rdns: "com.midnight.1am", apiVersion: "4.0.1", icon: "",
       connect: async () => {
@@ -87,11 +87,12 @@ test("synthetic connector exercises explicit authorization without API requests"
           getConnectionStatus: async () => ({ status: "connected", networkId: "preprod" }),
           getConfiguration: async () => ({ networkId: "preprod" }),
           getUnshieldedAddress: async () => ({ unshieldedAddress: "synthetic-connection-only-address" }),
+          getShieldedAddresses: async () => ({ shieldedCoinPublicKey: coinPublicKey }),
           getDustBalance: async () => ({ balance: 1n, cap: 1n }),
         };
       },
     } } });
-  });
+  }, ShieldedCoinPublicKey.codec.encode("preprod", ShieldedCoinPublicKey.fromHexString("01".repeat(32))).asString());
   const apiRequests: string[] = [];
   page.on("request", request => { if (new URL(request.url()).pathname.startsWith("/api/")) apiRequests.push(request.method()); });
   await page.goto("/");
@@ -100,7 +101,7 @@ test("synthetic connector exercises explicit authorization without API requests"
   await page.getByRole("button", { name: "1AM" }).click();
   await expect(page.getByText("1AM connected", {exact:true}).first()).toBeVisible();
   await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
-  await expect(page.getByText("Preparing local recovery…", {exact:false})).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Secure MoneyMole", exact: true })).toBeVisible();
   expect(apiRequests).toEqual([]);
   await page.getByRole("button", { name: "Disconnect", exact: true }).click();
   await expect(page.locator(".connection-status")).toContainText("Browser session cleared");

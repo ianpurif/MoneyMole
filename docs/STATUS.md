@@ -15,10 +15,12 @@ SDK-derived storage identity, and the native asset ID is checked against the pin
 ledger. Concurrent identity checks share only in-flight reads; later operations
 still verify account/network and fail closed on changes.
 
-Passed: 28 focused unit cases, 8 synthetic wallet browser scenarios on localhost:3000,
+Passed: 28 focused unit cases, 9 synthetic wallet browser scenarios on localhost:3000,
 TypeScript and targeted lint. Browser coverage includes blocked WebAssembly,
 transient/stalled startup, explicit retry, balance polling, navigation and account
-invalidation. This is local regression evidence, not live extension acceptance;
+invalidation. The existing shell authorization scenario now requires the ready
+recovery screen instead of the obsolete loading message. This is local regression
+evidence, not live extension acceptance;
 no owner wallet prompt, signing, deployment or transaction was performed.
 
 ## Forgotten local passphrase recovery — 2026-09-28
