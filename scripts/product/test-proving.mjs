@@ -1,3 +1,4 @@
+import preprod from "../../config/preprod.json" with { type: "json" };
 import { readFileSync, openSync, closeSync, unlinkSync } from "node:fs";
 import { ZKConfigProvider } from "@midnight-ntwrk/midnight-js-types";
 import { httpClientProvingProvider } from "@midnight-ntwrk/midnight-js-http-client-proof-provider";
@@ -26,7 +27,7 @@ export async function run() {
     const fixtures = [];
     runRuntimeCases((circuit, data) => fixtures.push({ circuit, data }));
     // Fixed loopback endpoint: this utility can never send witnesses to a remote URL.
-    const provider = httpClientProvingProvider("http://127.0.0.1:6300", new LocalKeys(), { timeout: 120000 });
+    const provider = httpClientProvingProvider(preprod.proofServer, new LocalKeys(), { timeout: 120000 });
     for (const { circuit, data } of fixtures) {
       stage = `${circuit} constraint check`;
       const preimage = proofDataIntoSerializedPreimage(data.input, data.output, data.publicTranscript, data.privateTranscriptOutputs, circuit);

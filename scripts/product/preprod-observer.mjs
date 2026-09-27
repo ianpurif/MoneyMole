@@ -1,14 +1,15 @@
+import preprod from "../../config/preprod.json" with { type: "json" };
 import assert from "node:assert/strict";
 import { ContractState, Transaction, Event } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { readFileSync } from "node:fs";
 import { at } from "../lib.mjs";
-export const endpoint = "https://indexer.preprod.midnight.network/api/v4/graphql";
+export const endpoint = preprod.indexerHttp;
 export async function query(query, variables) {
   const r = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables }), signal: AbortSignal.timeout(20000) });
   assert.equal(r.status, 200); const b = await r.json(); assert(!b.errors && b.data); return b.data;
 }
 async function rpc(method, params) {
-  const r = await fetch("https://rpc.preprod.midnight.network", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }), signal: AbortSignal.timeout(15000) });
+  const r = await fetch(preprod.nodeRpc, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }), signal: AbortSignal.timeout(15000) });
   const b = await r.json(); assert(r.ok && !b.error && b.result !== undefined); return b.result;
 }
 export async function finality(block) {

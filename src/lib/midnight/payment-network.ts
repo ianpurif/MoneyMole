@@ -1,11 +1,12 @@
 import "client-only";
+import preprod from "../../../config/preprod.json";
 import { ContractState } from "@midnight-ntwrk/compact-runtime";
 import { Event, LedgerParameters, Transaction, ZswapChainState } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { ZKConfigProvider, createZKIR, createProverKey, createVerifierKey } from "@midnight-ntwrk/midnight-js-types";
 import { hex, unhex } from "./payment-codec";
 import { ledger } from "../../../managed/private-payments/contract/index.js";
 
-export const INDEXER = "https://indexer.preprod.midnight.network/api/v4/graphql";
+export const INDEXER = preprod.indexerHttp;
 export type Block = { height: number; hash: string };
 export type ObservedTx = { hash: string; raw: string; identifiers: string[]; block: Block; transactionResult: { status: string }; contractActions: { address: string; state: string }[]; zswapLedgerEvents: { raw: string }[] };
 export async function query<T>(query: string, variables: Record<string, unknown>): Promise<T> {
@@ -16,7 +17,7 @@ export async function query<T>(query: string, variables: Record<string, unknown>
   return body.data;
 }
 async function rpc<T>(method: string, params: unknown[]): Promise<T> {
-  const response = await fetch("https://rpc.preprod.midnight.network", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }), signal: AbortSignal.timeout(15000) });
+  const response = await fetch(preprod.nodeRpc, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }), signal: AbortSignal.timeout(15000) });
   const body = await response.json() as { result?: T; error?: unknown };
   if (!response.ok || body.error || body.result === undefined) throw new Error("Preprod finality unavailable; retry reconciliation");
   return body.result;

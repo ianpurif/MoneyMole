@@ -1,4 +1,5 @@
 import "client-only";
+import preprod from "../../../config/preprod.json";
 import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { MidnightBech32m, ShieldedCoinPublicKey, ShieldedEncryptionPublicKey, ShieldedAddress } from "@midnight-ntwrk/wallet-sdk-address-format";
 import { Transaction, CostModel, rawTokenType, type UnprovenTransaction } from "@midnight-ntwrk/midnight-js-protocol/ledger";
@@ -10,8 +11,8 @@ import { PaymentKeys, observeTransaction } from "./payment-network";
 import { withLocalProver } from "./proof-lock";
 import { bech32m } from "@scure/base";
 
-export const ISSUER = "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635";
-export function paymentAsset() { const d = new Uint8Array(32); d.set(new TextEncoder().encode("moneymole/test/v1")); return rawTokenType(d, ISSUER); }
+export const ISSUER = preprod.issuerAddress;
+export function paymentAsset() { const d = new Uint8Array(32); d.set(new TextEncoder().encode(preprod.assetDomain)); return rawTokenType(d, ISSUER); }
 export type TxPhase = "draft" | "prepared" | "authorization_requested" | "outcome_unknown" | "submitted" | "finalized" | "failed";
 export type TxRecord = { phase: TxPhase; transaction?: string; transactionId?: string; transactionHash?: string; blockHash?: string; blockHeight?: number };
 export function validateTx(value: TxRecord) {
@@ -42,7 +43,7 @@ export async function writeRecord(store: BrowserPrivateStore, key: string, value
   try { return await store.write(key, bytes, revision); } finally { bytes.fill(0); }
 }
 export async function provePayment(tx: UnprovenTransaction) {
-  const action = async () => hex((await tx.prove(httpClientProvingProvider("http://127.0.0.1:6300", new PaymentKeys(), { timeout: 180000 }), CostModel.initialCostModel())).serialize());
+  const action = async () => hex((await tx.prove(httpClientProvingProvider(preprod.proofServer, new PaymentKeys(), { timeout: 180000 }), CostModel.initialCostModel())).serialize());
   return withLocalProver(action);
 }
 export async function submitPrepared(wallet: WalletContext, tx: TxRecord, persist: () => Promise<void>) {

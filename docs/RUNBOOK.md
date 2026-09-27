@@ -111,7 +111,7 @@ Use WSL for dependency installation, builds and tests; do not mix Windows and
 Linux native packages in one node_modules directory. `.env.local` contains the
 public `PROOF_SERVER_PORT=6300` setting. `npm run services:*` resolves process env,
 then `.env.local`, then `.env` and passes the same validated port to Compose.
-The app pins Preprod endpoints in source; unused NEXT_PUBLIC variables do not
+The app pins public Preprod endpoints and issuer in config/preprod.json, shared by browser, CSP and CLI; unused NEXT_PUBLIC variables do not
 configure wallet authority or contract selection. Select the escrow in the browser.
 This host's ignored WSL launcher sets `MONEYMOLE_CODEX_WINDOWS=1` when reusing the
 installed Windows Codex CLI. The read-only diagnostics translate the workspace

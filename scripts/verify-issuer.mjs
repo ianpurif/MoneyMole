@@ -1,3 +1,4 @@
+import preprod from "../config/preprod.json" with { type: "json" };
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
@@ -13,6 +14,7 @@ let stage = "deployment source and artifact identity";
 try {
   const record = readJson("deployments/preprod/test-asset-issuer.json");
   assert.equal(record.network, "preprod"); assert.match(record.address, /^[a-f0-9]{64}$/);
+  assert.equal(preprod.network, record.network); assert.equal(preprod.issuerAddress, record.address);
   for (const subject of record.subjects.filter(s => s.path !== "package-lock.json")) assert.equal(hashFile(subject.path), subject.sha256);
   stage = "deployment dependency compatibility";
   const recordedLock = record.subjects.find(s => s.path === "package-lock.json"); assert(recordedLock);
@@ -30,7 +32,7 @@ try {
   }
   stage = "official indexer deployment and current state";
   const query = `fragment DeploymentData on ContractDeploy { state transaction { hash block { height hash } ... on RegularTransaction { identifiers transactionResult { status } } } } query Issuer($address: HexEncoded!) { contractAction(address:$address) { state transaction { block { height hash } } ... on ContractDeploy { ...DeploymentData } ... on ContractCall { deploy { ...DeploymentData } } } }`;
-  const response = await fetch("https://indexer.preprod.midnight.network/api/v4/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address: record.address } }), signal: AbortSignal.timeout(20000) });
+  const response = await fetch(preprod.indexerHttp, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address: record.address } }), signal: AbortSignal.timeout(20000) });
   assert.equal(response.status, 200); const body = await response.json(); assert(!body.errors);
   const latest = body.data.contractAction, deployment = latest.deploy ?? latest, tx = deployment.transaction;
   assert.equal(tx.transactionResult.status, "SUCCESS"); assert(tx.identifiers.includes(record.transactionId));

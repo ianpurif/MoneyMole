@@ -129,3 +129,17 @@ Read-only CLIs verify real deployment/action/finality references without signing
 `verify:product` also requires hashed owner-reviewed evidence for every matrix
 row. It does not make owner assertions independent automated proof, and it does
 not establish participant or external eligibility requirements.
+# Public runtime configuration
+
+`config/preprod.json` is the single reviewed source of the issuer address, asset
+domain, Preprod indexer/RPC endpoints and trusted loopback prover URL. Browser
+modules, read-only verifiers and the server CSP consume it directly. No environment
+variable can silently select a different network, asset or prover. Tests bind it
+to the preserved issuer deployment and Compact token domain. Network literals in
+protocol validation remain intentional Preprod-only checks.
+
+`.env.local` needs only the public Compose port. The payment escrow address is
+generated during browser deployment, then selected in browser localStorage and
+carried in claim payloads; public deployment records can be exported. IndexedDB
+holds encrypted recovery records scoped to network, contract and wallet. Neither
+browser store is a Next.js server configuration source.

@@ -1,3 +1,4 @@
+import preprod from "../../config/preprod.json" with { type: "json" };
 import assert from "node:assert/strict";
 import { ContractDeploy, Transaction, rawTokenType } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { ContractState as RuntimeState } from "@midnight-ntwrk/compact-runtime";
@@ -13,8 +14,8 @@ export async function run(args = []) {
   const tx = await transaction(r.transactionId); assert.equal(tx.transactionResult.status, "SUCCESS"); assert.equal(tx.block.hash, r.finality.block);
   const native = Transaction.deserialize("signature", "proof", "binding", Buffer.from(tx.raw, "hex"));
   assert([...native.intents.values()].flatMap(i => i.actions).some(a => a instanceof ContractDeploy && a.address === r.address));
-  const state = await verifyEscrow(r.address), domain = new Uint8Array(32); domain.set(new TextEncoder().encode("moneymole/test/v1"));
-  const expected = rawTokenType(domain, "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635");
+  const state = await verifyEscrow(r.address), domain = new Uint8Array(32); domain.set(new TextEncoder().encode(preprod.assetDomain));
+  const expected = rawTokenType(domain, preprod.issuerAddress);
   assert.equal(Buffer.from(ledger(RuntimeState.deserialize(state.serialize()).data).supportedAsset).toString("hex"), expected);
   const path = "reports/deployment.json";
   saveJson(path, { scope: "real_preprod_payment_escrow_identity_and_node_finality", result: "passed", observedAt: new Date().toISOString(), address: r.address, transactionId: r.transactionId, block: tx.block, recordPath, recordSha256: hashFile(recordPath), sourceHash: r.sourceHash, buildHash: r.buildHash, toolchainHash: r.toolchainHash });

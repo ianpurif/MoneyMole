@@ -1,0 +1,9 @@
+{
+  "network": "preprod",
+  "issuerAddress": "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635",
+  "assetDomain": "moneymole/test/v1",
+  "indexerHttp": "https://indexer.preprod.midnight.network/api/v4/graphql",
+  "indexerWs": "wss://indexer.preprod.midnight.network/api/v4/graphql/ws",
+  "nodeRpc": "https://rpc.preprod.midnight.network",
+  "proofServer": "http://127.0.0.1:6300"
+}

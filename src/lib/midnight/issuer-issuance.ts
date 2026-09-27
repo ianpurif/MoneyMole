@@ -1,4 +1,5 @@
 import "client-only";
+import preprod from "../../../config/preprod.json";
 import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { Contract, ledger } from "../../../managed/test-asset/contract/index.js";
 import { CompiledContract } from "@midnight-ntwrk/midnight-js-protocol/compact-js";
@@ -21,7 +22,7 @@ export type IssuanceReview = { phase: RecordData["phase"]; asset: string; amount
 /** Reads only public chain data. No wallet authority or opening is sent to the indexer. */
 async function observation(address: string) {
   const query = `query Issuer($address: HexEncoded!) { contractAction(address: $address) { state zswapState transaction { block { hash height ledgerParameters } ... on RegularTransaction { identifiers transactionResult { status } } } } }`;
-  const response = await fetch("https://indexer.preprod.midnight.network/api/v4/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address } }), signal: AbortSignal.timeout(20000) });
+  const response = await fetch(preprod.indexerHttp, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address } }), signal: AbortSignal.timeout(20000) });
   if (!response.ok) throw new Error("Indexer unavailable");
   const body = await response.json();
   if (body.errors || !body.data?.contractAction) throw new Error("Issuer state unavailable");
@@ -33,7 +34,7 @@ export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore
   if (address !== ISSUER) { authority.fill(0); throw new Error("Recover the configured issuer; another issuer creates an unsupported asset"); }
   setNetworkId("preprod");
   const connectedAddress = (await api.getShieldedAddresses()).shieldedAddress;
-  const asset = rawTokenType(bytes(hex(new TextEncoder().encode("moneymole/test/v1")).padEnd(64, "0")), address);
+  const asset = rawTokenType(bytes(hex(new TextEncoder().encode(preprod.assetDomain)).padEnd(64, "0")), address);
   let revision = 0, record: RecordData, walletCredited = false;
   const saved = await store.read("issuance");
   if (saved) {
@@ -73,7 +74,7 @@ export async function openIssuance(api: ConnectedAPI, store: BrowserPrivateStore
       const compiledContract = CompiledContract.make("test-asset", Contract<{ authority: Uint8Array }>).pipe(CompiledContract.withWitnesses({ issuerAuthority: ({ privateState }) => [privateState, privateState.authority], mintNonce: ({ privateState }) => [privateState, bytes(record.nonce)] }), CompiledContract.withCompiledFileAssets("test-asset"));
       const call = await createUnprovenCallTxFromInitialStates(keys, { compiledContract, circuitId: "issue", contractAddress: address, coinPublicKey: coinKey, initialPrivateState: { authority }, initialContractState: state, initialZswapChainState: ZswapChainState.deserialize(bytes(action.zswapState)), ledgerParameters: LedgerParameters.deserialize(bytes(action.transaction.block.ledgerParameters)) }, encKey);
       // Private proof preimages go directly to this trusted loopback service, never Next.js.
-      const proven = await withLocalProver(() => call.private.unprovenTx.prove(httpClientProvingProvider("http://127.0.0.1:6300", keys, { timeout: 120000 }), CostModel.initialCostModel()));
+      const proven = await withLocalProver(() => call.private.unprovenTx.prove(httpClientProvingProvider(preprod.proofServer, keys, { timeout: 120000 }), CostModel.initialCostModel()));
       await checkWallet();
       record.transaction = hex(proven.serialize()); record.phase = "prepared"; await persist();
       return review();

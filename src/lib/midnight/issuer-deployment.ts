@@ -1,4 +1,5 @@
 import "client-only";
+import preprod from "../../../config/preprod.json";
 import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { Contract, type Witnesses } from "../../../managed/test-asset/contract/index.js";
 import { CompiledContract } from "@midnight-ntwrk/midnight-js-protocol/compact-js";
@@ -71,7 +72,7 @@ export async function prepareIssuer(api: ConnectedAPI, password: string) {
     if (!draft.transactionId) return review();
     // Public deployment address/identifier only; never send the draft/private state.
     const query = `fragment DeploymentData on ContractDeploy { state transaction { hash block { hash height } ... on RegularTransaction { identifiers transactionResult { status } } } } query Deployment($address: HexEncoded!) { contractAction(address: $address) { ... on ContractDeploy { ...DeploymentData } ... on ContractCall { deploy { ...DeploymentData } } } }`;
-    const response = await fetch("https://indexer.preprod.midnight.network/api/v4/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address: draft.address } }), signal: AbortSignal.timeout(15000) });
+    const response = await fetch(preprod.indexerHttp, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables: { address: draft.address } }), signal: AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error("Preprod indexer unavailable");
     const body = await response.json();
     if (body.errors) throw new Error("Preprod deployment query failed");

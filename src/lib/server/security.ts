@@ -1,4 +1,5 @@
 import "server-only";
+import preprod from "../../../config/preprod.json";
 
 /** No wallet, claim or private-state input is accepted by this module. */
 export function contentSecurityPolicy(nonce: string, development: boolean): string {
@@ -9,7 +10,7 @@ export function contentSecurityPolicy(nonce: string, development: boolean): stri
     `style-src 'self' ${development ? "'unsafe-inline'" : `'nonce-${nonce}'`}`,
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    `connect-src 'self' https://indexer.preprod.midnight.network wss://indexer.preprod.midnight.network https://rpc.preprod.midnight.network http://127.0.0.1:6300${development ? " ws://127.0.0.1:3000 ws://localhost:3000 ws://127.0.0.1:3100 ws://localhost:3100" : ""}`,
+    `connect-src 'self' ${[preprod.indexerHttp, preprod.indexerWs, preprod.nodeRpc, preprod.proofServer].map(url => new URL(url).origin).join(" ")}${development ? " ws://127.0.0.1:3000 ws://localhost:3000 ws://127.0.0.1:3100 ws://localhost:3100" : ""}`,
     "object-src 'none'", "base-uri 'none'", "frame-ancestors 'none'",
     "form-action 'self'", "frame-src 'none'",
   ].join("; ");
