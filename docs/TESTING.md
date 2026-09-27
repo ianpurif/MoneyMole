@@ -65,8 +65,8 @@ private-state handling stay client-side and never enter Next.js API routes.
 ## Current deterministic and browser scope
 Existing unit test sources cover amount bounds, transaction recovery, native Web Crypto encryption, fake-indexeddb storage recovery/conflicts/corruption, and synthetic 1AM APIs. Browser tests use the production build and verify nonce CSP and an explicitly synthetic wallet flow. These do not establish real extension, proving or payment behavior.
 
-Current local run: 50 dependency-free checks, 36 unit tests, 13 generated-contract
-cases, 8 integration cases and 7 browser tests passed. The added codec cases
+Current local run: the dependency-free and full unit suites, 13 generated-contract
+cases, 20 integration cases and 7 browser tests passed. The added codec cases
 exercise exact Uint128 bounds, altered fields/tags, malformed links and local QR
 size. Browser cases confirm fragment scrubbing without resource/referrer/storage
 leakage and reject oversized capture. QR generation/size is verified; a real optical

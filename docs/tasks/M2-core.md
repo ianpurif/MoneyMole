@@ -1,6 +1,6 @@
 # M2 — Complete contract, domain and encrypted state
 
-State: implementation complete; current unit, contract and integration checks passed. Funded recovery, live contention and negative/privacy acceptance remain pending; local synthetic fixtures are not live acceptance.
+State: implementation complete; current unit and contract checks plus 20 integration cases passed, including actual saved-record retry/recovery. Funded recovery, live contention and negative/privacy acceptance remain pending; local synthetic fixtures are not live acceptance.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 

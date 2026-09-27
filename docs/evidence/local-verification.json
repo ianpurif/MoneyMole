@@ -1,161 +1,170 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-09-26T13:46:29.524Z",
-  "scope": "local_setup_and_application_verification_not_real_wallet_E2E",
+  "observedAt": "2026-09-27T04:17:32.128Z",
+  "scope": "local_engineering_remediation_and_verification_not_real_wallet_E2E",
   "result": "passed_for_local_application_scope",
-  "sourceCommit": "869ef89b5ff497b529be379850fb964952fe93a9",
+  "sourceCommit": "85dd354d3dea6788e7ba63b8199ea05594afb8d7",
   "checks": [
     {
-      "command": "nvm use 22.16.0; node --version; npm --version",
+      "command": "npm run check:offline",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "Windows default and project WSL runtime",
-      "node": "22.16.0",
-      "npm": "10.9.2"
+      "exitCode": 0
     },
     {
       "command": "npm ci --no-audit --no-fund",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "locked Linux dependency installation"
+      "exitCode": 0
     },
     {
-      "command": "manifest/lock/installed-package identity check",
+      "command": "npm run audit:deps",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "all direct dependency declarations and installed versions",
-      "packages": 32
-    },
-    {
-      "command": "npm run check:offline",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "source consistency and dependency-free utilities",
-      "tests": 50
-    },
-    {
-      "command": "npm run doctor",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "tool presence and versions only"
-    },
-    {
-      "command": "npm run compile:probe",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "Compact 0.31.1 compilation only"
-    },
-    {
-      "command": "npm run compile:coin-probe",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "Compact 0.31.1 compilation only"
-    },
-    {
-      "command": "npm run compile:contracts",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "Compact 0.31.1 compilation only"
-    },
-    {
-      "command": "npm run compile:issuance",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "Compact 0.31.1 compilation only"
-    },
-    {
-      "command": "npm run verify:artifacts",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "source/generated material identity and pinned compatibility"
+      "exitCode": 0
     },
     {
       "command": "npm run lint",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "full ESLint, including final verification script changes"
+      "exitCode": 0
     },
     {
       "command": "npm run typecheck",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "project TypeScript"
+      "exitCode": 0
     },
     {
       "command": "npm run test:unit",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "synthetic deterministic and real local crypto/storage",
-      "tests": 36
-    },
-    {
-      "command": "npm run test:contracts",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "actual generated contract execution with synthetic openings",
-      "tests": 13
-    },
-    {
-      "command": "npm run test:integration",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "explicit integration project: storage/recovery and native synthetic qualification",
-      "tests": 8
-    },
-    {
-      "command": "npm run test:proving",
-      "result": "passed",
-      "exitCode": 0,
-      "scope": "real loopback constraints/proof generation from synthetic openings",
-      "circuits": [
-        "fund",
-        "claim",
-        "issue"
-      ],
-      "issuerTransaction": "proved and serialized; unsealed, not submitted"
+      "exitCode": 0
     },
     {
       "command": "npm run build",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "production Next build"
+      "exitCode": 0
     },
     {
       "command": "npm run test:browser",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "isolated production Chromium with synthetic providers, fragment/CSP checks",
-      "tests": 7
+      "exitCode": 0
     },
     {
-      "command": "npm run services:up; npm run services:status",
+      "command": "npm run compile:probe",
       "result": "passed",
-      "exitCode": 0,
-      "scope": "only the project Compose proof service"
+      "exitCode": 0
     },
     {
-      "command": "npm run verify:connectivity",
+      "command": "npm run doctor",
       "result": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run compile:coin-probe",
       "exitCode": 0,
-      "scope": "production browser CSP, prover malformed POST CORS and real read-only Preprod API access"
+      "result": "passed"
+    },
+    {
+      "command": "npm run compile:contracts",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run compile:issuance",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run verify:artifacts",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:contracts",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:integration",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run services:status",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run services:check",
+      "exitCode": 2,
+      "result": "blocked"
+    },
+    {
+      "command": "npm run test:proving",
+      "exitCode": 0,
+      "result": "passed"
     },
     {
       "command": "npm run verify:issuer",
-      "result": "passed",
       "exitCode": 0,
-      "scope": "existing issuer identity, additive dependency compatibility and canonical node finality"
+      "result": "passed"
+    },
+    {
+      "command": "npm run verify:deployment",
+      "exitCode": 2,
+      "result": "blocked"
+    },
+    {
+      "command": "npm run test:preprod",
+      "exitCode": 2,
+      "result": "blocked"
+    },
+    {
+      "command": "npm run verify:product",
+      "exitCode": 2,
+      "result": "blocked"
+    },
+    {
+      "command": "npm run requirements:check",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run verify:connectivity",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "manifest/lock/installed identity",
+      "exitCode": 0,
+      "result": "passed",
+      "packages": 33
     }
   ],
+  "installationRecovery": {
+    "initialAttempt": "four-minute wrapper timeout terminated a progressing npm ci",
+    "fix": "committed finite fifteen-minute install bound; fresh clean npm ci passed"
+  },
   "localConfiguration": {
-    "envLocalConfigured": true,
-    "environmentKeys": [
+    "envLocalKeys": [
       "PROOF_SERVER_PORT"
     ],
     "proofServerPort": 6300,
-    "applicationUrl": "http://127.0.0.1:3000",
+    "publicSettings": "config/preprod.json",
+    "origin": "http://127.0.0.1:3000",
     "network": "preprod",
     "wallet": "1AM",
-    "proofImage": "midnightntwrk/proof-server:8.1.0@sha256:801bbc0340e9e96f16735f77b523f23c7459e3359842f7c79c2c53f4e994d531"
+    "escrowSelection": "localStorage moneymole/current-escrow",
+    "privateStore": "encrypted IndexedDB moneymole-private-v1"
+  },
+  "installedIdentity": {
+    "result": "passed",
+    "observedAt": "2026-09-27T04:08:02.546Z",
+    "packages": 33,
+    "node": "22.16.0",
+    "npm": "npm@10.9.2",
+    "toolVersions": {
+      "postcss": "8.5.28",
+      "vite": "7.3.6",
+      "vitest": "4.1.11",
+      "esbuild": "0.28.2"
+    }
   },
   "toolObservations": [
     {
@@ -191,7 +200,7 @@
     {
       "name": "Codex client",
       "status": "passed",
-      "observed": "codex-cli 0.149.1"
+      "observed": "codex-cli 0.158.0-alpha.2"
     },
     {
       "name": "Dependency lockfile present (not graph validation)",
@@ -205,7 +214,7 @@
   "browserConnectivity": {
     "scope": "production_browser_csp_cors_and_read_only_preprod_connectivity",
     "result": "passed",
-    "observedAt": "2026-09-26T13:36:58.897Z",
+    "observedAt": "2026-09-27T04:12:34.621Z",
     "origin": "http://127.0.0.1:3000",
     "checks": {
       "checkBrowserCors": true,
@@ -222,7 +231,7 @@
   "issuer": {
     "scope": "real_preprod_issuer_identity_and_node_finality",
     "result": "passed",
-    "observedAt": "2026-09-26T13:31:51.368Z",
+    "observedAt": "2026-09-27T04:16:53.392Z",
     "address": "47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635",
     "transactionId": "003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886",
     "block": {
@@ -233,10 +242,10 @@
     "nodeFinality": true,
     "issued": false,
     "dependencies": {
-      "mode": "original_packages_preserved_with_additions",
+      "mode": "original_runtime_closure_preserved_tooling_updates_allowed",
       "recordedLockHash": "dcc8d47c1482dad6a0432617e4977b521816f8af08201648b710cec05ab946b5",
-      "currentLockHash": "6aee0fd9a25a6b293c9581eeceaca520f0e354ddb83a1ca4fea39630603da469",
-      "checkedPackages": 607,
+      "currentLockHash": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499",
+      "checkedPackages": 133,
       "baselineCommit": "d4e89bd1589070549e50bb3ee14746708cfa4ead"
     },
     "deploymentRecordSha256": "82ee0b0012804a5349c0975114cf49f2a19b94680247280449d77ad6e2622562",
@@ -265,6 +274,20 @@
       "proofBytes": 4508
     }
   ],
+  "issuerTransactionProof": {
+    "transactionProofGeneration": "passed",
+    "proofTransactionRoundTrip": "passed",
+    "scope": "synthetic_unbalanced_transaction_not_sealed_or_submitted"
+  },
+  "integration": {
+    "scope": "production_payment_controller_and_encrypted_records_fake_indexeddb_synthetic_protocol_boundaries",
+    "tests": 20,
+    "limitations": [
+      "No wallet authorization or live submission",
+      "No chain reconciliation or funded payment",
+      "Restored local states are unverified"
+    ]
+  },
   "compiledIdentity": [
     {
       "source": "contracts/probes/claim-commitment.compact",
@@ -455,69 +478,77 @@
       ]
     }
   ],
+  "rebuiltArtifactsMatchBrowserBuild": true,
   "blocked": [
-    {
-      "command": "npm run verify:boilerplate",
-      "exitCode": 2,
-      "reason": "All application checks passed; requested Codex model/discovery and Midnight MCP gates blocked"
-    },
     {
       "command": "npm run doctor:codex",
       "exitCode": 2,
-      "reason": "Effective project configuration matches after path translation; requested model/effort pairs not advertised and agent discovery unverified"
+      "reason": "Requested models/efforts and effective config observed; custom-agent/schema session evidence not established",
+      "applicationDependency": false
     },
     {
       "command": "npm run doctor:mcp",
       "exitCode": 2,
-      "reason": "Initialized Midnight documentation tool listing unavailable"
+      "reason": "Remote documentation service requires authentication (HTTP 401)",
+      "applicationDependency": false
     },
     {
       "command": "npm run services:check",
       "exitCode": 2,
-      "reason": "Deliberately TCP-only; reachability passed, real proving and browser access passed separately"
+      "reason": "TCP-only command deliberately cannot establish proving readiness; actual proof and browser CORS checks passed separately"
     },
     {
-      "command": "npm run verify:deployment",
+      "command": "verify:deployment / test:preprod / verify:product",
       "exitCode": 2,
-      "reason": "No owner-approved escrow deployment record"
+      "reason": "Owner-approved escrow, real payment identifiers and reviewed acceptance matrix absent"
     },
     {
-      "command": "npm run test:preprod",
-      "exitCode": 2,
-      "reason": "No real funding/claim/spend manifest"
-    },
-    {
-      "command": "npm run verify:product",
-      "exitCode": 2,
-      "reason": "No owner-observed real E2E acceptance matrix"
+      "command": "GitHub remote CI inspection",
+      "reason": "gh auth status reports no authenticated GitHub host; no push authorized"
     }
   ],
   "limitations": [
     "No deployment, issuance, funding, claim or spend submitted",
-    "No actual 1AM extension authorization performed in these tests",
-    "QR encoding/size tested; optical scan remains manual",
-    "Local proving is not sealed-transaction acceptance or receiver spendability",
-    "Funded recovery, competing claims, disclosures and real E2E remain pending",
-    "Remote CI, participation and external qualification remain pending"
+    "Automated browser tests use synthetic providers, not real 1AM authorization",
+    "Controller integration uses production saved-record logic and encryption with synthetic protocol boundaries",
+    "Optical QR scan, funded recovery, real retry/replay, independent-wallet spendability and public-disclosure acceptance remain owner-observed",
+    "Local real proofs do not establish sealed-transaction acceptance",
+    "Remote CI, consented participation and external qualification remain pending"
   ],
   "gitPushPerformed": false,
   "liveAcceptanceObserved": false,
   "subjects": [
     {
-      "path": ".env.example",
-      "sha256": "2df5b5676ccd7ce16141bc1807ef80cb6928e51a72e1e18a09c575582720ab3b"
+      "path": ".codex/agents/architect.toml",
+      "sha256": "2d082426bad687b7546de875b0f8fa093c187de58c0c288d9528202996d5cb95"
+    },
+    {
+      "path": ".codex/agents/engineer.toml",
+      "sha256": "f09c67706b79b906d0b2d5e59a719cb0d112c644519c94da651afd8d9abdb5af"
+    },
+    {
+      "path": ".codex/agents/verifier.toml",
+      "sha256": "59fb88338830016ab1ee7feec9cb05ce6da10d42cdfa579915db50f15e2364c4"
+    },
+    {
+      "path": ".codex/config.toml",
+      "sha256": "01351400ee4d5d8fc74056280eec0f22ca9a949d1a6c63ad0e3bc568011f0bd1"
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "2c0d359359884d3f838139b34d5eabebae843b3f06e49141f377bd12778b2e3c"
-    },
-    {
-      "path": ".nvmrc",
-      "sha256": "177d20030d4dcc37eae9ef92865ec54dadce60e8f19e9a34a5d4f37502195a36"
+      "sha256": "ef4a0af07317a8a7b7aec5927fd36425513b2d2d9661ade5d4e475b148d8bc3c"
     },
     {
       "path": "compose.yaml",
       "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+    },
+    {
+      "path": "config/preprod.json",
+      "sha256": "324974cfa7825c484b9f2636a0519118bf67ca16c17cb1b87cc03d9d5c6c3241"
+    },
+    {
+      "path": "contracts/README.md",
+      "sha256": "ded81995655846f0f23bedb3f0b636a4aec8f46da7eb7d1ef3852f85ed5127fb"
     },
     {
       "path": "contracts/issuance/test-asset.compact",
@@ -545,11 +576,11 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "6aee0fd9a25a6b293c9581eeceaca520f0e354ddb83a1ca4fea39630603da469"
+      "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
     },
     {
       "path": "package.json",
-      "sha256": "cacd6d3681f78bb55d736b5e15122ca4c111c0bb0befe666bbf42c7fc1816f14"
+      "sha256": "271ae4c2ee6651b7833d259144065c092b5365c1be77547b9f5be01746f2508b"
     },
     {
       "path": "playwright.config.ts",
@@ -577,7 +608,7 @@
     },
     {
       "path": "scripts/deployment-dependencies.mjs",
-      "sha256": "48ff45adaaaadb98bedcaf602e256c2189ec230f8af21031f569aab5e5c3d6a7"
+      "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
     },
     {
       "path": "scripts/docker.mjs",
@@ -601,11 +632,11 @@
     },
     {
       "path": "scripts/local-config.mjs",
-      "sha256": "c63b4d8ec729b51c4a8a0774c4d4b0fef55915496111c1836a2cb849c5b8b347"
+      "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
     },
     {
       "path": "scripts/mcp-doctor.mjs",
-      "sha256": "2b7fef5b780db315774db40995f3011b3837c3a5dc0618502bedc708835d54e5"
+      "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
     },
     {
       "path": "scripts/offline.mjs",
@@ -625,7 +656,7 @@
     },
     {
       "path": "scripts/product/preprod-observer.mjs",
-      "sha256": "8254e62a306c9889f3ad3259b3635d1a7a13133085c20e04baca2ec3062fd377"
+      "sha256": "48e25d5a51f948735768de03adb1fe6d442644f6b7c4b85386e4884772876d58"
     },
     {
       "path": "scripts/product/test-contracts.mjs",
@@ -633,7 +664,7 @@
     },
     {
       "path": "scripts/product/test-integration.mjs",
-      "sha256": "9c31ebc6f98ae687bf6b619e6825f09a5befc4e688c9e2781a202fda20ed54f6"
+      "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
     },
     {
       "path": "scripts/product/test-preprod.mjs",
@@ -641,11 +672,11 @@
     },
     {
       "path": "scripts/product/test-proving.mjs",
-      "sha256": "11e4a83230c1d10081dd83f6946e0e706640bf577ca2f4fc6a45c166046944d9"
+      "sha256": "8715d22dee901fc88dfa51bf63b118cab6be9066c8f6955fea18ee32697e7782"
     },
     {
       "path": "scripts/product/verify-acceptance.mjs",
-      "sha256": "9cfabdd61ce17719620e098346eeb20742efbb8130305ac9a5dc033cfb20cfd4"
+      "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
     },
     {
       "path": "scripts/product/verify-artifacts.mjs",
@@ -653,7 +684,7 @@
     },
     {
       "path": "scripts/product/verify-deployment.mjs",
-      "sha256": "36b3341c084834215edcb37d36e9be389aa5f6c874f82fa78e3a4317f98a3e3d"
+      "sha256": "565cb140cc353d6eee9036447ce3a731c05cc78e858c2d41f9949575e5f6960c"
     },
     {
       "path": "scripts/product/verify-participant-activity.mjs",
@@ -669,15 +700,15 @@
     },
     {
       "path": "scripts/verify-boilerplate.mjs",
-      "sha256": "e01ef162dd88cdb8eadcf0ec41aee1db5b480ecf73b1576b8e04a3a95698c0b0"
+      "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
     },
     {
       "path": "scripts/verify-browser-connectivity.mjs",
-      "sha256": "bb8acf538af7d7e4c7fe33ce0528c0cf01d6c912229eb5e87e6a9bf806f8d7ea"
+      "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
     },
     {
       "path": "scripts/verify-issuer.mjs",
-      "sha256": "4416b7ce96706c3ac16b5dc4204cc541b421a34f2e86ce1715d2115b6c797692"
+      "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
     },
     {
       "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
@@ -690,6 +721,10 @@
     {
       "path": "src/app/claim/page.tsx",
       "sha256": "cce9fa6d5661748ca858804530d4752d867e18c11c1e73e0beb195035f182bb8"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "6ccbe7df953ab402f571db9ea130db7fdf3b9ccfa84e97839fea8fa73398e450"
     },
     {
       "path": "src/app/layout.tsx",
@@ -725,7 +760,7 @@
     },
     {
       "path": "src/components/payment-workspace.tsx",
-      "sha256": "c04c56c87ebf38666431a8f4e3fa2ecfbc83a1dd21b271ef0c293e9e9f5c83e0"
+      "sha256": "970b4228ede0a725496a54259e0316dc6c844fed97a33d6574748d810b4a35c7"
     },
     {
       "path": "src/components/ui/button.tsx",
@@ -757,11 +792,11 @@
     },
     {
       "path": "src/lib/midnight/issuer-deployment.ts",
-      "sha256": "d795c4b8f0ad3637b5444e91b7d6aa6175a4620ef58c7af01d499a1fe9f869eb"
+      "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
     },
     {
       "path": "src/lib/midnight/issuer-issuance.ts",
-      "sha256": "cca20082416357916e82e0e649de9571ad75d24974bf0674291f0b61d55030d5"
+      "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
     },
     {
       "path": "src/lib/midnight/oneam.ts",
@@ -785,15 +820,15 @@
     },
     {
       "path": "src/lib/midnight/payment-network.ts",
-      "sha256": "ddc54a10338379293cc4b5cdbc3d4fa8960a434b63f690d3613f7e71782f3343"
+      "sha256": "731f9d187119edac3f96cfa8ac29256e4051642f3dd9e93b942a5277f623eccc"
     },
     {
       "path": "src/lib/midnight/payment-session.ts",
-      "sha256": "8336880189610aa8e98ebefd4d4b6c75cd3ad526774d25a610097c732ceda2dc"
+      "sha256": "6867b45410dd5363a3fb0ac2e5e7efb58b467ec7802e8658ea9f0faaf4aabba9"
     },
     {
       "path": "src/lib/midnight/payments.ts",
-      "sha256": "572f4ed1e13a22f162baafe5844795b9036a84bf22d9cd7bf8c82b685358c8cd"
+      "sha256": "0ec8f6e5ab6f5b0ea81693b3fccbb5f435b8a2cf930c0174dd406fe1d1b713d8"
     },
     {
       "path": "src/lib/midnight/port.ts",
@@ -829,7 +864,7 @@
     },
     {
       "path": "src/lib/server/security.ts",
-      "sha256": "f9e8798b90c26be1e4d91287d8920b032b8e104a7e52875fe6f7232ee661011f"
+      "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
     },
     {
       "path": "src/lib/utils.ts",
@@ -845,7 +880,7 @@
     },
     {
       "path": "tests/boilerplate/deployment-dependencies.test.mjs",
-      "sha256": "f13c085dec558d7a4aaf5348bf132e664e553194fba74182b286170dca2ba0a6"
+      "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
     },
     {
       "path": "tests/boilerplate/local-config.test.mjs",
@@ -854,6 +889,10 @@
     {
       "path": "tests/boilerplate/participants.test.mjs",
       "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+    },
+    {
+      "path": "tests/boilerplate/public-config.test.mjs",
+      "sha256": "99dbe366a101276c6657888a0fd4fa4dc540610d9df006f64c2b3e34c8c66c24"
     },
     {
       "path": "tests/boilerplate/requirements.test.mjs",
@@ -878,6 +917,10 @@
     {
       "path": "tests/contracts/runtime.mjs",
       "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+    },
+    {
+      "path": "tests/integration/payment-records.test.ts",
+      "sha256": "7710ffb7ca348b126360b7c830fda9f2a15964ec625f1ce9ac001677121e0724"
     },
     {
       "path": "tests/integration/qualification.test.ts",
@@ -914,6 +957,10 @@
     {
       "path": "tests/unit/private-state.test.ts",
       "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+    },
+    {
+      "path": "tests/unit/recipient.test.ts",
+      "sha256": "f9c1aaa765b825cc542f2037af1cc7c21a25d3bc394f1749f6f4a8bcb445e0c9"
     },
     {
       "path": "tests/unit/transaction.test.ts",

@@ -81,3 +81,11 @@ or tool output. Deployment, asset issuance and every live transaction require
 explicit owner approval before execution. Connection/signing prompts are manual
 owner actions. Commit every meaningful codebase change separately with a clear,
 concise message; local commits are authorized, pushes and history rewrites are not.
+
+## Remediation checkpoint (2026-09-27)
+
+The requested engineering fixes and full local application verification are complete
+on the revision bound by docs/evidence/local-verification.json. Resume using
+docs/STATUS.md; do not redo issuance/deployment or treat local fixtures as live E2E.
+Revalidate evidence whenever its bound source/configuration changes. Public runtime
+settings live in config/preprod.json; owner secrets stay in encrypted browser state.

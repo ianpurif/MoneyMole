@@ -168,7 +168,7 @@ Keep the original encrypted records and deployment identity for repair.
 
 A saved `failed` label alone never permits resubmission. In Brave / Wallet B,
 choose **Reconcile**. A claim retry appears only after a fresh, canonical complete
-failure and an unspent original note. Choose **Retry failed claim**, then **Prepare**
+failure and an unspent original note. Choose **Retry failed claim**, then **Prepare claim**
 and explicitly approve the new claim in 1AM. A failed controlled spend exposes
 **Retry failed spend** only after the original claim and balance are rechecked;
 enter the destination and explicitly approve the new spend. Resetting itself does

@@ -1,6 +1,6 @@
 # M5 — Harden, verify and report technical readiness
 
-State: all local application checks passed and sanitized evidence is current. Real wallet acceptance, remote CI, consented participation and external qualification remain pending. The preparation wrapper returns blocked only for Codex model/discovery and MCP gates.
+State: all local application checks passed and sanitized evidence is current. Real wallet acceptance, remote CI, consented participation and external qualification remain pending. The preparation wrapper returns blocked for custom-agent/schema session attestation and documentation MCP authentication; requested model/effort availability is verified.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 

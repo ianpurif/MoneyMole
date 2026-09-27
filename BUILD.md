@@ -192,3 +192,13 @@ or tool output. Deployment, asset issuance and every live transaction require
 explicit owner approval before execution. Connection/signing prompts are manual
 owner actions. Commit every meaningful codebase change separately with a clear,
 concise message; local commits are authorized, pushes and history rewrites are not.
+
+## Verified remediation checkpoint — 2026-09-27
+
+The requested failed-claim/spend retry, saved-record integration, dependency patches
+and shared public configuration are implemented and committed. Compilation,
+artifacts, lint, types, unit/contract/integration/browser tests, real local proving,
+production build and read-only issuer checks passed again. Use the current STATUS
+and hashed local-verification evidence to resume at owner wallet acceptance.
+Auxiliary agent-session and remote documentation authentication gates remain
+explicitly blocked; no live product evidence is inferred from local checks.

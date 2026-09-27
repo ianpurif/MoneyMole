@@ -128,7 +128,7 @@ is introduced. Validate generated contracts before serving public compiler artif
 
 Security maintenance (2026-09-27): PostCSS 8.5.28, Vite 7.3.6 and Vitest 4.1.11
 replace audited vulnerable development versions. Vite accepts patched esbuild
-0.28.x. npm run audit:deps checks the complete graph in local readiness and CI.
+0.28.2. npm run audit:deps checks the complete graph in local readiness and CI.
 Issuer verification compares the immutable deployed runtime closure, so isolated
 build/test patches do not require issuer redeployment or rewriting its record.
 
@@ -141,3 +141,8 @@ The configured Midnight documentation MCP currently returns HTTP 401 on initiali
 confirmed through the installed client and a credential-free request. This optional
 research service is not used by MoneyMole runtime or the proof service. Keep these
 auxiliary preparation results blocked rather than claiming application tests prove them.
+
+The preserved toolchain.lock.json belongs to the original deployed issuer
+fingerprint. Its historical Codex version is not the current launcher selection.
+Use current package.json/package-lock.json and local-verification.json for the
+security-patched build/test graph and installed client observations.

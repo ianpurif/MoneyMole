@@ -47,7 +47,7 @@ handle and shut it down deliberately when done.
 | `verify:issuer` | `node scripts/verify-issuer.mjs` | Read-only real Preprod issuer deployment/state/verifier checks against the preserved record; does not verify payment escrow or acceptance. |
 | `verify:connectivity` | `node scripts/verify-browser-connectivity.mjs` | Fresh Chromium checks the running app at 127.0.0.1:3000, expected malformed POST rejection over local prover CORS, and real read-only Preprod indexer/RPC fetches. No wallet or transaction. |
 | `test:contracts` | `node scripts/product.mjs contracts` | 13 synthetic cases execute actual generated contracts; no ledger settlement. |
-| `test:integration` | `node scripts/product.mjs integration` | Encrypted journal/storage integration with fake IndexedDB and synthetic submission callbacks; no live payment acceptance. |
+| `test:integration` | `node scripts/product.mjs integration` | Production payment controller, encrypted saved-record reload/import and confirmed-failure retries with fake IndexedDB and synthetic protocol boundaries; no live payment acceptance. |
 | `test:proving` | `node scripts/product.mjs proving` | Real loopback constraint checks and proof generation for synthetic fund/claim/issue fixtures; no sealed transaction acceptance. |
 | `test:preprod` | `node scripts/product.mjs preprod` | Read-only real chain checks; requires --manifest with observed funding/claim/spend IDs. See OWNER-TESTING.md. |
 | `verify:product` | `node scripts/product.mjs acceptance` | Revalidates chain + hashed owner-reviewed matrix with --acceptance; missing observations block. |

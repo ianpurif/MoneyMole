@@ -55,7 +55,8 @@ assuming the published website describes every existing client release.
 | S27 | https://github.com/microsoft/TypeScript/releases/tag/v5.9.3 | TypeScript 5.9.3 | Pinned project compiler target. Environment-only checks may use a separately reported global compiler. |
 | S28 | https://github.com/microsoft/playwright/releases/tag/v1.63.0 | Playwright 1.63.0 | Selected browser runner; real extension operation still requires separate evidence. |
 
-Vitest 4.1.7 is selected from the tagged Midnight.js development dependency rather
+Historical initial selection (superseded by installed results and security patches
+below): Vitest 4.1.7 was selected from the tagged Midnight.js development dependency rather
 than choosing the latest major independently. Remaining UI/type/lint/postcss pins
 are **exact candidate versions**, not registry-verified selections. A genuine npm
 lockfile and installed peer checks are outstanding. Correct a failed candidate
@@ -101,3 +102,8 @@ The adapter recognizes exact 1AM brand names (1AM, 1AM.xyz, 1AM Wallet) or the e
   endpoint remains https://midnight.mcp.kapa.ai. A fresh initialize request returned
   HTTP 401; the installed client reported authentication required. No alternative
   endpoint, credentials or tool invocation was invented.
+
+Security patch metadata was checked with npm registry exact-version metadata and
+the installed manifests: PostCSS 8.5.28, Vite 7.3.6, Vitest 4.1.11 and esbuild
+0.28.2. The genuine lockfile and current npm audit supersede the initial candidate
+graph notes above. Vite permits the installed esbuild 0.28.x range.

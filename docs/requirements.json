@@ -30,7 +30,7 @@
       "level": "Preparation",
       "title": "Real pinned dependency graph",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Generate registry-resolved package-lock.json, run npm ci and record exact installed versions.",
       "commands": [
@@ -39,23 +39,19 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "pinned dependency installation",
-          "command": "npm ci --no-audit --no-fund; manifest/lock/installed-package identity check",
+          "scope": "locked dependencies installed, exact direct versions and vulnerability audit",
+          "command": "npm ci; npm run audit:deps",
           "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z",
+          "sha256": "55448948c0752b65718dcf5ece155ae8643b1bb541c470ef7c28b62f961cce12",
+          "observedAt": "2026-09-27T04:17:32.128Z",
           "subjects": [
             {
-              "path": "package.json",
-              "sha256": "cacd6d3681f78bb55d736b5e15122ca4c111c0bb0befe666bbf42c7fc1816f14"
-            },
-            {
               "path": "package-lock.json",
-              "sha256": "6aee0fd9a25a6b293c9581eeceaca520f0e354ddb83a1ca4fea39630603da469"
+              "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
             },
             {
-              "path": ".nvmrc",
-              "sha256": "177d20030d4dcc37eae9ef92865ec54dadce60e8f19e9a34a5d4f37502195a36"
+              "path": "package.json",
+              "sha256": "271ae4c2ee6651b7833d259144065c092b5365c1be77547b9f5be01746f2508b"
             }
           ]
         }
@@ -66,7 +62,7 @@
       "level": "Preparation",
       "title": "Next.js application foundation",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "PREP-LOCK"
       ],
@@ -77,27 +73,27 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "application foundation and isolated browser security, not live payment acceptance",
-          "command": "npm run lint; npm run typecheck; npm run build; npm run test:browser",
+          "scope": "Next app and synthetic browser security only",
+          "command": "npm run lint; npm run typecheck; npm run test:unit; npm run build; npm run test:browser",
           "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z",
+          "sha256": "55448948c0752b65718dcf5ece155ae8643b1bb541c470ef7c28b62f961cce12",
+          "observedAt": "2026-09-27T04:17:32.128Z",
           "subjects": [
             {
-              "path": ".env.example",
-              "sha256": "2df5b5676ccd7ce16141bc1807ef80cb6928e51a72e1e18a09c575582720ab3b"
-            },
-            {
               "path": ".github/workflows/ci.yml",
-              "sha256": "2c0d359359884d3f838139b34d5eabebae843b3f06e49141f377bd12778b2e3c"
-            },
-            {
-              "path": ".nvmrc",
-              "sha256": "177d20030d4dcc37eae9ef92865ec54dadce60e8f19e9a34a5d4f37502195a36"
+              "sha256": "ef4a0af07317a8a7b7aec5927fd36425513b2d2d9661ade5d4e475b148d8bc3c"
             },
             {
               "path": "compose.yaml",
               "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "324974cfa7825c484b9f2636a0519118bf67ca16c17cb1b87cc03d9d5c6c3241"
+            },
+            {
+              "path": "contracts/README.md",
+              "sha256": "ded81995655846f0f23bedb3f0b636a4aec8f46da7eb7d1ef3852f85ed5127fb"
             },
             {
               "path": "contracts/issuance/test-asset.compact",
@@ -125,11 +121,11 @@
             },
             {
               "path": "package-lock.json",
-              "sha256": "6aee0fd9a25a6b293c9581eeceaca520f0e354ddb83a1ca4fea39630603da469"
+              "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
             },
             {
               "path": "package.json",
-              "sha256": "cacd6d3681f78bb55d736b5e15122ca4c111c0bb0befe666bbf42c7fc1816f14"
+              "sha256": "271ae4c2ee6651b7833d259144065c092b5365c1be77547b9f5be01746f2508b"
             },
             {
               "path": "playwright.config.ts",
@@ -157,7 +153,7 @@
             },
             {
               "path": "scripts/deployment-dependencies.mjs",
-              "sha256": "48ff45adaaaadb98bedcaf602e256c2189ec230f8af21031f569aab5e5c3d6a7"
+              "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
             },
             {
               "path": "scripts/docker.mjs",
@@ -181,11 +177,11 @@
             },
             {
               "path": "scripts/local-config.mjs",
-              "sha256": "c63b4d8ec729b51c4a8a0774c4d4b0fef55915496111c1836a2cb849c5b8b347"
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
             },
             {
               "path": "scripts/mcp-doctor.mjs",
-              "sha256": "2b7fef5b780db315774db40995f3011b3837c3a5dc0618502bedc708835d54e5"
+              "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
             },
             {
               "path": "scripts/offline.mjs",
@@ -205,7 +201,7 @@
             },
             {
               "path": "scripts/product/preprod-observer.mjs",
-              "sha256": "8254e62a306c9889f3ad3259b3635d1a7a13133085c20e04baca2ec3062fd377"
+              "sha256": "48e25d5a51f948735768de03adb1fe6d442644f6b7c4b85386e4884772876d58"
             },
             {
               "path": "scripts/product/test-contracts.mjs",
@@ -213,7 +209,7 @@
             },
             {
               "path": "scripts/product/test-integration.mjs",
-              "sha256": "9c31ebc6f98ae687bf6b619e6825f09a5befc4e688c9e2781a202fda20ed54f6"
+              "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
             },
             {
               "path": "scripts/product/test-preprod.mjs",
@@ -221,11 +217,11 @@
             },
             {
               "path": "scripts/product/test-proving.mjs",
-              "sha256": "11e4a83230c1d10081dd83f6946e0e706640bf577ca2f4fc6a45c166046944d9"
+              "sha256": "8715d22dee901fc88dfa51bf63b118cab6be9066c8f6955fea18ee32697e7782"
             },
             {
               "path": "scripts/product/verify-acceptance.mjs",
-              "sha256": "9cfabdd61ce17719620e098346eeb20742efbb8130305ac9a5dc033cfb20cfd4"
+              "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
             },
             {
               "path": "scripts/product/verify-artifacts.mjs",
@@ -233,7 +229,7 @@
             },
             {
               "path": "scripts/product/verify-deployment.mjs",
-              "sha256": "36b3341c084834215edcb37d36e9be389aa5f6c874f82fa78e3a4317f98a3e3d"
+              "sha256": "565cb140cc353d6eee9036447ce3a731c05cc78e858c2d41f9949575e5f6960c"
             },
             {
               "path": "scripts/product/verify-participant-activity.mjs",
@@ -249,15 +245,15 @@
             },
             {
               "path": "scripts/verify-boilerplate.mjs",
-              "sha256": "e01ef162dd88cdb8eadcf0ec41aee1db5b480ecf73b1576b8e04a3a95698c0b0"
+              "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
             },
             {
               "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "bb8acf538af7d7e4c7fe33ce0528c0cf01d6c912229eb5e87e6a9bf806f8d7ea"
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
             },
             {
               "path": "scripts/verify-issuer.mjs",
-              "sha256": "4416b7ce96706c3ac16b5dc4204cc541b421a34f2e86ce1715d2115b6c797692"
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
             },
             {
               "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
@@ -270,6 +266,10 @@
             {
               "path": "src/app/claim/page.tsx",
               "sha256": "cce9fa6d5661748ca858804530d4752d867e18c11c1e73e0beb195035f182bb8"
+            },
+            {
+              "path": "src/app/globals.css",
+              "sha256": "6ccbe7df953ab402f571db9ea130db7fdf3b9ccfa84e97839fea8fa73398e450"
             },
             {
               "path": "src/app/layout.tsx",
@@ -305,7 +305,7 @@
             },
             {
               "path": "src/components/payment-workspace.tsx",
-              "sha256": "c04c56c87ebf38666431a8f4e3fa2ecfbc83a1dd21b271ef0c293e9e9f5c83e0"
+              "sha256": "970b4228ede0a725496a54259e0316dc6c844fed97a33d6574748d810b4a35c7"
             },
             {
               "path": "src/components/ui/button.tsx",
@@ -337,11 +337,11 @@
             },
             {
               "path": "src/lib/midnight/issuer-deployment.ts",
-              "sha256": "d795c4b8f0ad3637b5444e91b7d6aa6175a4620ef58c7af01d499a1fe9f869eb"
+              "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
             },
             {
               "path": "src/lib/midnight/issuer-issuance.ts",
-              "sha256": "cca20082416357916e82e0e649de9571ad75d24974bf0674291f0b61d55030d5"
+              "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
             },
             {
               "path": "src/lib/midnight/oneam.ts",
@@ -365,15 +365,15 @@
             },
             {
               "path": "src/lib/midnight/payment-network.ts",
-              "sha256": "ddc54a10338379293cc4b5cdbc3d4fa8960a434b63f690d3613f7e71782f3343"
+              "sha256": "731f9d187119edac3f96cfa8ac29256e4051642f3dd9e93b942a5277f623eccc"
             },
             {
               "path": "src/lib/midnight/payment-session.ts",
-              "sha256": "8336880189610aa8e98ebefd4d4b6c75cd3ad526774d25a610097c732ceda2dc"
+              "sha256": "6867b45410dd5363a3fb0ac2e5e7efb58b467ec7802e8658ea9f0faaf4aabba9"
             },
             {
               "path": "src/lib/midnight/payments.ts",
-              "sha256": "572f4ed1e13a22f162baafe5844795b9036a84bf22d9cd7bf8c82b685358c8cd"
+              "sha256": "0ec8f6e5ab6f5b0ea81693b3fccbb5f435b8a2cf930c0174dd406fe1d1b713d8"
             },
             {
               "path": "src/lib/midnight/port.ts",
@@ -409,7 +409,7 @@
             },
             {
               "path": "src/lib/server/security.ts",
-              "sha256": "f9e8798b90c26be1e4d91287d8920b032b8e104a7e52875fe6f7232ee661011f"
+              "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
             },
             {
               "path": "src/lib/utils.ts",
@@ -425,7 +425,7 @@
             },
             {
               "path": "tests/boilerplate/deployment-dependencies.test.mjs",
-              "sha256": "f13c085dec558d7a4aaf5348bf132e664e553194fba74182b286170dca2ba0a6"
+              "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
             },
             {
               "path": "tests/boilerplate/local-config.test.mjs",
@@ -434,6 +434,10 @@
             {
               "path": "tests/boilerplate/participants.test.mjs",
               "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "99dbe366a101276c6657888a0fd4fa4dc540610d9df006f64c2b3e34c8c66c24"
             },
             {
               "path": "tests/boilerplate/requirements.test.mjs",
@@ -458,6 +462,10 @@
             {
               "path": "tests/contracts/runtime.mjs",
               "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7710ffb7ca348b126360b7c830fda9f2a15964ec625f1ce9ac001677121e0724"
             },
             {
               "path": "tests/integration/qualification.test.ts",
@@ -494,6 +502,10 @@
             {
               "path": "tests/unit/private-state.test.ts",
               "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+            },
+            {
+              "path": "tests/unit/recipient.test.ts",
+              "sha256": "f9c1aaa765b825cc542f2037af1cc7c21a25d3bc394f1749f6f4a8bcb445e0c9"
             },
             {
               "path": "tests/unit/transaction.test.ts",
@@ -542,7 +554,7 @@
       "level": "Preparation",
       "title": "Bounded fail-closed tooling",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred.",
       "commands": [
@@ -551,12 +563,24 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "source and dependency-free utilities only",
+          "scope": "source, evidence integrity and dependency-free utilities",
           "command": "npm run check:offline",
           "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z",
+          "sha256": "55448948c0752b65718dcf5ece155ae8643b1bb541c470ef7c28b62f961cce12",
+          "observedAt": "2026-09-27T04:17:32.128Z",
           "subjects": [
+            {
+              "path": "config/preprod.json",
+              "sha256": "324974cfa7825c484b9f2636a0519118bf67ca16c17cb1b87cc03d9d5c6c3241"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
+            },
+            {
+              "path": "package.json",
+              "sha256": "271ae4c2ee6651b7833d259144065c092b5365c1be77547b9f5be01746f2508b"
+            },
             {
               "path": "scripts/bootstrap.mjs",
               "sha256": "741e50ede373bc38b37ab4fb4006b8f6c488cff9a87ab3185f794fa902e507e1"
@@ -575,7 +599,7 @@
             },
             {
               "path": "scripts/deployment-dependencies.mjs",
-              "sha256": "48ff45adaaaadb98bedcaf602e256c2189ec230f8af21031f569aab5e5c3d6a7"
+              "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
             },
             {
               "path": "scripts/docker.mjs",
@@ -599,11 +623,11 @@
             },
             {
               "path": "scripts/local-config.mjs",
-              "sha256": "c63b4d8ec729b51c4a8a0774c4d4b0fef55915496111c1836a2cb849c5b8b347"
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
             },
             {
               "path": "scripts/mcp-doctor.mjs",
-              "sha256": "2b7fef5b780db315774db40995f3011b3837c3a5dc0618502bedc708835d54e5"
+              "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
             },
             {
               "path": "scripts/offline.mjs",
@@ -623,7 +647,7 @@
             },
             {
               "path": "scripts/product/preprod-observer.mjs",
-              "sha256": "8254e62a306c9889f3ad3259b3635d1a7a13133085c20e04baca2ec3062fd377"
+              "sha256": "48e25d5a51f948735768de03adb1fe6d442644f6b7c4b85386e4884772876d58"
             },
             {
               "path": "scripts/product/test-contracts.mjs",
@@ -631,7 +655,7 @@
             },
             {
               "path": "scripts/product/test-integration.mjs",
-              "sha256": "9c31ebc6f98ae687bf6b619e6825f09a5befc4e688c9e2781a202fda20ed54f6"
+              "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
             },
             {
               "path": "scripts/product/test-preprod.mjs",
@@ -639,11 +663,11 @@
             },
             {
               "path": "scripts/product/test-proving.mjs",
-              "sha256": "11e4a83230c1d10081dd83f6946e0e706640bf577ca2f4fc6a45c166046944d9"
+              "sha256": "8715d22dee901fc88dfa51bf63b118cab6be9066c8f6955fea18ee32697e7782"
             },
             {
               "path": "scripts/product/verify-acceptance.mjs",
-              "sha256": "9cfabdd61ce17719620e098346eeb20742efbb8130305ac9a5dc033cfb20cfd4"
+              "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
             },
             {
               "path": "scripts/product/verify-artifacts.mjs",
@@ -651,7 +675,7 @@
             },
             {
               "path": "scripts/product/verify-deployment.mjs",
-              "sha256": "36b3341c084834215edcb37d36e9be389aa5f6c874f82fa78e3a4317f98a3e3d"
+              "sha256": "565cb140cc353d6eee9036447ce3a731c05cc78e858c2d41f9949575e5f6960c"
             },
             {
               "path": "scripts/product/verify-participant-activity.mjs",
@@ -667,27 +691,15 @@
             },
             {
               "path": "scripts/verify-boilerplate.mjs",
-              "sha256": "e01ef162dd88cdb8eadcf0ec41aee1db5b480ecf73b1576b8e04a3a95698c0b0"
+              "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
             },
             {
               "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "bb8acf538af7d7e4c7fe33ce0528c0cf01d6c912229eb5e87e6a9bf806f8d7ea"
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
             },
             {
               "path": "scripts/verify-issuer.mjs",
-              "sha256": "4416b7ce96706c3ac16b5dc4204cc541b421a34f2e86ce1715d2115b6c797692"
-            },
-            {
-              "path": "src/domain/amount.ts",
-              "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
-            },
-            {
-              "path": "src/domain/payment.ts",
-              "sha256": "11247ff7e8913f813238e568650065e80d0d07e739158f708b7c1e48244c8f23"
-            },
-            {
-              "path": "src/domain/transaction.ts",
-              "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
             },
             {
               "path": "tests/boilerplate/amount.test.mjs",
@@ -695,7 +707,7 @@
             },
             {
               "path": "tests/boilerplate/deployment-dependencies.test.mjs",
-              "sha256": "f13c085dec558d7a4aaf5348bf132e664e553194fba74182b286170dca2ba0a6"
+              "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
             },
             {
               "path": "tests/boilerplate/local-config.test.mjs",
@@ -704,6 +716,10 @@
             {
               "path": "tests/boilerplate/participants.test.mjs",
               "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "99dbe366a101276c6657888a0fd4fa4dc540610d9df006f64c2b3e34c8c66c24"
             },
             {
               "path": "tests/boilerplate/requirements.test.mjs",
@@ -984,15 +1000,23 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "host_node_toolchain",
-          "command": "node --version; npm --version",
-          "path": "docs/evidence/node-runtime.json",
-          "sha256": "1fc99f68914d6c633079e65595f178dae0e9fea2cd378fb163efc58752c17d6f",
-          "observedAt": "2026-09-26T08:56:32.521Z",
+          "scope": "actual Node 22.16.0 and npm 10.9.2 local runtime",
+          "command": "node --version; npm --version; npm run doctor",
+          "path": "docs/evidence/local-verification.json",
+          "sha256": "55448948c0752b65718dcf5ece155ae8643b1bb541c470ef7c28b62f961cce12",
+          "observedAt": "2026-09-27T04:17:32.128Z",
           "subjects": [
             {
-              "path": ".nvmrc",
-              "sha256": "177d20030d4dcc37eae9ef92865ec54dadce60e8f19e9a34a5d4f37502195a36"
+              "path": "package.json",
+              "sha256": "271ae4c2ee6651b7833d259144065c092b5365c1be77547b9f5be01746f2508b"
+            },
+            {
+              "path": "scripts/doctor.mjs",
+              "sha256": "3186b9d4a684bd288a848ccf87e5803418248bd3ed049d038b3d772693b60f90"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
             }
           ]
         }
@@ -1003,26 +1027,30 @@
       "level": "Level 1",
       "title": "Docker toolchain",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Docker engine, Compose and pinned local proof image run; browser reachability is checked.",
       "commands": [],
       "evidence": [
         {
           "result": "passed",
-          "scope": "pinned loopback service, actual synthetic proofs and browser CORS",
-          "command": "npm run services:up; npm run services:status; npm run test:proving; npm run verify:connectivity",
+          "scope": "pinned local service, real synthetic circuit proofs and browser CORS",
+          "command": "npm run services:status; npm run test:proving; npm run verify:connectivity",
           "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z",
+          "sha256": "55448948c0752b65718dcf5ece155ae8643b1bb541c470ef7c28b62f961cce12",
+          "observedAt": "2026-09-27T04:17:32.128Z",
           "subjects": [
             {
               "path": "compose.yaml",
               "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
             },
             {
-              "path": "scripts/services.mjs",
-              "sha256": "db89d0fad5577562d5e9840f4a916bc8d168bebfad255e03e5dda6f81c2fb1d9"
+              "path": "config/preprod.json",
+              "sha256": "324974cfa7825c484b9f2636a0519118bf67ca16c17cb1b87cc03d9d5c6c3241"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
             },
             {
               "path": "scripts/docker.mjs",
@@ -1030,23 +1058,23 @@
             },
             {
               "path": "scripts/local-config.mjs",
-              "sha256": "c63b4d8ec729b51c4a8a0774c4d4b0fef55915496111c1836a2cb849c5b8b347"
-            },
-            {
-              "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "bb8acf538af7d7e4c7fe33ce0528c0cf01d6c912229eb5e87e6a9bf806f8d7ea"
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
             },
             {
               "path": "scripts/product/test-proving.mjs",
-              "sha256": "11e4a83230c1d10081dd83f6946e0e706640bf577ca2f4fc6a45c166046944d9"
+              "sha256": "8715d22dee901fc88dfa51bf63b118cab6be9066c8f6955fea18ee32697e7782"
             },
             {
-              "path": "src/lib/server/security.ts",
-              "sha256": "f9e8798b90c26be1e4d91287d8920b032b8e104a7e52875fe6f7232ee661011f"
+              "path": "scripts/services.mjs",
+              "sha256": "db89d0fad5577562d5e9840f4a916bc8d168bebfad255e03e5dda6f81c2fb1d9"
             },
             {
-              "path": "package-lock.json",
-              "sha256": "6aee0fd9a25a6b293c9581eeceaca520f0e354ddb83a1ca4fea39630603da469"
+              "path": "tests/contracts/issuer-transaction.mjs",
+              "sha256": "826814dcebf1594ce828b1963b5e6dbc97449842b50a25e0e40e2ce7df308bd1"
+            },
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
             },
             {
               "path": "toolchain.lock.json",

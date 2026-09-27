@@ -24,3 +24,13 @@ The proof image is pinned by its observed registry digest. Compose uses its orig
 entrypoint and PORT=6300 command, with only a loopback port binding. Windows Docker
 Compose is available; Ubuntu's Docker CLI lacks the Compose plugin. Keep that host
 distinction explicit. Service startup does not establish real proof readiness.
+
+## Security maintenance, 2026-09-27
+
+Retain the direct-pin overrides, with Vite 7.3.6 and Vitest 4.1.11, PostCSS 8.5.28
+and locked esbuild 0.28.2. A fresh npm ci and audit passed with zero findings.
+Current versions are owned by package.json/package-lock.json. The original issuer
+runtime closure (including peer/optional resolutions) remains unchanged; isolated
+build/test security updates no longer require rewriting deployment evidence.
+1AM is the current primary connector-v4 wallet; the Lace reference above describes
+the original API inspection, not a fallback.

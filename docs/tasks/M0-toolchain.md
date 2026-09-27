@@ -1,6 +1,6 @@
 # M0 — Resolve and validate the foundation
 
-State: local setup and application verification passed. Exact Node/npm, locked dependencies, Compact, Docker/prover and browser access are ready. Requested Codex model/discovery and Midnight MCP gates remain blocked and do not prevent local app testing.
+State: local setup and application verification passed. Exact Node/npm, locked dependencies, Compact, Docker/prover and browser access are ready. Requested model/effort pairs are now advertised. Custom-agent/schema session attestation and Midnight MCP authentication remain blocked and do not prevent local app testing.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 

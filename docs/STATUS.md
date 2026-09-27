@@ -1,93 +1,98 @@
 # Current execution state
 
-Snapshot: 2026-09-27. **Engineering remediation in progress; wallet E2E pending.**
-The owner requested confirmed-failure retry, actual controller recovery tests,
-dependency security updates and public configuration consolidation before wallet
-actions. The audit found five dev/build dependency findings (two high), no retry
-path for failed saved claims/spends, and helper-only recovery integration coverage.
-Historical results below describe the previous revision. Source-dependent verified
-requirements are temporarily implemented until the complete rerun supplies evidence.
+Snapshot: 2026-09-27. **Requested application engineering remediation is complete;
+real 1AM wallet E2E acceptance remains pending.** Current sanitized evidence is
+`docs/evidence/local-verification.json`. No live transaction or push was performed.
 
-## Previous verified snapshot (2026-09-26)
+## Completed engineering
 
-Active milestone: M1 owner wallet acceptance. The latest owner directive authorizes
-all local setup and verification. All automatable application checks passed; keep
-progressing after the owner completes the next private browser action. Never
-redeploy the existing issuer just because a session restarted.
+- Confirmed failed claims and controlled spends have explicit retry actions. Each
+  reset freshly verifies canonical complete failure and the original payment state,
+  atomically archives the failed attempt, and requires a new owner approval.
+  Unknown, partial, stale and already-spent outcomes cannot authorize retry.
+- Recovery integration exercises the production payment controller, transaction
+  helpers, real encryption and saved records across reload/import, interruption,
+  rejection and concurrent access. Protocol/wallet boundaries remain synthetic.
+- Complete Preprod shielded addresses are accepted with strict bounded checksum,
+  network, type and canonical encoding checks; SDK 3.1.2's default 90-character
+  parser limit no longer rejects the genuine 132-character address.
+- PostCSS 8.5.28, Vite 7.3.6, Vitest 4.1.11 and esbuild 0.28.2 resolve the dependency
+  audit findings. The original deployed runtime closure, source and verifier remain
+  protected while independent development tools can receive security patches.
+- Public settings are consolidated in config/preprod.json and shared by browser,
+  CSP and verification scripts. Acceptance evidence now includes configuration.
+- The clean-install timeout is finite but accommodates Windows-backed WSL I/O;
+  fresh npm ci passed after the original four-minute limit interrupted installation.
 
-## Working local setup
+## Current local setup and verification
 
-- Windows NVM default and WSL project runtime: Node 22.16.0 / npm 10.9.2.
-- Genuine lockfile installed with npm ci; all 32 direct installed versions match
-  the manifest and lock. Use WSL for dependencies/builds, not mixed Windows installs.
-- `.env.local` configured with `PROOF_SERVER_PORT=6300`; obsolete unused
-  NEXT_PUBLIC entries removed and original local file preserved in ignored state.
-  Preprod URLs are pinned in source; escrow choice stays in the browser. No secret
-  or external API key is required in environment files.
-- Docker Desktop Compose serves the digest-pinned proof-server 8.1.0 on loopback
-  6300. Unrelated containers were preserved. Actual local proofs and browser CORS
-  passed; no remote prover or weakened browser security was used.
-- Current production app is running at `http://127.0.0.1:3000` with the original
-  origin retained for encrypted recovery. Start/restart commands are in OWNER-TESTING.
+Windows and project WSL use Node 22.16.0 / npm 10.9.2. All 33 direct installed
+versions match the manifest and lockfile. Use WSL for dependencies and builds.
+The updated production app is running at http://127.0.0.1:3000 and the pinned
+proof-server 8.1.0 image is running on loopback port 6300. The original application
+origin was retained so owner encrypted recovery remains accessible.
 
-## Verified scope
-
-Current sanitized record: `docs/evidence/local-verification.json`.
-
-| Check | Actual result |
+| Check | Observed result |
 |---|---|
-| Locked installation, doctor, manifest/installed versions | Passed |
-| Offline source checks | Passed; 50 dependency-free tests |
-| Compact probe, coin probe, payment and separate issuer compilation | Passed |
-| Generated artifacts and verifier identity | Passed |
-| ESLint, TypeScript, production build | Passed |
-| Unit / generated-contract / integration suites | 36 / 13 / 8 passed |
-| Production browser suite | 7 passed; isolated synthetic providers, no real signing |
-| Loopback proving | Real constraints and fund/claim/issue proofs passed with synthetic openings; unsealed issuer transaction proof round trip passed |
-| Production browser connectivity | Prover POST/CORS and real Preprod indexer/RPC queries passed |
-| Existing issuer verification | Source/build/verifier preserved; original dependency graph compatible; canonical node finality confirmed; issued false |
-| Requirements graph and evidence integrity | Passed |
+| Clean npm ci, installed identity, tool doctor | Passed |
+| Full dependency audit | Passed; zero reported vulnerabilities |
+| Offline source and utility checks | Passed |
+| Compact probe, coin probe, payment and issuer compilation | Passed |
+| Artifact hashes and runtime compatibility | Passed; regenerated artifacts match the browser-tested build byte for byte |
+| ESLint, TypeScript, full unit suite, production build | Passed |
+| Generated-contract / integration suites | 13 / 20 passed |
+| Production browser suite | 7 passed; synthetic providers, no real signing |
+| Local proving | Real fund/claim/issue constraints and proofs, plus unsealed issuer transaction round trip passed using synthetic inputs |
+| Browser connectivity | Prover CORS and real read-only Preprod indexer/RPC queries passed |
+| Existing issuer | Source, verifier, runtime closure and canonical finality verified; issued false |
+| Requirements | Graph, evidence hashes and derived report checked |
 
-The complete preparation wrapper returns **blocked (2)** solely for the requested
-Codex account model/discovery and Midnight documentation MCP checks. WSL-to-Windows
-client path translation is fixed and effective project settings match. The CLI
-still does not advertise the requested model/effort pairs, agent discovery is
-unverified, and an initialized Midnight tool listing is unavailable. No delegation
-or model substitution occurred. These gates are not application runtime dependencies.
+The preparation wrapper returns **blocked (2)** for auxiliary custom-agent/schema
+session attestation and documentation MCP authentication. The newer installed
+Codex CLI 0.158.0-alpha.2 now advertises all requested model/effort pairs and loads
+matching project settings. No delegation occurred. The official Midnight MCP
+endpoint returns HTTP 401. Neither auxiliary service is an application runtime
+requirement; their verification was not fabricated or bypassed.
 
-`services:check` deliberately returns 2 after a successful TCP probe; genuine proof
-and browser access were checked separately. `verify:deployment`, `test:preprod` and
-`verify:product` return 2 because real escrow/transaction/owner-matrix inputs do not
-exist yet. Those results are not passes and were not bypassed.
+`services:check` is deliberately a TCP-only blocked diagnostic; actual proof and
+browser CORS checks passed separately. `verify:deployment`, `test:preprod` and
+`verify:product` correctly return 2 without real escrow/payment/acceptance inputs.
+GitHub CLI is unauthenticated, so current remote CI remains unverified.
 
-## Real environment and next manual action
+## Configuration and recovery locations
 
-Wallet A in Chrome and independent Wallet B in Brave are already owner-reported
-connected through 1AM on Preprod with DUST. Do not ask for readiness again.
+- .env.local contains only PROOF_SERVER_PORT=6300; this is intentional. No wallet
+  secret or API credential belongs in it.
+- config/preprod.json owns the reviewed network endpoints, issuer and asset domain.
+- deployments/preprod/test-asset-issuer.json preserves the real issuer deployment.
+  toolchain.lock.json is also part of that immutable deployment fingerprint;
+  current client/tool observations are recorded in the new evidence, not rewritten
+  into the original deployment profile.
+- Public escrow selection uses localStorage key moneymole/current-escrow. Escrow
+  addresses are generated in the browser and exported after approved deployment.
+- Encrypted payment/admin recovery uses IndexedDB moneymole-private-v1, scoped by
+  network, contract, wallet and schema. Secrets remain client-side.
 
-Reuse issuer `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`.
-Its original transaction is
-`003664b95a34f2596809d49982819f3f1e38347d5fe444a13c199bdcae03757886`, block 2716656.
-The durable record is `deployments/preprod/test-asset-issuer.json`; it was preserved.
-No new deployment, issuance, funding, claim or spend was submitted during setup.
+## Exact next owner action and remaining acceptance
 
-Next: **Chrome / Wallet A**, open the running app, unlock the existing issuer with
-its original local passphrase, choose **Prepare / recover issuance**, then
-**Approve issuance of 1,000,000 test units** and approve in 1AM. Expected: finalized
-issuance and A's 1,000,000 shielded test units. If the original record is absent,
-restore its encrypted backup first; never provide the passphrase/backup to tools.
+Chrome / Wallet A: open the running app, use the original local recovery passphrase
+with **Prepare / unlock issuer deployment**, then **Check deployment** if needed.
+The existing issuer must be
+47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635.
+Choose **Prepare / recover issuance**, then **Approve issuance of 1,000,000 test
+units** and approve in 1AM. Expect finalized issuance and A's shielded test balance
+of 1,000,000. Restore the original encrypted backup first if necessary; never share
+that backup or passphrase with tools and never redeploy this issuer on session restart.
 
-Then continue with separately approved escrow deployment, funding, private link/QR,
-independent B claim/spend, persistence/recovery, reconciliation and the T01–T24 live
-matrix. No local fixture establishes those observations. Remote CI, participation,
-public metadata and external qualification also remain pending; no push is authorized.
+Then approve/recover the escrow, fund 10 units in A, privately transfer its link/QR
+and close A. Brave / independent Wallet B must begin with zero of this asset,
+claim 10, reconcile, reload and exercise encrypted export/import, then approve the
+controlled spend of 10 back to A. Expect B zero, A credited and the original claim
+spent; replay must not pay twice. Complete the live negative/recovery/privacy
+matrix and retain only sanitized evidence. Unknown outcomes reconcile; only fresh
+confirmed failures expose retry actions. Every live transaction needs approval.
 
-## Changes made in this setup pass
-
-Corrected environment precedence and pinned-port validation; preserved issuer
-verification across additive UI dependencies while rejecting changed or shadowed
-runtime packages; scoped Next tracing to this repository; fixed npm argument
-forwarding; added codec/QR/fragment tests and reusable browser connectivity checks.
-The supplied logo was preserved byte-for-byte in its own commit. Each logical
-change is committed locally. Historical evidence remains historical; it is not
-promoted into current live acceptance.
+Source, build and automated checks do not establish real extension signing,
+receiver spendability, optical QR scanning, funded recovery or privacy acceptance.
+Remote CI, consented participation and external qualification remain separately
+pending. No push is authorized. All meaningful changes are committed locally.
