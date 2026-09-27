@@ -1,0 +1,10 @@
+# Source-bound evidence must hash the same bytes on Windows and Linux/CI.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.wasm binary
+*.prover binary
+*.verifier binary
+*.bzkir binary
