@@ -1,10 +1,13 @@
 import { getImageProps } from "next/image";
 import Link from "next/link";
+import logo from "../../public/images/moneymole_logo.png";
 
 export function BrandImage({ size, alt, priority = false }: { size: number; alt: string; priority?: boolean }) {
-  const { props } = getImageProps({ src: "/images/moneymole_logo.png", width: size, height: size, alt, priority });
+  // Static imports change the URL with the asset; preserve the embroidered PNG
+  // without lossy image optimization at every display size.
+  const { props } = getImageProps({ src: logo, width: size, height: size, alt, priority, unoptimized: true });
   // Next's default color:transparent style is unnecessary and conflicts with
-  // nonce-only SSR styles. Retain its optimized URLs, sizing and lazy loading.
+  // nonce-only SSR styles. Retain its sizing and lazy loading.
   // eslint-disable-next-line @next/next/no-img-element
   return <img {...props} style={undefined} alt={alt} />;
 }

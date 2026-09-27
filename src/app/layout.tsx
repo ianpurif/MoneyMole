@@ -5,10 +5,11 @@ import "./globals.css";
 import { ProductFeedback } from "@/components/product-feedback";
 import { WalletProvider } from "@/components/wallet-provider";
 import { RecoveryProvider } from "@/components/recovery-provider";
+import logo from "../../public/images/moneymole_logo.png";
 export const metadata: Metadata = {
   title: "MoneyMole | Private payments",
   description: "Escrow and claim native NIGHT on Midnight Preprod with 1AM. Public transfers, private claim secrets, DUST fees.",
-  icons: { icon: "/images/moneymole_logo.png", apple: "/images/moneymole_logo.png" },
+  icons: { icon: logo.src, apple: logo.src },
   robots: { index: false, follow: false },
 };
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
