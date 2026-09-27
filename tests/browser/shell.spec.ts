@@ -1,9 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { ShieldedCoinPublicKey, ShieldedEncryptionPublicKey } from "@midnight-ntwrk/wallet-sdk-address-format";
+import { ShieldedCoinPublicKey, ShieldedEncryptionPublicKey, UnshieldedAddress } from "@midnight-ntwrk/wallet-sdk-address-format";
 
-test("synthetic wallet prepares real compiled issuer locally and recovers without submission", async ({ page, request }) => {
+test("synthetic wallet prepares real compiled NIGHT escrow locally and recovers without submission", async ({ page, request }) => {
   test.setTimeout(90_000);
   const addresses = {
+    unshieldedAddress: UnshieldedAddress.codec.encode("preprod", new UnshieldedAddress(Buffer.alloc(32, 3))).asString(),
     shieldedAddress: "synthetic-browser-wallet",
     shieldedCoinPublicKey: ShieldedCoinPublicKey.codec.encode("preprod", ShieldedCoinPublicKey.fromHexString("01".repeat(32))).asString(),
     shieldedEncryptionPublicKey: ShieldedEncryptionPublicKey.codec.encode("preprod", ShieldedEncryptionPublicKey.fromHexString("02".repeat(32))).asString(),
@@ -15,6 +16,7 @@ test("synthetic wallet prepares real compiled issuer locally and recovers withou
         getConnectionStatus: async () => ({ status: "connected", networkId: "preprod" }),
         getConfiguration: async () => ({ networkId: "preprod" }),
         getShieldedAddresses: async () => addresses,
+        getUnshieldedAddress: async () => ({ unshieldedAddress: addresses.unshieldedAddress }),
         getDustBalance: async () => ({ balance: 1n }),
         balanceUnsealedTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; throw new Error("No synthetic signing allowed"); },
         submitTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; throw new Error("No synthetic submission allowed"); },
@@ -26,21 +28,20 @@ test("synthetic wallet prepares real compiled issuer locally and recovers withou
   async function prepare() {
     await page.getByRole("button", { name: "Check for 1AM" }).click();
     await page.getByRole("button", { name: "Connect 1AM", exact: true }).click();
-    await page.getByRole("button", { name: "Open workspace tools" }).click();
-    await page.getByText("Test asset issuer administration", { exact: true }).click();
-    await page.getByRole("region", { name: "Preprod issuer setup" }).getByLabel("Local recovery passphrase", { exact: true }).fill("synthetic browser unlock passphrase");
-    await page.getByRole("button", { name: "Prepare / unlock issuer deployment", exact: true }).click();
-    await expect(page.getByText("State: prepared", { exact: true })).toBeVisible({ timeout: 60_000 });
+    await page.getByText("Create / recover a payment escrow", { exact: true }).click();
+    await page.locator("details").filter({has: page.getByText("Create / recover a payment escrow", {exact:true})}).getByLabel("Local recovery passphrase", { exact: true }).fill("synthetic browser unlock passphrase");
+    await page.getByRole("button", { name: "Prepare / unlock escrow", exact: true }).click();
+    await expect(page.getByText(/^State: prepared/)).toBeVisible({ timeout: 60_000 });
   }
   await page.goto("/"); await prepare();
-  const address = await page.getByText(/^Contract: /).textContent();
+  const address = await page.getByText(/^Preprod escrow: /).textContent();
   await page.reload(); await prepare();
-  expect(await page.getByText(/^Contract: /).textContent()).toBe(address);
+  expect(await page.getByText(/^Preprod escrow: /).textContent()).toBe(address);
   expect(await page.evaluate(() => (window as unknown as { transactionCalls: number }).transactionCalls)).toBe(0);
   expect(writes).toEqual([]);
-  expect((await request.get("/api/artifacts/test-asset/verifier/issue")).status()).toBe(200);
-  expect((await request.get("/api/artifacts/test-asset/verifier/unknown")).status()).toBe(404);
-  expect((await request.post("/api/artifacts/test-asset/verifier/issue", { data: "synthetic" })).status()).toBe(405);
+  expect((await request.get("/api/artifacts/night-payments/verifier/fund")).status()).toBe(200);
+  expect((await request.get("/api/artifacts/night-payments/verifier/unknown")).status()).toBe(404);
+  expect((await request.post("/api/artifacts/night-payments/verifier/fund", { data: "synthetic" })).status()).toBe(405);
 });
 test("Lace alone never becomes the primary wallet", async ({ page }) => {
   await page.addInitScript(() => {
@@ -58,7 +59,7 @@ test("disconnected visitor cannot start a payment", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Move money.");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Send NIGHT.");
   await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
   await expect(page.getByText("Live acceptance of this implementation is pending.", { exact: false })).toBeVisible();
   expect(errors).toEqual([]);
@@ -74,7 +75,7 @@ test("synthetic connector exercises explicit authorization without API requests"
         return {
           getConnectionStatus: async () => ({ status: "connected", networkId: "preprod" }),
           getConfiguration: async () => ({ networkId: "preprod" }),
-          getShieldedAddresses: async () => ({ shieldedAddress: "synthetic-test-address" }),
+          getUnshieldedAddress: async () => ({ unshieldedAddress: "synthetic-connection-only-address" }),
           getDustBalance: async () => ({ balance: 1n, cap: 1n }),
         };
       },

@@ -32,15 +32,15 @@ export function PaymentDeployment({ session, onSelect }: { session: OneAmSession
       } else if (current.current) {
         if (action === "approve") { setMessage("Approve escrow deployment in 1AM. DUST pays the fee."); const next = await current.current.approve(); if (attempt === generation.current) setReview(next); }
         if (action === "check") { const next = await current.current.reconcile(); if (attempt === generation.current) setReview(next); }
-        if (action === "export") downloadLocal("moneymole-preprod-deployment.json", JSON.stringify(await current.current.publicRecord(), null, 2));
-        if (action === "backup") downloadLocal("moneymole-encrypted-escrow.json", await current.current.exportEncrypted());
+        if (action === "export") downloadLocal("moneymole-night-preprod-deployment.json", JSON.stringify(await current.current.publicRecord(), null, 2));
+        if (action === "backup") downloadLocal("moneymole-encrypted-night-escrow.json", await current.current.exportEncrypted());
         if (attempt === generation.current && current.current?.review().verified) { setMessage("Escrow confirmed on the finalized Preprod chain. Save its public deployment record and use this address."); onSelect(current.current.review().address); }
       }
     } catch { if (attempt === generation.current) setMessage("Deployment operation could not finish. Preserve the record, unlock if the tab was hidden, and reconcile any existing transaction before retrying."); }
     finally { if (attempt === generation.current) { setPassword(""); setBusy(false); } }
   }
   return <details className="panel mt-6"><summary className="cursor-pointer font-medium">Create / recover a payment escrow</summary>
-    <p className="mt-3 text-sm text-muted">Separate from test-asset issuance. Reuse an existing compatible escrow for more payments.</p>
+    <p className="mt-3 text-sm text-muted">Holds native Preprod NIGHT. Reuse a compatible NIGHT escrow; old test-token escrows cannot accept NIGHT.</p>
     <label className="field">Local recovery passphrase<input type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} disabled={busy} /></label>
     <Button disabled={busy || password.length < 16} onClick={() => void run("unlock")}>Prepare / unlock escrow</Button>
     {review && <div className="mt-4 space-y-3 text-sm"><p className="break-all">Preprod escrow: {review.address}</p><p>State: {review.phase} {review.verified ? "· chain verified" : "· not verified in this session"}</p>

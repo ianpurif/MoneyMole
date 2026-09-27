@@ -17,14 +17,17 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await page.getByRole("button",{name:"Unlock payment workspace"}).click();
   await expect(page.getByRole("button",{name:"Save payment draft"})).toBeVisible({timeout:60_000});
   await page.screenshot({path:"reports/revision/unlocked-send.png"});
-  await page.getByLabel("Whole test units").fill("0");
+  await page.getByLabel("Amount in NIGHT").fill("0");
   await expect(page.getByRole("button",{name:"Save payment draft"})).toBeDisabled();
-  await expect(page.getByText("Enter a positive whole amount", {exact:false})).toBeVisible();
-  await page.getByLabel("Whole test units").fill("10");
+  await expect(page.getByText("Enter a positive NIGHT amount", {exact:false})).toBeVisible();
+  await page.getByLabel("Amount in NIGHT").fill("0.0000001");
+  await expect(page.getByRole("button",{name:"Save payment draft"})).toBeDisabled();
+  await page.getByLabel("Amount in NIGHT").fill("1.234567");
   await page.getByRole("button",{name:"Save payment draft"}).click();
   await expect(page.getByRole("button",{name:"Activity",exact:true})).toHaveAttribute("aria-pressed","true");
   await expect(page.getByRole("button",{name:"Prepare funding",exact:true})).toBeVisible();
-  await expect(page.getByRole("button",{name:"Approve funding of 10"})).toBeHidden();
+  await expect(page.locator(".payment-summary")).toContainText("1.234567 NIGHT");
+  await expect(page.getByRole("button",{name:"Approve funding of 1.234567"})).toBeHidden();
   await expect(page.getByRole("button",{name:"Show claim link / QR"})).toHaveCount(0);
   await page.locator(".state-view").evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)));
   await page.screenshot({path:"reports/revision/saved-draft.png"});
@@ -58,7 +61,7 @@ for (const width of [320,390,768,1440]) {
     await page.goto("/");
     await page.getByRole("button",{name:"Receive",exact:true}).click();
     await expect(page.getByRole("heading",{name:"A payment, just a link away."})).toBeVisible();
-    await expect(page.getByLabel("Whole test units")).toHaveCount(0);
+    await expect(page.getByLabel("Amount in NIGHT")).toHaveCount(0);
     await page.getByRole("button",{name:"Activity",exact:true}).click();
     await expect(page.getByRole("heading",{name:"Your payments live with you."})).toBeVisible();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -93,6 +96,7 @@ test("tools focus returns to its trigger and the connected toast obeys CSP",asyn
   await expect(page.locator("[data-sonner-toast]")).toContainText("1AM connected");
   await page.getByRole("button",{name:"Open workspace tools"}).click();
   await expect(page.getByRole("dialog",{name:"Advanced setup"})).toBeVisible();
+  await expect(page.getByText("Test asset issuer administration", {exact:true})).toHaveCount(0);
   await page.screenshot({path:"reports/revision/tools.png"});
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);

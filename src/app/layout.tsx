@@ -5,7 +5,7 @@ import "./globals.css";
 import { ProductFeedback } from "@/components/product-feedback";
 export const metadata: Metadata = {
   title: "MoneyMole | Private payments",
-  description: "Fund and claim non-redeemable shielded test payments on Midnight Preprod with 1AM.",
+  description: "Escrow and claim native NIGHT on Midnight Preprod with 1AM. Public transfers, private claim secrets, DUST fees.",
   icons: { icon: "/images/moneymole_logo.png", apple: "/images/moneymole_logo.png" },
   robots: { index: false, follow: false },
 };

@@ -1,5 +1,4 @@
 import "client-only";
-import { nativeToken } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 
 export const MAX_AMOUNT = (1n << 128n) - 1n;
 export const hex = (v: Uint8Array) => Array.from(v, b => b.toString(16).padStart(2, "0")).join("");
@@ -9,7 +8,9 @@ export function unhex(s: string, length?: number): Uint8Array<ArrayBuffer> {
 }
 export const randomHex = () => hex(crypto.getRandomValues(new Uint8Array(32)));
 export interface ClaimPayload { version: 2; network: "preprod"; contract: string; asset: string; nonce: string; amount: string; authority: string; fundingId: string; }
-function body(p: ClaimPayload) {
+async function body(p: ClaimPayload) {
+  // Keep ledger WebAssembly off the initial shell hydration path.
+  const { nativeToken } = await import("@midnight-ntwrk/midnight-js-protocol/ledger");
   if (p.version !== 2 || p.network !== "preprod" || p.asset !== nativeToken().raw || !/^[1-9][0-9]{0,38}$/.test(p.amount) || BigInt(p.amount) > MAX_AMOUNT) throw new Error("Invalid NIGHT claim payload");
   const out = new Uint8Array(210); out.set([2, 1]);
   [p.contract, p.asset, p.nonce, p.authority, p.fundingId].forEach((s, i) => out.set(unhex(s, 32), 2 + i * 32));
@@ -20,7 +21,7 @@ const b64 = (v: Uint8Array) => btoa(String.fromCharCode(...v)).replaceAll("+", "
 async function key(authority: string) { return crypto.subtle.importKey("raw", unhex(authority, 32), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]); }
 /** Integrity tag plus contract-bound opening. Anyone holding this token has bearer authority. */
 export async function encodeClaim(p: ClaimPayload) {
-  const data = body(p), tag = new Uint8Array(await crypto.subtle.sign("HMAC", await key(p.authority), data));
+  const data = await body(p), tag = new Uint8Array(await crypto.subtle.sign("HMAC", await key(p.authority), data));
   const joined = new Uint8Array(210); joined.set(data); joined.set(tag, 178); return `mm2.${b64(joined)}`;
 }
 export async function decodeClaim(token: string): Promise<ClaimPayload> {
@@ -30,7 +31,7 @@ export async function decodeClaim(token: string): Promise<ClaimPayload> {
   const fields = Array.from({ length: 5 }, (_, i) => hex(raw.subarray(2 + i * 32, 34 + i * 32)));
   let amount = 0n; for (const byte of raw.subarray(162, 178)) amount = (amount << 8n) | BigInt(byte);
   const p: ClaimPayload = { version: 2, network: "preprod", contract: fields[0]!, asset: fields[1]!, nonce: fields[2]!, authority: fields[3]!, fundingId: fields[4]!, amount: amount.toString() };
-  body(p);
+  await body(p);
   if (!await crypto.subtle.verify("HMAC", await key(p.authority), raw.subarray(178), raw.subarray(0, 178))) throw new Error("Claim integrity check failed");
   return p;
 }

@@ -5,12 +5,18 @@ import { decodeClaim, encodeClaim, extractClaim, MAX_AMOUNT, type ClaimPayload }
 // Synthetic data only. Never print a real bearer payload from browser storage.
 const opening = (amount = "10"): ClaimPayload => ({ version: 2, network: "preprod", contract: "01".repeat(32), asset: "00".repeat(32), nonce: "03".repeat(32), authority: "04".repeat(32), fundingId: "05".repeat(32), amount });
 describe("private bearer codec and local QR bounds", () => {
-  it("round trips exact whole-unit bounds without floating-point conversion", async () => {
+  it("round trips exact atomic STAR bounds without floating-point conversion", async () => {
     for (const amount of ["1", "10", MAX_AMOUNT.toString()]) {
       const source = opening(amount), encoded = await encodeClaim(source);
       expect(encoded.length).toBe(284);
       expect(JSON.stringify(await decodeClaim(encoded)) === JSON.stringify(source)).toBe(true);
     }
+  });
+  it("rejects legacy protocol and issuer assets without reinterpreting their units", async () => {
+    await expect(encodeClaim({ ...opening(), asset: "02".repeat(32) })).rejects.toThrow();
+    await expect(encodeClaim({ ...opening(), version: 1 } as unknown as ClaimPayload)).rejects.toThrow();
+    const token = await encodeClaim(opening());
+    await expect(decodeClaim(token.replace("mm2.", "mm1."))).rejects.toThrow();
   });
   it("rejects invalid and overflowing amounts before constructing a token", async () => {
     for (const amount of ["0", "-1", "1.1", "1e3", " 10", "01", (MAX_AMOUNT + 1n).toString()]) {
