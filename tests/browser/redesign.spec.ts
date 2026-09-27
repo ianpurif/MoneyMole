@@ -51,6 +51,7 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await expect(page.getByText("funding not verified this session",{exact:false})).toBeVisible();
   await page.getByRole("button",{name:"Receive",exact:true}).click();
   await expect(page.getByLabel("Claim link or token")).toBeVisible();
+  await expect.poll(() => page.locator(".wallet-scroll").evaluate(el => el.scrollTop)).toBe(0);
   await expect(page.getByRole("button",{name:"Prepare funding",exact:true})).toHaveCount(0);
   await page.setViewportSize({width:390,height:844});
   await page.locator(".state-view").evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)));

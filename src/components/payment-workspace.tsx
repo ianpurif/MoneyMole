@@ -15,6 +15,7 @@ const night = (atomic: string) => formatAmount(BigInt(atomic), 6);
 type Controller = Awaited<ReturnType<OneAmSession["openPayments"]>>;
 export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initialAction = "send", initialAmount = "10", onTools, onDisconnect }: { onTools: () => void; onDisconnect: () => void; session: OneAmSession; claimToken?: string; onClaimConsumed?: () => void; initialAction?: "send" | "receive" | "activity"; initialAmount?: string }) {
   const controller = useRef<Controller | null>(null), generation = useRef(0);
+  const scrollArea = useRef<HTMLDivElement>(null);
   const [contract, setContract] = useState(""), [password, setPassword] = useState("");
   const [amount, setAmount] = useState(initialAmount), [claim, setClaim] = useState("");
   const [busy, setBusy] = useState(false), [unlocked, setUnlocked] = useState(false);
@@ -24,6 +25,7 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initial
   const [link, setLink] = useState(""), [qr, setQr] = useState("");
   const [recipient, setRecipient] = useState(""), [importPassword, setImportPassword] = useState("");
   const [tab, setTab] = useState<"send" | "receive" | "activity">(initialAction);
+  useEffect(() => { scrollArea.current?.scrollTo({ top: 0 }); }, [tab, unlocked]);
   let amountValid = false;
   try { parseAmount(amount, 6); amountValid = true; } catch { /* Inline validation only; the controller still validates. */ }
   const current = records.find(r => r.id === selected);
@@ -96,7 +98,7 @@ export function PaymentWorkspace({ session, claimToken, onClaimConsumed, initial
   }
   return <section aria-label="Payments" className="workspace" aria-busy={busy}>
     <WalletCard action={tab} onAction={value => { setTab(value); setLink(""); setQr(""); }} disabled={busy} connected balance={unlocked ? balance : null} controls={<><button className="quiet-button" onClick={onTools} aria-label="Open workspace tools">Tools</button>{unlocked && <button className="quiet-button" onClick={lock}>Lock workspace</button>}<button className="quiet-button" onClick={onDisconnect}>Disconnect</button></>} />
-    <div className="wallet-scroll" tabIndex={0} role="region" aria-label="Payment content">
+    <div ref={scrollArea} className="wallet-scroll" tabIndex={0} role="region" aria-label="Payment content">
     {!unlocked && <div className="unlock-heading"><span className="step-number">YOUR LOCAL WORKSPACE</span><h2>Unlock. Pick up where you left off.</h2><p>Your passphrase unlocks encrypted records on this device.</p></div>}
     {!unlocked && tab === "receive" && <details className="claim-address"><summary>Select escrow from a claim link</summary><label className="field">Claim link or token<textarea value={claim} onChange={e => setClaim(e.target.value)} spellCheck={false} autoComplete="off" rows={3} disabled={busy} /></label><Button variant="outline" disabled={busy || !claim} onClick={() => void operate(async () => { const p = await decodeClaim(extractClaim(claim)); setContract(p.contract); setMessage("Claim address selected. Unlock the workspace and save the claim."); })}>Use claim escrow</Button></details>}
     {!unlocked &&
