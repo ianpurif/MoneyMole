@@ -145,7 +145,7 @@ case. Its format is:
 
 Include one case for every T01–T24 row and the complete current source subject list;
 the abbreviated example is intentionally insufficient. The verifier requires all
-tracked src/contracts/scripts/tests and package/build/toolchain/CI files. The
+tracked src/config/contracts/scripts/tests and package/build/test/Compose/toolchain/CI files. The
 implementation evidence contains that list, but copy its hashes only if they still
 match the exact source you exercised. Use source automated only for a real executed result, otherwise
 owner_observed. SHA-256 can be computed locally with sha256sum or Get-FileHash.
@@ -163,3 +163,15 @@ Report the browser/wallet, button or phase, sanitized message and public transac
 identifier if present. Include expected versus observed final state. Never report
 a claim link, opening, passphrase, seed, private key or raw proof request.
 Keep the original encrypted records and deployment identity for repair.
+
+## Confirmed failed attempts
+
+A saved `failed` label alone never permits resubmission. In Brave / Wallet B,
+choose **Reconcile**. A claim retry appears only after a fresh, canonical complete
+failure and an unspent original note. Choose **Retry failed claim**, then **Prepare**
+and explicitly approve the new claim in 1AM. A failed controlled spend exposes
+**Retry failed spend** only after the original claim and balance are rechecked;
+enter the destination and explicitly approve the new spend. Resetting itself does
+not sign or submit, and the old transaction remains in encrypted attempt history.
+Unknown or partial outcomes remain reconciliation-only. A failed refresh clears
+previous retry flags. Export encrypted recovery again after an attempt changes.
