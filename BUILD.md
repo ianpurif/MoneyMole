@@ -209,3 +209,21 @@ screenshots, users and user feedback from this audit. Accept 1AM in place of Lac
 real wallet/circuit/privacy evidence remains required. Fix automatable gaps and
 keep public-repository, remote-CI, organizer-approval and product-X evidence truthful.
 Do not infer Level passes from local implementation or count excluded items as blockers.
+
+
+## Current owner directive — publish verified submission work (2026-09-27)
+
+The owner explicitly authorizes committing and pushing all completed non-sensitive
+work to https://github.com/ianpurif/MoneyMole, then verifying public content and
+GitHub Actions. This supersedes earlier no-push instructions for this repository.
+Do not rewrite history, force-push, publish secrets or approve wallet prompts.
+Update the README with a judge-friendly Level 1–6 evidence map, deployment identity,
+setup/usage, privacy, recovery/security, CI and meaningful history. Rerun all checks.
+Exclude videos, hosted website, screenshots, users/feedback, X, Lace branding and
+unsupplied organizer approval evidence from the current scoped Level verdicts.
+A real working payment escrow and wallet/circuit evidence are still required.
+Prepare 1AM operations up to their approval screen; the owner personally confirms
+connections, unlocks private recovery and signs transactions. Do not redeploy the
+existing issuer or invent private recovery material. Continue all independent work
+before returning an exact manual action. The friend's README is presentation
+reference only; its contracts, counts and acceptance claims are not MoneyMole evidence.

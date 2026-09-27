@@ -2103,11 +2103,19 @@
       "screenshots",
       "users",
       "user feedback",
-      "product X profile (owner deferred on 2026-09-27)"
+      "product X profile (owner deferred on 2026-09-27)",
+      "organizer approval evidence not provided (owner excluded for current submission pass)"
     ],
     "acceptedWallet": "1AM (owner confirms judge acceptance)",
     "level6CommitMinimum": 30,
-    "notes": "Public GitHub, remote CI, organizer approval and real Preprod operation remain in scope. Product X is owner-deferred, not verified. Excluded requirements remain separate from verified requirements."
+    "notes": "Current owner authorizes non-sensitive commits and pushes to ianpurif/MoneyMole. Public source, actual passing CI and real Preprod wallet/payment/privacy evidence remain required. Excluded/deferred items are not verified.",
+    "publicationAuthorization": {
+      "repository": "https://github.com/ianpurif/MoneyMole",
+      "authorized": true,
+      "date": "2026-09-27",
+      "forcePush": false,
+      "secrets": false
+    }
   },
   "levelAudit": {
     "observedAt": "2026-09-27T05:16:23.728Z",

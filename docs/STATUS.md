@@ -1,5 +1,10 @@
 # Current execution state
 
+Publication follow-up in progress: the owner now authorizes pushing completed
+non-sensitive work to ianpurif/MoneyMole and excludes unsupplied organizer approval
+from this scoped submission pass. Earlier no-push and approval-blocker statements
+below describe the prior audit. Full verification and public CI will be refreshed.
+
 Snapshot: 2026-09-27. **Requested application engineering remediation is complete;
 real 1AM wallet E2E acceptance remains pending.** Current sanitized evidence is
 `docs/evidence/local-verification.json`. No live transaction or push was performed.
