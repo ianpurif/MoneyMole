@@ -121,12 +121,15 @@ port to agree. Unused NEXT_PUBLIC values do not configure payments.
 
 1. Chrome/A and Brave/B: real independent 1AM wallets on Preprod. A holds the NIGHT
    to send; both have enough available DUST. Record NIGHT balances A0 and B0.
-2. A clicks **Connect**, selects **1AM** (or detected **Lace**), then opens
-   **Tools → Create / recover a payment escrow** and enters a private
-   local passphrase, and chooses **Prepare / unlock escrow**. Approve a new NIGHT
+2. A clicks **Connect Wallet**, selects **1AM** (or detected **Lace**), and unlocks
+   **MoneyMole** once with a passkey or local recovery passphrase (at least 7 characters).
+   Existing users enter their original app passphrase once, then add a passkey in
+   **Tools → Security**. Passkey users add a recovery passphrase for portable backups.
+   Open **Tools → Create / recover a payment escrow**. Approve a new NIGHT
    deployment only if no compatible v2 record exists; **Check deployment** until
    chain verified. Save public record and encrypted escrow recovery.
-3. **Unlock payment workspace** with the verified escrow. In **Send**, enter **1**
+3. **Use escrow** with the verified address; recovered escrow state is shared across
+   Send, Receive, Activity and Tools. In **Send**, enter **1**
    NIGHT, **Save payment draft**, save encrypted recovery, **Prepare funding**,
    then **Approve funding of 1** in 1AM. **Reconcile**: A = A0 - 1; escrow +1.
 4. **Show claim link / QR**, share privately with B, then close A's session. B opens
@@ -156,7 +159,7 @@ encrypted exports. Escrow setup and encrypted imports live in Tools. See
 | NIGHT amount, input/output address, contract balance, timing | Public unshielded ledger |
 | Note commitment, spent nullifier, native asset, verifier | Public contract state |
 | Bearer authority, nonce, membership/private witness | Browser and trusted local prover; never Next.js APIs |
-| Private records | Encrypted IndexedDB and private exports; local passphrase required |
+| Private records | Encrypted IndexedDB; passkey or local recovery passphrase; portable exports require a fallback passphrase |
 | Wallet authorization and keys | 1AM; every approval belongs to the owner |
 
 The proof demonstrates knowledge of the note opening and single-use authority,
@@ -164,7 +167,8 @@ with a bound payout destination. It does not hide NIGHT metadata. Lost bearer
 secrets and backups can mean permanent loss. Do not expose live QR codes in demos.
 Unknown/partial transactions reconcile only; canonical fully failed claims/spends
 can be reset without losing their history. Imported records require fresh chain
-checks. Inactivity, hidden tabs and account/network changes lock private state.
+checks. Five minutes without interaction, page close, explicit lock and
+account/network changes lock the shared private session.
 
 [Architecture](docs/ARCHITECTURE.md): Next.js App Router frontend/backend,
 TypeScript, Tailwind, src/app/api/**/route.ts handlers, src/lib/server/ modules.

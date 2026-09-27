@@ -14,9 +14,12 @@ URL fragments are captured and scrubbed in the client. QR images are generated
 locally. Neither fragments nor plaintext recovery enter Next.js endpoints, server
 props, telemetry or logs. APIs expose only public artifacts/build metadata.
 Encrypted IndexedDB uses authenticated, versioned wallet/contract namespaces;
-passphrases and decryption keys are never persisted. Schema 2 isolates NIGHT from
+plaintext passphrases and decryption keys are never persisted. Passkey PRF or an
+app-level recovery passphrase protects encrypted local key wrappers. Schema 2 isolates NIGHT from
 legacy test assets. A recovery file is private even when encrypted: keep it outside
-Git and tool output. Hidden tabs and five-minute timers lock private state.
+Git and tool output. The shared app session locks on disconnect/account change,
+explicit lock, page close or five minutes without interaction. A brief hidden tab
+for wallet/passkey approval does not discard a separate feature's unlock state.
 
 Witnesses go directly from the browser to the trusted local prover at 127.0.0.1:6300.
 That prover is inside the trust boundary and sees the inputs. Wallet extensions,

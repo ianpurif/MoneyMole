@@ -136,6 +136,11 @@ export class OneAmSession {
   }
   /** Connector v4 has no revoke method; forget only this browser's session. */
   disconnect(): void { this.#api = null; this.#address = ""; }
+  async localIdentity() {
+    await this.check(); if (!this.#api) throw new Error("Reconnect your wallet.");
+    const { walletContext } = await import("./payment-session");
+    return (await walletContext(this.#api, () => this.check())).walletId;
+  }
   async prepareIssuer(password: string) {
     await this.check();
     if (!this.#api) throw new Error("Reconnect 1AM.");

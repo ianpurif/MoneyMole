@@ -68,9 +68,27 @@ claim token or record it in test artifacts.
 AES-GCM records use a passphrase-derived key and AAD bound to network, wallet,
 contract and schema. NIGHT payment/deployment stores use schema 2; legacy schema 1
 is untouched. New deployment staging is night-payment-deployment-staging-v2.
-Only the public selected escrow is in localStorage (moneymole/night-escrow/v2).
-Imported files require their original passphrase and chain reconciliation. Wallet
-changes, hidden tabs and timers clear unlocked state; decryption keys are not saved.
+The root RecoveryProvider owns one RecoverySession per connected wallet. It owns
+the unlocked identity, selected escrow and payment/deployment/issuer controllers.
+Closing Tools or navigating client routes does not discard these controllers.
+The public escrow preference is wallet-scoped; the older selection remains readable.
+
+Local authentication metadata in localStorage contains only encrypted key wrappers
+and public credential metadata. WebAuthn requires user verification and PRF output
+to derive an AES-GCM wrapping key. Unsupported authenticators fail closed and offer
+the app passphrase fallback. Existing users unlock their original records before
+enrolling a passkey; no legacy data is overwritten or implicitly re-encrypted.
+The app passphrase minimum is seven Unicode characters (maximum 1,024 UTF-8 bytes);
+PBKDF2-SHA256 remains at 600,000 iterations. Wallet/protocol secrets are unchanged.
+
+Portable backups include a passphrase-wrapped local encryption secret, never a raw
+key. Passkey users add a fallback before export; imports still accept original
+legacy formats. Passkeys alone do not synchronize IndexedDB or recover records on
+another origin/device. Imported transactions still require chain reconciliation.
+Explicit lock, disconnect/account change, page close and five minutes without
+interaction clear all managed controllers and unlock material. A brief wallet or
+passkey prompt does not independently lock one part of the app. Unmanaged legacy
+store consumers retain their original visibility/timer safeguards.
 
 A NIGHT escrow has its own code/verifier identity and schema-v2 public deployment
 record. No issuer address is a NIGHT escrow. Multiple senders may use the same

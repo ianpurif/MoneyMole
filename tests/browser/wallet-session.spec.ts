@@ -26,7 +26,7 @@ async function mode(page: Page, value: string) {
   await page.evaluate(value => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.mode = value; window.dispatchEvent(new Event("focus")); }, value);
 }
 async function connect(page: Page) {
-  await page.getByRole("button", {name:"Connect"}).click();
+  await page.getByRole("button", {name:"Connect Wallet"}).click();
   await page.getByRole("button", {name:"1AM",exact:true}).click();
   await expect(page.getByRole("button", {name:"Disconnect",exact:true})).toBeVisible();
 }
@@ -62,7 +62,7 @@ test("totals refresh while records stay locked, without reauthorization", async 
   await page.evaluate(() => { (window as unknown as {walletProbe:WalletProbe}).walletProbe.night="9007199254740993123456"; window.dispatchEvent(new Event("focus")); });
   await expect(page.getByLabel("Total NIGHT",{exact:true})).toHaveText("9007199254740993.123456");
   expect((await probe(page)).calls).toBe(1);
-  await expect(page.getByRole("button",{name:"Unlock payment workspace"})).toBeDisabled();
+  await expect(page.getByRole("button",{name:"Save payment draft"})).toHaveCount(0);
   await page.getByRole("button",{name:"Disconnect",exact:true}).click();
   await expect(page.getByLabel("Total NIGHT",{exact:true})).toHaveCount(0);
 });
@@ -76,7 +76,7 @@ test("Connect discovers both wallets and authorizes only the selected provider",
   });
   await page.goto("/");
   await expect(page.getByRole("button",{name:"Check for 1AM"})).toHaveCount(0);
-  await page.getByRole("button",{name:"Connect",exact:true}).click();
+  await page.getByRole("button",{name:"Connect Wallet",exact:true}).click();
   await expect(page.getByRole("button",{name:"1AM",exact:true})).toBeVisible();
   await expect(page.getByRole("button",{name:"Lace",exact:true})).toBeVisible();
   expect((await probe(page)).calls).toBe(0);
@@ -87,11 +87,11 @@ test("Connect discovers both wallets and authorizes only the selected provider",
 
 test("Connect can rediscover a late wallet injection", async ({page}) => {
   await page.goto("/");
-  await page.getByRole("button",{name:"Connect",exact:true}).click();
+  await page.getByRole("button",{name:"Connect Wallet",exact:true}).click();
   await expect(page.locator(".connection-status")).toContainText("No supported wallet found");
   await page.evaluate(() => Object.assign(window,{midnight:{late:{name:"1AM",rdns:"com.midnight.1am",apiVersion:"4.0.1",icon:"",connect:async()=>{throw {code:"Rejected"};}}}}));
-  await page.getByRole("button",{name:"Connect",exact:true}).click();
-  await expect(page.getByRole("button",{name:"1AM",exact:true})).toBeVisible();
+  await page.getByRole("button",{name:"Refresh wallets",exact:true}).click();
+  await expect(page.getByRole("button",{name:"1AM",exact:true})).toBeEnabled();
 });
 test("client navigation retains authorization; disconnect and reload never prompt automatically", async ({page}) => {
   await fixture(page); await page.goto("/claim"); await connect(page);

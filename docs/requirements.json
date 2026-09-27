@@ -30,7 +30,7 @@
       "level": "Preparation",
       "title": "Real pinned dependency graph",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Generate registry-resolved package-lock.json, run npm ci and record exact installed versions.",
       "commands": [
@@ -1799,7 +1799,7 @@
       "level": "Level 1",
       "title": "Node 22",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Node 22 toolchain observed; host Node is distinct from Midnight node version.",
       "commands": [
@@ -2207,7 +2207,7 @@
       "level": "Level 1",
       "title": "Initial technical README",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -5671,7 +5671,7 @@
       "level": "Level 4",
       "title": "Setup and implemented usage documentation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-DOCS"
       ],
@@ -7490,7 +7490,7 @@
       "level": "Level 5",
       "title": "Maintained technical documentation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L4-DOCS"
       ],
@@ -7670,7 +7670,7 @@
       "level": "Level 6",
       "title": "Final technical documentation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L5-DOCS"
       ],
@@ -8952,7 +8952,7 @@
       "level": "Preparation",
       "title": "Single Next.js frontend/backend and client-only secrets",
       "owner": "architect",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [],
       "acceptance": "Next.js App Router, TypeScript, Tailwind; Route Handlers in src/app/api/**/route.ts; appropriate non-secret Server Actions; server-only modules in src/lib/server/. No separate backend without a verified requirement. 1AM authorization, claim secrets, private witnesses and private-state handling never enter Next.js APIs.",
       "commands": [

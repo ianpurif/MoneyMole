@@ -179,3 +179,14 @@ imagery, third-party runtime resources, tracking, fonts or endorsement assets ad
 - Reuse the owner's lunar textile background unchanged. System Avenir/Segoe UI,
   stitched borders and light text relief approximate embroidery without impairing
   live balance precision or introducing an external font request.
+
+## Local passkeys and wallet icons — checked 2026-09-28
+
+- https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API/WebAuthn_extensions
+  documents the PRF extension for deriving encryption material. MoneyMole requires
+  PRF output and user verification; a successful prompt alone never unlocks data.
+  This is local record encryption, not server login or blockchain authorization.
+- Wallet fallback icons are sourced from https://1am.xyz/favicon.ico and
+  https://www.lace.io/favicon-32x32.png, referenced by their official websites.
+  Installed connector data-image icons can be used safely as img sources; bundled
+  official icons cover unavailable/remote assets without external tracking requests.

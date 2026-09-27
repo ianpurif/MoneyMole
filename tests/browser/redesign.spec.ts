@@ -2,24 +2,48 @@ import { mkdir } from "node:fs/promises";
 import { test, expect } from "@playwright/test";
 import { installPaymentFixture } from "./support/payment-fixture";
 
+test("one local unlock survives claim-to-home navigation and Tools", async ({page}) => {
+  const {contract} = await installPaymentFixture(page);
+  await page.goto("/claim");
+  await page.getByRole("button", {name:"Connect Wallet",exact:true}).click();
+  await page.getByRole("dialog", {name:"Connect Wallet"}).getByRole("button", {name:"1AM",exact:true}).click();
+  await page.getByRole("button", {name:"Use recovery passphrase instead"}).click();
+  await page.getByLabel("Local recovery passphrase", {exact:true}).fill("seven77");
+  await page.getByRole("button", {name:"Secure MoneyMole",exact:true}).click();
+  await page.getByLabel("Escrow address", {exact:true}).fill(contract);
+  await page.getByRole("button", {name:"Use escrow",exact:true}).click();
+  await expect(page.getByRole("button", {name:"Verify and save claim"})).toBeVisible({timeout:60_000});
+  await page.getByRole("link", {name:"MoneyMole home"}).click();
+  await expect(page.getByRole("button", {name:"Save payment draft"})).toBeVisible();
+  await expect(page.getByRole("button", {name:"Continue with Passkey"})).toHaveCount(0);
+  await page.getByRole("button", {name:"Open workspace tools"}).click();
+  await expect(page.getByRole("heading", {name:"Security",exact:true})).toBeVisible();
+  await expect(page.getByLabel("Local recovery passphrase", {exact:true})).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", {name:"Activity",exact:true}).click();
+  await expect(page.getByRole("button", {name:"Continue with Passkey"})).toHaveCount(0);
+  await page.getByRole("button", {name:"Lock workspace"}).click();
+  await expect(page.getByRole("button", {name:"Continue with Passkey"})).toBeVisible();
+});
+
 test("focused synthetic payment workspace saves, validates and recovers a real encrypted draft", async ({page}) => {
   test.setTimeout(90_000);
   await mkdir("reports/revision", { recursive: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   const {contract} = await installPaymentFixture(page);
   await page.goto("/");
-  await page.getByRole("button",{name:"Connect"}).click();
+  await page.getByRole("button",{name:"Connect Wallet"}).click();
   await page.getByRole("button",{name:"1AM",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Unlock payment workspace"})).toBeVisible();
-  await expect(page.locator("[data-sonner-toast]").filter({hasText:"Unlock encrypted records to continue."})).toContainText("At least 16 characters.");
-  await expect(page.locator(".wallet-scroll")).not.toContainText("Unlock encrypted records to continue.");
-  await expect(page.locator(".wallet-scroll")).not.toContainText("At least 16 characters.");
+  await expect(page.getByRole("button",{name:"Continue with Passkey"})).toBeVisible();
+  await page.getByRole("button",{name:"Use recovery passphrase instead"}).click();
+  await expect(page.getByText("At least 7 characters.",{exact:false})).toBeVisible();
   await expect(page.getByText("Create / recover a payment escrow",{exact:true})).toHaveCount(0);
   await expect(page.getByLabel("Total NIGHT",{exact:true})).toHaveText("100");
   await page.screenshot({path:"reports/revision/connected-locked.png"});
-  await page.getByLabel("Preprod escrow address",{exact:true}).fill(contract);
   await page.getByLabel("Local recovery passphrase",{exact:true}).first().fill("synthetic local browser passphrase");
-  await page.getByRole("button",{name:"Unlock payment workspace"}).click();
+  await page.getByRole("button",{name:"Secure MoneyMole",exact:true}).click();
+  await page.getByLabel("Escrow address",{exact:true}).fill(contract);
+  await page.getByRole("button",{name:"Use escrow",exact:true}).click();
   await expect(page.getByRole("button",{name:"Save payment draft"})).toBeVisible({timeout:60_000});
   await page.screenshot({path:"reports/revision/unlocked-send.png"});
   await page.getByLabel("Amount in NIGHT").fill("0");
@@ -46,8 +70,9 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await page.setViewportSize({width:1440,height:1000});
   await page.getByRole("button",{name:"Lock workspace"}).click();
   await expect(page.getByRole("button",{name:"Prepare funding",exact:true})).toHaveCount(0);
+  await page.getByRole("button",{name:"Use recovery passphrase instead"}).click();
   await page.getByLabel("Local recovery passphrase",{exact:true}).first().fill("synthetic local browser passphrase");
-  await page.getByRole("button",{name:"Unlock payment workspace"}).click();
+  await page.getByRole("button",{name:"Unlock MoneyMole",exact:true}).click();
   await expect(page.getByLabel("Select payment")).toBeVisible({timeout:60_000});
   await page.getByLabel("Select payment").selectOption({index:1});
   await expect(page.getByText("funding not verified this session",{exact:false})).toBeHidden();
@@ -85,21 +110,21 @@ for (const width of [320,390,768,1440]) {
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.getByRole("button",{name:"Send",exact:true}).click();
     expect((await page.locator(".payment-app").boundingBox())!.height).toBe(frame!.height);
-    await page.getByRole("button",{name:"Connect"}).scrollIntoViewIfNeeded();
-    const box=await page.getByRole("button",{name:"Connect"}).boundingBox();
+    await page.getByRole("button",{name:"Connect Wallet"}).scrollIntoViewIfNeeded();
+    const box=await page.getByRole("button",{name:"Connect Wallet"}).boundingBox();
     expect(box!.y+box!.height).toBeLessThan(900);
   });
 }
 
-test("wallet waiting and cancellation stay inline",async({page})=>{
+test("wallet modal supports cancellation",async({page})=>{
   await page.addInitScript(()=>{
     Object.assign(window,{midnight:{synthetic:{name:"1AM",rdns:"com.midnight.1am",apiVersion:"4.0.1",icon:"",connect:()=>new Promise(()=>{})}}});
   });
   await page.goto("/");
-  await page.getByRole("button",{name:"Connect"}).click();
+  await page.getByRole("button",{name:"Connect Wallet"}).click();
   await page.getByRole("button",{name:"1AM",exact:true}).click();
   await expect(page.getByRole("button",{name:"1AM"})).toBeDisabled();
-  await page.getByRole("button",{name:"Cancel connection"}).click();
+  await page.getByRole("button",{name:"Close Connect Wallet"}).click();
   await expect(page.getByText("Connection cancelled.",{exact:false})).toBeVisible();
 });
 
@@ -111,7 +136,7 @@ test("tools focus returns to its trigger and the connected toast obeys CSP",asyn
   });
   await page.emulateMedia({reducedMotion:"reduce"});
   await page.goto("/");
-  await page.getByRole("button",{name:"Connect"}).click();
+  await page.getByRole("button",{name:"Connect Wallet"}).click();
   await page.getByRole("button",{name:"1AM",exact:true}).click();
   await expect(page.locator("[data-sonner-toast]").filter({hasText:"1AM connected"})).toBeVisible();
   await page.getByRole("button",{name:"Open workspace tools"}).click();
@@ -131,7 +156,7 @@ test("rejected connection can be retried without entering the payment workspace"
     }}});
   });
   await page.goto("/");
-  await page.getByRole("button",{name:"Connect"}).click();
+  await page.getByRole("button",{name:"Connect Wallet"}).click();
   await page.getByRole("button",{name:"1AM",exact:true}).click();
   await expect(page.locator(".connection-status")).toContainText("declined");
   await expect(page.getByRole("button",{name:"1AM",exact:true})).toBeEnabled();

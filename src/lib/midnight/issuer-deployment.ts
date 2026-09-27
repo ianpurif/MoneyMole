@@ -1,3 +1,4 @@
+import { requirePassphrase } from "../private-state/passphrase";
 import "client-only";
 import preprod from "../../../config/preprod.json";
 import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
@@ -34,7 +35,7 @@ export type DeploymentReview = { address: string; phase: Draft["phase"]; transac
 
 /** No transaction is submitted while preparing. Secrets never leave this client module. */
 export async function prepareIssuer(api: ConnectedAPI, password: string) {
-  if (password.length < 16) throw new Error("Use a local unlock passphrase of at least 16 characters.");
+  requirePassphrase(password);
   if ((await api.getConfiguration()).networkId !== "preprod") throw new Error("Select Preprod.");
   const addresses = await api.getShieldedAddresses();
   const coinKey = ShieldedCoinPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedCoinPublicKey)).toHexString();

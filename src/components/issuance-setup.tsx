@@ -8,7 +8,8 @@ export function IssuanceSetup({ open }: { open: () => Promise<Issuance> }) {
   const current = useRef<Issuance | null>(null), generation = useRef(0);
   const [busy, setBusy] = useState(false), [review, setReview] = useState<IssuanceReview | null>(null);
   const [message, setMessage] = useState("Issue the fixed supply to Wallet A. This is a separate transaction from deployment.");
-  useEffect(() => () => { generation.current++; current.current?.lock(); }, []);
+  // The shared recovery session owns the issuer store, including across navigation.
+  useEffect(() => () => { generation.current++; }, []);
   async function poll(issuer: Issuance, attempt: number) {
     for (let n = 0; n < 12 && attempt === generation.current; n++) {
       const next = await issuer.reconcile();
@@ -27,7 +28,7 @@ export function IssuanceSetup({ open }: { open: () => Promise<Issuance> }) {
     try {
       if (!current.current) {
         const issuer = await open();
-        if (attempt !== generation.current) { issuer.lock(); return; }
+        if (attempt !== generation.current) return;
         current.current = issuer;
       }
       if (action === "prepare") {

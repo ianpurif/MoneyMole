@@ -1,5 +1,26 @@
 # Current execution state
 
+## Shared local recovery and passkeys — 2026-09-28
+
+Connect Wallet opens a centered picker with official bundled 1AM/Lace icons and
+explicit wallet selection. The root RecoveryProvider now owns one wallet-scoped
+local identity, escrow selection and payment/deployment controllers. Unlocking
+and restoring in Tools applies throughout Send, Receive, Activity and claim routes;
+closing Tools or client navigation does not discard the recovered session.
+
+The local app passphrase minimum is seven characters. Existing encryption/KDF,
+wallet seeds, claim entropy and protocol authority are unchanged. WebAuthn PRF
+adds local passkey unlocking with a recovery-passphrase fallback. Existing users
+unlock their original records once before enrolling. Portable encrypted exports
+carry a password-wrapped key and retain compatibility with legacy imports.
+
+Focused validation: 16 local encryption/recovery unit checks and four synthetic
+browser scenarios passed, including cross-route unlock reuse, draft recovery,
+wallet selection and cancellation. Types and targeted lint were checked; full
+build/contract/proving suites were not rerun. Physical authenticator/extension
+acceptance and live transactions remain unobserved. The preview stays on
+http://localhost:3000. Changed historical evidence subjects are not marked verified.
+
 ## Embroidered wallet presentation — 2026-09-27
 
 The wallet card now uses the supplied `public/images/debit-card-bg.png` unchanged,

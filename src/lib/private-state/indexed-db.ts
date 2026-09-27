@@ -5,6 +5,7 @@ import type { PrivateNamespace, UnlockedPrivateStore } from "./port";
 type Stored = { revision: number; envelope: EncryptedEnvelope };
 const CHECK = "unlock_check";
 const marker = new TextEncoder().encode("moneymole/private-store/v1");
+const managed = new Map<string, Set<BrowserPrivateStore>>();
 
 function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -53,12 +54,44 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
   #namespace: PrivateNamespace;
   #closed = false;
   #onLock = new Set<() => void>();
-  #timer: ReturnType<typeof setTimeout>;
+  #timer: ReturnType<typeof setTimeout> | undefined;
   #hide = () => { if (document.visibilityState === "hidden") this.lock(); };
   private constructor(db: IDBDatabase, cipher: PrivateCipher, namespace: PrivateNamespace) {
     this.#db = db; this.#cipher = cipher; this.#namespace = Object.freeze({ ...namespace });
-    this.#timer = setTimeout(() => this.lock(), 5 * 60_000);
-    document.addEventListener("visibilitychange", this.#hide);
+    const owner = managed.get(namespace.walletIdentity);
+    if (owner) owner.add(this);
+    else {
+      this.#timer = setTimeout(() => this.lock(), 5 * 60_000);
+      document.addEventListener("visibilitychange", this.#hide);
+    }
+  }
+  /** Root recovery session owns lifetime; standalone/legacy consumers keep default locking. */
+  static manageWallet(wallet: string): () => void {
+    if (managed.has(wallet)) throw new Error("Recovery session already active");
+    const stores = new Set<BrowserPrivateStore>(); managed.set(wallet, stores);
+    return () => { for (const store of stores) store.lock(); managed.delete(wallet); };
+  }
+  static async namespaces(wallet: string): Promise<PrivateNamespace[]> {
+    const db = await openDatabase();
+    try {
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction("records", "readonly"), request = tx.objectStore("records").getAllKeys();
+        tx.oncomplete = () => {
+          try {
+            const result: PrivateNamespace[] = [];
+            for (const key of request.result) {
+              if (typeof key !== "string" || !key.endsWith(`/${CHECK}`)) continue;
+              const parts = JSON.parse(key.slice(0, -CHECK.length - 1)) as unknown[];
+              if (parts[0] !== "moneymole/private-state/v1" || parts[1] !== "preprod" || parts[3] !== wallet) continue;
+              const ns = { network: "preprod" as const, contractAddress: String(parts[2]), walletIdentity: wallet, schemaVersion: Number(parts[4]) };
+              namespaceId(ns); result.push(ns);
+            }
+            resolve(result);
+          } catch { reject(new Error("Local recovery metadata is damaged. Preserve your browser data.")); }
+        };
+        tx.onerror = tx.onabort = () => reject(new Error("Local recovery storage is unavailable."));
+      });
+    } finally { db.close(); }
   }
   static async unlock(namespace: PrivateNamespace, password: string, create = false): Promise<BrowserPrivateStore> {
     const prefix = namespaceId(namespace);
@@ -160,6 +193,7 @@ export class BrowserPrivateStore implements UnlockedPrivateStore {
   lock(): void {
     if (this.#closed) return;
     this.#closed = true; clearTimeout(this.#timer);
+    managed.get(this.#namespace.walletIdentity)?.delete(this);
     document.removeEventListener("visibilitychange", this.#hide);
     this.#cipher.lock(); this.#db.close();
     for (const callback of this.#onLock) callback();

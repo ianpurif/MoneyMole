@@ -1,5 +1,6 @@
 import "client-only";
 import type { PrivateNamespace } from "./port";
+import { requirePassphrase } from "./passphrase";
 
 export const KDF_ITERATIONS = 600_000;
 export const MAX_PRIVATE_BYTES = 1_048_576;
@@ -51,7 +52,7 @@ export class PrivateCipher {
 
   static async unlock(password: string, salt?: string): Promise<PrivateCipher> {
     const bytes = utf8.encode(password);
-    if (bytes.length < 16 || bytes.length > 1024) throw new Error("Use a passphrase of 16–1024 UTF-8 bytes");
+    requirePassphrase(password);
     const saltBytes = salt === undefined ? crypto.getRandomValues(new Uint8Array(16)) : decode(salt, 16, 16);
     try {
       const material = await crypto.subtle.importKey("raw", bytes, "PBKDF2", false, ["deriveKey"]);

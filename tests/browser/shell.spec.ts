@@ -26,12 +26,14 @@ test("synthetic escrow recovers without submission and refreshes balances after 
   const writes: string[] = [];
   page.on("request", req => { if (req.method() !== "GET") writes.push(new URL(req.url()).pathname); });
   async function prepare() {
-    await page.getByRole("button", { name: "Connect" }).click();
+    await page.getByRole("button", { name: "Connect Wallet" }).click();
     await page.getByRole("button", { name: "1AM", exact: true }).click();
+    await page.getByRole("button", { name: "Use recovery passphrase instead" }).click();
+    await page.getByLabel("Local recovery passphrase", {exact:true}).fill("synthetic browser unlock passphrase");
+    await page.getByRole("button", {name:/^(Secure|Unlock) MoneyMole$/}).click();
     await page.getByRole("button", { name: "Open workspace tools" }).click();
     await page.getByText("Create / recover a payment escrow", { exact: true }).click();
-    await page.locator("details").filter({has: page.getByText("Create / recover a payment escrow", {exact:true})}).getByLabel("Local recovery passphrase", { exact: true }).fill("synthetic browser unlock passphrase");
-    await page.getByRole("button", { name: "Prepare / unlock escrow", exact: true }).click();
+    await page.getByRole("button", { name: /^(Create \/ recover escrow|Review escrow)$/ }).click();
     await expect(page.getByText(/^State: prepared/)).toBeVisible({ timeout: 60_000 });
   }
   await page.goto("/"); await prepare();
@@ -56,8 +58,8 @@ test("Lace is offered explicitly without automatically connecting", async ({ pag
     } } });
   });
   await page.goto("/");
-  await page.getByRole("button", { name: "Connect", exact:true }).click();
-  await expect(page.getByRole("button", { name: "1AM", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Connect Wallet", exact:true }).click();
+  await expect(page.getByRole("button", { name: "1AM", exact: true })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Lace", exact: true })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as {laceCalls:number}).laceCalls)).toBe(0);
   await page.getByRole("button", { name: "Lace", exact: true }).click();
@@ -68,7 +70,7 @@ test("disconnected visitor cannot start a payment", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Send NIGHT.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
   await expect(page.getByText("Live acceptance of this implementation is pending.", { exact: false })).toBeVisible();
   expect(errors).toEqual([]);
@@ -93,12 +95,12 @@ test("synthetic connector exercises explicit authorization without API requests"
   const apiRequests: string[] = [];
   page.on("request", request => { if (new URL(request.url()).pathname.startsWith("/api/")) apiRequests.push(request.method()); });
   await page.goto("/");
-  await page.getByRole("button", { name: "Connect" }).click();
+  await page.getByRole("button", { name: "Connect Wallet" }).click();
   expect(await page.evaluate(() => (window as unknown as { syntheticConnectCalls: number }).syntheticConnectCalls)).toBe(0);
   await page.getByRole("button", { name: "1AM" }).click();
   await expect(page.getByText("1AM connected", {exact:true}).first()).toBeVisible();
   await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Unlock payment workspace" })).toBeDisabled();
+  await expect(page.getByText("Preparing local recovery…", {exact:false})).toBeVisible();
   expect(apiRequests).toEqual([]);
   await page.getByRole("button", { name: "Disconnect", exact: true }).click();
   await expect(page.locator(".connection-status")).toContainText("Browser session cleared");

@@ -13,8 +13,10 @@ import { WalletCard } from "./wallet-card";
 import { downloadLocal } from "./download";
 import { ContextSheet } from "./context-sheet";
 import { useWallet } from "./wallet-provider";
+import { useRecovery } from "./recovery-provider";
+import { RecoveryAccess } from "./recovery-access";
+import { validPassphrase } from "@/lib/private-state/passphrase";
 const night = (atomic: string) => formatAmount(BigInt(atomic), 6);
-type Controller = Awaited<ReturnType<OneAmSession["openPayments"]>>;
 export function PaymentWorkspace({
   session,
   claimToken,
@@ -32,26 +34,20 @@ export function PaymentWorkspace({
 }) {
   const { balances, refreshBalances } = useWallet();
   const [toolsOpen, setToolsOpen] = useState(false);
-  const controller = useRef<Controller | null>(null),
-    generation = useRef(0);
+  const recovery = useRecovery();
+  const paymentController = recovery?.payments ?? null;
+  const controller = { current: paymentController };
+  const generation = useRef(0);
   const scrollArea = useRef<HTMLDivElement>(null);
-  const [contract, setContract] = useState(""),
-    [password, setPassword] = useState("");
+  const [contract, setContract] = useState("");
   const [amount, setAmount] = useState(initialAmount),
     [claim, setClaim] = useState("");
-  const [busy, setBusy] = useState(false),
-    [unlocked, setUnlocked] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const unlocked = !!paymentController;
   const [asset, setAsset] = useState("");
   const [records, setRecords] = useState<PaymentView[]>([]),
     [selected, setSelected] = useState("");
   const [message, setMessage] = useState("");
-  function unlockGuidance() {
-    toast.info("Unlock encrypted records to continue. Use your existing escrow address.", {
-      id: "unlock-guidance", duration: 9000,
-      description: "At least 16 characters. Encrypts records on this device. Never use or enter a wallet seed or private key.",
-    });
-  }
-  useEffect(() => { unlockGuidance(); return () => { toast.dismiss("unlock-guidance"); }; }, []);
   const [link, setLink] = useState(""),
     [qr, setQr] = useState("");
   const [recipient, setRecipient] = useState(""),
@@ -73,44 +69,40 @@ export function PaymentWorkspace({
   const current = visibleRecords.find((r) => r.id === selected);
   function lock() {
     generation.current++;
-    controller.current?.lock();
-    controller.current = null;
-    setUnlocked(false);
+    recovery?.lock();
     setRecords([]);
     setSelected("");
     setLink("");
     setQr("");
     setClaim("");
-    setPassword("");
     setImportPassword("");
     setBusy(false);
     toast.dismiss();
     setMessage(
-      "Private workspace locked. Unlock with the same wallet and passphrase to recover saved payments.",
+      "MoneyMole locked. Use your passkey or recovery passphrase with the same wallet to continue.",
     );
   }
   useEffect(() => {
-    const lifetime = generation,
-      attempt = lifetime.current;
-    const saved = localStorage.getItem("moneymole/night-escrow/v2");
+    const lifetime = generation, attempt = ++lifetime.current;
     queueMicrotask(() => {
-      if (attempt === lifetime.current && saved && /^[a-f0-9]{64}$/.test(saved))
-        setContract(saved);
+      if (attempt !== lifetime.current) return;
+      setRecords([]); setSelected(""); setLink(""); setQr(""); setBusy(false);
+      if (paymentController) {
+        setAsset(paymentController.asset);
+        void paymentController.list().then(list => { if (attempt === lifetime.current) setRecords(list); }).catch(() => { if (attempt === lifetime.current) setMessage("Saved records are unavailable. Unlock again to retry."); });
+      }
     });
-    return () => {
-      lifetime.current++;
-      controller.current?.lock();
-    };
-  }, []);
+    return () => { lifetime.current++; };
+  }, [paymentController]);
+  useEffect(() => { let active = true; queueMicrotask(() => { if (active && recovery?.escrow) setContract(recovery.escrow); }); return () => { active = false; }; }, [recovery, recovery?.escrow]);
+  useEffect(() => { let active = true; queueMicrotask(() => { if (active) { setClaim(recovery?.pendingClaim ?? ""); setLink(""); setQr(""); setImportPassword(""); } }); return () => { active = false; }; }, [recovery, recovery?.pendingClaim, recovery?.authenticated]);
   useEffect(() => {
-    if (!claimToken) return;
+    if (!claimToken || !recovery) return;
     let active = true;
-    const attempt = generation.current;
-    void decodeClaim(claimToken)
-      .then((p) => {
-        if (active && attempt === generation.current) {
+    void recovery.captureClaim(claimToken)
+      .then(() => {
+        if (active) {
           setClaim(claimToken);
-          setContract(p.contract);
           setTab("receive");
           setMessage(
             "Claim captured locally and removed from the address bar. Unlock and save it before closing this tab.",
@@ -127,18 +119,7 @@ export function PaymentWorkspace({
     return () => {
       active = false;
     };
-  }, [claimToken, onClaimConsumed]);
-  useEffect(() => {
-    const hide = () => {
-      if (document.visibilityState === "hidden") lock();
-    };
-    document.addEventListener("visibilitychange", hide);
-    const timer = setTimeout(lock, 5 * 60_000);
-    return () => {
-      document.removeEventListener("visibilitychange", hide);
-      clearTimeout(timer);
-    };
-  }, [unlocked]);
+  }, [claimToken, onClaimConsumed, recovery]);
   async function refresh() {
     const c = controller.current,
       attempt = generation.current;
@@ -171,39 +152,6 @@ export function PaymentWorkspace({
     } finally {
       await refreshBalances();
       if (attempt === generation.current) setBusy(false);
-    }
-  }
-  async function unlock() {
-    const attempt = generation.current;
-    setBusy(true);
-    try {
-      const c = await session.openPayments(contract.trim(), password);
-      if (attempt !== generation.current) {
-        c.lock();
-        return;
-      }
-      controller.current?.lock();
-      controller.current = c;
-      setUnlocked(true);
-      toast.dismiss("unlock-guidance");
-      setAsset(c.asset);
-      localStorage.setItem("moneymole/night-escrow/v2", c.contract);
-      setContract(c.contract);
-      await refresh();
-      if (attempt === generation.current)
-        setMessage(
-          "Workspace unlocked. Reconcile saved records before relying on their state.",
-        );
-    } catch {
-      if (attempt === generation.current)
-        setMessage(
-          "Could not unlock. Check the Preprod escrow address, node/indexer availability and local passphrase. Existing encrypted data was preserved.",
-        );
-    } finally {
-      if (attempt === generation.current) {
-        setPassword("");
-        setBusy(false);
-      }
     }
   }
   async function poll(id: string) {
@@ -298,7 +246,7 @@ export function PaymentWorkspace({
             >
               Tools
             </button>
-            {unlocked && (
+            {recovery?.authenticated && (
               <button className="quiet-button" onClick={lock}>
                 Lock workspace
               </button>
@@ -337,6 +285,7 @@ export function PaymentWorkspace({
                 void operate(async () => {
                   const p = await decodeClaim(extractClaim(claim));
                   setContract(p.contract);
+                  await recovery?.captureClaim(extractClaim(claim));
                   setMessage(
                     "Claim address selected. Unlock the workspace and save the claim.",
                   );
@@ -347,45 +296,12 @@ export function PaymentWorkspace({
             </Button>
           </details>
         )}
-        {!unlocked && (
-          <div className="panel">
-            <label className="field">
-              Preprod escrow address
-              <input
-                value={contract}
-                onChange={(e) => setContract(e.target.value.trim())}
-                disabled={unlocked || busy}
-                spellCheck={false}
-                autoComplete="off"
-              />
-            </label>
-            {!unlocked && (
-              <>
-                <label className="field">
-                  Local recovery passphrase
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onFocus={unlockGuidance}
-                    autoComplete="current-password"
-                    disabled={busy}
-                  />
-                </label>
-                <Button
-                  disabled={
-                    busy ||
-                    password.length < 16 ||
-                    !/^[a-f0-9]{64}$/.test(contract)
-                  }
-                  onClick={() => void unlock()}
-                >
-                  Unlock payment workspace
-                </Button>
-              </>
-            )}
-          </div>
-        )}
+        {!recovery?.authenticated && <RecoveryAccess />}
+        {recovery?.authenticated && !unlocked && <div className="panel">
+          <label className="field">Escrow address<input value={contract} onChange={event => setContract(event.target.value.trim())} autoComplete="off" spellCheck={false} disabled={recovery.busy} /></label>
+          <Button disabled={recovery.busy || !/^[a-f0-9]{64}$/.test(contract)} onClick={() => void recovery.selectEscrow(contract)}>Use escrow</Button>
+          <p role="status" className="small-note">{recovery.message || "Use an existing escrow, or create / recover one in Tools."}</p>
+        </div>}
         {unlocked && (
           <div key={tab} className="state-view">
             {tab === "send" ? (
@@ -458,7 +374,7 @@ export function PaymentWorkspace({
                     disabled={!unlocked || busy || !claim}
                     onClick={() =>
                       void operate(async () => {
-                        const v = await controller.current!.receive(
+                        const v = await recovery!.receiveClaim(
                           extractClaim(claim),
                         );
                         setSelected(v.id);
@@ -670,14 +586,15 @@ export function PaymentWorkspace({
                       <div className="transaction-actions">
                         <Button
                           variant="outline"
-                          disabled={busy}
+                          disabled={busy || !recovery?.hasFallback}
+                          title={!recovery?.hasFallback ? "Add a recovery passphrase in Tools → Security first" : undefined}
                           onClick={() =>
                             void operate(async () =>
                               downloadLocal(
                                 "moneymole-encrypted-payment.json",
-                                await controller.current!.exportEncrypted(
+                                recovery!.backup(await controller.current!.exportEncrypted(
                                   current.id,
-                                ),
+                                )),
                               ),
                             )
                           }
@@ -812,7 +729,8 @@ export function PaymentWorkspace({
         </p>}
       </div>
       {toolsOpen && <ContextSheet title="Tools" onClose={() => setToolsOpen(false)}>
-        <PaymentDeployment session={session} onSelect={address => { if (address !== contract) lock(); setContract(address); localStorage.setItem("moneymole/night-escrow/v2", address); }} />
+        <RecoveryAccess security />
+        <PaymentDeployment session={session} />
         {unlocked && <>
                 <details className="mt-5">
                   <summary className="cursor-pointer font-medium">
@@ -833,7 +751,7 @@ export function PaymentWorkspace({
                     <input
                       type="file"
                       accept="application/json,.json"
-                      disabled={busy || importPassword.length < 16}
+                      disabled={busy || !validPassphrase(importPassword)}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
@@ -842,7 +760,7 @@ export function PaymentWorkspace({
                           return;
                         }
                         void operate(async () => {
-                          const v = await controller.current!.importEncrypted(
+                          const v = await recovery!.importPayment(
                             await file.text(),
                             importPassword,
                           );
@@ -867,8 +785,8 @@ export function PaymentWorkspace({
             <p className="break-all text-xs text-muted">Escrow: {contract}</p>
             <p className="text-xs text-muted">
               Native Preprod NIGHT · 6 decimals · public amounts and addresses.
-              DUST covers fees. Private state locks when this tab is hidden or
-              after five minutes.
+              DUST covers fees. MoneyMole locks after five minutes without interaction,
+              when disconnected, or when this page is closed.
             </p>
           </details>
         )}
