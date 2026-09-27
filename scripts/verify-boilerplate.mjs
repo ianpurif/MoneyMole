@@ -14,7 +14,7 @@ if (resolved) {
   const install = run("npm", ["ci", "--no-audit", "--no-fund"], { timeout: 240_000 });
   checks.push({ name: "npm ci", result: install.ok ? "passed" : "failed", exit: install.status });
   if (install.ok) {
-    for (const command of ["lint", "typecheck", "test:unit", "build", "test:browser", "compile:probe"]) {
+    for (const command of ["audit:deps", "lint", "typecheck", "test:unit", "build", "test:browser", "compile:probe"]) {
       const result = run("npm", ["run", command], { timeout: command === "compile:probe" ? 620_000 : 240_000 });
       checks.push({ name: command, result: result.ok ? "passed" : result.status === 2 ? "blocked" : "failed", exit: result.status });
       if (!result.ok) { process.stdout.write(result.stdout); process.stderr.write(result.stderr); }

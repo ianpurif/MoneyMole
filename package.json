@@ -45,7 +45,8 @@
     "requirements:report": "node scripts/requirements.mjs --write",
     "requirements:check": "node scripts/requirements.mjs --check",
     "evidence:participants": "node scripts/participants.mjs",
-    "history:inspect": "node scripts/history.mjs"
+    "history:inspect": "node scripts/history.mjs",
+    "audit:deps": "npm audit --audit-level=low"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
@@ -82,10 +83,10 @@
     "eslint": "9.39.1",
     "eslint-config-next": "16.3.6",
     "fake-indexeddb": "6.2.4",
-    "postcss": "8.5.6",
+    "postcss": "8.5.28",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
-    "vite": "7.3.1",
-    "vitest": "4.1.7"
+    "vite": "7.3.6",
+    "vitest": "4.1.11"
   }
 }

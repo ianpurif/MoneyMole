@@ -125,3 +125,9 @@ occurred. The configured Midnight MCP returned no observable tool listing.
 Browser ledger execution uses Next.js webpack async WebAssembly (ADR 006). Both
 `npm run dev` and `npm run build` select webpack explicitly; no separate backend
 is introduced. Validate generated contracts before serving public compiler artifacts.
+
+Security maintenance (2026-09-27): PostCSS 8.5.28, Vite 7.3.6 and Vitest 4.1.11
+replace audited vulnerable development versions. Vite accepts patched esbuild
+0.28.x. npm run audit:deps checks the complete graph in local readiness and CI.
+Issuer verification compares the immutable deployed runtime closure, so isolated
+build/test patches do not require issuer redeployment or rewriting its record.

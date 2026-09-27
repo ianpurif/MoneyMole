@@ -5,7 +5,7 @@ import { ContractState } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { ContractState as RuntimeState } from "@midnight-ntwrk/compact-runtime";
 import { ledger } from "../managed/test-asset/contract/index.js";
 import { at, readJson, hashFile, saveJson, run } from "./lib.mjs";
-import { verifyAdditiveDependencies } from "./deployment-dependencies.mjs";
+import { verifyDeploymentRuntimeDependencies } from "./deployment-dependencies.mjs";
 import { finality } from "./product/preprod-observer.mjs";
 
 // Read-only official indexer query; no private state, wallet access or network mutation.
@@ -24,8 +24,8 @@ try {
     const baselineCommit = "d4e89bd1589070549e50bb3ee14746708cfa4ead";
     const baseline = run("git", ["show", `${baselineCommit}:package-lock.json`]); assert(baseline.ok);
     assert.equal(createHash("sha256").update(baseline.stdout).digest("hex"), recordedLock.sha256);
-    dependencies.checkedPackages = verifyAdditiveDependencies(JSON.parse(baseline.stdout), readJson("package-lock.json"));
-    dependencies.mode = "original_packages_preserved_with_additions";
+    dependencies.checkedPackages = verifyDeploymentRuntimeDependencies(JSON.parse(baseline.stdout), readJson("package-lock.json"));
+    dependencies.mode = "original_runtime_closure_preserved_tooling_updates_allowed";
     dependencies.baselineCommit = baselineCommit;
   }
   stage = "official indexer deployment and current state";

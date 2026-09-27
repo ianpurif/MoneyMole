@@ -24,6 +24,8 @@ jobs:
         run: test -s package-lock.json
       - name: Install exactly the locked dependencies
         run: npm ci --no-audit --no-fund
+      - name: Audit production and development dependencies
+        run: npm run audit:deps
       - name: Check preparation utilities and evidence references
         run: npm run check:offline
       - name: Install reviewed pinned Compact toolchain

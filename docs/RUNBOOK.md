@@ -26,6 +26,7 @@ handle and shut it down deliberately when done.
 |---|---|---|
 | `bootstrap` | `node scripts/bootstrap.mjs` | Creates a genuine lock if absent, then npm ci; requires registry access. |
 | `deps:lock` | `node scripts/bootstrap.mjs --lock-only` | Only resolves the real graph; no fabricated dependency entries. |
+| `audit:deps` | `npm audit --audit-level=low` | Fails on any currently reported dependency vulnerability, including development tools. |
 | `doctor` | `node scripts/doctor.mjs` | Presence/version checks; Docker/Compact/Codex absence is blocked. |
 | `doctor:codex` | `node scripts/codex-doctor.mjs` | Read-only client/model/config probe; custom-agent discovery remains a separate observed gate. |
 | `doctor:mcp` | `node scripts/mcp-doctor.mjs` | Read-only installed-client MCP tool listing; blocks if the configured server exposes no tools. |
@@ -66,8 +67,10 @@ handle and shut it down deliberately when done.
 Issuer verification preserves the original deployment record. If the app lockfile
 has gained UI dependencies, it loads the original lockfile from immutable Git
 commit `d4e89bd1589070549e50bb3ee14746708cfa4ead`, checks its recorded SHA-256, and
-requires every original dependency version, integrity and graph entry to remain
-identical (dev-only packages may be promoted to production). Contract source,
+requires the original production dependency closure, including resolved peers and
+optional packages, to retain version, integrity and graph identity. A shared package
+is protected even if marked dev-only. Isolated build/test tools may receive security
+patches; package additions cannot shadow protected dependencies. Contract source,
 generated code, verifier and toolchain digests must still match exactly. Missing
 history or changed dependencies fail closed. Both deployment and latest state
 must be on the node's finalized canonical chain. No redeployment is performed.
