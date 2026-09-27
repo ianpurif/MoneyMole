@@ -62,7 +62,7 @@
       "level": "Preparation",
       "title": "Next.js application foundation",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "PREP-LOCK"
       ],
@@ -525,7 +525,8 @@
             }
           ]
         }
-      ]
+      ],
+      "progress": "CI-only source change invalidated the prior full-shell evidence; refresh with the new local and remote check records."
     },
     {
       "id": "PREP-CODEX",
@@ -1530,7 +1531,7 @@
       "level": "Level 3",
       "title": "Push and pull-request compile/test workflow",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L1-MANAGED",
         "PREP-LOCK"
@@ -1563,14 +1564,14 @@
           ]
         }
       ],
-      "progress": "actual_public_product_CI_run_36295888117_at_published_1b3ed38"
+      "progress": "Previous CI is historical. Fresh f85fbd6 run exposed a clean-checkout generated-artifact prerequisite; workflow order fixed, replacement remote run required."
     },
     {
       "id": "L3-BUILD",
       "level": "Level 3",
       "title": "Production build",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L3-CI"
       ],
@@ -1602,7 +1603,7 @@
           ]
         }
       ],
-      "progress": "successful_production_build_in_remote_CI_for_unchanged_application_source"
+      "progress": "Previous CI is historical. Fresh f85fbd6 run exposed a clean-checkout generated-artifact prerequisite; workflow order fixed, replacement remote run required."
     },
     {
       "id": "L3-PROPOSAL",
@@ -1709,7 +1710,7 @@
       "level": "Level 4",
       "title": "Product repository pipeline",
       "owner": "engineer",
-      "status": "verified",
+      "status": "implemented",
       "dependsOn": [
         "L3-CI"
       ],
@@ -1733,7 +1734,7 @@
           ]
         }
       ],
-      "progress": "successful_actual_product_repository_CI_at_1b3ed38"
+      "progress": "Previous CI is historical. Fresh f85fbd6 run exposed a clean-checkout generated-artifact prerequisite; workflow order fixed, replacement remote run required."
     },
     {
       "id": "L4-ADDRESS",
@@ -2344,12 +2345,14 @@
           {
             "id": "L3-CI",
             "requirement": "Workflow and actual passing remote CI",
-            "status": "satisfied",
+            "status": "partial",
             "evidence": [
               "docs/evidence/github-verification.json",
-              "https://github.com/ianpurif/MoneyMole/actions/runs/36295888117"
+              "https://github.com/ianpurif/MoneyMole/actions/runs/36295888117",
+              "docs/evidence/ci-ordering-failure.json",
+              "docs/evidence/ci-ordering-failure.json"
             ],
-            "missing": ""
+            "missing": "Run 36298220841 failed because evidence validation preceded ignored generated artifacts. Workflow order is corrected; replacement CI is being verified."
           },
           {
             "id": "L3-README",
@@ -2414,12 +2417,14 @@
           {
             "id": "L4-PIPELINE",
             "requirement": "Passing pipeline in product repository",
-            "status": "satisfied",
+            "status": "partial",
             "evidence": [
               "docs/evidence/github-verification.json",
-              "https://github.com/ianpurif/MoneyMole/actions/runs/36295888117"
+              "https://github.com/ianpurif/MoneyMole/actions/runs/36295888117",
+              "docs/evidence/ci-ordering-failure.json",
+              "docs/evidence/ci-ordering-failure.json"
             ],
-            "missing": ""
+            "missing": "Run 36298220841 failed because evidence validation preceded ignored generated artifacts. Workflow order is corrected; replacement CI is being verified."
           },
           {
             "id": "L4-COMMITS",

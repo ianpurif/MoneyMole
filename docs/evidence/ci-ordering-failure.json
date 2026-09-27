@@ -1,0 +1,98 @@
+{
+  "observedAt": "2026-09-27T05:50:37.638Z",
+  "scope": "clean_source_checkout_generated_artifact_prerequisite",
+  "run": {
+    "id": 36298220841,
+    "url": "https://github.com/ianpurif/MoneyMole/actions/runs/36298220841",
+    "head": "f85fbd6d7e9c7af5a3fdb0c3b2788ddc1f527426",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "name": "verify",
+        "conclusion": "failure",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Pin package manager",
+            "conclusion": "success"
+          },
+          {
+            "name": "Reject unresolved preparation dependency graph",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install exactly the locked dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Audit production and development dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Check preparation utilities and evidence references",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Install reviewed pinned Compact toolchain",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Compile actual payment contracts and verify generated artifacts",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Lint and typecheck",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Deterministic and contract integration suites",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Production build",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Browser security and synthetic authorization checks",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Requirement consistency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "reproduction": {
+    "command": "node scripts/requirements.mjs --check in a copy of tracked files only",
+    "exitCode": 1,
+    "diagnostic": "Changed evidence subject: L1-MANAGED"
+  },
+  "rootCause": "L1-MANAGED now verifies generated ignored keys; the workflow ran evidence checks before generating those files.",
+  "resolution": "Install and compile the pinned contracts before offline/evidence checks; retain all evidence assertions."
+}

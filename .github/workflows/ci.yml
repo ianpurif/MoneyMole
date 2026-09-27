@@ -26,8 +26,6 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Audit production and development dependencies
         run: npm run audit:deps
-      - name: Check preparation utilities and evidence references
-        run: npm run check:offline
       - name: Install reviewed pinned Compact toolchain
         run: |
           node scripts/install-compact.mjs --approve-reviewed-installer
@@ -38,6 +36,10 @@ jobs:
           npm run compile:contracts
           npm run compile:issuance
           npm run verify:artifacts
+      # Verified requirements bind generated keys, which are intentionally ignored.
+      # A clean checkout must compile them before validating evidence subjects.
+      - name: Check preparation utilities and evidence references
+        run: npm run check:offline
       - name: Lint and typecheck
         run: |
           npm run lint
