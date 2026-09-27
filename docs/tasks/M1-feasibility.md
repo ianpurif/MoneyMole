@@ -65,3 +65,9 @@ five recovery integration cases. Coin openings stay local; the candidate matches
 public output observations and validates the Merkle position using ledger-v8.
 Canonical Preprod observations, unspent status and independent wallet spendability
 remain unverified. See docs/disclosure-audit.md and the integration evidence.
+
+2026-09-27 Level audit: fresh 13 generated-contract and 20 integration cases,
+fund/claim/issue synthetic proofs and read-only issuer canonical finality passed.
+The issuer remains unissued. L1 compilation/artifact/deployment criteria are
+verified independently of the stronger live CORE privacy/conservation gates;
+they do not complete M1. See docs/LEVEL-AUDIT.md and its source-bound evidence.

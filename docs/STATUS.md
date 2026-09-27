@@ -4,6 +4,23 @@ Snapshot: 2026-09-27. **Requested application engineering remediation is complet
 real 1AM wallet E2E acceptance remains pending.** Current sanitized evidence is
 `docs/evidence/local-verification.json`. No live transaction or push was performed.
 
+## Current Level audit
+
+The strict [Level 1–6 audit](LEVEL-AUDIT.md) is complete for all automatable work.
+All six Levels are **NOT PASSED** under the published-submission criteria. Level 1
+has compiling contracts, tests, generated keys, a real issuer deployment and enough
+published history; its required explicit README privacy section is fixed locally
+but unpublished. Higher Levels still need real 1AM payment acceptance; Level 3
+also needs actual idea-list submission/organizer approval.
+
+The owner supplied https://github.com/ianpurif/MoneyMole. Public access and CI run
+36295888117 at 1b3ed38 are independently verified: every step passed. Thirty-five
+substantive commits were reviewed in the existing published history, excluding
+audit/docs-only commits. Fresh evidence is in docs/evidence/level-verification.json,
+github-verification.json and commit-audit.json. Video, hosted app link, screenshots,
+users/feedback and the owner-deferred X profile do not affect this audit verdict.
+The X profile remains required for the later complete submission, not a verified item.
+
 ## Completed engineering
 
 - Confirmed failed claims and controlled spends have explicit retry actions. Each
@@ -57,7 +74,8 @@ requirement; their verification was not fabricated or bypassed.
 `services:check` is deliberately a TCP-only blocked diagnostic; actual proof and
 browser CORS checks passed separately. `verify:deployment`, `test:preprod` and
 `verify:product` correctly return 2 without real escrow/payment/acceptance inputs.
-GitHub CLI is unauthenticated, so current remote CI remains unverified.
+GitHub CLI is unauthenticated; public read-only API access nevertheless verified
+the actual product CI run. Authentication is not needed to inspect that public run.
 
 ## Configuration and recovery locations
 
@@ -94,5 +112,7 @@ confirmed failures expose retry actions. Every live transaction needs approval.
 
 Source, build and automated checks do not establish real extension signing,
 receiver spendability, optical QR scanning, funded recovery or privacy acceptance.
-Remote CI, consented participation and external qualification remain separately
-pending. No push is authorized. All meaningful changes are committed locally.
+Organizer approval and publication of the current documentation remain pending.
+Remote CI at the published 1b3ed38 revision is verified; later local audit updates
+are not covered by that run. Participation is excluded from the current audit.
+No push is authorized. All meaningful changes are committed locally.

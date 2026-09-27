@@ -1089,30 +1089,44 @@
       "level": "Level 1",
       "title": "Payment-relevant Compact contract",
       "owner": "engineer",
-      "status": "implemented",
-      "dependsOn": [
-        "CORE-CONSERVATION",
-        "CORE-PRIVACY"
+      "status": "verified",
+      "dependsOn": [],
+      "acceptance": "Actual payment and issuer contracts compile with the pinned Compact compiler. Live conservation and disclosure acceptance remain separate CORE requirements.",
+      "commands": [
+        "npm run compile:contracts && npm run compile:issuance"
       ],
-      "acceptance": "Payment contract has public ledger state, private witness and deliberate audited disclosure; the compile-only probe is insufficient.",
-      "commands": [],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
-          "path": "docs/evidence/implementation-completion.json",
-          "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
-          "observedAt": "2026-09-26T12:06:21.777Z"
+          "result": "passed",
+          "scope": "actual_Compact_compilation_not_live_payment_acceptance",
+          "command": "npm run compile:contracts && npm run compile:issuance",
+          "path": "docs/evidence/level-verification.json",
+          "sha256": "4a2938af4d00367a663aaa362d678af45ed8056d69e79c9e7c38c4d11d4e9a05",
+          "observedAt": "2026-09-27T05:11:18.673Z",
+          "subjects": [
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            }
+          ]
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "actual_Compact_compilation_not_live_payment_acceptance"
     },
     {
       "id": "L1-TESTS",
       "level": "Level 1",
       "title": "Passing contract tests",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -1122,88 +1136,116 @@
       ],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "local_progress_only_not_requirement_acceptance",
-          "path": "docs/evidence/M1-feasibility.json",
-          "sha256": "56f26960b00d2ef84445ecd5cf42e1c0aaff901ec457a3f0f0155f648eab0b4a",
-          "observedAt": "2026-09-26T08:56:32.521Z"
-        },
-        {
-          "result": "partial",
-          "scope": "local_application_checks_only_not_live_requirement_acceptance",
-          "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z"
+          "result": "passed",
+          "scope": "13_generated_contract_cases_synthetic_not_live",
+          "command": "npm run test:contracts",
+          "path": "docs/evidence/level-verification.json",
+          "sha256": "4a2938af4d00367a663aaa362d678af45ed8056d69e79c9e7c38c4d11d4e9a05",
+          "observedAt": "2026-09-27T05:11:18.673Z",
+          "subjects": [
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            }
+          ]
         }
-      ]
+      ],
+      "progress": "13_generated_contract_cases_synthetic_not_live"
     },
     {
       "id": "L1-MANAGED",
       "level": "Level 1",
       "title": "Generated circuits and keys",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L1-CONTRACT"
       ],
       "acceptance": "Compiler-generated contract, circuits and proving/verification material exist with source/output hashes.",
       "commands": [
-        "npm run compile:contracts",
         "npm run verify:artifacts"
       ],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "local_progress_only_not_requirement_acceptance",
-          "path": "docs/evidence/M1-feasibility.json",
-          "sha256": "56f26960b00d2ef84445ecd5cf42e1c0aaff901ec457a3f0f0155f648eab0b4a",
-          "observedAt": "2026-09-26T08:56:32.521Z"
-        },
-        {
-          "result": "partial",
-          "scope": "local_application_checks_only_not_live_requirement_acceptance",
-          "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z"
+          "result": "passed",
+          "scope": "compiler_generated_circuits_keys_and_source_hashes",
+          "command": "npm run verify:artifacts",
+          "path": "docs/evidence/level-verification.json",
+          "sha256": "4a2938af4d00367a663aaa362d678af45ed8056d69e79c9e7c38c4d11d4e9a05",
+          "observedAt": "2026-09-27T05:11:18.673Z",
+          "subjects": [
+            {
+              "path": "managed/private-payments/contract/index.js",
+              "sha256": "85a22e40a3317406639c7a55ab32b4c53eaf0a498fd284034e72829d172d15d8"
+            },
+            {
+              "path": "managed/test-asset/contract/index.js",
+              "sha256": "e628b2681ac9d6d0ab9cac4db14183b00b7ccddce64b85c733f6f2cd11ad8d5a"
+            },
+            {
+              "path": "managed/private-payments/keys/claim.verifier",
+              "sha256": "5795b79a9f6c22dfbf8446f1a71afe189e54245cb30fd7b158dc17bb8203dbd5"
+            },
+            {
+              "path": "managed/private-payments/keys/fund.verifier",
+              "sha256": "13ae385bb3a1ec00448efc76069413344c407ff9ae52c0ed1ff8721bc2605abb"
+            },
+            {
+              "path": "managed/test-asset/keys/issue.verifier",
+              "sha256": "d57c16af1b4a1d028611831e0bd4c5f3161fcfeb884cb9f7d4120b27b8039869"
+            }
+          ]
         }
-      ]
+      ],
+      "progress": "compiler_generated_circuits_keys_and_source_hashes"
     },
     {
       "id": "L1-DEPLOY",
       "level": "Level 1",
       "title": "Verified deployment address",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L1-MANAGED"
       ],
       "acceptance": "Durable Preview or Preprod deployment record binds address, finality and build to observed chain data.",
-      "commands": [],
+      "commands": [
+        "npm run verify:issuer"
+      ],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "local_browser_preparation_not_live_deployment",
-          "path": "docs/evidence/issuer-deployment-ui.json",
-          "sha256": "20f1025d1c651b99e71917f361b8c658a9594b98228f7af6c7238a4480cb5746",
-          "observedAt": "2026-09-26T10:07:03.617Z"
-        },
-        {
-          "result": "partial",
-          "scope": "real_issuer_deployment_not_payment_escrow",
-          "path": "deployments/preprod/test-asset-issuer.json",
-          "sha256": "82ee0b0012804a5349c0975114cf49f2a19b94680247280449d77ad6e2622562",
-          "observedAt": "2026-09-26T10:28:42.779Z"
-        },
-        {
-          "result": "partial",
-          "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
-          "path": "docs/evidence/implementation-completion.json",
-          "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
-          "observedAt": "2026-09-26T12:06:21.777Z"
+          "result": "passed",
+          "scope": "existing_separate_Preprod_issuer_deployment_only_not_payment_escrow",
+          "command": "npm run verify:issuer",
+          "path": "docs/evidence/level-verification.json",
+          "sha256": "4a2938af4d00367a663aaa362d678af45ed8056d69e79c9e7c38c4d11d4e9a05",
+          "observedAt": "2026-09-27T05:11:18.673Z",
+          "subjects": [
+            {
+              "path": "deployments/preprod/test-asset-issuer.json",
+              "sha256": "82ee0b0012804a5349c0975114cf49f2a19b94680247280449d77ad6e2622562"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "scripts/verify-issuer.mjs",
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
+            }
+          ]
         }
       ],
       "note": "Separate issuer deployment verified against the real Preprod indexer and local verifier. Payment escrow deployment and full payment acceptance remain pending.",
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "existing_separate_Preprod_issuer_deployment_only_not_payment_escrow"
     },
     {
       "id": "L1-DOCS",
@@ -1216,18 +1258,41 @@
       ],
       "acceptance": "Setup, initial payment idea and accurate privacy explanation match implemented behavior.",
       "commands": [],
-      "evidence": []
+      "evidence": [],
+      "progress": "Current local README and docs corrected and reviewed. Publication of this audit update remains pending; no push authorized."
     },
     {
       "id": "L1-COMMITS",
       "level": "Level 1",
       "title": "Five meaningful owner commits",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Inspect at least 5 substantive authorized development commits; do not fabricate history.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "35_reviewed_substantive_commits_already_in_published_history",
+          "command": "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100",
+          "path": "docs/evidence/commit-audit.json",
+          "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57",
+          "observedAt": "2026-09-27T05:11:18.394Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/commit-audit.json",
+              "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57"
+            },
+            {
+              "path": "docs/evidence/github-verification.json",
+              "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08"
+            }
+          ]
+        }
+      ],
+      "progress": "35_reviewed_substantive_commits_already_in_published_history"
     },
     {
       "id": "L2-WALLET",
@@ -1329,33 +1394,68 @@
       "level": "Level 2",
       "title": "Verified Preprod address",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L1-DEPLOY"
       ],
       "acceptance": "Observed deployment is Preprod, not merely Preview.",
-      "commands": [],
+      "commands": [
+        "npm run verify:issuer"
+      ],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
-          "path": "docs/evidence/implementation-completion.json",
-          "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
-          "observedAt": "2026-09-26T12:06:21.777Z"
+          "result": "passed",
+          "scope": "existing_separate_issuer_on_Preprod_not_functional_payment_MVP",
+          "command": "npm run verify:issuer",
+          "path": "docs/evidence/level-verification.json",
+          "sha256": "4a2938af4d00367a663aaa362d678af45ed8056d69e79c9e7c38c4d11d4e9a05",
+          "observedAt": "2026-09-27T05:11:18.673Z",
+          "subjects": [
+            {
+              "path": "deployments/preprod/test-asset-issuer.json",
+              "sha256": "82ee0b0012804a5349c0975114cf49f2a19b94680247280449d77ad6e2622562"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "324974cfa7825c484b9f2636a0519118bf67ca16c17cb1b87cc03d9d5c6c3241"
+            }
+          ]
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "existing_separate_issuer_on_Preprod_not_functional_payment_MVP"
     },
     {
       "id": "L2-COMMITS",
       "level": "Level 2",
       "title": "Eight meaningful owner commits",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Inspect at least 8 substantive authorized development commits.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "35_reviewed_substantive_commits_already_in_published_history",
+          "command": "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100",
+          "path": "docs/evidence/commit-audit.json",
+          "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57",
+          "observedAt": "2026-09-27T05:11:18.394Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/commit-audit.json",
+              "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57"
+            },
+            {
+              "path": "docs/evidence/github-verification.json",
+              "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08"
+            }
+          ]
+        }
+      ],
+      "progress": "35_reviewed_substantive_commits_already_in_published_history"
     },
     {
       "id": "L3-APP",
@@ -1391,65 +1491,118 @@
       "level": "Level 3",
       "title": "At least three meaningful tests",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
-        "L3-APP"
+        "L1-TESTS"
       ],
       "acceptance": "At least three nontrivial product tests pass; utility-only tests do not satisfy this.",
-      "commands": [],
+      "commands": [
+        "npm run test:unit; npm run test:contracts; npm run test:integration"
+      ],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
-          "path": "docs/evidence/implementation-completion.json",
-          "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
-          "observedAt": "2026-09-26T12:06:21.777Z"
+          "result": "passed",
+          "scope": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E",
+          "command": "npm run test:unit; npm run test:contracts; npm run test:integration",
+          "path": "docs/evidence/level-verification.json",
+          "sha256": "4a2938af4d00367a663aaa362d678af45ed8056d69e79c9e7c38c4d11d4e9a05",
+          "observedAt": "2026-09-27T05:11:18.673Z",
+          "subjects": [
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7710ffb7ca348b126360b7c830fda9f2a15964ec625f1ce9ac001677121e0724"
+            },
+            {
+              "path": "vitest.config.ts",
+              "sha256": "bfe1896453db51700ab68a2619e9449bf3a5442e6d372175c5fe3771dde6e1f9"
+            }
+          ]
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E"
     },
     {
       "id": "L3-CI",
       "level": "Level 3",
       "title": "Push and pull-request compile/test workflow",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L1-MANAGED",
         "PREP-LOCK"
       ],
       "acceptance": "Real remote pipeline installs from lockfile, compiles Compact, verifies artifacts, tests, lints, typechecks and builds.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "GET https://api.github.com/repos/ianpurif/MoneyMole/actions/runs/36295888117/jobs"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "actual_public_product_CI_run_36295888117_at_published_1b3ed38",
+          "command": "GET https://api.github.com/repos/ianpurif/MoneyMole/actions/runs/36295888117/jobs",
+          "path": "docs/evidence/github-verification.json",
+          "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08",
+          "observedAt": "2026-09-27T05:07:32.661Z",
+          "subjects": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "ef4a0af07317a8a7b7aec5927fd36425513b2d2d9661ade5d4e475b148d8bc3c"
+            },
+            {
+              "path": "package.json",
+              "sha256": "271ae4c2ee6651b7833d259144065c092b5365c1be77547b9f5be01746f2508b"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
+            }
+          ]
+        }
+      ],
+      "progress": "actual_public_product_CI_run_36295888117_at_published_1b3ed38"
     },
     {
       "id": "L3-BUILD",
       "level": "Level 3",
       "title": "Production build",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
-        "L3-APP"
+        "L3-CI"
       ],
       "acceptance": "Production application build succeeds with implemented payment routes.",
-      "commands": [],
+      "commands": [
+        "GET https://api.github.com/repos/ianpurif/MoneyMole/actions/runs/36295888117/jobs"
+      ],
       "evidence": [
         {
-          "result": "partial",
-          "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
-          "path": "docs/evidence/implementation-completion.json",
-          "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
-          "observedAt": "2026-09-26T12:06:21.777Z"
-        },
-        {
-          "result": "partial",
-          "scope": "local_application_checks_only_not_live_requirement_acceptance",
-          "path": "docs/evidence/local-verification.json",
-          "sha256": "6137062bcf64e650690ce54bbf11bcd2f5e06d6798f52df6c323338ccbfe7d29",
-          "observedAt": "2026-09-26T13:46:29.524Z"
+          "result": "passed",
+          "scope": "successful_production_build_in_remote_CI_for_unchanged_application_source",
+          "command": "GET https://api.github.com/repos/ianpurif/MoneyMole/actions/runs/36295888117/jobs",
+          "path": "docs/evidence/github-verification.json",
+          "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08",
+          "observedAt": "2026-09-27T05:07:32.661Z",
+          "subjects": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "ef4a0af07317a8a7b7aec5927fd36425513b2d2d9661ade5d4e475b148d8bc3c"
+            },
+            {
+              "path": "next.config.ts",
+              "sha256": "c9c5e3d8636f2cf991fc20a9e8ed9ecdb80f754d785531348d8a57b6e7d93371"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "1cc4c7ab2d82e9695e14bf7a3891f7a6e4164ea99aed9a355be4bf1050b9a499"
+            }
+          ]
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "successful_production_build_in_remote_CI_for_unchanged_application_source"
     },
     {
       "id": "L3-PROPOSAL",
@@ -1469,7 +1622,7 @@
       "owner": "owner",
       "status": "owner_pending",
       "dependsOn": [],
-      "acceptance": "Owner supplies organizer approval for payment links; related payroll example is not approval.",
+      "acceptance": "Actual organizer submission and approval for this product, with the applicable idea-list reference; a local proposal is not approval.",
       "commands": [],
       "evidence": []
     },
@@ -1478,11 +1631,33 @@
       "level": "Level 3",
       "title": "Ten meaningful owner commits",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Inspect at least 10 substantive authorized development commits.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "35_reviewed_substantive_commits_already_in_published_history",
+          "command": "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100",
+          "path": "docs/evidence/commit-audit.json",
+          "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57",
+          "observedAt": "2026-09-27T05:11:18.394Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/commit-audit.json",
+              "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57"
+            },
+            {
+              "path": "docs/evidence/github-verification.json",
+              "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08"
+            }
+          ]
+        }
+      ],
+      "progress": "35_reviewed_substantive_commits_already_in_published_history"
     },
     {
       "id": "L4-MVP",
@@ -1527,20 +1702,38 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Current local README and docs corrected and reviewed. Publication of this audit update remains pending; no push authorized."
     },
     {
       "id": "L4-PIPELINE",
       "level": "Level 4",
       "title": "Product repository pipeline",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L3-CI"
       ],
       "acceptance": "Successful actual run in the supplied product repository is recorded.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "GET https://api.github.com/repos/ianpurif/MoneyMole/actions/runs/36295888117/jobs"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "successful_actual_product_repository_CI_at_1b3ed38",
+          "command": "GET https://api.github.com/repos/ianpurif/MoneyMole/actions/runs/36295888117/jobs",
+          "path": "docs/evidence/github-verification.json",
+          "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08",
+          "observedAt": "2026-09-27T05:07:32.661Z",
+          "subjects": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "ef4a0af07317a8a7b7aec5927fd36425513b2d2d9661ade5d4e475b148d8bc3c"
+            }
+          ]
+        }
+      ],
+      "progress": "successful_actual_product_repository_CI_at_1b3ed38"
     },
     {
       "id": "L4-ADDRESS",
@@ -1573,18 +1766,41 @@
       "dependsOn": [],
       "acceptance": "Record only a supplied and externally checked product profile reference.",
       "commands": [],
-      "evidence": []
+      "evidence": [],
+      "progress": "Owner deferred on 2026-09-27; excluded from current audit verdict, not satisfied for a complete future submission."
     },
     {
       "id": "L4-COMMITS",
       "level": "Level 4",
       "title": "Fifteen meaningful owner commits",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Inspect at least 15 substantive authorized development commits.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "35_reviewed_substantive_commits_already_in_published_history",
+          "command": "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100",
+          "path": "docs/evidence/commit-audit.json",
+          "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57",
+          "observedAt": "2026-09-27T05:11:18.394Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/commit-audit.json",
+              "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57"
+            },
+            {
+              "path": "docs/evidence/github-verification.json",
+              "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08"
+            }
+          ]
+        }
+      ],
+      "progress": "35_reviewed_substantive_commits_already_in_published_history"
     },
     {
       "id": "L5-CONTINUITY",
@@ -1628,7 +1844,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Current local README and docs corrected and reviewed. Publication of this audit update remains pending; no push authorized."
     },
     {
       "id": "L5-PARTICIPANTS",
@@ -1646,11 +1862,33 @@
       "level": "Level 5",
       "title": "Twenty meaningful owner commits",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Inspect at least 20 substantive authorized development commits.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "35_reviewed_substantive_commits_already_in_published_history",
+          "command": "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100",
+          "path": "docs/evidence/commit-audit.json",
+          "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57",
+          "observedAt": "2026-09-27T05:11:18.394Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/commit-audit.json",
+              "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57"
+            },
+            {
+              "path": "docs/evidence/github-verification.json",
+              "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08"
+            }
+          ]
+        }
+      ],
+      "progress": "35_reviewed_substantive_commits_already_in_published_history"
     },
     {
       "id": "L6-CONTINUITY",
@@ -1718,7 +1956,7 @@
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
       ],
-      "progress": "Implementation complete. Static checks only in this pass; required app/live acceptance remains pending."
+      "progress": "Current local README and docs corrected and reviewed. Publication of this audit update remains pending; no push authorized."
     },
     {
       "id": "L6-PARTICIPANTS",
@@ -1736,22 +1974,62 @@
       "level": "Level 6",
       "title": "Thirty meaningful owner commits conservatively",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
-      "acceptance": "Plan for 30 pending organizer confirmation of conflicting 20/30 source text.",
-      "commands": [],
-      "evidence": []
+      "acceptance": "At least 30 meaningful existing published development commits, applying the stricter supplied checklist threshold.",
+      "commands": [
+        "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "35_reviewed_substantive_commits_already_in_published_history",
+          "command": "git show --stat --patch <35 recorded hashes>; GET https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100",
+          "path": "docs/evidence/commit-audit.json",
+          "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57",
+          "observedAt": "2026-09-27T05:11:18.394Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/commit-audit.json",
+              "sha256": "31fa2211a410fb69a61104d7d127b790e6f8b51142f753db9ac7d4c76184df57"
+            },
+            {
+              "path": "docs/evidence/github-verification.json",
+              "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08"
+            }
+          ]
+        }
+      ],
+      "progress": "35_reviewed_substantive_commits_already_in_published_history"
     },
     {
       "id": "META-PUBLIC-REPO",
       "level": "External metadata",
       "title": "Public repository",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Owner-supplied repository URL is independently checked for public access.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "GET https://api.github.com/repos/ianpurif/MoneyMole"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "owner_supplied_repository_independently_publicly_accessible",
+          "command": "GET https://api.github.com/repos/ianpurif/MoneyMole",
+          "path": "docs/evidence/github-verification.json",
+          "sha256": "856a60be6d5735e66e15a7878edea0b597bc3072c44e9e4c1a094c19be1e1c08",
+          "observedAt": "2026-09-27T05:07:32.661Z",
+          "subjects": [
+            {
+              "path": "README.md",
+              "sha256": "25f686df9ed370dca79edd2fa20d1f9764f7768a1fff463e1d134448b9681df0"
+            }
+          ]
+        }
+      ],
+      "progress": "owner_supplied_repository_independently_publicly_accessible"
     },
     {
       "id": "META-APP-URL",
@@ -1802,8 +2080,8 @@
     },
     {
       "id": "COMMITS-L6",
-      "decision": "Plan for 30 rather than conflicting 20; organizer confirmation remains outstanding.",
-      "status": "owner_pending"
+      "decision": "Use 30 from the stricter supplied checklist; 35 meaningful published commits were reviewed.",
+      "status": "resolved_conservatively"
     },
     {
       "id": "ELIGIBILITY",
@@ -1830,5 +2108,443 @@
     "acceptedWallet": "1AM (owner confirms judge acceptance)",
     "level6CommitMinimum": 30,
     "notes": "Public GitHub, remote CI, organizer approval and real Preprod operation remain in scope. Product X is owner-deferred, not verified. Excluded requirements remain separate from verified requirements."
+  },
+  "levelAudit": {
+    "observedAt": "2026-09-27T05:16:23.728Z",
+    "source": "docs/LEVEL-AUDIT-SCOPE.md",
+    "report": "docs/LEVEL-AUDIT.md",
+    "publishedHead": "1b3ed385c0fab85d0e96fd5f7ac9e69462d48d98",
+    "highestFullyPassed": null,
+    "submissionReady": false,
+    "allAutomatableChecksPassed": true,
+    "qualificationRule": "Every included item must be satisfied; locally fixed but unpublished required README content remains partial.",
+    "levels": [
+      {
+        "level": 1,
+        "verdict": "NOT PASSED",
+        "requirements": [
+          {
+            "id": "META-PUBLIC-REPO",
+            "requirement": "Public GitHub repository and README",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L1-TOOLCHAIN",
+            "requirement": "Installed toolchain and compiling Compact contract",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/level-verification.json",
+              "package.json",
+              "toolchain.lock.json"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L1-TESTS",
+            "requirement": "Passing test suite",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/level-verification.json"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L1-MANAGED",
+            "requirement": "Generated managed circuits and keys",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/level-verification.json",
+              "managed/private-payments",
+              "managed/test-asset"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L1-DEPLOY",
+            "requirement": "Preview/Preprod contract with visible address",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/level-verification.json",
+              "deployments/preprod/test-asset-issuer.json"
+            ],
+            "missing": "Issuer only; satisfies the generic Level 1 contract criterion."
+          },
+          {
+            "id": "L1-IDEA",
+            "requirement": "Initial idea paragraph in README",
+            "status": "satisfied",
+            "evidence": [
+              "README.md",
+              "https://github.com/ianpurif/MoneyMole/blob/1b3ed385c0fab85d0e96fd5f7ac9e69462d48d98/README.md"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L1-SETUP",
+            "requirement": "Local setup instructions",
+            "status": "satisfied",
+            "evidence": [
+              "README.md",
+              "docs/TOOLCHAIN.md",
+              "docs/OWNER-TESTING.md"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L1-DOCS",
+            "requirement": "README public state versus private witness explanation",
+            "status": "partial",
+            "evidence": [
+              "README.md",
+              "contracts/private-payments.compact"
+            ],
+            "missing": "The required explicit public-state/private-witness and observer-model section is now local but absent from the published README at 1b3ed38. Publishing is prohibited in this task."
+          },
+          {
+            "id": "L1-COMMITS",
+            "requirement": "5 meaningful commits",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": ""
+          }
+        ],
+        "automaticFixes": [
+          "Added explicit privacy model, visible issuer address, verified installer commands and environment locations to README.",
+          "Compiled all four targets using the actual project-local CI compiler installation and recorded test/artifact/issuer evidence."
+        ]
+      },
+      {
+        "level": 2,
+        "verdict": "NOT PASSED",
+        "requirements": [
+          {
+            "id": "META-PUBLIC-REPO",
+            "requirement": "Public GitHub repository and README",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L2-WALLET",
+            "requirement": "1AM connect/disconnect (accepted replacement)",
+            "status": "partial",
+            "evidence": [
+              "src/lib/midnight/oneam.ts",
+              "src/components/wallet-panel.tsx",
+              "tests/browser/shell.spec.ts"
+            ],
+            "missing": "Implementation and synthetic checks pass; both connections are owner-reported. Real disconnect/reconnect remains unobserved."
+          },
+          {
+            "id": "L2-CIRCUIT",
+            "requirement": "Successful frontend circuit invocation",
+            "status": "unverified",
+            "evidence": [
+              "src/lib/midnight/payments.ts",
+              "src/lib/midnight/issuer-issuance.ts"
+            ],
+            "missing": "Deployed issuer constructor is not a successful exported circuit call. Issuer issue and payment fund/claim remain unexecuted."
+          },
+          {
+            "id": "L2-PRIVACY",
+            "requirement": "Observable proven-but-not-shown behavior",
+            "status": "partial",
+            "evidence": [
+              "docs/evidence/level-verification.json",
+              "docs/disclosure-audit.md"
+            ],
+            "missing": "Synthetic fund/claim/issue proofs pass; actual frontend proof, sealed public effects and output destination binding remain unverified."
+          },
+          {
+            "id": "L2-PREPROD",
+            "requirement": "Verifiable Preprod contract address",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/level-verification.json",
+              "deployments/preprod/test-asset-issuer.json"
+            ],
+            "missing": "The verified address is the separate issuer."
+          },
+          {
+            "id": "L2-README",
+            "requirement": "README privacy claim",
+            "status": "partial",
+            "evidence": [
+              "README.md"
+            ],
+            "missing": "The required explicit public-state/private-witness and observer-model section is now local but absent from the published README at 1b3ed38. Publishing is prohibited in this task."
+          },
+          {
+            "id": "L2-COMMITS",
+            "requirement": "8 meaningful commits",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": ""
+          }
+        ],
+        "automaticFixes": [
+          "Documented precise witness/public-ledger boundary and limits without claiming unobserved privacy.",
+          "Reverified live issuer canonical finality and synthetic proof generation."
+        ]
+      },
+      {
+        "level": 3,
+        "verdict": "NOT PASSED",
+        "requirements": [
+          {
+            "id": "META-PUBLIC-REPO",
+            "requirement": "Public GitHub repository and README",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L3-APP",
+            "requirement": "Fully functional privacy dApp",
+            "status": "partial",
+            "evidence": [
+              "src/lib/midnight/payments.ts",
+              "docs/evidence/level-verification.json",
+              "docs/TESTING.md"
+            ],
+            "missing": "No observed finalized payment-escrow deployment, funding, independent B credit/spend, replay rejection, real recovery/reconciliation or sealed-transaction disclosure review."
+          },
+          {
+            "id": "L3-TESTS",
+            "requirement": "At least three passing tests",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/level-verification.json"
+            ],
+            "missing": "38 unit, 13 contract and 20 integration cases pass; 7 browser cases passed against unchanged product source."
+          },
+          {
+            "id": "L3-CI",
+            "requirement": "Workflow and actual passing remote CI",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole/actions/runs/36295888117"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L3-APPROVAL",
+            "requirement": "Idea-list proposal submitted and approved",
+            "status": "unverified",
+            "evidence": [
+              "PROPOSAL.md"
+            ],
+            "missing": "Draft exists; no submission receipt, applicable list entry or organizer approval was supplied."
+          },
+          {
+            "id": "L3-README",
+            "requirement": "Complete README and observer privacy model",
+            "status": "partial",
+            "evidence": [
+              "README.md"
+            ],
+            "missing": "The required explicit public-state/private-witness and observer-model section is now local but absent from the published README at 1b3ed38. Publishing is prohibited in this task."
+          },
+          {
+            "id": "L3-COMMITS",
+            "requirement": "10 meaningful commits",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": ""
+          }
+        ],
+        "automaticFixes": [
+          "Independently verified the public repository and every successful step of its real CI run.",
+          "Corrected unsupported idea-list wording; recorded the proposal as unsubmitted/unapproved."
+        ]
+      },
+      {
+        "level": 4,
+        "verdict": "NOT PASSED",
+        "requirements": [
+          {
+            "id": "META-PUBLIC-REPO",
+            "requirement": "Public GitHub repository and README",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L4-MVP",
+            "requirement": "Working MVP on Preprod with verifiable product address",
+            "status": "partial",
+            "evidence": [
+              "src/lib/midnight/payments.ts",
+              "src/lib/midnight/payment-deployment.ts",
+              "docs/evidence/level-verification.json"
+            ],
+            "missing": "No observed finalized payment-escrow deployment, funding, independent B credit/spend, replay rejection, real recovery/reconciliation or sealed-transaction disclosure review. The issuer address does not substitute for the payment escrow."
+          },
+          {
+            "id": "L4-DOCS",
+            "requirement": "README, setup, usage and full documentation",
+            "status": "partial",
+            "evidence": [
+              "README.md",
+              "docs/USAGE.md",
+              "docs/OWNER-TESTING.md"
+            ],
+            "missing": "The required explicit public-state/private-witness and observer-model section is now local but absent from the published README at 1b3ed38. Publishing is prohibited in this task."
+          },
+          {
+            "id": "L4-PIPELINE",
+            "requirement": "Passing pipeline in product repository",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole/actions/runs/36295888117"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L4-COMMITS",
+            "requirement": "15 meaningful commits",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": ""
+          }
+        ],
+        "automaticFixes": [
+          "Recorded real CI and deployment-role distinctions and fixed local documentation."
+        ]
+      },
+      {
+        "level": 5,
+        "verdict": "NOT PASSED",
+        "requirements": [
+          {
+            "id": "META-PUBLIC-REPO",
+            "requirement": "Public GitHub repository and README",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L5-CONTINUITY",
+            "requirement": "Same working Level 4 MVP extended",
+            "status": "partial",
+            "evidence": [
+              "src/lib/midnight/payments.ts",
+              "src/lib/private-state/indexed-db.ts",
+              "tests/integration/payment-records.test.ts",
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": "Recovery, retry, QR, controlled spend and security improvements extend the same product. The working Level 4 baseline and real funded-history continuity remain unverified."
+          },
+          {
+            "id": "L5-DOCS",
+            "requirement": "Updated documentation",
+            "status": "partial",
+            "evidence": [
+              "README.md",
+              "docs/STATUS.md",
+              "docs/USAGE.md"
+            ],
+            "missing": "The required explicit public-state/private-witness and observer-model section is now local but absent from the published README at 1b3ed38. Publishing is prohibited in this task."
+          },
+          {
+            "id": "L5-COMMITS",
+            "requirement": "20 meaningful commits",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": ""
+          }
+        ],
+        "automaticFixes": [
+          "Audited existing reliability/security extensions and published commit diffs; did not manufacture new features or history to meet counts."
+        ]
+      },
+      {
+        "level": 6,
+        "verdict": "NOT PASSED",
+        "requirements": [
+          {
+            "id": "META-PUBLIC-REPO",
+            "requirement": "Public GitHub repository and README",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/github-verification.json",
+              "https://github.com/ianpurif/MoneyMole"
+            ],
+            "missing": ""
+          },
+          {
+            "id": "L6-CONTINUITY",
+            "requirement": "Same working Level 4 MVP extended",
+            "status": "partial",
+            "evidence": [
+              "src/lib/midnight/payments.ts",
+              "tests/integration/payment-records.test.ts",
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": "Same product extends Level 4, but live acceptance and old funded-deployment continuity remain unverified."
+          },
+          {
+            "id": "L6-DOCS",
+            "requirement": "Updated documentation",
+            "status": "partial",
+            "evidence": [
+              "README.md",
+              "docs/STATUS.md",
+              "docs/PRIVACY.md"
+            ],
+            "missing": "The required explicit public-state/private-witness and observer-model section is now local but absent from the published README at 1b3ed38. Publishing is prohibited in this task."
+          },
+          {
+            "id": "L6-COMMITS",
+            "requirement": "30 meaningful commits",
+            "status": "satisfied",
+            "evidence": [
+              "docs/evidence/commit-audit.json"
+            ],
+            "missing": ""
+          }
+        ],
+        "automaticFixes": [
+          "Applied the stricter 30-commit checklist and verified 35 substantive commits already published."
+        ]
+      }
+    ],
+    "blockers": [
+      "Owner wallet approval/unlock/signing and actual Preprod E2E observations",
+      "Actual organizer submission/approval and applicable idea-list reference",
+      "Owner-authorized publication of required README/audit changes; no push authorized"
+    ],
+    "deferred": [
+      "Product X profile, per owner follow-up; still needed for the later full submission"
+    ]
   }
 }

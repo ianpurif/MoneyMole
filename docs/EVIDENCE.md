@@ -8,8 +8,14 @@ technical review of what the command actually proved.
 
 Technical readiness does not establish eligibility, public repository availability,
 actual remote pipeline success, meaningful owner commits or real-human participation.
-The organizer's payment-category approval and conflicting Level 6 commit threshold
-remain owner-pending. Public metadata fields remain null until supplied and checked.
+Organizer approval remains owner-pending. The strict current audit applies 30 for
+Level 6 and verifies 35 substantive published commits. Public repository access
+and successful CI run 36295888117 at 1b3ed38 were independently checked after the
+owner supplied the repository URL. See LEVEL-AUDIT.md, evidence/commit-audit.json,
+evidence/github-verification.json and evidence/level-verification.json. Other
+public metadata fields remain null until supplied and checked. Current audit
+exclusions are authoritative in requirements.json.auditScope; excluded items are
+not silently marked verified. Later local documentation has not been pushed.
 
 ## Local participant attestation validator
 `npm run evidence:participants -- <records.json> <trusted-public.pem>` verifies

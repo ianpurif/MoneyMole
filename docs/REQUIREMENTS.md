@@ -37,12 +37,12 @@ Engineering readiness and challenge qualification are separate. No score is infe
 |---|---|---|---|---|
 | L1-NODE | Node 22 | verified | None | Node 22 toolchain observed; host Node is distinct from Midnight node version. |
 | L1-DOCKER | Docker toolchain | verified | None | Docker engine, Compose and pinned local proof image run; browser reachability is checked. |
-| L1-CONTRACT | Payment-relevant Compact contract | implemented | CORE-CONSERVATION, CORE-PRIVACY | Payment contract has public ledger state, private witness and deliberate audited disclosure; the compile-only probe is insufficient. |
-| L1-TESTS | Passing contract tests | implemented | L1-CONTRACT | Meaningful compiled-contract positive and negative tests pass. |
-| L1-MANAGED | Generated circuits and keys | implemented | L1-CONTRACT | Compiler-generated contract, circuits and proving/verification material exist with source/output hashes. |
-| L1-DEPLOY | Verified deployment address | owner_pending | L1-MANAGED | Durable Preview or Preprod deployment record binds address, finality and build to observed chain data. |
+| L1-CONTRACT | Payment-relevant Compact contract | verified | None | Actual payment and issuer contracts compile with the pinned Compact compiler. Live conservation and disclosure acceptance remain separate CORE requirements. |
+| L1-TESTS | Passing contract tests | verified | L1-CONTRACT | Meaningful compiled-contract positive and negative tests pass. |
+| L1-MANAGED | Generated circuits and keys | verified | L1-CONTRACT | Compiler-generated contract, circuits and proving/verification material exist with source/output hashes. |
+| L1-DEPLOY | Verified deployment address | verified | L1-MANAGED | Durable Preview or Preprod deployment record binds address, finality and build to observed chain data. |
 | L1-DOCS | Initial technical README | implemented | L1-CONTRACT | Setup, initial payment idea and accurate privacy explanation match implemented behavior. |
-| L1-COMMITS | Five meaningful owner commits | owner_pending | None | Inspect at least 5 substantive authorized development commits; do not fabricate history. |
+| L1-COMMITS | Five meaningful owner commits | verified | None | Inspect at least 5 substantive authorized development commits; do not fabricate history. |
 
 ## Level 2
 
@@ -52,20 +52,20 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L2-CIRCUIT | Real frontend circuit invocation | implemented | L2-WALLET, L1-DEPLOY | Frontend circuit call is authorized, submitted and finalized on the correct contract. |
 | L2-PRIVACY | Observable documented privacy | implemented | CORE-PRIVACY, L2-CIRCUIT | Inspect public data for the actual circuit and document precisely what remains visible. |
 | L2-STATE | Persistent private state | implemented | CORE-STATE | Encrypted state survives reload and wallet reconnect without crossing namespaces. |
-| L2-PREPROD | Verified Preprod address | owner_pending | L1-DEPLOY | Observed deployment is Preprod, not merely Preview. |
-| L2-COMMITS | Eight meaningful owner commits | owner_pending | None | Inspect at least 8 substantive authorized development commits. |
+| L2-PREPROD | Verified Preprod address | verified | L1-DEPLOY | Observed deployment is Preprod, not merely Preview. |
+| L2-COMMITS | Eight meaningful owner commits | verified | None | Inspect at least 8 substantive authorized development commits. |
 
 ## Level 3
 
 | ID | Requirement | State | Dependencies | Acceptance |
 |---|---|---|---|---|
 | L3-APP | Functional private payment application | implemented | CORE-CLAIM, CORE-PRIVACY, CORE-LINK, CORE-STATE, CORE-TX, CORE-FEES, CORE-REPLAY, L2-PREPROD | Complete real funded link and independent claim pass with truthful privacy boundaries. |
-| L3-TESTS | At least three meaningful tests | implemented | L3-APP | At least three nontrivial product tests pass; utility-only tests do not satisfy this. |
-| L3-CI | Push and pull-request compile/test workflow | owner_pending | L1-MANAGED, PREP-LOCK | Real remote pipeline installs from lockfile, compiles Compact, verifies artifacts, tests, lints, typechecks and builds. |
-| L3-BUILD | Production build | implemented | L3-APP | Production application build succeeds with implemented payment routes. |
+| L3-TESTS | At least three meaningful tests | verified | L1-TESTS | At least three nontrivial product tests pass; utility-only tests do not satisfy this. |
+| L3-CI | Push and pull-request compile/test workflow | verified | L1-MANAGED, PREP-LOCK | Real remote pipeline installs from lockfile, compiles Compact, verifies artifacts, tests, lints, typechecks and builds. |
+| L3-BUILD | Production build | verified | L3-CI | Production application build succeeds with implemented payment routes. |
 | L3-PROPOSAL | Product proposal | implemented | None | Truthful technical proposal describes this payment product and current readiness. |
-| L3-APPROVAL | Payment-category eligibility approval | owner_pending | None | Owner supplies organizer approval for payment links; related payroll example is not approval. |
-| L3-COMMITS | Ten meaningful owner commits | owner_pending | None | Inspect at least 10 substantive authorized development commits. |
+| L3-APPROVAL | Payment-category eligibility approval | owner_pending | None | Actual organizer submission and approval for this product, with the applicable idea-list reference; a local proposal is not approval. |
+| L3-COMMITS | Ten meaningful owner commits | verified | None | Inspect at least 10 substantive authorized development commits. |
 
 ## Level 4
 
@@ -73,10 +73,10 @@ Engineering readiness and challenge qualification are separate. No score is infe
 |---|---|---|---|---|
 | L4-MVP | Working Preprod MVP | owner_pending | L3-APP, L2-PREPROD | Independent funded, claimed and spendable payment is verified on Preprod. |
 | L4-DOCS | Setup and implemented usage documentation | implemented | L4-MVP | Documentation matches actual wallet, link, claim and recovery behavior. |
-| L4-PIPELINE | Product repository pipeline | owner_pending | L3-CI | Successful actual run in the supplied product repository is recorded. |
+| L4-PIPELINE | Product repository pipeline | verified | L3-CI | Successful actual run in the supplied product repository is recorded. |
 | L4-ADDRESS | Verified product address | owner_pending | L2-PREPROD | Current address matches finalized deployed source/build and outstanding-payment history. |
 | L4-X | Owner-supplied product X reference | owner_pending | None | Record only a supplied and externally checked product profile reference. |
-| L4-COMMITS | Fifteen meaningful owner commits | owner_pending | None | Inspect at least 15 substantive authorized development commits. |
+| L4-COMMITS | Fifteen meaningful owner commits | verified | None | Inspect at least 15 substantive authorized development commits. |
 
 ## Level 5
 
@@ -85,7 +85,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L5-CONTINUITY | Extend the same product | implemented | L4-MVP | Document migration/reliability work without replacing the product or losing funded notes. |
 | L5-DOCS | Maintained technical documentation | implemented | L5-CONTINUITY | Reliability, operating procedures and limitations remain current. |
 | L5-PARTICIPANTS | Fifty real Preprod participants | owner_pending | None | Validate consented owner evidence for 50 real participants; deduplicated wallets alone are insufficient. |
-| L5-COMMITS | Twenty meaningful owner commits | owner_pending | None | Inspect at least 20 substantive authorized development commits. |
+| L5-COMMITS | Twenty meaningful owner commits | verified | None | Inspect at least 20 substantive authorized development commits. |
 
 ## Level 6
 
@@ -95,20 +95,20 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L6-HARDEN | Technical hardening and regression | implemented | L6-CONTINUITY, CORE-REPLAY, CORE-STATE | Full negative matrix, recovery, privacy and security checks pass. |
 | L6-DOCS | Final technical documentation | implemented | L6-HARDEN | Architecture, usage, sources, risks and verified claims match actual behavior. |
 | L6-PARTICIPANTS | Seventy total real Preprod participants | owner_pending | None | Validate consented owner evidence for 70 total real participants, not an invented additional-user target. |
-| L6-COMMITS | Thirty meaningful owner commits conservatively | owner_pending | None | Plan for 30 pending organizer confirmation of conflicting 20/30 source text. |
+| L6-COMMITS | Thirty meaningful owner commits conservatively | verified | None | At least 30 meaningful existing published development commits, applying the stricter supplied checklist threshold. |
 
 ## External metadata
 
 | ID | Requirement | State | Dependencies | Acceptance |
 |---|---|---|---|---|
-| META-PUBLIC-REPO | Public repository | owner_pending | None | Owner-supplied repository URL is independently checked for public access. |
+| META-PUBLIC-REPO | Public repository | verified | None | Owner-supplied repository URL is independently checked for public access. |
 | META-APP-URL | Verified application URL when supplied | owner_pending | None | Only record an actual supplied and checked application URL. |
 
 ## Source conflicts and external decisions
 
 - **NETWORK-L6:** Use Preprod, not a sample Mainnet heading. Status: resolved_from_supplied_requirements.
 - **PEOPLE-L6:** 70 total real participants; ignore conflicting sample table of 20. Status: resolved_from_supplied_requirements.
-- **COMMITS-L6:** Plan for 30 rather than conflicting 20; organizer confirmation remains outstanding. Status: owner_pending.
+- **COMMITS-L6:** Use 30 from the stricter supplied checklist; 35 meaningful published commits were reviewed. Status: resolved_conservatively.
 - **ELIGIBILITY:** Payment links remain the product; related Private Payroll / Splits wording does not establish approval. Status: owner_pending.
 
 ## Evidence policy

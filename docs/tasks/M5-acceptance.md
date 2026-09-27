@@ -1,6 +1,6 @@
 # M5 — Harden, verify and report technical readiness
 
-State: all local application checks passed and sanitized evidence is current. Real wallet acceptance, remote CI, consented participation and external qualification remain pending. The preparation wrapper returns blocked for custom-agent/schema session attestation and documentation MCP authentication; requested model/effort availability is verified.
+State: all local application checks passed. Public product CI run 36295888117 at 1b3ed38 and 35 meaningful published commits are verified. Real wallet acceptance, organizer approval and publication of the current README corrections remain pending. The Level audit excludes owner-deferred items listed in docs/LEVEL-AUDIT-SCOPE.md. Auxiliary agent/MCP checks do not block Level qualification or application runtime.
 
 The work below specifies required behavior and acceptance. The current BUILD.md directive authorizes autonomous local setup and verification; complete all automatable work before requiring manual wallet actions.
 
@@ -66,3 +66,9 @@ Reopen any invalidated milestone after code/network/toolchain changes. Keep unsu
 docs/evidence/M5-acceptance.json, docs/requirements.json, reviewed public deployment record; sensitive participation records remain private
 
 Relevant IDs: L3-TESTS, L3-CI, L3-BUILD, L4-DOCS, L4-PIPELINE, L5-CONTINUITY, L5-DOCS, L6-CONTINUITY, L6-HARDEN, L6-DOCS. Update actual outcomes in `docs/STATUS.md`, then update the authoritative JSON and regenerate the report. Evidence must include code/toolchain subjects and scope.
+
+2026-09-27 audit update: the owner excludes videos, hosted app links, screenshots,
+users/feedback and defers X for this audit. Do not request those artifacts or count
+their absence as scoped failures. The 35 reviewed commits exceed all thresholds,
+including the stricter 30 for Level 6. Read docs/LEVEL-AUDIT.md for every included
+requirement and its exact evidence; no local fixture satisfies live acceptance.

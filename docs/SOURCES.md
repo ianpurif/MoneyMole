@@ -107,3 +107,17 @@ Security patch metadata was checked with npm registry exact-version metadata and
 the installed manifests: PostCSS 8.5.28, Vite 7.3.6, Vitest 4.1.11 and esbuild
 0.28.2. The genuine lockfile and current npm audit supersede the initial candidate
 graph notes above. Vite permits the installed esbuild 0.28.x range.
+
+## Public project evidence, 2026-09-27
+
+- https://github.com/ianpurif/MoneyMole — owner-supplied public repository, checked
+  through unauthenticated GitHub HTML and REST APIs. Published main is 1b3ed38.
+- https://github.com/ianpurif/MoneyMole/actions/runs/36295888117 — actual successful
+  product workflow on that revision; every job step was checked through the jobs API.
+- https://api.github.com/repos/ianpurif/MoneyMole/commits?per_page=100 — 61 published
+  commits; 35 substantive implementation diffs are recorded in the commit audit.
+
+These observations establish public availability/history/CI only. They do not
+establish wallet acceptance or organizer eligibility, and do not cover later local
+audit documentation. The owner's accepted 1AM substitution and deferred X profile
+are scope instructions, not independently sourced organizer approval of the idea.
