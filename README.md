@@ -23,13 +23,19 @@ nativeToken(), fund uses receiveUnshielded and claim uses sendUnshielded. Amount
 use integer STAR: **1 NIGHT = 1,000,000 STAR**, with six decimal places in the UI.
 
 Local checks and actual wallet acceptance are separate. See [current status](docs/STATUS.md)
-and [NIGHT verification evidence](docs/evidence/night-verification.json). Synthetic
+and [wallet/card verification](docs/evidence/wallet-card-verification.json). Synthetic
 contract/proving/integration/browser tests never establish a real Preprod payment.
-[GitHub Actions run 36319963556](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
-passed the published native engineering revision; [publication evidence](docs/evidence/night-publication.json)
-binds the checked source. A new compatible NIGHT escrow must be deployed through owner-approved 1AM, followed
-by the two-wallet payment/spend/recovery tests. No NIGHT deployment or E2E is claimed
-until its actual receipts and finality are observed.
+The current revision fixes temporary-read disconnects, retains 1AM authorization
+across client navigation, and uses a centered, fixed-height wallet card with internal
+scrolling. Full reloads still need an explicit Connect action because connector v4
+has no passive restore API. Private records retain their separate automatic lock.
+
+[Run 36319963556](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
+verified the preceding native migration. Publication and CI for this revision are
+tracked in [current status](docs/STATUS.md); the earlier run is historical evidence.
+A compatible NIGHT escrow and two-wallet payment/spend/recovery still require owner
+approval and observed receipts. No real 1AM stability or NIGHT E2E is claimed from
+synthetic tests. See [usage and origin recovery](docs/USAGE.md).
 
 The retained issuer at
 `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`
@@ -49,8 +55,8 @@ is generated. Prior custom-token Level verdicts do not establish NIGHT acceptanc
 |---|---|---|
 | 1 | Pinned toolchain, compiled NIGHT contract/keys, tests, idea/setup and meaningful Git history | Actual approved NIGHT deployment and verified address; old issuer is historical only |
 | 2 | 1AM connection, fund/claim, private bearer witnesses, public NIGHT disclosure | Real frontend circuit finality and observed privacy behavior |
-| 3 | Recovery, negative cases, exact settlement checks and CI workflow | Working real NIGHT E2E; current engineering CI has passed |
-| 4 | Current setup/usage/architecture, retained identities and reconciliation | Same real NIGHT MVP; engineering CI is verified above |
+| 3 | Recovery, negative cases, exact settlement checks and CI workflow | Working real NIGHT E2E; current revision CI is tracked in STATUS |
+| 4 | Current setup/usage/architecture, retained identities and reconciliation | Same real NIGHT MVP; current engineering CI is tracked in STATUS |
 | 5 | Domain binding, destination-bound payout, retries, strict payload and encrypted recovery | Actual independent wallet credit/spend and live security/privacy observations |
 | 6 | Regression suites, source-bound evidence and meaningful engineering history | Full current acceptance matrix, live recovery and truthful submission review |
 
