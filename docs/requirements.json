@@ -1812,7 +1812,7 @@
     }
   ],
   "externalMetadata": {
-    "publicRepositoryUrl": null,
+    "publicRepositoryUrl": "https://github.com/ianpurif/MoneyMole",
     "applicationUrl": null,
     "productXUrl": null,
     "eligibilityApproval": null
@@ -1824,10 +1824,11 @@
       "hosted/live application link",
       "screenshots",
       "users",
-      "user feedback"
+      "user feedback",
+      "product X profile (owner deferred on 2026-09-27)"
     ],
     "acceptedWallet": "1AM (owner confirms judge acceptance)",
     "level6CommitMinimum": 30,
-    "notes": "Excluded requirements remain distinct from verified requirements. Public GitHub, remote CI, organizer approval, product X and real wallet operation remain in scope."
+    "notes": "Public GitHub, remote CI, organizer approval and real Preprod operation remain in scope. Product X is owner-deferred, not verified. Excluded requirements remain separate from verified requirements."
   }
 }

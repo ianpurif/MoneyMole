@@ -32,11 +32,12 @@ qualification, recipient discovery, authorization assumptions, public library ef
 proof-provider trust, lost bearer links and deployment continuity.
 
 ## Eligibility decision needed
-The supplied Level 3 idea list does not explicitly list payment links. Private
-Payroll / Splits is related but does not establish approval. The owner must supply
-organizer approval for this payment product. Do not change it into payroll software
-to imply approval. Level 6 remains Preprod with 70 total real participants; plan
-conservatively for 30 meaningful owner commits pending conflict confirmation.
+No organizer approval or verifiable idea-list entry has been supplied for this
+payment product. This file is a draft; it does not establish submission or approval.
+The owner must submit it and provide the organizer's decision and applicable
+idea-list reference. Do not change the product to imply eligibility.
+The current Level audit excludes users and feedback and conservatively uses the
+stricter Level 6 checklist threshold of 30 meaningful commits.
 
 ## Stack contract
 

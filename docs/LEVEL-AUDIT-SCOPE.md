@@ -6,6 +6,9 @@ hosted/live application links, screenshots, users, and user feedback as directed
 1AM is accepted in place of Lace on the owner's judge-confirmed instruction.
 Wallet functionality, public GitHub access, passing remote CI, organizer idea
 approval, a product X profile and real Preprod operation remain in scope.
+Owner follow-up: verify https://github.com/ianpurif/MoneyMole. Defer the product X
+profile to the owner and exclude it from this audit's verdict for now. The full
+Level 4 submission checklist still needs that profile when the owner provides it.
 Use the stricter Level 6 checklist threshold of 30 meaningful commits; local
 history and published history are distinct. Do not manufacture commits or evidence.
 Standing restrictions still apply: no push and no deployment, issuance or live
