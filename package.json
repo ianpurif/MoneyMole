@@ -26,6 +26,7 @@
     "compile:probe": "node scripts/compile.mjs --probe",
     "compile:coin-probe": "node scripts/compile.mjs --coin-probe",
     "compile:contracts": "node scripts/compile.mjs --product",
+    "compile:legacy": "node scripts/compile.mjs --legacy",
     "compile:issuance": "node scripts/compile.mjs --issuance",
     "verify:artifacts": "node scripts/product.mjs artifacts",
     "test:contracts": "node scripts/product.mjs contracts",

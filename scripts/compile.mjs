@@ -4,8 +4,9 @@ import { ROOT, at, has, run, hashFile, saveJson, blocked } from "./lib.mjs";
 const probe = process.argv.includes("--probe");
 const coinProbe = process.argv.includes("--coin-probe");
 const issuance = process.argv.includes("--issuance");
-const source = issuance ? "contracts/issuance/test-asset.compact" : coinProbe ? "contracts/probes/shielded-io.compact" : probe ? "contracts/probes/claim-commitment.compact" : "contracts/private-payments.compact";
-const output = issuance ? "managed/test-asset" : coinProbe ? "managed/coin-probe" : probe ? "managed/probe" : "managed/private-payments";
+const legacy = process.argv.includes("--legacy");
+const source = issuance ? "contracts/issuance/test-asset.compact" : coinProbe ? "contracts/probes/shielded-io.compact" : probe ? "contracts/probes/claim-commitment.compact" : legacy ? "contracts/private-payments.compact" : "contracts/night-payments.compact";
+const output = issuance ? "managed/test-asset" : coinProbe ? "managed/coin-probe" : probe ? "managed/probe" : legacy ? "managed/private-payments" : "managed/night-payments";
 if (!has(source)) blocked(`Missing ${source}. Execute the M1 task; a commitment probe is not a payment contract.`);
 else {
   const version = run("compact", ["compile", "--version"], { timeout: 8_000 });
@@ -24,7 +25,7 @@ else {
         visit(at(output));
         if (!files.some(p => p.includes("/keys/")) || !files.some(p => p.includes("/contract/"))) blocked("Compiler returned without the expected contract and key material. Inspect the installed compiler's output layout.");
         else {
-          saveJson(`reports/${issuance ? "issuance" : coinProbe ? "coin-probe" : probe ? "probe" : "contract"}-compile.json`, { scope: issuance ? "separate_test_asset_compilation" : coinProbe ? "compile_only_unauthorized_coin_io_probe_never_deploy" : probe ? "compile_only_nonpayment_probe" : "contract_compilation", result: "passed", observedAt: new Date().toISOString(), compiler: "0.31.1", source, sourceHash: hashFile(source), files: files.map(path => ({ path, sha256: hashFile(path) })) });
+          saveJson(`reports/${issuance ? "issuance" : coinProbe ? "coin-probe" : probe ? "probe" : legacy ? "legacy" : "contract"}-compile.json`, { scope: issuance ? "legacy_test_asset_compilation" : coinProbe ? "compile_only_unauthorized_coin_io_probe_never_deploy" : probe ? "compile_only_nonpayment_probe" : legacy ? "legacy_shielded_contract" : "native_night_contract_compilation", result: "passed", observedAt: new Date().toISOString(), compiler: "0.31.1", source, sourceHash: hashFile(source), files: files.map(path => ({ path, sha256: hashFile(path) })) });
           console.log(`Compiled ${source}; this is not settlement verification.`);
         }
       }

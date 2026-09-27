@@ -1,0 +1,61 @@
+// Native Preprod NIGHT. Transfer amounts and addresses are public.
+pragma language_version 0.23;
+import CompactStandardLibrary;
+
+struct NotePreimage {
+  domain: Bytes<32>;
+  network: Bytes<32>;
+  deployment: ContractAddress;
+  nonce: Bytes<32>;
+  asset: Bytes<32>;
+  amount: Uint<128>;
+  authority: Bytes<32>;
+}
+
+export ledger supportedAsset: Bytes<32>;
+export ledger notes: MerkleTree<16, Bytes<32>>;
+export ledger spent: Set<Bytes<32>>;
+
+witness paymentAmount(): Uint<128>;
+witness paymentNonce(): Bytes<32>;
+witness claimAuthority(): Bytes<32>;
+witness membership(note: Bytes<32>): MerkleTreePath<16, Bytes<32>>;
+
+constructor() { supportedAsset = nativeToken(); }
+
+circuit noteCommitment(amount: Uint<128>, authority: Bytes<32>): Bytes<32> {
+  return persistentHash<NotePreimage>(NotePreimage {
+    domain: pad(32, "moneymole/night/note/v2"),
+    network: pad(32, "preprod"),
+    deployment: kernel.self(),
+    nonce: paymentNonce(),
+    asset: nativeToken(),
+    amount: amount,
+    authority: authority
+  });
+}
+
+export circuit fund(): [] {
+  const amount = paymentAmount();
+  assert(amount > 0, "Zero payment");
+  assert(!notes.isFull(), "Payment capacity reached");
+  const commitment = noteCommitment(amount, claimAuthority());
+  receiveUnshielded(nativeToken(), disclose(amount));
+  notes.insert(disclose(commitment));
+}
+
+export circuit claim(recipient: UserAddress): [] {
+  const amount = paymentAmount();
+  assert(amount > 0, "Zero payment");
+  const authority = claimAuthority();
+  const commitment = noteCommitment(amount, authority);
+  const path = membership(commitment);
+  assert(path.leaf == commitment, "Wrong note opening");
+  assert(notes.checkRoot(disclose(merkleTreePathRoot<16, Bytes<32>>(path))), "Stale or invalid membership");
+  const nullifier = persistentHash<Vector<3, Bytes<32>>>([pad(32, "moneymole/night/spent/v2"), commitment, authority]);
+  assert(!spent.member(disclose(nullifier)), "Payment already claimed");
+  assert(unshieldedBalanceGte(nativeToken(), disclose(amount)), "Insufficient escrow NIGHT");
+  // No checkpoint: authorization consumption and exact native payout are atomic.
+  spent.insert(disclose(nullifier));
+  sendUnshielded(nativeToken(), disclose(amount), right<ContractAddress, UserAddress>(disclose(recipient)));
+}

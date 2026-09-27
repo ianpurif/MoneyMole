@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readJson, hashFile, saveJson, has } from "../lib.mjs";
 export async function run() {
-  const reports = ["reports/contract-compile.json", "reports/issuance-compile.json"];
+  const reports = ["reports/contract-compile.json", "reports/legacy-compile.json", "reports/issuance-compile.json"];
   const subjects = [];
   for (const path of reports) {
     const report = readJson(path);
@@ -19,9 +19,9 @@ export async function run() {
     subjects.push({ path, sha256: hashFile(path) });
   }
   assert.equal(readJson("node_modules/@midnight-ntwrk/compact-runtime/package.json").version, "0.16.0");
-  const generated = await import("../../managed/private-payments/contract/index.js");
+  const generated = await import("../../managed/night-payments/contract/index.js");
   const unavailable = () => { throw new Error("Artifact inspection cannot execute witnesses"); };
-  const contract = new generated.Contract({ fundingCoin: unavailable, escrowCoin: unavailable, claimAuthority: unavailable, membership: unavailable });
+  const contract = new generated.Contract({ paymentAmount: unavailable, paymentNonce: unavailable, claimAuthority: unavailable, membership: unavailable });
   assert.deepEqual(Object.keys(contract.provableCircuits).sort(), ["claim", "fund"]);
   const path = "reports/artifacts.json";
   saveJson(path, { scope: "compiler_output_integrity_and_runtime_compatibility_not_deployment", result: "passed", observedAt: new Date().toISOString(), subjects });
