@@ -1,5 +1,13 @@
 # Private Payments: repository operating rules
 
+## Native NIGHT migration directive
+The payment asset is now native unshielded Preprod NIGHT, with six decimals
+(1 NIGHT = 1,000,000 STAR). DUST pays fees only. Follow ADR 006; remove custom
+issuance from the normal payment path. Public NIGHT amounts/addresses must be
+disclosed honestly. Keep secrets client-side and preserve legacy browser recovery
+and original issuer identity. Historical shielded-token evidence is not NIGHT
+acceptance. Deployments and live transfers still require owner wallet approval.
+
 ## Current owner directive — autonomous local setup and verification
 Finish all engineering remediation before asking for wallet actions: safe retries
 after observed final failures, real saved-record integration coverage, dependency

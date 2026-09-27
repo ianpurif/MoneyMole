@@ -1,5 +1,15 @@
 # Build MoneyMole — Private Payments
 
+## Current asset migration — native Preprod NIGHT
+The owner now requires native Preprod NIGHT as the sole payment asset and DUST
+only for fees. Execute ADR 006 (`docs/adr/006-native-night-payments.md`). Earlier
+custom-token/shielded-payment wording below is historical scope, not permission
+to keep that asset as the default. Complete contracts, wallet balances/transfers,
+amounts, reconciliation, recovery, UI, documentation and verification together.
+NIGHT transfers expose amounts/addresses on-chain; local bearer secrets remain
+private. Keep historical issuer and deployment identities intact. Real NIGHT
+deployment and transfers require separate owner approvals and observed finality.
+
 ## Current owner directive — complete local setup and verification
 2026-09-27 follow-up: finish confirmed-failure claim/spend retry, exercise the
 actual saved-payment controller in integration tests, patch audited dependencies,

@@ -1,5 +1,15 @@
 # Current execution state
 
+## Native NIGHT migration in progress — 2026-09-27
+
+The owner replaced the custom shielded test-token scope with native Preprod NIGHT
+payments, with DUST only for fees. ADR 006 defines the migration and its public
+amount/address disclosure. Existing evidence below covers the previous asset and
+does not establish NIGHT implementation or acceptance. Preserve legacy recovery
+and issuer identity. No deployment, issuance or transaction is authorized by this
+engineering change. Local `.codex/config.toml` edits and untracked REVISION.md
+predate this work and are not part of the migration.
+
 ## Frontend revision — 2026-09-27, local only
 
 REVISION.md is implemented: product-first home, focused Send / Receive / Activity,
