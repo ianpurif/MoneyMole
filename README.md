@@ -25,7 +25,9 @@ use integer STAR: **1 NIGHT = 1,000,000 STAR**, with six decimal places in the U
 Local checks and actual wallet acceptance are separate. See [current status](docs/STATUS.md)
 and [NIGHT verification evidence](docs/evidence/night-verification.json). Synthetic
 contract/proving/integration/browser tests never establish a real Preprod payment.
-A new compatible NIGHT escrow must be deployed through owner-approved 1AM, followed
+[GitHub Actions run 36319963556](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
+passed the published native engineering revision; [publication evidence](docs/evidence/night-publication.json)
+binds the checked source. A new compatible NIGHT escrow must be deployed through owner-approved 1AM, followed
 by the two-wallet payment/spend/recovery tests. No NIGHT deployment or E2E is claimed
 until its actual receipts and finality are observed.
 
@@ -47,8 +49,8 @@ is generated. Prior custom-token Level verdicts do not establish NIGHT acceptanc
 |---|---|---|
 | 1 | Pinned toolchain, compiled NIGHT contract/keys, tests, idea/setup and meaningful Git history | Actual approved NIGHT deployment and verified address; old issuer is historical only |
 | 2 | 1AM connection, fund/claim, private bearer witnesses, public NIGHT disclosure | Real frontend circuit finality and observed privacy behavior |
-| 3 | Recovery, negative cases, exact settlement checks and CI workflow | Working real NIGHT E2E and a passing remote run for the published revision |
-| 4 | Current setup/usage/architecture, retained identities and reconciliation | Same real NIGHT MVP and current CI evidence |
+| 3 | Recovery, negative cases, exact settlement checks and CI workflow | Working real NIGHT E2E; current engineering CI has passed |
+| 4 | Current setup/usage/architecture, retained identities and reconciliation | Same real NIGHT MVP; engineering CI is verified above |
 | 5 | Domain binding, destination-bound payout, retries, strict payload and encrypted recovery | Actual independent wallet credit/spend and live security/privacy observations |
 | 6 | Regression suites, source-bound evidence and meaningful engineering history | Full current acceptance matrix, live recovery and truthful submission review |
 

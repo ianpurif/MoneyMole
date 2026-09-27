@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "result": "passed",
+  "observedAt": "2026-09-27T12:48:04.345227+00:00",
+  "scope": "public_native_night_source_and_successful_remote_engineering_CI_not_live_wallet_acceptance",
+  "repository": "https://github.com/ianpurif/MoneyMole",
+  "public": true,
+  "revision": "b0827845fae8e98bf970dce9009252b7052d6b5b",
+  "runId": 36319963556,
+  "runUrl": "https://github.com/ianpurif/MoneyMole/actions/runs/36319963556",
+  "conclusion": "success",
+  "publicFilesComparedToGit": [
+    ".github/workflows/ci.yml",
+    "package.json",
+    "package-lock.json",
+    "contracts/night-payments.compact",
+    "src/lib/midnight/payments.ts",
+    "src/lib/midnight/night-settlement.ts",
+    "src/components/payment-workspace.tsx",
+    "config/preprod.json",
+    "README.md"
+  ],
+  "subjects": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+    },
+    {
+      "path": "package.json",
+      "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+    },
+    {
+      "path": "contracts/night-payments.compact",
+      "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+    },
+    {
+      "path": "src/lib/midnight/payments.ts",
+      "sha256": "7e1fba63f301d26fa76ccfd74be79c5b81d23f800d5cd4d2eab991fd39fcac35"
+    },
+    {
+      "path": "src/lib/midnight/night-settlement.ts",
+      "sha256": "29627be859921223549b47df3dcfe61526239f1a0ae6be0f26f074bcb9922954"
+    },
+    {
+      "path": "src/components/payment-workspace.tsx",
+      "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+    },
+    {
+      "path": "config/preprod.json",
+      "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+    }
+  ],
+  "limitations": [
+    "Does not deploy, authorize wallets or establish real NIGHT settlement",
+    "Later documentation/evidence commits require their own consistency checks"
+  ]
+}

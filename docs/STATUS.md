@@ -1,27 +1,47 @@
 # Current execution state
 
-## Native NIGHT migration — 2026-09-27
+## Native NIGHT engineering complete — 2026-09-27
 
-Native NIGHT implementation is present: separate fund/claim contract, six-decimal
-NIGHT UI, unshielded wallet balance/transfer APIs, exact native payout validation,
-mm2 links, schema-v2 encrypted payment/deployment recovery and no issuer UI.
-DUST remains fees only. NIGHT amounts/addresses are public; bearer secrets and
-private recovery stay in the browser/trusted prover. ADR 007 records the change.
+The current product escrows native Preprod NIGHT, with DUST only for fees. It uses
+six-decimal NIGHT entry, unshielded wallet balances/transfers, exact native
+settlement checks, mm2 links and schema-v2 encrypted recovery. Issuer controls are
+removed from the normal UI. NIGHT amounts/addresses are public; bearer secrets
+remain client-side and go only to the trusted local prover for proofs (ADR 007).
+Old issuer/escrow sources, original issuer identity and v1 browser stores are intact.
 
-Fresh local runs passed: build, lint/types, 46 unit, 25 generated-contract,
-22 production saved-record integration and 15 production-browser tests. Real
-synthetic circuit and SDK fund/claim transaction proofs passed locally. The
-browser run exposed an initial hydration timing bug, fixed and rerun successfully.
-The comprehensive clean-install preparation wrapper is running; final gate and
-publication evidence will be recorded in docs/evidence/night-verification.json.
+Fresh verification: clean npm ci, zero-finding dependency audit, 53 utility tests,
+lint/types, production build, 46 unit, 25 compiled-contract (12 NIGHT + 13 legacy),
+22 saved-record integration and 15 production-browser tests passed. All five
+Compact targets compile and artifacts verify. Real synthetic constraints/proofs
+and SDK NIGHT fund/claim proof serialization pass. Browser prover CORS and actual
+Preprod indexer/RPC reads pass; the original issuer is still verified read-only.
+Full source-bound details: docs/evidence/night-verification.json.
 
-No compatible native NIGHT escrow is yet observed on Preprod. The original issuer
-is historical and must not be redeployed/issued for this flow. Complete manual
-NIGHT deployment, A funding, B claim/spend, QR/replay and recovery acceptance via
-docs/OWNER-TESTING.md. Wallet approvals remain manual; no live NIGHT acceptance or
-new Level pass is claimed. Existing old records stay untouched in v1 namespaces.
-Local .codex/config.toml and untracked REVISION.md predate this migration and are
-not part of the work. All sections below are historical pre-NIGHT checkpoints.
+Published engineering revision b0827845fae8e98bf970dce9009252b7052d6b5b passed
+GitHub Actions run 36319963556; public files matched immutable Git. Evidence:
+docs/evidence/night-publication.json. Following commits update evidence/docs only.
+The running production app is http://127.0.0.1:3000, prover http://127.0.0.1:6300.
+
+The preparation wrapper exits 2 only for auxiliary Codex custom-agent attestation
+and documentation MCP authentication. Those are not application/runtime blockers;
+no agents were delegated. TCP-only services:check intentionally exits 2, while
+actual proving passed. Deploy/verify-deployment/test-preprod/verify-product remain
+blocked for missing real native NIGHT owner approvals and evidence, never passed.
+
+## Exact next owner action
+
+Chrome / Wallet A: refresh MoneyMole, connect 1AM on Preprod if requested, expand
+Create / recover a payment escrow, enter a private local recovery passphrase,
+and Prepare / unlock escrow. This is the new v2 NIGHT escrow, not the old issuer.
+Personally approve escrow deployment in 1AM, then Check deployment until chain
+verified and save public deployment/encrypted recovery exports. No token issuance.
+After that: A funds 1 NIGHT; independent B claims and spends the same NIGHT back;
+reconcile, replay/QR/reload/import verification and public receipts complete the
+flow in docs/OWNER-TESTING.md. Live NIGHT acceptance remains unobserved and pending.
+
+Local .codex/config.toml changes and untracked REVISION.md predate this migration
+and remain untouched. All remaining sections are historical pre-NIGHT checkpoints,
+not current wallet steps or evidence of native NIGHT acceptance.
 
 ## Frontend revision — 2026-09-27, local only
 

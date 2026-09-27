@@ -30,13 +30,33 @@
       "level": "Preparation",
       "title": "Real pinned dependency graph",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Generate registry-resolved package-lock.json, run npm ci and record exact installed versions.",
       "commands": [
         "npm run bootstrap"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "clean_install_and_zero_reported_vulnerabilities",
+          "command": "npm ci --no-audit --no-fund; npm run audit:deps",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+            }
+          ]
+        }
+      ],
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "clean_locked_install_and_zero_reported_vulnerabilities",
@@ -55,15 +75,14 @@
             }
           ]
         }
-      ],
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "PREP-SHELL",
       "level": "Preparation",
       "title": "Next.js application foundation",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "PREP-LOCK"
       ],
@@ -72,6 +91,515 @@
         "npm run lint; npm run typecheck; npm run build; npm run test:browser"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "native_NIGHT_local_application_build_and_synthetic_browser_checks_not_live_payment",
+          "command": "npm run lint; npm run typecheck; npm run build; npm run test:browser",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": ".gitattributes",
+              "sha256": "fc824b3a6eef997f789df3b923a033525ea238f4169ecac9b138801069066af3"
+            },
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "compose.yaml",
+              "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+            },
+            {
+              "path": "contracts/README.md",
+              "sha256": "5796f72fd5a83f606d006a7c698351de20903ebd1740bb1e54d81dc9dd096088"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/probes/claim-commitment.compact",
+              "sha256": "7b5d5865dcad96c9fb94e729b7be96dafe4743ef7d407b83c0ac071ddd044d69"
+            },
+            {
+              "path": "contracts/probes/shielded-io.compact",
+              "sha256": "6d8823166f2f2fbf1e328159d6c50b43e834ce452690801a83a4ad002c805bb6"
+            },
+            {
+              "path": "eslint.config.mjs",
+              "sha256": "ed7da661d4306ef50f89c3001a79d18adc58a6c9519c086399c3cc17990917c7"
+            },
+            {
+              "path": "next.config.ts",
+              "sha256": "3388ced5de4e0daa827ecf52c2541017a40494089e64de74b0d3653e7958f6f3"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+            },
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "playwright.config.ts",
+              "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+            },
+            {
+              "path": "postcss.config.mjs",
+              "sha256": "b783348d5618047d0f37e12acd15c5a2c5f02809d8711e0764c9cea52750346c"
+            },
+            {
+              "path": "scripts/bootstrap.mjs",
+              "sha256": "741e50ede373bc38b37ab4fb4006b8f6c488cff9a87ab3185f794fa902e507e1"
+            },
+            {
+              "path": "scripts/codex-doctor.mjs",
+              "sha256": "84c3317caba956edecf343006d70657e0a0ffab4467d2c537fceda824f27ce48"
+            },
+            {
+              "path": "scripts/codex-session.mjs",
+              "sha256": "2708d7c122268abd57abeedee2f40c2eef151863e453f44a3b87025fc7ba622e"
+            },
+            {
+              "path": "scripts/compile.mjs",
+              "sha256": "a8c01c15470ef208cbc124784bbfeed7e712e5991da63f298e79f7e5e92b127d"
+            },
+            {
+              "path": "scripts/deployment-dependencies.mjs",
+              "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
+            },
+            {
+              "path": "scripts/docker.mjs",
+              "sha256": "39414dc00cb81578572543196d7d08585fae78a16868f6b6b5506de2c2cbc9cf"
+            },
+            {
+              "path": "scripts/doctor.mjs",
+              "sha256": "3186b9d4a684bd288a848ccf87e5803418248bd3ed049d038b3d772693b60f90"
+            },
+            {
+              "path": "scripts/history.mjs",
+              "sha256": "15a1e52eb554ebc68820ff6b9e2d76de24479386570f270cef1c3037b771091d"
+            },
+            {
+              "path": "scripts/install-compact.mjs",
+              "sha256": "aa7e1458cfeeea4257144f66d06b5b0bdcb6153a370a5e7970b9eb1b1d87de92"
+            },
+            {
+              "path": "scripts/lib.mjs",
+              "sha256": "2d99834dd6a4e8e945a332071bba11d93d80f28a9b1e1e9c51d6e7a24b8123c5"
+            },
+            {
+              "path": "scripts/local-config.mjs",
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
+            },
+            {
+              "path": "scripts/mcp-doctor.mjs",
+              "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
+            },
+            {
+              "path": "scripts/offline.mjs",
+              "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+            },
+            {
+              "path": "scripts/participants.mjs",
+              "sha256": "1e7165f6e7e3d209642cab0ad7854198fb17111c7934983364b8f9bc4ac5ac2a"
+            },
+            {
+              "path": "scripts/product.mjs",
+              "sha256": "8a24dd4032db5f2079bfa1d3cbba421ce8cf3d9af8c07e272f73b4cc18643f3c"
+            },
+            {
+              "path": "scripts/product/deploy-preprod.mjs",
+              "sha256": "5c66bd3f866f2356465837db262363e64d3e7518f8483794830e9c478fef4547"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "a102468ab0fb08be8b159ee132380de9cb705822eeaf6494d7fae7ee88db5c80"
+            },
+            {
+              "path": "scripts/product/test-contracts.mjs",
+              "sha256": "2ee710dfcbb910ecfcfda4032749bde724ab60bb5ac7899b983e4a0dffaef031"
+            },
+            {
+              "path": "scripts/product/test-integration.mjs",
+              "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
+            },
+            {
+              "path": "scripts/product/test-preprod.mjs",
+              "sha256": "b23c2b12286e423f9577decc3f47ad04080e76dd85b10504c10bee16423a4e34"
+            },
+            {
+              "path": "scripts/product/test-proving.mjs",
+              "sha256": "5ffee2c64e9c6bf62f84bad3166ee0dba5d730a619c1ea10aa25deb08398f499"
+            },
+            {
+              "path": "scripts/product/verify-acceptance.mjs",
+              "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
+            },
+            {
+              "path": "scripts/product/verify-artifacts.mjs",
+              "sha256": "434e15a5d2ceec8fdad463e542832bca6d19052c70f89a84764237da9de7f3bb"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "6d313a373982281dede5b0fccff822c824cef877e9d44370d6ac50ff290eabe6"
+            },
+            {
+              "path": "scripts/product/verify-participant-activity.mjs",
+              "sha256": "0f7c22c7f2c8304aa74e89dfe66fadaec03438d471314609a04dfb61ce869a49"
+            },
+            {
+              "path": "scripts/requirements.mjs",
+              "sha256": "eacb09fee16c3c029119f8c7cac1b1bea3f4dd848ac7dd77398bebbdc9931ce2"
+            },
+            {
+              "path": "scripts/services.mjs",
+              "sha256": "db89d0fad5577562d5e9840f4a916bc8d168bebfad255e03e5dda6f81c2fb1d9"
+            },
+            {
+              "path": "scripts/sonner-styles.cjs",
+              "sha256": "6b2dc68f845e342bcdcae1ea79714c71540b5f89dbe9383900697dbbd60485cf"
+            },
+            {
+              "path": "scripts/verify-boilerplate.mjs",
+              "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
+            },
+            {
+              "path": "scripts/verify-browser-connectivity.mjs",
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+            },
+            {
+              "path": "scripts/verify-issuer.mjs",
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
+            },
+            {
+              "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
+              "sha256": "f32eb6701d277322953ae3ffee463363c87d0c3a73e4d86fb3af067518c7a303"
+            },
+            {
+              "path": "src/app/api/build/route.ts",
+              "sha256": "72615f4afc54cf2cc45295df627ec23ddece50374a24dc2275e8a0e85af531c3"
+            },
+            {
+              "path": "src/app/claim/page.tsx",
+              "sha256": "7251c35fe52dade08cfff0eaebb0f265f721821c6f1f38066ccb291c0c710001"
+            },
+            {
+              "path": "src/app/globals.css",
+              "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+            },
+            {
+              "path": "src/app/layout.tsx",
+              "sha256": "578518d27ad78c6060a6f54c6b58d8a891c5137acbcccb5f904ca0e4950152ef"
+            },
+            {
+              "path": "src/app/page.tsx",
+              "sha256": "13db2fda6b2953fd118cc7a7c21947a0de50953fdd0e78a49ad7394cd8f8b911"
+            },
+            {
+              "path": "src/components/admin-recovery.tsx",
+              "sha256": "04a226dcb5a18ae205cc8d9335350a83682d0a7a320ff696bed02e02652a38e1"
+            },
+            {
+              "path": "src/components/claim-capture.tsx",
+              "sha256": "44f4cc50cc2ea80fb95a7a732363fd71572bd8805c58fbea64cd2524b38f1ae1"
+            },
+            {
+              "path": "src/components/context-sheet.tsx",
+              "sha256": "f195fa609b19a0f4163c199910a528e160e2053e8d66b33827cf549e79cb58ea"
+            },
+            {
+              "path": "src/components/download.ts",
+              "sha256": "623ffa44fbaa2171dc62a1bc2fac6cd2bebc04f85dc678609a71ed11bb448d16"
+            },
+            {
+              "path": "src/components/issuance-setup.tsx",
+              "sha256": "e14425fcb4c4726b85b756564d9dcef12860cf39f0bcec3aec876ec8b81a91a4"
+            },
+            {
+              "path": "src/components/issuer-setup.tsx",
+              "sha256": "8231e5734962074e559d741183675f9fd3cdd096d300af217fd48bf696f967a2"
+            },
+            {
+              "path": "src/components/payment-deployment.tsx",
+              "sha256": "125390e9f2f1cfbdb4ef18ed4b7778909c72fbed8559ce01ccadebe014120bbc"
+            },
+            {
+              "path": "src/components/payment-workspace.tsx",
+              "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+            },
+            {
+              "path": "src/components/product-feedback.tsx",
+              "sha256": "ab7a591d67ca1699e27ac313bc96fcdf48af34d77d3761f5c27e91fc68041a1a"
+            },
+            {
+              "path": "src/components/product-shell.tsx",
+              "sha256": "102d9a8a5f0fe2a972bfb8da6127d50881cb25348bbd4efb4ac5d6a861f70353"
+            },
+            {
+              "path": "src/components/ui/button.tsx",
+              "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
+            },
+            {
+              "path": "src/components/wallet-panel.tsx",
+              "sha256": "24fccb04545b6fe4887eb9c216aff1d4f0a15fec9917dd6afcae0fa2a43009e4"
+            },
+            {
+              "path": "src/domain/amount.ts",
+              "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
+            },
+            {
+              "path": "src/domain/payment.ts",
+              "sha256": "11247ff7e8913f813238e568650065e80d0d07e739158f708b7c1e48244c8f23"
+            },
+            {
+              "path": "src/domain/transaction.ts",
+              "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+            },
+            {
+              "path": "src/lib/midnight/admin-recovery.ts",
+              "sha256": "ff30564f33dd8baa967df8a6429e01f16b507a303d814b8167c6f206e7cee539"
+            },
+            {
+              "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+              "sha256": "440d95ae6bca8bc053e24d209327ba0fc931c2b8b89df0d1b2dd8793a29f1db9"
+            },
+            {
+              "path": "src/lib/midnight/issuer-deployment.ts",
+              "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
+            },
+            {
+              "path": "src/lib/midnight/issuer-issuance.ts",
+              "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
+            },
+            {
+              "path": "src/lib/midnight/night-settlement.ts",
+              "sha256": "29627be859921223549b47df3dcfe61526239f1a0ae6be0f26f074bcb9922954"
+            },
+            {
+              "path": "src/lib/midnight/oneam.ts",
+              "sha256": "904bdb71910d14c51e669ca42c6ecb8a4aeb4d9ac07640e48d13c7cb5181a4ef"
+            },
+            {
+              "path": "src/lib/midnight/payment-codec.ts",
+              "sha256": "497de9d1798b7333a84e6024f577df77edccb8b076e4cd6a5b89cba67f3748f2"
+            },
+            {
+              "path": "src/lib/midnight/payment-contract.ts",
+              "sha256": "a2064bcdb06e9c7bb6dfe14adbfc0db5a5258b6851a2a0170ae83a228f03013d"
+            },
+            {
+              "path": "src/lib/midnight/payment-crypto.ts",
+              "sha256": "29d2bf6516b7146c4348afa9fd3e9a705ca799008c751cabd1224ceec781fdd6"
+            },
+            {
+              "path": "src/lib/midnight/payment-deployment.ts",
+              "sha256": "eb2a150a9afbcce4dc577abb9284048faadbb731975bda3998522bb0a3f07d62"
+            },
+            {
+              "path": "src/lib/midnight/payment-network.ts",
+              "sha256": "9f92174a892543abfeb77ef84701f637c6627846029d57cde32e048bcaf6c185"
+            },
+            {
+              "path": "src/lib/midnight/payment-session.ts",
+              "sha256": "ac896f0561526251e25b070fa7ed431cd4da80d693ac022bf6986f4a5b26acfa"
+            },
+            {
+              "path": "src/lib/midnight/payments.ts",
+              "sha256": "7e1fba63f301d26fa76ccfd74be79c5b81d23f800d5cd4d2eab991fd39fcac35"
+            },
+            {
+              "path": "src/lib/midnight/port.ts",
+              "sha256": "b480603934613da5e950abbbf0ec7a047102813bf220feb1c6b9c9307ef824d6"
+            },
+            {
+              "path": "src/lib/midnight/proof-lock.ts",
+              "sha256": "2ab026d5ca4262a19fa4ace2dcf483b824d5316cae8c4b82eae4be30e5cffbe6"
+            },
+            {
+              "path": "src/lib/private-state/crypto.ts",
+              "sha256": "15f0990b591da8f4ea336b9ac451634c6bd14409123f0fd572b584a7bf5ef2ed"
+            },
+            {
+              "path": "src/lib/private-state/indexed-db.ts",
+              "sha256": "3e089d0bdbab523a611975eb960443d7ed2da70a649735a1daef72cfb7af327b"
+            },
+            {
+              "path": "src/lib/private-state/port.ts",
+              "sha256": "e6aad6534fa3cfb3cc2c53c0e109253fdef9535446133429e61560ec7852ba44"
+            },
+            {
+              "path": "src/lib/private-state/transaction-journal.ts",
+              "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+            },
+            {
+              "path": "src/lib/server/artifacts.ts",
+              "sha256": "a97f46933550514d215a06c895829840c2ffc544791e839c098f2618b34bed06"
+            },
+            {
+              "path": "src/lib/server/build-metadata.ts",
+              "sha256": "d818233154180525be891b077702e4465f6e5b916c65e2f963a8ea5f5c779012"
+            },
+            {
+              "path": "src/lib/server/security.ts",
+              "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
+            },
+            {
+              "path": "src/lib/utils.ts",
+              "sha256": "abd847ac1328863c30b22ad0466d9bb09938291c57e2619f622d2fecbb52196d"
+            },
+            {
+              "path": "src/proxy.ts",
+              "sha256": "05475f2e476e117474cfd628fa0bf958f90e79938561a81d97f09b6579c0d373"
+            },
+            {
+              "path": "tests/boilerplate/amount.test.mjs",
+              "sha256": "56be81ef16d5046a10c6443c237123194321a4d85b65d5ea00a07461f5e5a089"
+            },
+            {
+              "path": "tests/boilerplate/deployment-dependencies.test.mjs",
+              "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
+            },
+            {
+              "path": "tests/boilerplate/local-config.test.mjs",
+              "sha256": "29b12ae477620865937b04d9f9415e5001ba13aa92fe98e2a9c945a89c7ca188"
+            },
+            {
+              "path": "tests/boilerplate/participants.test.mjs",
+              "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "34d464e9518d4f7315af07dad90c58dbc353fb75a73fa0036f8163474ecf5146"
+            },
+            {
+              "path": "tests/boilerplate/requirements.test.mjs",
+              "sha256": "5247663c6f6b7f2f98e3074d7a7e4d3bf9fb18eec24865c0839a532cc1c64bcb"
+            },
+            {
+              "path": "tests/boilerplate/tooling.test.mjs",
+              "sha256": "09d50b718891681af0352bbf5510fe5083762ba7733f36bdda99830a3460fe9b"
+            },
+            {
+              "path": "tests/browser/claim.spec.ts",
+              "sha256": "238fcfb0566c4f7721f998a45471ccf84aa914fbfacaeb1250454a65dad3ab57"
+            },
+            {
+              "path": "tests/browser/redesign.spec.ts",
+              "sha256": "ead078fa5455a6d6aeb1f54736f3c96fc1400ced916318beda7ebc2d4c4e0c08"
+            },
+            {
+              "path": "tests/browser/shell.spec.ts",
+              "sha256": "2010bef7089b5b9d15879a1a5ba717ed56c6c861bbbf1b5cd43ef0f1d9313ee0"
+            },
+            {
+              "path": "tests/browser/support/payment-fixture.ts",
+              "sha256": "11b95bf926f34d1204e182bb5c4636ac29775d6e2e112f5c7dee81be9a4ea551"
+            },
+            {
+              "path": "tests/contracts/issuer-transaction.mjs",
+              "sha256": "826814dcebf1594ce828b1963b5e6dbc97449842b50a25e0e40e2ce7df308bd1"
+            },
+            {
+              "path": "tests/contracts/night-runtime.mjs",
+              "sha256": "51aa6e0ff11c9c2aba229fbfe3392cb956b780d6e509bf8fbbd2d52c35842f78"
+            },
+            {
+              "path": "tests/contracts/night-transaction.mjs",
+              "sha256": "e903b991afbb5910cc3b8681eb8e93e066533455112d8aada2c090908832fa30"
+            },
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7f4580146ede29b84fed847c8d17f0dd9e90013908d5891d3c4ab8685a633d68"
+            },
+            {
+              "path": "tests/integration/qualification.test.ts",
+              "sha256": "f922b3e26e4636ab305c3a1545cd284b2f513b85bfc7979bcc2b62d023b80d67"
+            },
+            {
+              "path": "tests/integration/recovery.test.ts",
+              "sha256": "1e567c0ab130912a75d4c05dfc92541ab39f403f47245e3e3a887ba57f9fdb46"
+            },
+            {
+              "path": "tests/unit/amount.test.ts",
+              "sha256": "d5695e7ef051c329f1973becc20f8d436742bb9896edc3224d21e0c874cf559d"
+            },
+            {
+              "path": "tests/unit/client-only.ts",
+              "sha256": "d1b7b44f7e1b1a03f5189310bd032accd7552162cb002c30e373c9c6f801fa75"
+            },
+            {
+              "path": "tests/unit/indexed-db.test.ts",
+              "sha256": "b2716abce0a508c93b17806bf778a4b967e300efb2aef2ae6be37926a8e75d56"
+            },
+            {
+              "path": "tests/unit/issuance-recovery.test.ts",
+              "sha256": "a9ea8152f240c448b235a5edace2a602d4ff241ccd921e92c05d9f55644ca220"
+            },
+            {
+              "path": "tests/unit/night-client-contract.test.ts",
+              "sha256": "e9256dcab26e1d5a12298308aa73d1f1e07ae5d2d5743bf762bd1e9159249710"
+            },
+            {
+              "path": "tests/unit/night-settlement.test.ts",
+              "sha256": "ccdf1175810b63961c17892154791f21fbb425f8b078fb48a455108c94153895"
+            },
+            {
+              "path": "tests/unit/oneam.test.ts",
+              "sha256": "4c3bc15a5b7a3598a8ac574528377ab178ffb9d945e711587629d97b7cd95ebc"
+            },
+            {
+              "path": "tests/unit/payment-codec.test.ts",
+              "sha256": "9b3f27ad93df702212c0b2fa7f23e7e1855eac985031d5ba609d27b55dc2be6e"
+            },
+            {
+              "path": "tests/unit/private-state.test.ts",
+              "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+            },
+            {
+              "path": "tests/unit/recipient.test.ts",
+              "sha256": "9b9e13df9c119a945f20b78c06738c58909bf2417e849cfb23d66c24ff7dd0ff"
+            },
+            {
+              "path": "tests/unit/transaction.test.ts",
+              "sha256": "08683f1aac299b3bc7cae3e970ea3a6ef26847e393cbbc358697f29b330fa65d"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            },
+            {
+              "path": "tsconfig.json",
+              "sha256": "9817d7d53fddd51bf88f2befc5c85234b75d612ce366495f84449d7522a799ab"
+            },
+            {
+              "path": "vitest.config.ts",
+              "sha256": "bfe1896453db51700ab68a2619e9449bf3a5442e6d372175c5fe3771dde6e1f9"
+            }
+          ]
+        }
+      ],
+      "progress": "fresh_application_lint_types_build_browser_checks;_remote_workflow_verified_separately",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "local_production_frontend_and_15_browser_cases_including_CSP_and_synthetic_encrypted_draft_recovery",
@@ -306,9 +834,7 @@
             }
           ]
         }
-      ],
-      "progress": "fresh_application_lint_types_build_browser_checks;_remote_workflow_verified_separately",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "PREP-CODEX",
@@ -337,13 +863,41 @@
       "level": "Preparation",
       "title": "Bounded fail-closed tooling",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Dependency-free utility tests and missing-implementation guard checks pass in their stated scope; no product readiness inferred.",
       "commands": [
         "npm run check:offline"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "53_utility_tests_and_source_consistency",
+          "command": "npm run check:offline",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "scripts/offline.mjs",
+              "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+            },
+            {
+              "path": "scripts/requirements.mjs",
+              "sha256": "eacb09fee16c3c029119f8c7cac1b1bea3f4dd848ac7dd77398bebbdc9931ce2"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "34d464e9518d4f7315af07dad90c58dbc353fb75a73fa0036f8163474ecf5146"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+            }
+          ]
+        }
+      ],
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "source_consistency_and_dependency_free_utility_tests_not_live_product_acceptance",
@@ -402,8 +956,7 @@
             }
           ]
         }
-      ],
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "CORE-CONSERVATION",
@@ -664,13 +1217,33 @@
       "level": "Level 1",
       "title": "Node 22",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Node 22 toolchain observed; host Node is distinct from Midnight node version.",
       "commands": [
         "node --version"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "observed_Node_22_16_0_npm_10_9_2",
+          "command": "npm run doctor",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            }
+          ]
+        }
+      ],
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "Node_22_16_0_and_npm_10_9_2_observed_on_local_WSL_runtime",
@@ -689,19 +1262,50 @@
             }
           ]
         }
-      ],
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L1-DOCKER",
       "level": "Level 1",
       "title": "Docker toolchain",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Docker engine, Compose and pinned local proof image run; browser reachability is checked.",
       "commands": [],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "pinned_local_prover_real_synthetic_proofs_and_browser_CORS",
+          "command": "npm run doctor; npm run test:proving; npm run verify:connectivity",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "compose.yaml",
+              "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+            },
+            {
+              "path": "tests/contracts/night-transaction.mjs",
+              "sha256": "e903b991afbb5910cc3b8681eb8e93e066533455112d8aada2c090908832fa30"
+            },
+            {
+              "path": "scripts/product/test-proving.mjs",
+              "sha256": "5ffee2c64e9c6bf62f84bad3166ee0dba5d730a619c1ea10aa25deb08398f499"
+            },
+            {
+              "path": "scripts/verify-browser-connectivity.mjs",
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+            }
+          ]
+        }
+      ],
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "running_pinned_local_prover_synthetic_proofs_and_browser_CORS",
@@ -728,8 +1332,7 @@
             }
           ]
         }
-      ],
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L1-CONTRACT",
@@ -743,6 +1346,39 @@
         "npm run compile:contracts && npm run compile:issuance"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "native_NIGHT_and_legacy_contract_compilation",
+          "command": "npm run compile:contracts; npm run compile:legacy; npm run compile:issuance",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "scripts/compile.mjs",
+              "sha256": "a8c01c15470ef208cbc124784bbfeed7e712e5991da63f298e79f7e5e92b127d"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            }
+          ]
+        }
+      ],
+      "progress": "actual_Compact_compilation_not_live_payment_acceptance",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "actual_Compact_compilation_not_live_payment_acceptance",
@@ -765,8 +1401,7 @@
             }
           ]
         }
-      ],
-      "progress": "actual_Compact_compilation_not_live_payment_acceptance"
+      ]
     },
     {
       "id": "L1-TESTS",
@@ -782,6 +1417,35 @@
         "npm run test:contracts"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "25_generated_contract_runtime_cases_including_12_native_NIGHT",
+          "command": "npm run test:contracts",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "tests/contracts/night-runtime.mjs",
+              "sha256": "51aa6e0ff11c9c2aba229fbfe3392cb956b780d6e509bf8fbbd2d52c35842f78"
+            },
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "scripts/product/test-contracts.mjs",
+              "sha256": "2ee710dfcbb910ecfcfda4032749bde724ab60bb5ac7899b983e4a0dffaef031"
+            }
+          ]
+        }
+      ],
+      "progress": "13_generated_contract_cases_synthetic_not_live",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "13_generated_contract_cases_synthetic_not_live",
@@ -804,8 +1468,7 @@
             }
           ]
         }
-      ],
-      "progress": "13_generated_contract_cases_synthetic_not_live"
+      ]
     },
     {
       "id": "L1-MANAGED",
@@ -821,6 +1484,39 @@
         "npm run verify:artifacts"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "current_compiler_generated_code_and_verifier_identity",
+          "command": "npm run verify:artifacts",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "managed/night-payments/contract/index.js",
+              "sha256": "caac07cb82da770aa3fa7c8fc8f93cfb37fbcb4705828d039ae89dea05987223"
+            },
+            {
+              "path": "managed/night-payments/keys/fund.verifier",
+              "sha256": "8bcba5d1f94c494936ea8512884896509846c532a27aae3ef1d7f2870e42dac5"
+            },
+            {
+              "path": "managed/night-payments/keys/claim.verifier",
+              "sha256": "8721399e12b553b37a8e0037184736eb63324b32c4a916df5ffce6beaaf59ed3"
+            },
+            {
+              "path": "managed/private-payments/contract/index.js",
+              "sha256": "85a22e40a3317406639c7a55ab32b4c53eaf0a498fd284034e72829d172d15d8"
+            },
+            {
+              "path": "managed/test-asset/contract/index.js",
+              "sha256": "e628b2681ac9d6d0ab9cac4db14183b00b7ccddce64b85c733f6f2cd11ad8d5a"
+            }
+          ]
+        }
+      ],
+      "progress": "compiler_generated_circuits_keys_and_source_hashes",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "compiler_generated_circuits_keys_and_source_hashes",
@@ -851,8 +1547,7 @@
             }
           ]
         }
-      ],
-      "progress": "compiler_generated_circuits_keys_and_source_hashes"
+      ]
     },
     {
       "id": "L1-DEPLOY",
@@ -900,7 +1595,7 @@
       "level": "Level 1",
       "title": "Initial technical README",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L1-CONTRACT"
       ],
@@ -909,6 +1604,32 @@
         "GET public committed README; compare with git show"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
+          "command": "Source/UI/config review and local verification",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "README.md",
+              "sha256": "9403db95eed3cba9ec1cf3dd4a14a99df2692e86ba602f7b64896df57a210cf7"
+            },
+            {
+              "path": "docs/OWNER-TESTING.md",
+              "sha256": "26db494391704d93439e05cba24f31796e910655eb14441540256dbd48e1a52c"
+            },
+            {
+              "path": "docs/PRIVACY.md",
+              "sha256": "d2a35abb886fb6d241b3ede395281c971181b406e44423baf35d42a0b51e63dd"
+            }
+          ]
+        }
+      ],
+      "progress": "required_idea_setup_and_public_private_README_sections_verified_on_public_repository;_later_audit_display_update_only",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "reviewed_current_local_setup_usage_privacy_recovery_and_limitations_not_publication_or_live_acceptance",
@@ -935,9 +1656,7 @@
             }
           ]
         }
-      ],
-      "progress": "required_idea_setup_and_public_private_README_sections_verified_on_public_repository;_later_audit_display_update_only",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L1-COMMITS",
@@ -1170,7 +1889,7 @@
       "level": "Level 3",
       "title": "At least three meaningful tests",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L1-TESTS"
       ],
@@ -1179,6 +1898,39 @@
         "npm run test:unit; npm run test:contracts; npm run test:integration"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "46_unit_and_22_saved_record_integration_cases_synthetic_protocol_boundaries",
+          "command": "npm run test:unit; npm run test:integration",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "tests/unit/night-client-contract.test.ts",
+              "sha256": "e9256dcab26e1d5a12298308aa73d1f1e07ae5d2d5743bf762bd1e9159249710"
+            },
+            {
+              "path": "tests/unit/night-settlement.test.ts",
+              "sha256": "ccdf1175810b63961c17892154791f21fbb425f8b078fb48a455108c94153895"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7f4580146ede29b84fed847c8d17f0dd9e90013908d5891d3c4ab8685a633d68"
+            },
+            {
+              "path": "src/lib/midnight/payments.ts",
+              "sha256": "7e1fba63f301d26fa76ccfd74be79c5b81d23f800d5cd4d2eab991fd39fcac35"
+            },
+            {
+              "path": "src/lib/midnight/night-settlement.ts",
+              "sha256": "29627be859921223549b47df3dcfe61526239f1a0ae6be0f26f074bcb9922954"
+            }
+          ]
+        }
+      ],
+      "progress": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E",
@@ -1201,16 +1953,14 @@
             }
           ]
         }
-      ],
-      "progress": "38_unit_and_13_contract_and_20_integration_tests_not_real_wallet_E2E",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L3-CI",
       "level": "Level 3",
       "title": "Push and pull-request compile/test workflow",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L1-MANAGED",
         "PREP-LOCK"
@@ -1220,6 +1970,516 @@
         "GET GitHub Actions run and every job step"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "successful_remote_run_b082784_with_unchanged_engineering_subjects",
+          "command": "GitHub Actions run 36319963556",
+          "path": "docs/evidence/night-publication.json",
+          "sha256": "55021c7dc8a88e70ce010dcab463f0763db6583bc1bd4f719ede874992069084",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": ".gitattributes",
+              "sha256": "fc824b3a6eef997f789df3b923a033525ea238f4169ecac9b138801069066af3"
+            },
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "compose.yaml",
+              "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+            },
+            {
+              "path": "contracts/README.md",
+              "sha256": "5796f72fd5a83f606d006a7c698351de20903ebd1740bb1e54d81dc9dd096088"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/probes/claim-commitment.compact",
+              "sha256": "7b5d5865dcad96c9fb94e729b7be96dafe4743ef7d407b83c0ac071ddd044d69"
+            },
+            {
+              "path": "contracts/probes/shielded-io.compact",
+              "sha256": "6d8823166f2f2fbf1e328159d6c50b43e834ce452690801a83a4ad002c805bb6"
+            },
+            {
+              "path": "eslint.config.mjs",
+              "sha256": "ed7da661d4306ef50f89c3001a79d18adc58a6c9519c086399c3cc17990917c7"
+            },
+            {
+              "path": "next.config.ts",
+              "sha256": "3388ced5de4e0daa827ecf52c2541017a40494089e64de74b0d3653e7958f6f3"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+            },
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "playwright.config.ts",
+              "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+            },
+            {
+              "path": "postcss.config.mjs",
+              "sha256": "b783348d5618047d0f37e12acd15c5a2c5f02809d8711e0764c9cea52750346c"
+            },
+            {
+              "path": "scripts/bootstrap.mjs",
+              "sha256": "741e50ede373bc38b37ab4fb4006b8f6c488cff9a87ab3185f794fa902e507e1"
+            },
+            {
+              "path": "scripts/codex-doctor.mjs",
+              "sha256": "84c3317caba956edecf343006d70657e0a0ffab4467d2c537fceda824f27ce48"
+            },
+            {
+              "path": "scripts/codex-session.mjs",
+              "sha256": "2708d7c122268abd57abeedee2f40c2eef151863e453f44a3b87025fc7ba622e"
+            },
+            {
+              "path": "scripts/compile.mjs",
+              "sha256": "a8c01c15470ef208cbc124784bbfeed7e712e5991da63f298e79f7e5e92b127d"
+            },
+            {
+              "path": "scripts/deployment-dependencies.mjs",
+              "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
+            },
+            {
+              "path": "scripts/docker.mjs",
+              "sha256": "39414dc00cb81578572543196d7d08585fae78a16868f6b6b5506de2c2cbc9cf"
+            },
+            {
+              "path": "scripts/doctor.mjs",
+              "sha256": "3186b9d4a684bd288a848ccf87e5803418248bd3ed049d038b3d772693b60f90"
+            },
+            {
+              "path": "scripts/history.mjs",
+              "sha256": "15a1e52eb554ebc68820ff6b9e2d76de24479386570f270cef1c3037b771091d"
+            },
+            {
+              "path": "scripts/install-compact.mjs",
+              "sha256": "aa7e1458cfeeea4257144f66d06b5b0bdcb6153a370a5e7970b9eb1b1d87de92"
+            },
+            {
+              "path": "scripts/lib.mjs",
+              "sha256": "2d99834dd6a4e8e945a332071bba11d93d80f28a9b1e1e9c51d6e7a24b8123c5"
+            },
+            {
+              "path": "scripts/local-config.mjs",
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
+            },
+            {
+              "path": "scripts/mcp-doctor.mjs",
+              "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
+            },
+            {
+              "path": "scripts/offline.mjs",
+              "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+            },
+            {
+              "path": "scripts/participants.mjs",
+              "sha256": "1e7165f6e7e3d209642cab0ad7854198fb17111c7934983364b8f9bc4ac5ac2a"
+            },
+            {
+              "path": "scripts/product.mjs",
+              "sha256": "8a24dd4032db5f2079bfa1d3cbba421ce8cf3d9af8c07e272f73b4cc18643f3c"
+            },
+            {
+              "path": "scripts/product/deploy-preprod.mjs",
+              "sha256": "5c66bd3f866f2356465837db262363e64d3e7518f8483794830e9c478fef4547"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "a102468ab0fb08be8b159ee132380de9cb705822eeaf6494d7fae7ee88db5c80"
+            },
+            {
+              "path": "scripts/product/test-contracts.mjs",
+              "sha256": "2ee710dfcbb910ecfcfda4032749bde724ab60bb5ac7899b983e4a0dffaef031"
+            },
+            {
+              "path": "scripts/product/test-integration.mjs",
+              "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
+            },
+            {
+              "path": "scripts/product/test-preprod.mjs",
+              "sha256": "b23c2b12286e423f9577decc3f47ad04080e76dd85b10504c10bee16423a4e34"
+            },
+            {
+              "path": "scripts/product/test-proving.mjs",
+              "sha256": "5ffee2c64e9c6bf62f84bad3166ee0dba5d730a619c1ea10aa25deb08398f499"
+            },
+            {
+              "path": "scripts/product/verify-acceptance.mjs",
+              "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
+            },
+            {
+              "path": "scripts/product/verify-artifacts.mjs",
+              "sha256": "434e15a5d2ceec8fdad463e542832bca6d19052c70f89a84764237da9de7f3bb"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "6d313a373982281dede5b0fccff822c824cef877e9d44370d6ac50ff290eabe6"
+            },
+            {
+              "path": "scripts/product/verify-participant-activity.mjs",
+              "sha256": "0f7c22c7f2c8304aa74e89dfe66fadaec03438d471314609a04dfb61ce869a49"
+            },
+            {
+              "path": "scripts/requirements.mjs",
+              "sha256": "eacb09fee16c3c029119f8c7cac1b1bea3f4dd848ac7dd77398bebbdc9931ce2"
+            },
+            {
+              "path": "scripts/services.mjs",
+              "sha256": "db89d0fad5577562d5e9840f4a916bc8d168bebfad255e03e5dda6f81c2fb1d9"
+            },
+            {
+              "path": "scripts/sonner-styles.cjs",
+              "sha256": "6b2dc68f845e342bcdcae1ea79714c71540b5f89dbe9383900697dbbd60485cf"
+            },
+            {
+              "path": "scripts/verify-boilerplate.mjs",
+              "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
+            },
+            {
+              "path": "scripts/verify-browser-connectivity.mjs",
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+            },
+            {
+              "path": "scripts/verify-issuer.mjs",
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
+            },
+            {
+              "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
+              "sha256": "f32eb6701d277322953ae3ffee463363c87d0c3a73e4d86fb3af067518c7a303"
+            },
+            {
+              "path": "src/app/api/build/route.ts",
+              "sha256": "72615f4afc54cf2cc45295df627ec23ddece50374a24dc2275e8a0e85af531c3"
+            },
+            {
+              "path": "src/app/claim/page.tsx",
+              "sha256": "7251c35fe52dade08cfff0eaebb0f265f721821c6f1f38066ccb291c0c710001"
+            },
+            {
+              "path": "src/app/globals.css",
+              "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+            },
+            {
+              "path": "src/app/layout.tsx",
+              "sha256": "578518d27ad78c6060a6f54c6b58d8a891c5137acbcccb5f904ca0e4950152ef"
+            },
+            {
+              "path": "src/app/page.tsx",
+              "sha256": "13db2fda6b2953fd118cc7a7c21947a0de50953fdd0e78a49ad7394cd8f8b911"
+            },
+            {
+              "path": "src/components/admin-recovery.tsx",
+              "sha256": "04a226dcb5a18ae205cc8d9335350a83682d0a7a320ff696bed02e02652a38e1"
+            },
+            {
+              "path": "src/components/claim-capture.tsx",
+              "sha256": "44f4cc50cc2ea80fb95a7a732363fd71572bd8805c58fbea64cd2524b38f1ae1"
+            },
+            {
+              "path": "src/components/context-sheet.tsx",
+              "sha256": "f195fa609b19a0f4163c199910a528e160e2053e8d66b33827cf549e79cb58ea"
+            },
+            {
+              "path": "src/components/download.ts",
+              "sha256": "623ffa44fbaa2171dc62a1bc2fac6cd2bebc04f85dc678609a71ed11bb448d16"
+            },
+            {
+              "path": "src/components/issuance-setup.tsx",
+              "sha256": "e14425fcb4c4726b85b756564d9dcef12860cf39f0bcec3aec876ec8b81a91a4"
+            },
+            {
+              "path": "src/components/issuer-setup.tsx",
+              "sha256": "8231e5734962074e559d741183675f9fd3cdd096d300af217fd48bf696f967a2"
+            },
+            {
+              "path": "src/components/payment-deployment.tsx",
+              "sha256": "125390e9f2f1cfbdb4ef18ed4b7778909c72fbed8559ce01ccadebe014120bbc"
+            },
+            {
+              "path": "src/components/payment-workspace.tsx",
+              "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+            },
+            {
+              "path": "src/components/product-feedback.tsx",
+              "sha256": "ab7a591d67ca1699e27ac313bc96fcdf48af34d77d3761f5c27e91fc68041a1a"
+            },
+            {
+              "path": "src/components/product-shell.tsx",
+              "sha256": "102d9a8a5f0fe2a972bfb8da6127d50881cb25348bbd4efb4ac5d6a861f70353"
+            },
+            {
+              "path": "src/components/ui/button.tsx",
+              "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
+            },
+            {
+              "path": "src/components/wallet-panel.tsx",
+              "sha256": "24fccb04545b6fe4887eb9c216aff1d4f0a15fec9917dd6afcae0fa2a43009e4"
+            },
+            {
+              "path": "src/domain/amount.ts",
+              "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
+            },
+            {
+              "path": "src/domain/payment.ts",
+              "sha256": "11247ff7e8913f813238e568650065e80d0d07e739158f708b7c1e48244c8f23"
+            },
+            {
+              "path": "src/domain/transaction.ts",
+              "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+            },
+            {
+              "path": "src/lib/midnight/admin-recovery.ts",
+              "sha256": "ff30564f33dd8baa967df8a6429e01f16b507a303d814b8167c6f206e7cee539"
+            },
+            {
+              "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+              "sha256": "440d95ae6bca8bc053e24d209327ba0fc931c2b8b89df0d1b2dd8793a29f1db9"
+            },
+            {
+              "path": "src/lib/midnight/issuer-deployment.ts",
+              "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
+            },
+            {
+              "path": "src/lib/midnight/issuer-issuance.ts",
+              "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
+            },
+            {
+              "path": "src/lib/midnight/night-settlement.ts",
+              "sha256": "29627be859921223549b47df3dcfe61526239f1a0ae6be0f26f074bcb9922954"
+            },
+            {
+              "path": "src/lib/midnight/oneam.ts",
+              "sha256": "904bdb71910d14c51e669ca42c6ecb8a4aeb4d9ac07640e48d13c7cb5181a4ef"
+            },
+            {
+              "path": "src/lib/midnight/payment-codec.ts",
+              "sha256": "497de9d1798b7333a84e6024f577df77edccb8b076e4cd6a5b89cba67f3748f2"
+            },
+            {
+              "path": "src/lib/midnight/payment-contract.ts",
+              "sha256": "a2064bcdb06e9c7bb6dfe14adbfc0db5a5258b6851a2a0170ae83a228f03013d"
+            },
+            {
+              "path": "src/lib/midnight/payment-crypto.ts",
+              "sha256": "29d2bf6516b7146c4348afa9fd3e9a705ca799008c751cabd1224ceec781fdd6"
+            },
+            {
+              "path": "src/lib/midnight/payment-deployment.ts",
+              "sha256": "eb2a150a9afbcce4dc577abb9284048faadbb731975bda3998522bb0a3f07d62"
+            },
+            {
+              "path": "src/lib/midnight/payment-network.ts",
+              "sha256": "9f92174a892543abfeb77ef84701f637c6627846029d57cde32e048bcaf6c185"
+            },
+            {
+              "path": "src/lib/midnight/payment-session.ts",
+              "sha256": "ac896f0561526251e25b070fa7ed431cd4da80d693ac022bf6986f4a5b26acfa"
+            },
+            {
+              "path": "src/lib/midnight/payments.ts",
+              "sha256": "7e1fba63f301d26fa76ccfd74be79c5b81d23f800d5cd4d2eab991fd39fcac35"
+            },
+            {
+              "path": "src/lib/midnight/port.ts",
+              "sha256": "b480603934613da5e950abbbf0ec7a047102813bf220feb1c6b9c9307ef824d6"
+            },
+            {
+              "path": "src/lib/midnight/proof-lock.ts",
+              "sha256": "2ab026d5ca4262a19fa4ace2dcf483b824d5316cae8c4b82eae4be30e5cffbe6"
+            },
+            {
+              "path": "src/lib/private-state/crypto.ts",
+              "sha256": "15f0990b591da8f4ea336b9ac451634c6bd14409123f0fd572b584a7bf5ef2ed"
+            },
+            {
+              "path": "src/lib/private-state/indexed-db.ts",
+              "sha256": "3e089d0bdbab523a611975eb960443d7ed2da70a649735a1daef72cfb7af327b"
+            },
+            {
+              "path": "src/lib/private-state/port.ts",
+              "sha256": "e6aad6534fa3cfb3cc2c53c0e109253fdef9535446133429e61560ec7852ba44"
+            },
+            {
+              "path": "src/lib/private-state/transaction-journal.ts",
+              "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+            },
+            {
+              "path": "src/lib/server/artifacts.ts",
+              "sha256": "a97f46933550514d215a06c895829840c2ffc544791e839c098f2618b34bed06"
+            },
+            {
+              "path": "src/lib/server/build-metadata.ts",
+              "sha256": "d818233154180525be891b077702e4465f6e5b916c65e2f963a8ea5f5c779012"
+            },
+            {
+              "path": "src/lib/server/security.ts",
+              "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
+            },
+            {
+              "path": "src/lib/utils.ts",
+              "sha256": "abd847ac1328863c30b22ad0466d9bb09938291c57e2619f622d2fecbb52196d"
+            },
+            {
+              "path": "src/proxy.ts",
+              "sha256": "05475f2e476e117474cfd628fa0bf958f90e79938561a81d97f09b6579c0d373"
+            },
+            {
+              "path": "tests/boilerplate/amount.test.mjs",
+              "sha256": "56be81ef16d5046a10c6443c237123194321a4d85b65d5ea00a07461f5e5a089"
+            },
+            {
+              "path": "tests/boilerplate/deployment-dependencies.test.mjs",
+              "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
+            },
+            {
+              "path": "tests/boilerplate/local-config.test.mjs",
+              "sha256": "29b12ae477620865937b04d9f9415e5001ba13aa92fe98e2a9c945a89c7ca188"
+            },
+            {
+              "path": "tests/boilerplate/participants.test.mjs",
+              "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "34d464e9518d4f7315af07dad90c58dbc353fb75a73fa0036f8163474ecf5146"
+            },
+            {
+              "path": "tests/boilerplate/requirements.test.mjs",
+              "sha256": "5247663c6f6b7f2f98e3074d7a7e4d3bf9fb18eec24865c0839a532cc1c64bcb"
+            },
+            {
+              "path": "tests/boilerplate/tooling.test.mjs",
+              "sha256": "09d50b718891681af0352bbf5510fe5083762ba7733f36bdda99830a3460fe9b"
+            },
+            {
+              "path": "tests/browser/claim.spec.ts",
+              "sha256": "238fcfb0566c4f7721f998a45471ccf84aa914fbfacaeb1250454a65dad3ab57"
+            },
+            {
+              "path": "tests/browser/redesign.spec.ts",
+              "sha256": "ead078fa5455a6d6aeb1f54736f3c96fc1400ced916318beda7ebc2d4c4e0c08"
+            },
+            {
+              "path": "tests/browser/shell.spec.ts",
+              "sha256": "2010bef7089b5b9d15879a1a5ba717ed56c6c861bbbf1b5cd43ef0f1d9313ee0"
+            },
+            {
+              "path": "tests/browser/support/payment-fixture.ts",
+              "sha256": "11b95bf926f34d1204e182bb5c4636ac29775d6e2e112f5c7dee81be9a4ea551"
+            },
+            {
+              "path": "tests/contracts/issuer-transaction.mjs",
+              "sha256": "826814dcebf1594ce828b1963b5e6dbc97449842b50a25e0e40e2ce7df308bd1"
+            },
+            {
+              "path": "tests/contracts/night-runtime.mjs",
+              "sha256": "51aa6e0ff11c9c2aba229fbfe3392cb956b780d6e509bf8fbbd2d52c35842f78"
+            },
+            {
+              "path": "tests/contracts/night-transaction.mjs",
+              "sha256": "e903b991afbb5910cc3b8681eb8e93e066533455112d8aada2c090908832fa30"
+            },
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7f4580146ede29b84fed847c8d17f0dd9e90013908d5891d3c4ab8685a633d68"
+            },
+            {
+              "path": "tests/integration/qualification.test.ts",
+              "sha256": "f922b3e26e4636ab305c3a1545cd284b2f513b85bfc7979bcc2b62d023b80d67"
+            },
+            {
+              "path": "tests/integration/recovery.test.ts",
+              "sha256": "1e567c0ab130912a75d4c05dfc92541ab39f403f47245e3e3a887ba57f9fdb46"
+            },
+            {
+              "path": "tests/unit/amount.test.ts",
+              "sha256": "d5695e7ef051c329f1973becc20f8d436742bb9896edc3224d21e0c874cf559d"
+            },
+            {
+              "path": "tests/unit/client-only.ts",
+              "sha256": "d1b7b44f7e1b1a03f5189310bd032accd7552162cb002c30e373c9c6f801fa75"
+            },
+            {
+              "path": "tests/unit/indexed-db.test.ts",
+              "sha256": "b2716abce0a508c93b17806bf778a4b967e300efb2aef2ae6be37926a8e75d56"
+            },
+            {
+              "path": "tests/unit/issuance-recovery.test.ts",
+              "sha256": "a9ea8152f240c448b235a5edace2a602d4ff241ccd921e92c05d9f55644ca220"
+            },
+            {
+              "path": "tests/unit/night-client-contract.test.ts",
+              "sha256": "e9256dcab26e1d5a12298308aa73d1f1e07ae5d2d5743bf762bd1e9159249710"
+            },
+            {
+              "path": "tests/unit/night-settlement.test.ts",
+              "sha256": "ccdf1175810b63961c17892154791f21fbb425f8b078fb48a455108c94153895"
+            },
+            {
+              "path": "tests/unit/oneam.test.ts",
+              "sha256": "4c3bc15a5b7a3598a8ac574528377ab178ffb9d945e711587629d97b7cd95ebc"
+            },
+            {
+              "path": "tests/unit/payment-codec.test.ts",
+              "sha256": "9b3f27ad93df702212c0b2fa7f23e7e1855eac985031d5ba609d27b55dc2be6e"
+            },
+            {
+              "path": "tests/unit/private-state.test.ts",
+              "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+            },
+            {
+              "path": "tests/unit/recipient.test.ts",
+              "sha256": "9b9e13df9c119a945f20b78c06738c58909bf2417e849cfb23d66c24ff7dd0ff"
+            },
+            {
+              "path": "tests/unit/transaction.test.ts",
+              "sha256": "08683f1aac299b3bc7cae3e970ea3a6ef26847e393cbbc358697f29b330fa65d"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            },
+            {
+              "path": "tsconfig.json",
+              "sha256": "9817d7d53fddd51bf88f2befc5c85234b75d612ce366495f84449d7522a799ab"
+            },
+            {
+              "path": "vitest.config.ts",
+              "sha256": "bfe1896453db51700ab68a2619e9449bf3a5442e6d372175c5fe3771dde6e1f9"
+            }
+          ]
+        }
+      ],
+      "progress": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
+      "revisionNote": "Previous remote CI evidence is historical. REVISION.md forbids pushing; current local revision has no remote CI observation.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
@@ -1246,16 +2506,14 @@
             }
           ]
         }
-      ],
-      "progress": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
-      "revisionNote": "Previous remote CI evidence is historical. REVISION.md forbids pushing; current local revision has no remote CI observation."
+      ]
     },
     {
       "id": "L3-BUILD",
       "level": "Level 3",
       "title": "Production build",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L3-CI"
       ],
@@ -1264,6 +2522,516 @@
         "GET GitHub Actions run and every job step"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "native_NIGHT_production_build",
+          "command": "npm run build",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": ".gitattributes",
+              "sha256": "fc824b3a6eef997f789df3b923a033525ea238f4169ecac9b138801069066af3"
+            },
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "compose.yaml",
+              "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+            },
+            {
+              "path": "contracts/README.md",
+              "sha256": "5796f72fd5a83f606d006a7c698351de20903ebd1740bb1e54d81dc9dd096088"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/probes/claim-commitment.compact",
+              "sha256": "7b5d5865dcad96c9fb94e729b7be96dafe4743ef7d407b83c0ac071ddd044d69"
+            },
+            {
+              "path": "contracts/probes/shielded-io.compact",
+              "sha256": "6d8823166f2f2fbf1e328159d6c50b43e834ce452690801a83a4ad002c805bb6"
+            },
+            {
+              "path": "eslint.config.mjs",
+              "sha256": "ed7da661d4306ef50f89c3001a79d18adc58a6c9519c086399c3cc17990917c7"
+            },
+            {
+              "path": "next.config.ts",
+              "sha256": "3388ced5de4e0daa827ecf52c2541017a40494089e64de74b0d3653e7958f6f3"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+            },
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "playwright.config.ts",
+              "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+            },
+            {
+              "path": "postcss.config.mjs",
+              "sha256": "b783348d5618047d0f37e12acd15c5a2c5f02809d8711e0764c9cea52750346c"
+            },
+            {
+              "path": "scripts/bootstrap.mjs",
+              "sha256": "741e50ede373bc38b37ab4fb4006b8f6c488cff9a87ab3185f794fa902e507e1"
+            },
+            {
+              "path": "scripts/codex-doctor.mjs",
+              "sha256": "84c3317caba956edecf343006d70657e0a0ffab4467d2c537fceda824f27ce48"
+            },
+            {
+              "path": "scripts/codex-session.mjs",
+              "sha256": "2708d7c122268abd57abeedee2f40c2eef151863e453f44a3b87025fc7ba622e"
+            },
+            {
+              "path": "scripts/compile.mjs",
+              "sha256": "a8c01c15470ef208cbc124784bbfeed7e712e5991da63f298e79f7e5e92b127d"
+            },
+            {
+              "path": "scripts/deployment-dependencies.mjs",
+              "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
+            },
+            {
+              "path": "scripts/docker.mjs",
+              "sha256": "39414dc00cb81578572543196d7d08585fae78a16868f6b6b5506de2c2cbc9cf"
+            },
+            {
+              "path": "scripts/doctor.mjs",
+              "sha256": "3186b9d4a684bd288a848ccf87e5803418248bd3ed049d038b3d772693b60f90"
+            },
+            {
+              "path": "scripts/history.mjs",
+              "sha256": "15a1e52eb554ebc68820ff6b9e2d76de24479386570f270cef1c3037b771091d"
+            },
+            {
+              "path": "scripts/install-compact.mjs",
+              "sha256": "aa7e1458cfeeea4257144f66d06b5b0bdcb6153a370a5e7970b9eb1b1d87de92"
+            },
+            {
+              "path": "scripts/lib.mjs",
+              "sha256": "2d99834dd6a4e8e945a332071bba11d93d80f28a9b1e1e9c51d6e7a24b8123c5"
+            },
+            {
+              "path": "scripts/local-config.mjs",
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
+            },
+            {
+              "path": "scripts/mcp-doctor.mjs",
+              "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
+            },
+            {
+              "path": "scripts/offline.mjs",
+              "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+            },
+            {
+              "path": "scripts/participants.mjs",
+              "sha256": "1e7165f6e7e3d209642cab0ad7854198fb17111c7934983364b8f9bc4ac5ac2a"
+            },
+            {
+              "path": "scripts/product.mjs",
+              "sha256": "8a24dd4032db5f2079bfa1d3cbba421ce8cf3d9af8c07e272f73b4cc18643f3c"
+            },
+            {
+              "path": "scripts/product/deploy-preprod.mjs",
+              "sha256": "5c66bd3f866f2356465837db262363e64d3e7518f8483794830e9c478fef4547"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "a102468ab0fb08be8b159ee132380de9cb705822eeaf6494d7fae7ee88db5c80"
+            },
+            {
+              "path": "scripts/product/test-contracts.mjs",
+              "sha256": "2ee710dfcbb910ecfcfda4032749bde724ab60bb5ac7899b983e4a0dffaef031"
+            },
+            {
+              "path": "scripts/product/test-integration.mjs",
+              "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
+            },
+            {
+              "path": "scripts/product/test-preprod.mjs",
+              "sha256": "b23c2b12286e423f9577decc3f47ad04080e76dd85b10504c10bee16423a4e34"
+            },
+            {
+              "path": "scripts/product/test-proving.mjs",
+              "sha256": "5ffee2c64e9c6bf62f84bad3166ee0dba5d730a619c1ea10aa25deb08398f499"
+            },
+            {
+              "path": "scripts/product/verify-acceptance.mjs",
+              "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
+            },
+            {
+              "path": "scripts/product/verify-artifacts.mjs",
+              "sha256": "434e15a5d2ceec8fdad463e542832bca6d19052c70f89a84764237da9de7f3bb"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "6d313a373982281dede5b0fccff822c824cef877e9d44370d6ac50ff290eabe6"
+            },
+            {
+              "path": "scripts/product/verify-participant-activity.mjs",
+              "sha256": "0f7c22c7f2c8304aa74e89dfe66fadaec03438d471314609a04dfb61ce869a49"
+            },
+            {
+              "path": "scripts/requirements.mjs",
+              "sha256": "eacb09fee16c3c029119f8c7cac1b1bea3f4dd848ac7dd77398bebbdc9931ce2"
+            },
+            {
+              "path": "scripts/services.mjs",
+              "sha256": "db89d0fad5577562d5e9840f4a916bc8d168bebfad255e03e5dda6f81c2fb1d9"
+            },
+            {
+              "path": "scripts/sonner-styles.cjs",
+              "sha256": "6b2dc68f845e342bcdcae1ea79714c71540b5f89dbe9383900697dbbd60485cf"
+            },
+            {
+              "path": "scripts/verify-boilerplate.mjs",
+              "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
+            },
+            {
+              "path": "scripts/verify-browser-connectivity.mjs",
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+            },
+            {
+              "path": "scripts/verify-issuer.mjs",
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
+            },
+            {
+              "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
+              "sha256": "f32eb6701d277322953ae3ffee463363c87d0c3a73e4d86fb3af067518c7a303"
+            },
+            {
+              "path": "src/app/api/build/route.ts",
+              "sha256": "72615f4afc54cf2cc45295df627ec23ddece50374a24dc2275e8a0e85af531c3"
+            },
+            {
+              "path": "src/app/claim/page.tsx",
+              "sha256": "7251c35fe52dade08cfff0eaebb0f265f721821c6f1f38066ccb291c0c710001"
+            },
+            {
+              "path": "src/app/globals.css",
+              "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+            },
+            {
+              "path": "src/app/layout.tsx",
+              "sha256": "578518d27ad78c6060a6f54c6b58d8a891c5137acbcccb5f904ca0e4950152ef"
+            },
+            {
+              "path": "src/app/page.tsx",
+              "sha256": "13db2fda6b2953fd118cc7a7c21947a0de50953fdd0e78a49ad7394cd8f8b911"
+            },
+            {
+              "path": "src/components/admin-recovery.tsx",
+              "sha256": "04a226dcb5a18ae205cc8d9335350a83682d0a7a320ff696bed02e02652a38e1"
+            },
+            {
+              "path": "src/components/claim-capture.tsx",
+              "sha256": "44f4cc50cc2ea80fb95a7a732363fd71572bd8805c58fbea64cd2524b38f1ae1"
+            },
+            {
+              "path": "src/components/context-sheet.tsx",
+              "sha256": "f195fa609b19a0f4163c199910a528e160e2053e8d66b33827cf549e79cb58ea"
+            },
+            {
+              "path": "src/components/download.ts",
+              "sha256": "623ffa44fbaa2171dc62a1bc2fac6cd2bebc04f85dc678609a71ed11bb448d16"
+            },
+            {
+              "path": "src/components/issuance-setup.tsx",
+              "sha256": "e14425fcb4c4726b85b756564d9dcef12860cf39f0bcec3aec876ec8b81a91a4"
+            },
+            {
+              "path": "src/components/issuer-setup.tsx",
+              "sha256": "8231e5734962074e559d741183675f9fd3cdd096d300af217fd48bf696f967a2"
+            },
+            {
+              "path": "src/components/payment-deployment.tsx",
+              "sha256": "125390e9f2f1cfbdb4ef18ed4b7778909c72fbed8559ce01ccadebe014120bbc"
+            },
+            {
+              "path": "src/components/payment-workspace.tsx",
+              "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+            },
+            {
+              "path": "src/components/product-feedback.tsx",
+              "sha256": "ab7a591d67ca1699e27ac313bc96fcdf48af34d77d3761f5c27e91fc68041a1a"
+            },
+            {
+              "path": "src/components/product-shell.tsx",
+              "sha256": "102d9a8a5f0fe2a972bfb8da6127d50881cb25348bbd4efb4ac5d6a861f70353"
+            },
+            {
+              "path": "src/components/ui/button.tsx",
+              "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
+            },
+            {
+              "path": "src/components/wallet-panel.tsx",
+              "sha256": "24fccb04545b6fe4887eb9c216aff1d4f0a15fec9917dd6afcae0fa2a43009e4"
+            },
+            {
+              "path": "src/domain/amount.ts",
+              "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
+            },
+            {
+              "path": "src/domain/payment.ts",
+              "sha256": "11247ff7e8913f813238e568650065e80d0d07e739158f708b7c1e48244c8f23"
+            },
+            {
+              "path": "src/domain/transaction.ts",
+              "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+            },
+            {
+              "path": "src/lib/midnight/admin-recovery.ts",
+              "sha256": "ff30564f33dd8baa967df8a6429e01f16b507a303d814b8167c6f206e7cee539"
+            },
+            {
+              "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+              "sha256": "440d95ae6bca8bc053e24d209327ba0fc931c2b8b89df0d1b2dd8793a29f1db9"
+            },
+            {
+              "path": "src/lib/midnight/issuer-deployment.ts",
+              "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
+            },
+            {
+              "path": "src/lib/midnight/issuer-issuance.ts",
+              "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
+            },
+            {
+              "path": "src/lib/midnight/night-settlement.ts",
+              "sha256": "29627be859921223549b47df3dcfe61526239f1a0ae6be0f26f074bcb9922954"
+            },
+            {
+              "path": "src/lib/midnight/oneam.ts",
+              "sha256": "904bdb71910d14c51e669ca42c6ecb8a4aeb4d9ac07640e48d13c7cb5181a4ef"
+            },
+            {
+              "path": "src/lib/midnight/payment-codec.ts",
+              "sha256": "497de9d1798b7333a84e6024f577df77edccb8b076e4cd6a5b89cba67f3748f2"
+            },
+            {
+              "path": "src/lib/midnight/payment-contract.ts",
+              "sha256": "a2064bcdb06e9c7bb6dfe14adbfc0db5a5258b6851a2a0170ae83a228f03013d"
+            },
+            {
+              "path": "src/lib/midnight/payment-crypto.ts",
+              "sha256": "29d2bf6516b7146c4348afa9fd3e9a705ca799008c751cabd1224ceec781fdd6"
+            },
+            {
+              "path": "src/lib/midnight/payment-deployment.ts",
+              "sha256": "eb2a150a9afbcce4dc577abb9284048faadbb731975bda3998522bb0a3f07d62"
+            },
+            {
+              "path": "src/lib/midnight/payment-network.ts",
+              "sha256": "9f92174a892543abfeb77ef84701f637c6627846029d57cde32e048bcaf6c185"
+            },
+            {
+              "path": "src/lib/midnight/payment-session.ts",
+              "sha256": "ac896f0561526251e25b070fa7ed431cd4da80d693ac022bf6986f4a5b26acfa"
+            },
+            {
+              "path": "src/lib/midnight/payments.ts",
+              "sha256": "7e1fba63f301d26fa76ccfd74be79c5b81d23f800d5cd4d2eab991fd39fcac35"
+            },
+            {
+              "path": "src/lib/midnight/port.ts",
+              "sha256": "b480603934613da5e950abbbf0ec7a047102813bf220feb1c6b9c9307ef824d6"
+            },
+            {
+              "path": "src/lib/midnight/proof-lock.ts",
+              "sha256": "2ab026d5ca4262a19fa4ace2dcf483b824d5316cae8c4b82eae4be30e5cffbe6"
+            },
+            {
+              "path": "src/lib/private-state/crypto.ts",
+              "sha256": "15f0990b591da8f4ea336b9ac451634c6bd14409123f0fd572b584a7bf5ef2ed"
+            },
+            {
+              "path": "src/lib/private-state/indexed-db.ts",
+              "sha256": "3e089d0bdbab523a611975eb960443d7ed2da70a649735a1daef72cfb7af327b"
+            },
+            {
+              "path": "src/lib/private-state/port.ts",
+              "sha256": "e6aad6534fa3cfb3cc2c53c0e109253fdef9535446133429e61560ec7852ba44"
+            },
+            {
+              "path": "src/lib/private-state/transaction-journal.ts",
+              "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+            },
+            {
+              "path": "src/lib/server/artifacts.ts",
+              "sha256": "a97f46933550514d215a06c895829840c2ffc544791e839c098f2618b34bed06"
+            },
+            {
+              "path": "src/lib/server/build-metadata.ts",
+              "sha256": "d818233154180525be891b077702e4465f6e5b916c65e2f963a8ea5f5c779012"
+            },
+            {
+              "path": "src/lib/server/security.ts",
+              "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
+            },
+            {
+              "path": "src/lib/utils.ts",
+              "sha256": "abd847ac1328863c30b22ad0466d9bb09938291c57e2619f622d2fecbb52196d"
+            },
+            {
+              "path": "src/proxy.ts",
+              "sha256": "05475f2e476e117474cfd628fa0bf958f90e79938561a81d97f09b6579c0d373"
+            },
+            {
+              "path": "tests/boilerplate/amount.test.mjs",
+              "sha256": "56be81ef16d5046a10c6443c237123194321a4d85b65d5ea00a07461f5e5a089"
+            },
+            {
+              "path": "tests/boilerplate/deployment-dependencies.test.mjs",
+              "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
+            },
+            {
+              "path": "tests/boilerplate/local-config.test.mjs",
+              "sha256": "29b12ae477620865937b04d9f9415e5001ba13aa92fe98e2a9c945a89c7ca188"
+            },
+            {
+              "path": "tests/boilerplate/participants.test.mjs",
+              "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "34d464e9518d4f7315af07dad90c58dbc353fb75a73fa0036f8163474ecf5146"
+            },
+            {
+              "path": "tests/boilerplate/requirements.test.mjs",
+              "sha256": "5247663c6f6b7f2f98e3074d7a7e4d3bf9fb18eec24865c0839a532cc1c64bcb"
+            },
+            {
+              "path": "tests/boilerplate/tooling.test.mjs",
+              "sha256": "09d50b718891681af0352bbf5510fe5083762ba7733f36bdda99830a3460fe9b"
+            },
+            {
+              "path": "tests/browser/claim.spec.ts",
+              "sha256": "238fcfb0566c4f7721f998a45471ccf84aa914fbfacaeb1250454a65dad3ab57"
+            },
+            {
+              "path": "tests/browser/redesign.spec.ts",
+              "sha256": "ead078fa5455a6d6aeb1f54736f3c96fc1400ced916318beda7ebc2d4c4e0c08"
+            },
+            {
+              "path": "tests/browser/shell.spec.ts",
+              "sha256": "2010bef7089b5b9d15879a1a5ba717ed56c6c861bbbf1b5cd43ef0f1d9313ee0"
+            },
+            {
+              "path": "tests/browser/support/payment-fixture.ts",
+              "sha256": "11b95bf926f34d1204e182bb5c4636ac29775d6e2e112f5c7dee81be9a4ea551"
+            },
+            {
+              "path": "tests/contracts/issuer-transaction.mjs",
+              "sha256": "826814dcebf1594ce828b1963b5e6dbc97449842b50a25e0e40e2ce7df308bd1"
+            },
+            {
+              "path": "tests/contracts/night-runtime.mjs",
+              "sha256": "51aa6e0ff11c9c2aba229fbfe3392cb956b780d6e509bf8fbbd2d52c35842f78"
+            },
+            {
+              "path": "tests/contracts/night-transaction.mjs",
+              "sha256": "e903b991afbb5910cc3b8681eb8e93e066533455112d8aada2c090908832fa30"
+            },
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7f4580146ede29b84fed847c8d17f0dd9e90013908d5891d3c4ab8685a633d68"
+            },
+            {
+              "path": "tests/integration/qualification.test.ts",
+              "sha256": "f922b3e26e4636ab305c3a1545cd284b2f513b85bfc7979bcc2b62d023b80d67"
+            },
+            {
+              "path": "tests/integration/recovery.test.ts",
+              "sha256": "1e567c0ab130912a75d4c05dfc92541ab39f403f47245e3e3a887ba57f9fdb46"
+            },
+            {
+              "path": "tests/unit/amount.test.ts",
+              "sha256": "d5695e7ef051c329f1973becc20f8d436742bb9896edc3224d21e0c874cf559d"
+            },
+            {
+              "path": "tests/unit/client-only.ts",
+              "sha256": "d1b7b44f7e1b1a03f5189310bd032accd7552162cb002c30e373c9c6f801fa75"
+            },
+            {
+              "path": "tests/unit/indexed-db.test.ts",
+              "sha256": "b2716abce0a508c93b17806bf778a4b967e300efb2aef2ae6be37926a8e75d56"
+            },
+            {
+              "path": "tests/unit/issuance-recovery.test.ts",
+              "sha256": "a9ea8152f240c448b235a5edace2a602d4ff241ccd921e92c05d9f55644ca220"
+            },
+            {
+              "path": "tests/unit/night-client-contract.test.ts",
+              "sha256": "e9256dcab26e1d5a12298308aa73d1f1e07ae5d2d5743bf762bd1e9159249710"
+            },
+            {
+              "path": "tests/unit/night-settlement.test.ts",
+              "sha256": "ccdf1175810b63961c17892154791f21fbb425f8b078fb48a455108c94153895"
+            },
+            {
+              "path": "tests/unit/oneam.test.ts",
+              "sha256": "4c3bc15a5b7a3598a8ac574528377ab178ffb9d945e711587629d97b7cd95ebc"
+            },
+            {
+              "path": "tests/unit/payment-codec.test.ts",
+              "sha256": "9b3f27ad93df702212c0b2fa7f23e7e1855eac985031d5ba609d27b55dc2be6e"
+            },
+            {
+              "path": "tests/unit/private-state.test.ts",
+              "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+            },
+            {
+              "path": "tests/unit/recipient.test.ts",
+              "sha256": "9b9e13df9c119a945f20b78c06738c58909bf2417e849cfb23d66c24ff7dd0ff"
+            },
+            {
+              "path": "tests/unit/transaction.test.ts",
+              "sha256": "08683f1aac299b3bc7cae3e970ea3a6ef26847e393cbbc358697f29b330fa65d"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            },
+            {
+              "path": "tsconfig.json",
+              "sha256": "9817d7d53fddd51bf88f2befc5c85234b75d612ce366495f84449d7522a799ab"
+            },
+            {
+              "path": "vitest.config.ts",
+              "sha256": "bfe1896453db51700ab68a2619e9449bf3a5442e6d372175c5fe3771dde6e1f9"
+            }
+          ]
+        }
+      ],
+      "progress": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
+      "revisionNote": "Local build passed; verified state withheld because L3-CI is a prerequisite.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "current_local_production_build_passed_remote_CI_prerequisite_not_observed",
@@ -1498,20 +3266,34 @@
             }
           ]
         }
-      ],
-      "progress": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
-      "revisionNote": "Local build passed; verified state withheld because L3-CI is a prerequisite."
+      ]
     },
     {
       "id": "L3-PROPOSAL",
       "level": "Level 3",
       "title": "Product proposal",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Truthful technical proposal describes this payment product and current readiness.",
       "commands": [],
-      "evidence": []
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
+          "command": "Source/UI/config review and local verification",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "PROPOSAL.md",
+              "sha256": "913b31ce402f274204ca1fb7d94bc9011231879003276b07cff70bbb34dd3068"
+            }
+          ]
+        }
+      ],
+      "historicalEvidence": []
     },
     {
       "id": "L3-APPROVAL",
@@ -1585,7 +3367,7 @@
       "level": "Level 4",
       "title": "Setup and implemented usage documentation",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L1-DOCS"
       ],
@@ -1594,6 +3376,32 @@
         "Review public README and implementation-matched usage"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
+          "command": "Source/UI/config review and local verification",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "README.md",
+              "sha256": "9403db95eed3cba9ec1cf3dd4a14a99df2692e86ba602f7b64896df57a210cf7"
+            },
+            {
+              "path": "docs/USAGE.md",
+              "sha256": "b03ba6147d985bef1325e2f51630cab8cbd7caca5465cec6f0efd0c8c1f7a192"
+            },
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "2d29d5b214fb05d9a63969d0d7a8c6e8d62762e7afdcc2a98947cd74f5938995"
+            }
+          ]
+        }
+      ],
+      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "reviewed_current_local_setup_usage_privacy_recovery_and_limitations_not_publication_or_live_acceptance",
@@ -1620,16 +3428,14 @@
             }
           ]
         }
-      ],
-      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L4-PIPELINE",
       "level": "Level 4",
       "title": "Product repository pipeline",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L3-CI"
       ],
@@ -1638,6 +3444,516 @@
         "GET GitHub Actions run and every job step"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "successful_owner_repository_pipeline_for_current_engineering_subjects",
+          "command": "GitHub Actions run 36319963556",
+          "path": "docs/evidence/night-publication.json",
+          "sha256": "55021c7dc8a88e70ce010dcab463f0763db6583bc1bd4f719ede874992069084",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": ".gitattributes",
+              "sha256": "fc824b3a6eef997f789df3b923a033525ea238f4169ecac9b138801069066af3"
+            },
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "compose.yaml",
+              "sha256": "f0cf27dcc0f50cce47eb517d23bd4ed41b0225a7a2e190a145ef67031244c579"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+            },
+            {
+              "path": "contracts/README.md",
+              "sha256": "5796f72fd5a83f606d006a7c698351de20903ebd1740bb1e54d81dc9dd096088"
+            },
+            {
+              "path": "contracts/issuance/test-asset.compact",
+              "sha256": "a34d3f8fe61b0b443becb4a8d55e0aee65522c85c0d3b91e32ac3f78b5b551e4"
+            },
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "contracts/private-payments.compact",
+              "sha256": "a7c663e9db67fa9b26b6b90f5b7a910f13c189b23c0ad968228c821a17adf3a3"
+            },
+            {
+              "path": "contracts/probes/claim-commitment.compact",
+              "sha256": "7b5d5865dcad96c9fb94e729b7be96dafe4743ef7d407b83c0ac071ddd044d69"
+            },
+            {
+              "path": "contracts/probes/shielded-io.compact",
+              "sha256": "6d8823166f2f2fbf1e328159d6c50b43e834ce452690801a83a4ad002c805bb6"
+            },
+            {
+              "path": "eslint.config.mjs",
+              "sha256": "ed7da661d4306ef50f89c3001a79d18adc58a6c9519c086399c3cc17990917c7"
+            },
+            {
+              "path": "next.config.ts",
+              "sha256": "3388ced5de4e0daa827ecf52c2541017a40494089e64de74b0d3653e7958f6f3"
+            },
+            {
+              "path": "package-lock.json",
+              "sha256": "841009349cd86ab07b147663708959fe19549d98dd1acd16f870347ed8d9e72c"
+            },
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "playwright.config.ts",
+              "sha256": "dcaafb10f52415ec14e2bbdb95c8a85d7b74522363ea5d9f0080b84c9adfd4b8"
+            },
+            {
+              "path": "postcss.config.mjs",
+              "sha256": "b783348d5618047d0f37e12acd15c5a2c5f02809d8711e0764c9cea52750346c"
+            },
+            {
+              "path": "scripts/bootstrap.mjs",
+              "sha256": "741e50ede373bc38b37ab4fb4006b8f6c488cff9a87ab3185f794fa902e507e1"
+            },
+            {
+              "path": "scripts/codex-doctor.mjs",
+              "sha256": "84c3317caba956edecf343006d70657e0a0ffab4467d2c537fceda824f27ce48"
+            },
+            {
+              "path": "scripts/codex-session.mjs",
+              "sha256": "2708d7c122268abd57abeedee2f40c2eef151863e453f44a3b87025fc7ba622e"
+            },
+            {
+              "path": "scripts/compile.mjs",
+              "sha256": "a8c01c15470ef208cbc124784bbfeed7e712e5991da63f298e79f7e5e92b127d"
+            },
+            {
+              "path": "scripts/deployment-dependencies.mjs",
+              "sha256": "995fd62e991f3fbcef7579586f035c3bf5576d7c3b96a8af675b87ccc4f63649"
+            },
+            {
+              "path": "scripts/docker.mjs",
+              "sha256": "39414dc00cb81578572543196d7d08585fae78a16868f6b6b5506de2c2cbc9cf"
+            },
+            {
+              "path": "scripts/doctor.mjs",
+              "sha256": "3186b9d4a684bd288a848ccf87e5803418248bd3ed049d038b3d772693b60f90"
+            },
+            {
+              "path": "scripts/history.mjs",
+              "sha256": "15a1e52eb554ebc68820ff6b9e2d76de24479386570f270cef1c3037b771091d"
+            },
+            {
+              "path": "scripts/install-compact.mjs",
+              "sha256": "aa7e1458cfeeea4257144f66d06b5b0bdcb6153a370a5e7970b9eb1b1d87de92"
+            },
+            {
+              "path": "scripts/lib.mjs",
+              "sha256": "2d99834dd6a4e8e945a332071bba11d93d80f28a9b1e1e9c51d6e7a24b8123c5"
+            },
+            {
+              "path": "scripts/local-config.mjs",
+              "sha256": "ff92943a59c6f59faf19ca714c1f2518da5f98f8cf6ae2b416f4fae64d36858a"
+            },
+            {
+              "path": "scripts/mcp-doctor.mjs",
+              "sha256": "67791361cddc92eb212cbde45e5511b234bde06e78669ff628373e01635d2ef7"
+            },
+            {
+              "path": "scripts/offline.mjs",
+              "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+            },
+            {
+              "path": "scripts/participants.mjs",
+              "sha256": "1e7165f6e7e3d209642cab0ad7854198fb17111c7934983364b8f9bc4ac5ac2a"
+            },
+            {
+              "path": "scripts/product.mjs",
+              "sha256": "8a24dd4032db5f2079bfa1d3cbba421ce8cf3d9af8c07e272f73b4cc18643f3c"
+            },
+            {
+              "path": "scripts/product/deploy-preprod.mjs",
+              "sha256": "5c66bd3f866f2356465837db262363e64d3e7518f8483794830e9c478fef4547"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "a102468ab0fb08be8b159ee132380de9cb705822eeaf6494d7fae7ee88db5c80"
+            },
+            {
+              "path": "scripts/product/test-contracts.mjs",
+              "sha256": "2ee710dfcbb910ecfcfda4032749bde724ab60bb5ac7899b983e4a0dffaef031"
+            },
+            {
+              "path": "scripts/product/test-integration.mjs",
+              "sha256": "f15fbfb06189cf27a2c78ea96fe57a1bd2c6efc60494047a3761c3281604a12c"
+            },
+            {
+              "path": "scripts/product/test-preprod.mjs",
+              "sha256": "b23c2b12286e423f9577decc3f47ad04080e76dd85b10504c10bee16423a4e34"
+            },
+            {
+              "path": "scripts/product/test-proving.mjs",
+              "sha256": "5ffee2c64e9c6bf62f84bad3166ee0dba5d730a619c1ea10aa25deb08398f499"
+            },
+            {
+              "path": "scripts/product/verify-acceptance.mjs",
+              "sha256": "58e8b5877e042b91a38c770c690cfaa6593545d04bbf056421276e4faf595436"
+            },
+            {
+              "path": "scripts/product/verify-artifacts.mjs",
+              "sha256": "434e15a5d2ceec8fdad463e542832bca6d19052c70f89a84764237da9de7f3bb"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "6d313a373982281dede5b0fccff822c824cef877e9d44370d6ac50ff290eabe6"
+            },
+            {
+              "path": "scripts/product/verify-participant-activity.mjs",
+              "sha256": "0f7c22c7f2c8304aa74e89dfe66fadaec03438d471314609a04dfb61ce869a49"
+            },
+            {
+              "path": "scripts/requirements.mjs",
+              "sha256": "eacb09fee16c3c029119f8c7cac1b1bea3f4dd848ac7dd77398bebbdc9931ce2"
+            },
+            {
+              "path": "scripts/services.mjs",
+              "sha256": "db89d0fad5577562d5e9840f4a916bc8d168bebfad255e03e5dda6f81c2fb1d9"
+            },
+            {
+              "path": "scripts/sonner-styles.cjs",
+              "sha256": "6b2dc68f845e342bcdcae1ea79714c71540b5f89dbe9383900697dbbd60485cf"
+            },
+            {
+              "path": "scripts/verify-boilerplate.mjs",
+              "sha256": "fbd3d75f15c155f12d3ff0a9fdef4e780cccc8d868d053c0f2b2589a0f45832d"
+            },
+            {
+              "path": "scripts/verify-browser-connectivity.mjs",
+              "sha256": "6ee13ab5a461bd7321125022e863b5be4edbac6dbe5cfa9061dc75344588733e"
+            },
+            {
+              "path": "scripts/verify-issuer.mjs",
+              "sha256": "4078bb13d119f9eb15b7dc0910fdc698bd432984c62131879e0e2e65fbe59ec3"
+            },
+            {
+              "path": "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
+              "sha256": "f32eb6701d277322953ae3ffee463363c87d0c3a73e4d86fb3af067518c7a303"
+            },
+            {
+              "path": "src/app/api/build/route.ts",
+              "sha256": "72615f4afc54cf2cc45295df627ec23ddece50374a24dc2275e8a0e85af531c3"
+            },
+            {
+              "path": "src/app/claim/page.tsx",
+              "sha256": "7251c35fe52dade08cfff0eaebb0f265f721821c6f1f38066ccb291c0c710001"
+            },
+            {
+              "path": "src/app/globals.css",
+              "sha256": "01c56b647fe047f2425e9ce923b4d05d5241a8acb7a12b48425712996f750662"
+            },
+            {
+              "path": "src/app/layout.tsx",
+              "sha256": "578518d27ad78c6060a6f54c6b58d8a891c5137acbcccb5f904ca0e4950152ef"
+            },
+            {
+              "path": "src/app/page.tsx",
+              "sha256": "13db2fda6b2953fd118cc7a7c21947a0de50953fdd0e78a49ad7394cd8f8b911"
+            },
+            {
+              "path": "src/components/admin-recovery.tsx",
+              "sha256": "04a226dcb5a18ae205cc8d9335350a83682d0a7a320ff696bed02e02652a38e1"
+            },
+            {
+              "path": "src/components/claim-capture.tsx",
+              "sha256": "44f4cc50cc2ea80fb95a7a732363fd71572bd8805c58fbea64cd2524b38f1ae1"
+            },
+            {
+              "path": "src/components/context-sheet.tsx",
+              "sha256": "f195fa609b19a0f4163c199910a528e160e2053e8d66b33827cf549e79cb58ea"
+            },
+            {
+              "path": "src/components/download.ts",
+              "sha256": "623ffa44fbaa2171dc62a1bc2fac6cd2bebc04f85dc678609a71ed11bb448d16"
+            },
+            {
+              "path": "src/components/issuance-setup.tsx",
+              "sha256": "e14425fcb4c4726b85b756564d9dcef12860cf39f0bcec3aec876ec8b81a91a4"
+            },
+            {
+              "path": "src/components/issuer-setup.tsx",
+              "sha256": "8231e5734962074e559d741183675f9fd3cdd096d300af217fd48bf696f967a2"
+            },
+            {
+              "path": "src/components/payment-deployment.tsx",
+              "sha256": "125390e9f2f1cfbdb4ef18ed4b7778909c72fbed8559ce01ccadebe014120bbc"
+            },
+            {
+              "path": "src/components/payment-workspace.tsx",
+              "sha256": "a2489cb4519429697bde6616a005870d2587c2b96f15de8b38e727978c6f3c19"
+            },
+            {
+              "path": "src/components/product-feedback.tsx",
+              "sha256": "ab7a591d67ca1699e27ac313bc96fcdf48af34d77d3761f5c27e91fc68041a1a"
+            },
+            {
+              "path": "src/components/product-shell.tsx",
+              "sha256": "102d9a8a5f0fe2a972bfb8da6127d50881cb25348bbd4efb4ac5d6a861f70353"
+            },
+            {
+              "path": "src/components/ui/button.tsx",
+              "sha256": "fb1615dd3a501da4fc620dc8d3f0048b57a34f4767275ad0671d55b751909bfd"
+            },
+            {
+              "path": "src/components/wallet-panel.tsx",
+              "sha256": "24fccb04545b6fe4887eb9c216aff1d4f0a15fec9917dd6afcae0fa2a43009e4"
+            },
+            {
+              "path": "src/domain/amount.ts",
+              "sha256": "f633d0eb5c1788ac792e4d882fe49a1a81ba7d6e6b97d79b3c65d5448f717909"
+            },
+            {
+              "path": "src/domain/payment.ts",
+              "sha256": "11247ff7e8913f813238e568650065e80d0d07e739158f708b7c1e48244c8f23"
+            },
+            {
+              "path": "src/domain/transaction.ts",
+              "sha256": "9cad7532371f4cb12747aa655cba2c95d05cfed1afaabfb5cbfd2ca064099a9e"
+            },
+            {
+              "path": "src/lib/midnight/admin-recovery.ts",
+              "sha256": "ff30564f33dd8baa967df8a6429e01f16b507a303d814b8167c6f206e7cee539"
+            },
+            {
+              "path": "src/lib/midnight/feasibility/qualify-escrow.ts",
+              "sha256": "440d95ae6bca8bc053e24d209327ba0fc931c2b8b89df0d1b2dd8793a29f1db9"
+            },
+            {
+              "path": "src/lib/midnight/issuer-deployment.ts",
+              "sha256": "cabd24ba1d4166651da6685a46a80f321cec778beef9e03cfee52043604192f0"
+            },
+            {
+              "path": "src/lib/midnight/issuer-issuance.ts",
+              "sha256": "157bc7d4c7f0a0716cdca447f25ef895079867e4aaa99fbe5f56736eb1fd70b7"
+            },
+            {
+              "path": "src/lib/midnight/night-settlement.ts",
+              "sha256": "29627be859921223549b47df3dcfe61526239f1a0ae6be0f26f074bcb9922954"
+            },
+            {
+              "path": "src/lib/midnight/oneam.ts",
+              "sha256": "904bdb71910d14c51e669ca42c6ecb8a4aeb4d9ac07640e48d13c7cb5181a4ef"
+            },
+            {
+              "path": "src/lib/midnight/payment-codec.ts",
+              "sha256": "497de9d1798b7333a84e6024f577df77edccb8b076e4cd6a5b89cba67f3748f2"
+            },
+            {
+              "path": "src/lib/midnight/payment-contract.ts",
+              "sha256": "a2064bcdb06e9c7bb6dfe14adbfc0db5a5258b6851a2a0170ae83a228f03013d"
+            },
+            {
+              "path": "src/lib/midnight/payment-crypto.ts",
+              "sha256": "29d2bf6516b7146c4348afa9fd3e9a705ca799008c751cabd1224ceec781fdd6"
+            },
+            {
+              "path": "src/lib/midnight/payment-deployment.ts",
+              "sha256": "eb2a150a9afbcce4dc577abb9284048faadbb731975bda3998522bb0a3f07d62"
+            },
+            {
+              "path": "src/lib/midnight/payment-network.ts",
+              "sha256": "9f92174a892543abfeb77ef84701f637c6627846029d57cde32e048bcaf6c185"
+            },
+            {
+              "path": "src/lib/midnight/payment-session.ts",
+              "sha256": "ac896f0561526251e25b070fa7ed431cd4da80d693ac022bf6986f4a5b26acfa"
+            },
+            {
+              "path": "src/lib/midnight/payments.ts",
+              "sha256": "7e1fba63f301d26fa76ccfd74be79c5b81d23f800d5cd4d2eab991fd39fcac35"
+            },
+            {
+              "path": "src/lib/midnight/port.ts",
+              "sha256": "b480603934613da5e950abbbf0ec7a047102813bf220feb1c6b9c9307ef824d6"
+            },
+            {
+              "path": "src/lib/midnight/proof-lock.ts",
+              "sha256": "2ab026d5ca4262a19fa4ace2dcf483b824d5316cae8c4b82eae4be30e5cffbe6"
+            },
+            {
+              "path": "src/lib/private-state/crypto.ts",
+              "sha256": "15f0990b591da8f4ea336b9ac451634c6bd14409123f0fd572b584a7bf5ef2ed"
+            },
+            {
+              "path": "src/lib/private-state/indexed-db.ts",
+              "sha256": "3e089d0bdbab523a611975eb960443d7ed2da70a649735a1daef72cfb7af327b"
+            },
+            {
+              "path": "src/lib/private-state/port.ts",
+              "sha256": "e6aad6534fa3cfb3cc2c53c0e109253fdef9535446133429e61560ec7852ba44"
+            },
+            {
+              "path": "src/lib/private-state/transaction-journal.ts",
+              "sha256": "4943e92e276416872345716b7a55bea82c08d1be34ac4e48e5d8cf5406e70867"
+            },
+            {
+              "path": "src/lib/server/artifacts.ts",
+              "sha256": "a97f46933550514d215a06c895829840c2ffc544791e839c098f2618b34bed06"
+            },
+            {
+              "path": "src/lib/server/build-metadata.ts",
+              "sha256": "d818233154180525be891b077702e4465f6e5b916c65e2f963a8ea5f5c779012"
+            },
+            {
+              "path": "src/lib/server/security.ts",
+              "sha256": "4251c86ce2fa038887fddae10f7c6657512eb6e90c7fc02f0627278cd7fb1843"
+            },
+            {
+              "path": "src/lib/utils.ts",
+              "sha256": "abd847ac1328863c30b22ad0466d9bb09938291c57e2619f622d2fecbb52196d"
+            },
+            {
+              "path": "src/proxy.ts",
+              "sha256": "05475f2e476e117474cfd628fa0bf958f90e79938561a81d97f09b6579c0d373"
+            },
+            {
+              "path": "tests/boilerplate/amount.test.mjs",
+              "sha256": "56be81ef16d5046a10c6443c237123194321a4d85b65d5ea00a07461f5e5a089"
+            },
+            {
+              "path": "tests/boilerplate/deployment-dependencies.test.mjs",
+              "sha256": "5b952fb8769af04ff1770cd425c7e0b113b04acb8c5373ec4b5f9f5c4c4e8e0b"
+            },
+            {
+              "path": "tests/boilerplate/local-config.test.mjs",
+              "sha256": "29b12ae477620865937b04d9f9415e5001ba13aa92fe98e2a9c945a89c7ca188"
+            },
+            {
+              "path": "tests/boilerplate/participants.test.mjs",
+              "sha256": "838683f8e22af20d2366cd6990c1f9d815f2b41363f449fbdfeb52ffb679cf34"
+            },
+            {
+              "path": "tests/boilerplate/public-config.test.mjs",
+              "sha256": "34d464e9518d4f7315af07dad90c58dbc353fb75a73fa0036f8163474ecf5146"
+            },
+            {
+              "path": "tests/boilerplate/requirements.test.mjs",
+              "sha256": "5247663c6f6b7f2f98e3074d7a7e4d3bf9fb18eec24865c0839a532cc1c64bcb"
+            },
+            {
+              "path": "tests/boilerplate/tooling.test.mjs",
+              "sha256": "09d50b718891681af0352bbf5510fe5083762ba7733f36bdda99830a3460fe9b"
+            },
+            {
+              "path": "tests/browser/claim.spec.ts",
+              "sha256": "238fcfb0566c4f7721f998a45471ccf84aa914fbfacaeb1250454a65dad3ab57"
+            },
+            {
+              "path": "tests/browser/redesign.spec.ts",
+              "sha256": "ead078fa5455a6d6aeb1f54736f3c96fc1400ced916318beda7ebc2d4c4e0c08"
+            },
+            {
+              "path": "tests/browser/shell.spec.ts",
+              "sha256": "2010bef7089b5b9d15879a1a5ba717ed56c6c861bbbf1b5cd43ef0f1d9313ee0"
+            },
+            {
+              "path": "tests/browser/support/payment-fixture.ts",
+              "sha256": "11b95bf926f34d1204e182bb5c4636ac29775d6e2e112f5c7dee81be9a4ea551"
+            },
+            {
+              "path": "tests/contracts/issuer-transaction.mjs",
+              "sha256": "826814dcebf1594ce828b1963b5e6dbc97449842b50a25e0e40e2ce7df308bd1"
+            },
+            {
+              "path": "tests/contracts/night-runtime.mjs",
+              "sha256": "51aa6e0ff11c9c2aba229fbfe3392cb956b780d6e509bf8fbbd2d52c35842f78"
+            },
+            {
+              "path": "tests/contracts/night-transaction.mjs",
+              "sha256": "e903b991afbb5910cc3b8681eb8e93e066533455112d8aada2c090908832fa30"
+            },
+            {
+              "path": "tests/contracts/runtime.mjs",
+              "sha256": "b7e7781d5c9d79ecd790ed11af6998630aaaabaddc6fc40ebade7692dbb1cad6"
+            },
+            {
+              "path": "tests/integration/payment-records.test.ts",
+              "sha256": "7f4580146ede29b84fed847c8d17f0dd9e90013908d5891d3c4ab8685a633d68"
+            },
+            {
+              "path": "tests/integration/qualification.test.ts",
+              "sha256": "f922b3e26e4636ab305c3a1545cd284b2f513b85bfc7979bcc2b62d023b80d67"
+            },
+            {
+              "path": "tests/integration/recovery.test.ts",
+              "sha256": "1e567c0ab130912a75d4c05dfc92541ab39f403f47245e3e3a887ba57f9fdb46"
+            },
+            {
+              "path": "tests/unit/amount.test.ts",
+              "sha256": "d5695e7ef051c329f1973becc20f8d436742bb9896edc3224d21e0c874cf559d"
+            },
+            {
+              "path": "tests/unit/client-only.ts",
+              "sha256": "d1b7b44f7e1b1a03f5189310bd032accd7552162cb002c30e373c9c6f801fa75"
+            },
+            {
+              "path": "tests/unit/indexed-db.test.ts",
+              "sha256": "b2716abce0a508c93b17806bf778a4b967e300efb2aef2ae6be37926a8e75d56"
+            },
+            {
+              "path": "tests/unit/issuance-recovery.test.ts",
+              "sha256": "a9ea8152f240c448b235a5edace2a602d4ff241ccd921e92c05d9f55644ca220"
+            },
+            {
+              "path": "tests/unit/night-client-contract.test.ts",
+              "sha256": "e9256dcab26e1d5a12298308aa73d1f1e07ae5d2d5743bf762bd1e9159249710"
+            },
+            {
+              "path": "tests/unit/night-settlement.test.ts",
+              "sha256": "ccdf1175810b63961c17892154791f21fbb425f8b078fb48a455108c94153895"
+            },
+            {
+              "path": "tests/unit/oneam.test.ts",
+              "sha256": "4c3bc15a5b7a3598a8ac574528377ab178ffb9d945e711587629d97b7cd95ebc"
+            },
+            {
+              "path": "tests/unit/payment-codec.test.ts",
+              "sha256": "9b3f27ad93df702212c0b2fa7f23e7e1855eac985031d5ba609d27b55dc2be6e"
+            },
+            {
+              "path": "tests/unit/private-state.test.ts",
+              "sha256": "fb38d6282415adebace564fa61a1ca203c8a6000b4fb2964a4318f44291023bd"
+            },
+            {
+              "path": "tests/unit/recipient.test.ts",
+              "sha256": "9b9e13df9c119a945f20b78c06738c58909bf2417e849cfb23d66c24ff7dd0ff"
+            },
+            {
+              "path": "tests/unit/transaction.test.ts",
+              "sha256": "08683f1aac299b3bc7cae3e970ea3a6ef26847e393cbbc358697f29b330fa65d"
+            },
+            {
+              "path": "toolchain.lock.json",
+              "sha256": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab"
+            },
+            {
+              "path": "tsconfig.json",
+              "sha256": "9817d7d53fddd51bf88f2befc5c85234b75d612ce366495f84449d7522a799ab"
+            },
+            {
+              "path": "vitest.config.ts",
+              "sha256": "bfe1896453db51700ab68a2619e9449bf3a5442e6d372175c5fe3771dde6e1f9"
+            }
+          ]
+        }
+      ],
+      "progress": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
+      "revisionNote": "Previous remote CI evidence is historical. REVISION.md forbids pushing; current local revision has no remote CI observation.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
@@ -1664,9 +3980,7 @@
             }
           ]
         }
-      ],
-      "progress": "successful_actual_remote_CI_after_clean_checkout_ordering_fix",
-      "revisionNote": "Previous remote CI evidence is historical. REVISION.md forbids pushing; current local revision has no remote CI observation."
+      ]
     },
     {
       "id": "L4-ADDRESS",
@@ -1762,7 +4076,7 @@
       "level": "Level 5",
       "title": "Maintained technical documentation",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L4-DOCS"
       ],
@@ -1771,6 +4085,32 @@
         "Review public README and implementation-matched usage"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
+          "command": "Source/UI/config review and local verification",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "docs/OWNER-TESTING.md",
+              "sha256": "26db494391704d93439e05cba24f31796e910655eb14441540256dbd48e1a52c"
+            },
+            {
+              "path": "docs/PRIVACY.md",
+              "sha256": "d2a35abb886fb6d241b3ede395281c971181b406e44423baf35d42a0b51e63dd"
+            },
+            {
+              "path": "docs/RUNBOOK.md",
+              "sha256": "3b5590b600434aeb18eae3b9a00248d12aaf0fff89dfbb96aa8066cd5d9ba049"
+            }
+          ]
+        }
+      ],
+      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "reviewed_current_local_setup_usage_privacy_recovery_and_limitations_not_publication_or_live_acceptance",
@@ -1797,9 +4137,7 @@
             }
           ]
         }
-      ],
-      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L5-PARTICIPANTS",
@@ -1896,7 +4234,7 @@
       "level": "Level 6",
       "title": "Final technical documentation",
       "owner": "engineer",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [
         "L5-DOCS"
       ],
@@ -1905,6 +4243,32 @@
         "Review public README and implementation-matched usage"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
+          "command": "Source/UI/config review and local verification",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "2d29d5b214fb05d9a63969d0d7a8c6e8d62762e7afdcc2a98947cd74f5938995"
+            },
+            {
+              "path": "docs/SOURCES.md",
+              "sha256": "dd3a9ba68d8a90780209b654ab7ab0844eebae606278a920e8364797d4940aad"
+            },
+            {
+              "path": "docs/PRODUCT.md",
+              "sha256": "540a203da069fd31b2884ebfa1930bd75c073ce03b9994c79ef9a0c9b4302f2f"
+            }
+          ]
+        }
+      ],
+      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
+      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "reviewed_current_local_setup_usage_privacy_recovery_and_limitations_not_publication_or_live_acceptance",
@@ -1931,9 +4295,7 @@
             }
           ]
         }
-      ],
-      "progress": "public_setup_usage_privacy_recovery_and_current_limitations_documented;_not_live_MVP_acceptance",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "L6-PARTICIPANTS",
@@ -1984,13 +4346,34 @@
       "level": "External metadata",
       "title": "Public repository",
       "owner": "owner",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Owner-supplied repository URL is independently checked for public access.",
       "commands": [
         "GET public GitHub repository and committed README"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "public_ianpurif_MoneyMole_repository_and_published_source",
+          "command": "Public GitHub API and immutable raw-file comparison",
+          "path": "docs/evidence/night-publication.json",
+          "sha256": "55021c7dc8a88e70ce010dcab463f0763db6583bc1bd4f719ede874992069084",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "sha256": "cfa7a006796885e9a2b4f4fc337e5a2fae0061f20d2dfae0ad4ed1a58b0cbdd0"
+            },
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            }
+          ]
+        }
+      ],
+      "progress": "public_repository_and_published_required_README_content_at_recorded_revision",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "independent_unauthenticated_public_repository_access_no_publication_of_local_revision",
@@ -2005,9 +4388,7 @@
             }
           ]
         }
-      ],
-      "progress": "public_repository_and_published_required_README_content_at_recorded_revision",
-      "migrationNote": "Historical evidence retained; bound subjects changed for native NIGHT. Fresh evidence required."
+      ]
     },
     {
       "id": "META-APP-URL",
@@ -2025,7 +4406,7 @@
       "level": "Preparation",
       "title": "Single Next.js frontend/backend and client-only secrets",
       "owner": "architect",
-      "status": "implemented",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Next.js App Router, TypeScript, Tailwind; Route Handlers in src/app/api/**/route.ts; appropriate non-secret Server Actions; server-only modules in src/lib/server/. No separate backend without a verified requirement. 1AM authorization, claim secrets, private witnesses and private-state handling never enter Next.js APIs.",
       "commands": [
@@ -2035,14 +4416,38 @@
       ],
       "evidence": [
         {
+          "result": "passed",
+          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
+          "command": "Source/UI/config review and local verification",
+          "path": "docs/evidence/night-verification.json",
+          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
+          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "subjects": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "2d29d5b214fb05d9a63969d0d7a8c6e8d62762e7afdcc2a98947cd74f5938995"
+            },
+            {
+              "path": "package.json",
+              "sha256": "cdfdc9371256d28e87eef0c6299512e687a06da397596e39f4bd3b806ee1edfa"
+            },
+            {
+              "path": "src/lib/server/artifacts.ts",
+              "sha256": "a97f46933550514d215a06c895829840c2ffc544791e839c098f2618b34bed06"
+            }
+          ]
+        }
+      ],
+      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending.",
+      "historicalEvidence": [
+        {
           "result": "partial",
           "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
           "path": "docs/evidence/implementation-completion.json",
           "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
-      ],
-      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
+      ]
     }
   ],
   "conflicts": [
@@ -2101,13 +4506,13 @@
     }
   },
   "levelAudit": {
-    "observedAt": "2026-09-27",
+    "observedAt": "2026-09-27T12:58:05.366004+00:00",
     "source": "docs/LEVEL-AUDIT-SCOPE.md",
     "report": "docs/STATUS.md",
     "highestFullyPassed": null,
     "submissionReady": false,
     "allAutomatableChecksPassed": false,
-    "scope": "native NIGHT migration; final local verification in progress; no owner-approved NIGHT deployment/payment observed",
+    "scope": "Native NIGHT engineering and remote CI verified; owner-approved NIGHT deployment/payment acceptance remains pending.",
     "levels": [
       {
         "level": 1,
@@ -2139,7 +4544,8 @@
         "verdict": "NOT PASSED",
         "reason": "New NIGHT deployment and/or real wallet/circuit/recovery evidence pending; legacy issuer is historical only."
       }
-    ]
+    ],
+    "applicationEngineeringChecksPassed": true
   },
   "historicalLevelAudit": {
     "observedAt": "2026-09-27T05:55:46.130Z",
