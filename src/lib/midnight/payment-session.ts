@@ -1,8 +1,8 @@
 import "client-only";
 import preprod from "../../../config/preprod.json";
 import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
-import { MidnightBech32m, ShieldedCoinPublicKey, ShieldedEncryptionPublicKey, ShieldedAddress } from "@midnight-ntwrk/wallet-sdk-address-format";
-import { Transaction, CostModel, rawTokenType, type UnprovenTransaction } from "@midnight-ntwrk/midnight-js-protocol/ledger";
+import { MidnightBech32m, ShieldedCoinPublicKey, ShieldedEncryptionPublicKey, UnshieldedAddress } from "@midnight-ntwrk/wallet-sdk-address-format";
+import { Transaction, CostModel, nativeToken, type UnprovenTransaction } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { httpClientProvingProvider } from "@midnight-ntwrk/midnight-js-http-client-proof-provider";
 import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import { BrowserPrivateStore } from "../private-state/indexed-db";
@@ -12,7 +12,8 @@ import { withLocalProver } from "./proof-lock";
 import { bech32m } from "@scure/base";
 
 export const ISSUER = preprod.issuerAddress;
-export function paymentAsset() { const d = new Uint8Array(32); d.set(new TextEncoder().encode(preprod.assetDomain)); return rawTokenType(d, ISSUER); }
+export function paymentAsset() { return nativeToken().raw; }
+export const NIGHT_DECIMALS = 6;
 export type TxPhase = "draft" | "prepared" | "authorization_requested" | "outcome_unknown" | "submitted" | "finalized" | "failed";
 export type TxRecord = { phase: TxPhase; transaction?: string; transactionId?: string; transactionHash?: string; blockHash?: string; blockHeight?: number };
 export function validateTx(value: TxRecord) {
@@ -25,13 +26,15 @@ export async function walletContext(api: ConnectedAPI, check: () => Promise<unkn
   const addresses = await api.getShieldedAddresses();
   const coinKey = ShieldedCoinPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedCoinPublicKey)).toHexString();
   const encKey = ShieldedEncryptionPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedEncryptionPublicKey)).toHexString();
+  const address = validateRecipient((await api.getUnshieldedAddress()).unshieldedAddress);
+  const unshieldedKey = UnshieldedAddress.codec.decode("preprod", MidnightBech32m.parse(address)).hexString;
   const walletId = hex(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(coinKey))));
-  async function guard() { await check(); if ((await api.getConfiguration()).networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress) throw new Error("Reconnect the original Preprod wallet"); }
-  return { api, coinKey, encKey, walletId, guard, address: addresses.shieldedAddress };
+  async function guard() { await check(); if ((await api.getConfiguration()).networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress || (await api.getUnshieldedAddress()).unshieldedAddress !== address) throw new Error("Reconnect the original Preprod wallet"); }
+  return { api, coinKey, encKey, walletId, guard, address, unshieldedKey };
 }
 export type WalletContext = Awaited<ReturnType<typeof walletContext>>;
-export async function openStore(wallet: WalletContext, contract: string, password: string) {
-  const ns = { network: "preprod" as const, contractAddress: contract, walletIdentity: wallet.walletId, schemaVersion: 1 };
+export async function openStore(wallet: WalletContext, contract: string, password: string, schemaVersion = 1) {
+  const ns = { network: "preprod" as const, contractAddress: contract, walletIdentity: wallet.walletId, schemaVersion };
   return BrowserPrivateStore.unlock(ns, password, !await BrowserPrivateStore.exists(ns));
 }
 export async function readRecord<T>(store: BrowserPrivateStore, key: string) {
@@ -73,9 +76,10 @@ export async function reconcileTx(tx: TxRecord, persist: () => Promise<void>) {
   delete tx.transaction; await persist(); return observation;
 }
 export function validateRecipient(address: string) {
-  // SDK 3.1.2 parse() applies Bitcoin's 90-character default to Midnight's
-  // 132-character shielded address. Decode with an explicit bounded limit.
   const decoded = bech32m.decode(address as `${string}1${string}`, 256);
-  if (decoded.prefix !== `mn_${ShieldedAddress.codec.type}_preprod` || bech32m.fromWords(decoded.words).length !== 64 || bech32m.encode(decoded.prefix, decoded.words, 256) !== address) throw new Error("Enter a canonical Preprod shielded address");
+  if (decoded.prefix !== `mn_${UnshieldedAddress.codec.type}_preprod` || bech32m.fromWords(decoded.words).length !== 32 || bech32m.encode(decoded.prefix, decoded.words, 256) !== address) throw new Error("Enter a canonical Preprod unshielded NIGHT address");
   return address;
+}
+export function recipientKey(address: string) {
+  return UnshieldedAddress.codec.decode("preprod", MidnightBech32m.parse(validateRecipient(address))).hexString;
 }

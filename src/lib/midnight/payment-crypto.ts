@@ -12,8 +12,8 @@ const noteType: CompactType<Note> = {
   fromValue: v => [b.fromValue(v), b.fromValue(v), b.fromValue(v), b.fromValue(v), b.fromValue(v), n.fromValue(v), b.fromValue(v)],
 };
 export function noteDigest(p: Omit<ClaimPayload, "fundingId">) {
-  return persistentHash(noteType, [pad("moneymole/note/v1"), pad("preprod"), unhex(p.contract, 32), unhex(p.nonce, 32), unhex(p.asset, 32), BigInt(p.amount), unhex(p.authority, 32)]);
+  return persistentHash(noteType, [pad("moneymole/night/note/v2"), pad("preprod"), unhex(p.contract, 32), unhex(p.nonce, 32), unhex(p.asset, 32), BigInt(p.amount), unhex(p.authority, 32)]);
 }
 export function spentDigest(p: Omit<ClaimPayload, "fundingId">) {
-  return persistentHash(new CompactTypeVector(3, b), [pad("moneymole/spent/v1"), noteDigest(p), unhex(p.authority, 32)]);
+  return persistentHash(new CompactTypeVector(3, b), [pad("moneymole/night/spent/v2"), noteDigest(p), unhex(p.authority, 32)]);
 }

@@ -21,7 +21,7 @@ vi.mock("../../src/lib/midnight/payment-network", () => {
 vi.mock("../../src/lib/midnight/payment-contract", () => ({
   paymentContract: () => ({}), ledger: () => ({ notes: { findPathForLeaf: () => ({}), isFull: () => false }, spent: { member: () => h.spent } }),
 }));
-vi.mock("../../src/lib/midnight/feasibility/qualify-escrow", () => ({ qualifyEscrowCoin: (_: unknown, coin: object) => ({ ...coin, mt_index: 0n }) }));
+vi.mock("../../src/lib/midnight/night-settlement", () => ({ verifyNightCall: vi.fn(), verifyNightSpend: vi.fn() }));
 vi.mock("@midnight-ntwrk/compact-runtime", async importOriginal => ({
   ...await importOriginal<object>(), ContractState: { deserialize: () => ({ data: {} }) },
 }));
@@ -41,8 +41,8 @@ vi.mock("@midnight-ntwrk/midnight-js-protocol/ledger", async importOriginal => (
 const contract = "05".repeat(32), fundingId = "01".repeat(32), password = "synthetic local recovery passphrase";
 type Controller = Awaited<ReturnType<typeof openPayments>>;
 const controllers: Controller[] = [];
-const wallet = { walletId: "synthetic-independent-wallet", coinKey: "06".repeat(32), encKey: "07".repeat(32), address: "synthetic-wallet-address", guard: h.guard,
-  api: { getShieldedBalances: async () => ({ [paymentAsset()]: h.balance }), getDustBalance: async () => ({ balance: 1n }), balanceUnsealedTransaction: h.balanceTx, submitTransaction: h.submit, makeTransfer: h.transfer },
+const wallet = { walletId: "synthetic-independent-wallet", coinKey: "06".repeat(32), encKey: "07".repeat(32), address: "synthetic-wallet-address", unshieldedKey: "06".repeat(32), guard: h.guard,
+  api: { getUnshieldedBalances: async () => ({ [paymentAsset()]: h.balance }), getDustBalance: async () => ({ balance: 1n }), balanceUnsealedTransaction: h.balanceTx, submitTransaction: h.submit, makeTransfer: h.transfer },
 } as unknown as WalletContext;
 function observation(id: string, status = "SUCCESS") {
   return { hash: id, raw: "ccdd", identifiers: [id], block: { hash: "03".repeat(32), height: 100 }, transactionResult: { status },
@@ -51,13 +51,13 @@ function observation(id: string, status = "SUCCESS") {
 async function open() { const c = await openPayments(wallet, contract, password); controllers.push(c); return c; }
 async function claim() {
   const c = await open();
-  const payload: ClaimPayload = { version: 1, network: "preprod", contract, asset: paymentAsset(), amount: "10", nonce: "08".repeat(32), authority: "09".repeat(32), fundingId };
+  const payload: ClaimPayload = { version: 2, network: "preprod", contract, asset: paymentAsset(), amount: "10", nonce: "08".repeat(32), authority: "09".repeat(32), fundingId };
   const token = await encodeClaim(payload), view = await c.receive(token);
   await c.prepare(view.id);
   return { c, id: view.id, token };
 }
 async function saved(id: string) {
-  const store = await openStore(wallet, contract, password);
+  const store = await openStore(wallet, contract, password, 2);
   try { return (await readRecord<{ tx: { phase: string; transactionId?: string }; payload: ClaimPayload; failedAttempts?: { transactionId: string; action: string }[]; spend?: { transactionId?: string } }>(store, id))!.value; }
   finally { store.lock(); }
 }
@@ -151,9 +151,8 @@ it("preserves a successful claim while resetting only a finalized failed control
   const { c, id } = await claim(); await c.approve(id);
   const claimId = h.nextId; h.spent = true; h.balance = 10n; h.observations.set(claimId, observation(claimId));
   // Use a real well-formed Preprod address for the production recipient validator.
-  const { ShieldedAddress, ShieldedCoinPublicKey, ShieldedEncryptionPublicKey } = await import("@midnight-ntwrk/wallet-sdk-address-format");
-  const destination = ShieldedAddress.codec.encode("preprod", new ShieldedAddress(ShieldedCoinPublicKey.fromHexString("30".repeat(32)), ShieldedEncryptionPublicKey.fromHexString("31".repeat(32)))).asString();
-  expect(destination.length).toBe(132);
+  const { UnshieldedAddress } = await import("@midnight-ntwrk/wallet-sdk-address-format");
+  const destination = UnshieldedAddress.codec.encode("preprod", new UnshieldedAddress(Buffer.alloc(32, 48))).asString();
   h.nextId = "13".repeat(32); await c.spend(id, destination); const spendId = h.nextId;
   await expect(c.retryFailed(id, "spend")).rejects.toThrow();
   h.observations.set(spendId, observation(spendId, "FAILURE")); c.lock();
@@ -168,4 +167,28 @@ it("preserves a successful claim while resetting only a finalized failed control
 it("a locked store cannot reset an attempt or invoke a wallet side effect", async () => {
   const { c, id } = await claim(); await c.approve(id); h.observations.set(h.nextId, observation(h.nextId, "FAILURE")); c.lock();
   await expect(c.retryFailed(id, "claim")).rejects.toThrow(); expect(h.submit).toHaveBeenCalledTimes(1);
+});
+
+it("tracks NIGHT credit and spend against an existing receiver balance across reload", async () => {
+  h.balance = 1_000_000n;
+  const { c, id } = await claim(); await c.approve(id);
+  h.spent = true; h.balance = 1_000_010n; h.observations.set(h.nextId, observation(h.nextId));
+  expect((await c.reconcile(id)).walletSynced).toBe(true); c.lock();
+  const recovered = await open();
+  const { UnshieldedAddress } = await import("@midnight-ntwrk/wallet-sdk-address-format");
+  const destination = UnshieldedAddress.codec.encode("preprod", new UnshieldedAddress(Buffer.alloc(32, 48))).asString();
+  h.nextId = "15".repeat(32); await recovered.spend(id, destination);
+  expect(h.transfer).toHaveBeenCalledWith([{ kind: "unshielded", type: paymentAsset(), value: 10n, recipient: destination }]);
+  h.observations.set(h.nextId, observation(h.nextId)); h.balance = 1_000_000n;
+  expect((await recovered.reconcile(id)).spendVerified).toBe(true);
+});
+
+it("uses six-decimal NIGHT units and isolates legacy encrypted namespaces", async () => {
+  const legacy = await openStore(wallet, contract, password);
+  await legacy.write("legacy-marker", new TextEncoder().encode("synthetic legacy data"), 0); legacy.lock();
+  const c = await open(); expect(await c.list()).toEqual([]);
+  const view = await c.create("1.234567"); expect(view.amount).toBe("1234567");
+  await expect(c.create("0.0000001")).rejects.toThrow();
+  await expect(c.importEncrypted(JSON.stringify({ version: 1, contract, id: view.id }), password)).rejects.toThrow();
+  const original = await openStore(wallet, contract, password); expect(await original.keys()).toContain("legacy-marker"); original.lock();
 });

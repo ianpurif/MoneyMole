@@ -3,7 +3,7 @@ import QRCode from "qrcode";
 import { decodeClaim, encodeClaim, extractClaim, MAX_AMOUNT, type ClaimPayload } from "../../src/lib/midnight/payment-codec";
 
 // Synthetic data only. Never print a real bearer payload from browser storage.
-const opening = (amount = "10"): ClaimPayload => ({ version: 1, network: "preprod", contract: "01".repeat(32), asset: "02".repeat(32), nonce: "03".repeat(32), authority: "04".repeat(32), fundingId: "05".repeat(32), amount });
+const opening = (amount = "10"): ClaimPayload => ({ version: 2, network: "preprod", contract: "01".repeat(32), asset: "00".repeat(32), nonce: "03".repeat(32), authority: "04".repeat(32), fundingId: "05".repeat(32), amount });
 describe("private bearer codec and local QR bounds", () => {
   it("round trips exact whole-unit bounds without floating-point conversion", async () => {
     for (const amount of ["1", "10", MAX_AMOUNT.toString()]) {
@@ -21,12 +21,12 @@ describe("private bearer codec and local QR bounds", () => {
     const token = await encodeClaim(opening());
     for (const index of [0, 1, 2, 34, 66, 98, 130, 162, 177, 178, 209]) {
       const bytes = Buffer.from(token.slice(4), "base64url"); bytes[index] = bytes[index]! ^ 1;
-      await expect(decodeClaim(`mm1.${bytes.toString("base64url")}`)).rejects.toThrow();
+      await expect(decodeClaim(`mm2.${bytes.toString("base64url")}`)).rejects.toThrow();
     }
   });
   it("bounds malformed input and rejects noncanonical encodings", async () => {
     const token = await encodeClaim(opening());
-    for (const malformed of ["", "mm1.", token + "=", token + "A", token.slice(0, -1), "A".repeat(100_000)]) {
+    for (const malformed of ["", "mm2.", token + "=", token + "A", token.slice(0, -1), "A".repeat(100_000)]) {
       await expect(decodeClaim(malformed)).rejects.toThrow();
     }
   });

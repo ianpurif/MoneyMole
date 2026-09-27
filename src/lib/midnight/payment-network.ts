@@ -4,7 +4,7 @@ import { ContractState } from "@midnight-ntwrk/compact-runtime";
 import { Event, LedgerParameters, Transaction, ZswapChainState } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { ZKConfigProvider, createZKIR, createProverKey, createVerifierKey } from "@midnight-ntwrk/midnight-js-types";
 import { hex, unhex } from "./payment-codec";
-import { ledger } from "../../../managed/private-payments/contract/index.js";
+import { ledger } from "../../../managed/night-payments/contract/index.js";
 
 export const INDEXER = preprod.indexerHttp;
 export type Block = { height: number; hash: string };
@@ -48,7 +48,7 @@ export function outputObservations(tx: ObservedTx) {
 export class PaymentKeys extends ZKConfigProvider<"fund" | "claim"> {
   async read(kind: string, circuit: string) {
     if (!["fund", "claim"].includes(circuit)) throw new Error("Invalid circuit");
-    const response = await fetch(`/api/artifacts/private-payments/${kind}/${circuit}`, { cache: "no-store" });
+    const response = await fetch(`/api/artifacts/night-payments/${kind}/${circuit}`, { cache: "no-store" });
     if (!response.ok) throw new Error("Compiled payment artifacts unavailable");
     const bytes = new Uint8Array(await response.arrayBuffer());
     if (hex(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))) !== response.headers.get("X-Artifact-SHA256")) throw new Error("Artifact integrity check failed");

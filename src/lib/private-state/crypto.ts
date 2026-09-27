@@ -14,7 +14,7 @@ export interface EncryptedEnvelope {
 }
 
 export function namespaceId(namespace: PrivateNamespace): string {
-  if (namespace.network !== "preprod" || namespace.schemaVersion !== 1 ||
+  if (namespace.network !== "preprod" || ![1, 2].includes(namespace.schemaVersion) ||
       ![namespace.contractAddress, namespace.walletIdentity].every(v => typeof v === "string" && v.length > 0 && v.length <= 512)) {
     throw new Error("Invalid private namespace");
   }

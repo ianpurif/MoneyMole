@@ -29,9 +29,9 @@ export class OneAmSession {
     const status = await api.getConnectionStatus();
     const config = await api.getConfiguration();
     if (status.status !== "connected" || status.networkId !== "preprod" || config.networkId !== "preprod") throw new Error("Select Preprod in 1AM and connect again.");
-    const addresses = await api.getShieldedAddresses();
-    if (!addresses.shieldedAddress) throw new Error("1AM has no shielded address available.");
-    const session = new OneAmSession(api, addresses.shieldedAddress);
+    const addresses = await api.getUnshieldedAddress();
+    if (!addresses.unshieldedAddress) throw new Error("1AM has no unshielded NIGHT address available.");
+    const session = new OneAmSession(api, addresses.unshieldedAddress);
     await session.check();
     return session;
   }
@@ -41,8 +41,8 @@ export class OneAmSession {
     try {
       const status = await api.getConnectionStatus();
       if (status.status !== "connected" || status.networkId !== "preprod") throw new Error("connection_changed");
-      const addresses = await api.getShieldedAddresses();
-      if (addresses.shieldedAddress !== this.#address) throw new Error("account_changed");
+      const addresses = await api.getUnshieldedAddress();
+      if (addresses.unshieldedAddress !== this.#address) throw new Error("account_changed");
       const dust = await api.getDustBalance();
       if (this.#api !== api || typeof dust.balance !== "bigint" || dust.balance < 0n) throw new Error("invalid_session");
       return { dustAvailable: dust.balance > 0n };

@@ -7,7 +7,7 @@ function fixture(network = "preprod") {
   const api = {
     getConnectionStatus: async () => ({ status: "connected", networkId: network }),
     getConfiguration: async () => ({ networkId: network }),
-    getShieldedAddresses: async () => ({ shieldedAddress: address }),
+    getUnshieldedAddress: async () => ({ unshieldedAddress: address }),
     getDustBalance: async () => ({ balance: 1n, cap: 1n }),
   } as unknown as ConnectedAPI;
   const provider: InitialAPI = { name: "1AM", rdns: "com.midnight.1am", icon: "", apiVersion: "4.0.1", connect: async () => api };
