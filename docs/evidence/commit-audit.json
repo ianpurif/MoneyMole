@@ -1,0 +1,586 @@
+{
+  "observedAt": "2026-09-27T05:11:18.394Z",
+  "scope": "substantive_existing_published_development_commits",
+  "result": "passed",
+  "publishedHead": "1b3ed385c0fab85d0e96fd5f7ac9e69462d48d98",
+  "reviewedMeaningfulCommits": 35,
+  "method": "Reviewed implementation changes and historical diffs; counted distinct functional, security, testing and build-tool changes. Excludes this audit and documentation-only, status-only, evidence-only, supplied-artwork and unrelated participant changes. Count is conservative, not the total git commit count.",
+  "commits": [
+    {
+      "hash": "ac6c3fe5f5633252ec9d6510c4d69a5ec11d86f5",
+      "subject": "chore: pin toolchain and preserve verified build foundation",
+      "reason": "Pins the resolved toolchain and CI installation foundation.",
+      "paths": [
+        ".codex/agents/engineer.toml",
+        ".github/workflows/ci.yml",
+        "compose.yaml",
+        "docs/PREPARATION-REPORT.md",
+        "docs/RUNBOOK.md",
+        "docs/adr/005-installed-toolchain.md",
+        "docs/evidence/M0-toolchain.json",
+        "docs/evidence/codex-client-local.json",
+        "docs/evidence/mcp-client-local.json",
+        "docs/evidence/node-runtime.json",
+        "eslint.config.mjs",
+        "package-lock.json",
+        "package.json",
+        "postcss.config.mjs",
+        "scripts/codex-session.mjs",
+        "scripts/install-compact.mjs",
+        "scripts/mcp-doctor.mjs",
+        "scripts/offline.mjs",
+        "toolchain.lock.json",
+        "tsconfig.json",
+        "vitest.config.ts"
+      ],
+      "patchSha256": "8dd9159eb7882a733286f0dcfae337b2b63ea188bb70169e16a227385bfe8643",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/ac6c3fe5f5633252ec9d6510c4d69a5ec11d86f5"
+    },
+    {
+      "hash": "578b09e975c9cfa7ca2e10d9b72a1486de4b53c8",
+      "subject": "feat: add encrypted local storage and transaction recovery guards",
+      "reason": "Adds encrypted IndexedDB storage and transaction recovery guards.",
+      "paths": [
+        "docs/adr/004-private-state.md",
+        "docs/evidence/M2-core.json",
+        "docs/evidence/kdf-benchmark.json",
+        "src/domain/transaction.ts",
+        "src/lib/private-state/crypto.ts",
+        "src/lib/private-state/indexed-db.ts",
+        "src/lib/private-state/port.ts",
+        "tests/unit/client-only.ts",
+        "tests/unit/indexed-db.test.ts",
+        "tests/unit/private-state.test.ts",
+        "tests/unit/transaction.test.ts"
+      ],
+      "patchSha256": "d42ce145b0a6efdce7ebb70d53bb1518cc722eea24d4dcf876dac69fd63c2157",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/578b09e975c9cfa7ca2e10d9b72a1486de4b53c8"
+    },
+    {
+      "hash": "5d5ccfdde655abe73561766b0305d51980f0bcaf",
+      "subject": "feat: add candidate payment contracts and local proving checks",
+      "reason": "Adds payment/issuer Compact circuits and local proving verification.",
+      "paths": [
+        "contracts/README.md",
+        "contracts/issuance/test-asset.compact",
+        "contracts/private-payments.compact",
+        "contracts/probes/shielded-io.compact",
+        "docs/disclosure-audit.md",
+        "docs/evidence/M1-feasibility.json",
+        "scripts/compile.mjs",
+        "scripts/product/test-contracts.mjs",
+        "scripts/product/test-proving.mjs",
+        "scripts/product/verify-artifacts.mjs",
+        "tests/contracts/runtime.mjs"
+      ],
+      "patchSha256": "3828304258e26805172d5a7c673667fffa486215c52bd89e4aa758e05b7becb8",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/5d5ccfdde655abe73561766b0305d51980f0bcaf"
+    },
+    {
+      "hash": "9d576c82113fe4a12ab311fb61d289cb9009958d",
+      "subject": "feat: enforce nonce CSP and client server boundaries",
+      "reason": "Enforces nonce CSP and client/server secret boundaries.",
+      "paths": [
+        "next-env.d.ts",
+        "next.config.ts",
+        "src/app/layout.tsx",
+        "src/lib/server/security.ts",
+        "src/proxy.ts"
+      ],
+      "patchSha256": "fcf4262d2c0e3f641b73f20d31a2cedd4d6768162accf76d6ebb0c149adbd5d0",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/9d576c82113fe4a12ab311fb61d289cb9009958d"
+    },
+    {
+      "hash": "378bbaef02e5aff01fbddec6f62fcf985e6a2794",
+      "subject": "feat: use 1AM as the primary Midnight wallet",
+      "reason": "Implements explicit 1AM discovery, connection and disconnect.",
+      "paths": [
+        "playwright.config.ts",
+        "src/app/page.tsx",
+        "src/components/wallet-panel.tsx",
+        "src/lib/midnight/oneam.ts",
+        "tests/browser/shell.spec.ts",
+        "tests/unit/oneam.test.ts"
+      ],
+      "patchSha256": "8077e48eaa8b2d1df4508fa39114359e2fa2efd9b405a22f5d349a402aa2d6de",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/378bbaef02e5aff01fbddec6f62fcf985e6a2794"
+    },
+    {
+      "hash": "be6a28bc24fb3dea162e43b0f3932ef40de77247",
+      "subject": "feat: persist transaction recovery before submission effects",
+      "reason": "Persists transaction recovery before submission side effects.",
+      "paths": [
+        "docs/RUNBOOK.md",
+        "docs/STATUS.md",
+        "docs/tasks/M2-core.md",
+        "scripts/product/test-integration.mjs",
+        "src/lib/private-state/transaction-journal.ts",
+        "tests/integration/recovery.test.ts",
+        "vitest.config.ts"
+      ],
+      "patchSha256": "4848e1f5650ef375ffe1d0fd5f7ab54ec5c985f2313c922b1c8682b1f485f494",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/be6a28bc24fb3dea162e43b0f3932ef40de77247"
+    },
+    {
+      "hash": "12e0a4c77ad60e15bdbeae87dfd7c378e83cbd33",
+      "subject": "feat: validate escrow coin qualification against native state",
+      "reason": "Qualifies escrow coins against native ledger state.",
+      "paths": [
+        "docs/disclosure-audit.md",
+        "docs/tasks/M1-feasibility.md",
+        "scripts/product/test-integration.mjs",
+        "src/lib/midnight/feasibility/qualify-escrow.ts",
+        "tests/integration/qualification.test.ts"
+      ],
+      "patchSha256": "f26bcb8d896cc873da3be6ad63ee9ff14d627c017033cc7afaf3baab59d325b4",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/12e0a4c77ad60e15bdbeae87dfd7c378e83cbd33"
+    },
+    {
+      "hash": "9201f9743b6209805e21ed01d1e9e82963bae5c5",
+      "subject": "fix: reuse Docker Desktop Compose from WSL scripts",
+      "reason": "Enables WSL services through installed Docker Desktop Compose.",
+      "paths": [
+        "README.md",
+        "docs/RUNBOOK.md",
+        "docs/STATUS.md",
+        "docs/tasks/M0-toolchain.md",
+        "scripts/docker.mjs",
+        "scripts/doctor.mjs",
+        "scripts/services.mjs"
+      ],
+      "patchSha256": "0b12e4fb84606981199602b75901060e23a246a6b85805531ea8c0fd2308ad53",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/9201f9743b6209805e21ed01d1e9e82963bae5c5"
+    },
+    {
+      "hash": "d4e89bd1589070549e50bb3ee14746708cfa4ead",
+      "subject": "feat: serve public contract artifacts for browser ledger",
+      "reason": "Serves public circuit artifacts for browser ledger integration.",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/TOOLCHAIN.md",
+        "docs/adr/006-browser-ledger.md",
+        "next.config.ts",
+        "package-lock.json",
+        "package.json",
+        "src/app/api/artifacts/[contract]/[kind]/[circuit]/route.ts",
+        "src/lib/server/artifacts.ts",
+        "src/lib/server/security.ts"
+      ],
+      "patchSha256": "b403d3a73963502840557d08a16389b6a271ab4ca8d09835e5b8d7ab7e05c2c7",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/d4e89bd1589070549e50bb3ee14746708cfa4ead"
+    },
+    {
+      "hash": "22d38c16331843a657a9b1c8ef6babacfe49fd86",
+      "subject": "feat: prepare and reconcile owner approved issuer deployment",
+      "reason": "Adds recoverable browser issuer deployment and reconciliation.",
+      "paths": [
+        "docs/STATUS.md",
+        "docs/USAGE.md",
+        "docs/tasks/M1-feasibility.md",
+        "src/app/page.tsx",
+        "src/components/issuer-setup.tsx",
+        "src/components/wallet-panel.tsx",
+        "src/lib/midnight/issuer-deployment.ts",
+        "src/lib/midnight/oneam.ts",
+        "src/lib/private-state/indexed-db.ts",
+        "tests/browser/shell.spec.ts",
+        "tests/unit/indexed-db.test.ts"
+      ],
+      "patchSha256": "e3bcb5c52e61c5ba5618eb59f2ff124a31ec634cac8f6978aeb1139ef4b69514",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/22d38c16331843a657a9b1c8ef6babacfe49fd86"
+    },
+    {
+      "hash": "bc1791450fd4fd6c2d171de13049302e18e89c8a",
+      "subject": "feat: add separate recoverable test asset issuance",
+      "reason": "Implements separately approved, recoverable test asset issuance.",
+      "paths": [
+        "docs/STATUS.md",
+        "docs/USAGE.md",
+        "docs/tasks/M1-feasibility.md",
+        "scripts/product/test-proving.mjs",
+        "src/components/issuance-setup.tsx",
+        "src/components/issuer-setup.tsx",
+        "src/lib/midnight/issuer-deployment.ts",
+        "src/lib/midnight/issuer-issuance.ts",
+        "tests/contracts/issuer-transaction.mjs",
+        "tests/unit/issuance-recovery.test.ts"
+      ],
+      "patchSha256": "b6cbd1b9b05f6ee2d1dd3ce1fd14ed6d3b213d2e0adf017fb65aa1a38aa549d5",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/bc1791450fd4fd6c2d171de13049302e18e89c8a"
+    },
+    {
+      "hash": "47919c3884e01de342b1f7f559daac912b2c4da4",
+      "subject": "feat: verify recorded issuer against live Preprod state",
+      "reason": "Verifies the existing issuer against actual Preprod state.",
+      "paths": [
+        "docs/RUNBOOK.md",
+        "package.json",
+        "scripts/verify-issuer.mjs"
+      ],
+      "patchSha256": "143ddfae315443859638638a6f789e9a57a1bcbce5c750285bb4a4281ffd8644",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/47919c3884e01de342b1f7f559daac912b2c4da4"
+    },
+    {
+      "hash": "c936f050b8b68d6bc943924d6049c01479a78a8d",
+      "subject": "feat: add private claim codec and finalized payment adapters",
+      "reason": "Adds bounded bearer codec and finalized-chain payment adapters.",
+      "paths": [
+        "package-lock.json",
+        "package.json",
+        "src/lib/midnight/feasibility/qualify-escrow.ts",
+        "src/lib/midnight/payment-codec.ts",
+        "src/lib/midnight/payment-contract.ts",
+        "src/lib/midnight/payment-crypto.ts",
+        "src/lib/midnight/payment-network.ts",
+        "src/lib/midnight/payment-session.ts",
+        "src/lib/private-state/indexed-db.ts"
+      ],
+      "patchSha256": "0e7fbacc41ac9d6230fb1319f65ed20b70641273028dc44c80f541c15c1541d7",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/c936f050b8b68d6bc943924d6049c01479a78a8d"
+    },
+    {
+      "hash": "2dd1cb0e3a52fd74ee5c928384d96df170dc349f",
+      "subject": "feat: implement escrow funding claim and receiver spend flows",
+      "reason": "Implements escrow deployment, funding, claiming and controlled spend.",
+      "paths": [
+        "src/app/api/build/route.ts",
+        "src/lib/midnight/oneam.ts",
+        "src/lib/midnight/payment-deployment.ts",
+        "src/lib/midnight/payments.ts",
+        "src/lib/server/build-metadata.ts"
+      ],
+      "patchSha256": "240bc55f7b20d8328c390a1f75faed2570f5914c033c8347dad31f4b43de168d",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/2dd1cb0e3a52fd74ee5c928384d96df170dc349f"
+    },
+    {
+      "hash": "0d7fec9993906f9dbc9c616dd6e11ebad34c729f",
+      "subject": "feat: add sender receiver and local QR payment workspace",
+      "reason": "Adds sender/receiver workspace, claim route and local QR sharing.",
+      "paths": [
+        "src/app/claim/page.tsx",
+        "src/app/globals.css",
+        "src/app/layout.tsx",
+        "src/app/page.tsx",
+        "src/components/claim-capture.tsx",
+        "src/components/download.ts",
+        "src/components/payment-deployment.tsx",
+        "src/components/payment-workspace.tsx",
+        "src/components/wallet-panel.tsx"
+      ],
+      "patchSha256": "8110ea22a6027a1143ab6aa5d7afdb1d77697aec244d51d91719b4efd3d7dd93",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/0d7fec9993906f9dbc9c616dd6e11ebad34c729f"
+    },
+    {
+      "hash": "88765f6c8a7eb97e3ec9e3c0bea9665f591994a3",
+      "subject": "Finish atomic recovery imports and lock-safe payment UI",
+      "reason": "Adds atomic encrypted imports and lock-safe recovery UI.",
+      "paths": [
+        "src/components/admin-recovery.tsx",
+        "src/components/claim-capture.tsx",
+        "src/components/issuer-setup.tsx",
+        "src/components/payment-deployment.tsx",
+        "src/components/payment-workspace.tsx",
+        "src/lib/midnight/admin-recovery.ts",
+        "src/lib/midnight/issuer-deployment.ts",
+        "src/lib/midnight/oneam.ts",
+        "src/lib/private-state/indexed-db.ts"
+      ],
+      "patchSha256": "c2a39a4ae21a1e07c4421772ad75bcef6f71eb2ecbbbe23c1d6907f9f3e0c269",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/88765f6c8a7eb97e3ec9e3c0bea9665f591994a3"
+    },
+    {
+      "hash": "234f53b099faf86c5c88b79d7a48d80f9792f7e1",
+      "subject": "Bind issuer finality and serialize browser proving",
+      "reason": "Checks issuer canonical finality and serializes browser proving.",
+      "paths": [
+        "src/lib/midnight/issuer-deployment.ts",
+        "src/lib/midnight/issuer-issuance.ts",
+        "src/lib/midnight/payment-session.ts",
+        "src/lib/midnight/payments.ts",
+        "src/lib/midnight/proof-lock.ts"
+      ],
+      "patchSha256": "251c5d098f79b286d8c11ad58c951aae8c935a81229b0b8e40ff61162ab73924",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/234f53b099faf86c5c88b79d7a48d80f9792f7e1"
+    },
+    {
+      "hash": "f5e02ddcd74c30a1b6e6115f2f93efebdf754ee0",
+      "subject": "Implement read-only Preprod and acceptance verification commands",
+      "reason": "Implements read-only deployment, transaction and acceptance verifiers.",
+      "paths": [
+        "scripts/product.mjs",
+        "scripts/product/deploy-preprod.mjs",
+        "scripts/product/preprod-observer.mjs",
+        "scripts/product/test-preprod.mjs",
+        "scripts/product/verify-acceptance.mjs",
+        "scripts/product/verify-deployment.mjs"
+      ],
+      "patchSha256": "5ceaa4f7dc564744b24a9bf8320f4ba8164aaf500e66bfa30efd139ae9e7cecb",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/f5e02ddcd74c30a1b6e6115f2f93efebdf754ee0"
+    },
+    {
+      "hash": "a86a0cc78779a459635c312f0fa7eb025802ecc6",
+      "subject": "Clear retained administration secrets when private storage locks",
+      "reason": "Clears retained administration secrets on private-store locking.",
+      "paths": [
+        "src/components/issuer-setup.tsx",
+        "src/components/payment-deployment.tsx",
+        "src/lib/midnight/issuer-deployment.ts",
+        "src/lib/midnight/issuer-issuance.ts",
+        "src/lib/midnight/payment-deployment.ts",
+        "src/lib/private-state/indexed-db.ts"
+      ],
+      "patchSha256": "7a3a48d62060e8c3e63777c71a86f35ac0581e3be01faf50ad6ac042c68a5336",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/a86a0cc78779a459635c312f0fa7eb025802ecc6"
+    },
+    {
+      "hash": "e0329c12dc67103ba8263ce6ad8bcd4322bd8a5e",
+      "subject": "Keep recovered issuance preparation free of network retries",
+      "reason": "Prevents recovered issuance preparation from implicit network retries.",
+      "paths": [
+        "src/lib/midnight/issuer-issuance.ts",
+        "tests/unit/issuance-recovery.test.ts"
+      ],
+      "patchSha256": "eda4577588986ecc7b4f0a2b8e0eeabb30fe8b01477897826af4ea48ff294c73",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/e0329c12dc67103ba8263ce6ad8bcd4322bd8a5e"
+    },
+    {
+      "hash": "3f6c2e3da0e866c7fdf2ad49e03ca154bda9ae5a",
+      "subject": "Pin CI actions and reject empty participation chain checks",
+      "reason": "Pins CI actions to reviewed immutable upstream commits.",
+      "paths": [
+        ".github/workflows/ci.yml",
+        "scripts/product/verify-participant-activity.mjs"
+      ],
+      "patchSha256": "9ae1e4f0da5f173a31fd66869a678a0b02921965484c50753524d0eee9627713",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/3f6c2e3da0e866c7fdf2ad49e03ca154bda9ae5a"
+    },
+    {
+      "hash": "5c77082192d4734494dfe362f2751eab37b1807f",
+      "subject": "Include public compiler artifacts in production route bundles",
+      "reason": "Includes public compiler artifacts in production Route Handler bundles.",
+      "paths": [
+        ".env.example",
+        "next.config.ts",
+        "src/lib/server/security.ts"
+      ],
+      "patchSha256": "1490f647ab353d8b99b6ba8a600511379465d1ab6b7aa0c80c1928c99ca48d98",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/5c77082192d4734494dfe362f2751eab37b1807f"
+    },
+    {
+      "hash": "b5b655ebb794af129bf5cb997ca1f6a3c5cd65db",
+      "subject": "Align browser state capture with React and Next conventions",
+      "reason": "Corrects React state capture and component lifetime handling.",
+      "paths": [
+        "src/app/claim/page.tsx",
+        "src/components/claim-capture.tsx",
+        "src/components/payment-workspace.tsx"
+      ],
+      "patchSha256": "3fa5a81a05f073d5c2fa79b8d2e211dc84bd4637f59b4ed53e639318c43f9ae2",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/b5b655ebb794af129bf5cb997ca1f6a3c5cd65db"
+    },
+    {
+      "hash": "7d119879618ff8e674f837aeb729f45038e6dabe",
+      "subject": "Bind acceptance evidence to every implementation subject",
+      "reason": "Binds acceptance verification to all implementation source subjects.",
+      "paths": [
+        "docs/OWNER-TESTING.md",
+        "scripts/product/verify-acceptance.mjs"
+      ],
+      "patchSha256": "d5d296e8cdf3398e06904470c8ab0ce853c247d66f6d1e24855fd9175e97c5fd",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/7d119879618ff8e674f837aeb729f45038e6dabe"
+    },
+    {
+      "hash": "93b561828a76cd1ed82fa5b78231e00e2a3516d8",
+      "subject": "fix: align local proof service with env configuration",
+      "reason": "Validates local proof port and environment precedence with regression tests.",
+      "paths": [
+        ".env.example",
+        "docs/RUNBOOK.md",
+        "scripts/local-config.mjs",
+        "scripts/services.mjs",
+        "tests/boilerplate/local-config.test.mjs"
+      ],
+      "patchSha256": "ea95704963f5eaf84c00c42d6150ac7809e5fc8ca2210493b5a75ff5d978eed8",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/93b561828a76cd1ed82fa5b78231e00e2a3516d8"
+    },
+    {
+      "hash": "861a9cd8bd3014d18a9e2a5d184efe992c79e344",
+      "subject": "fix: verify preserved issuer after additive UI dependencies",
+      "reason": "Preserves deployed issuer identity across additive UI dependencies.",
+      "paths": [
+        "docs/RUNBOOK.md",
+        "scripts/deployment-dependencies.mjs",
+        "scripts/verify-issuer.mjs",
+        "tests/boilerplate/deployment-dependencies.test.mjs"
+      ],
+      "patchSha256": "b451fbff7090799ea1003986d8a99d0cbfee4ba5fcc696fe3f3bea497c40b689",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/861a9cd8bd3014d18a9e2a5d184efe992c79e344"
+    },
+    {
+      "hash": "966707b5cdbf7c72c1cc1ee344102b71356d431d",
+      "subject": "test: cover bearer encoding and claim fragment privacy",
+      "reason": "Tests bearer encoding integrity, local QR and claim-fragment privacy.",
+      "paths": [
+        "tests/browser/claim.spec.ts",
+        "tests/unit/payment-codec.test.ts"
+      ],
+      "patchSha256": "515c2e984d20f8ecd6469ff6c4991a29f5e13a22e544b7cb2acf189ef756b479",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/966707b5cdbf7c72c1cc1ee344102b71356d431d"
+    },
+    {
+      "hash": "a0877429e4c970c555232939e32a2ec303c4c245",
+      "subject": "fix: reject shadowed deployment dependencies",
+      "reason": "Rejects dependency shadowing that changes deployed runtime resolution.",
+      "paths": [
+        "scripts/deployment-dependencies.mjs",
+        "tests/boilerplate/deployment-dependencies.test.mjs"
+      ],
+      "patchSha256": "013c34f6d34511fa5e281e9a4ec8784586d20ceca995c5b9d912a25dc686ce59",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/a0877429e4c970c555232939e32a2ec303c4c245"
+    },
+    {
+      "hash": "03b789398420ac8094c2c2a23a2fbfcdd8a1c4ef",
+      "subject": "feat: add local browser connectivity verification",
+      "reason": "Checks browser CSP, prover CORS and real read-only indexer/RPC access.",
+      "paths": [
+        "docs/RUNBOOK.md",
+        "package.json",
+        "scripts/verify-browser-connectivity.mjs"
+      ],
+      "patchSha256": "d5287128126ce3f03e450b4fa4d34b159353badaabe0e456c1dd6455f9b98a76",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/03b789398420ac8094c2c2a23a2fbfcdd8a1c4ef"
+    },
+    {
+      "hash": "a8289dc539e567c5e7bd58dc27825a5cc6c0a3c0",
+      "subject": "fix: check prover CORS with its actual POST protocol",
+      "reason": "Exercises actual prover POST/preflight instead of misleading OPTIONS.",
+      "paths": [
+        "docs/RUNBOOK.md",
+        "scripts/verify-browser-connectivity.mjs"
+      ],
+      "patchSha256": "ad4dc8e41da8536bdf9a846e11f24def2c2b43999ccbb607f71e47ab52103ba2",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/a8289dc539e567c5e7bd58dc27825a5cc6c0a3c0"
+    },
+    {
+      "hash": "869ef89b5ff497b529be379850fb964952fe93a9",
+      "subject": "fix: forward verification flags through npm exec",
+      "reason": "Forwards Vitest and Playwright arguments correctly through npm exec.",
+      "paths": [
+        ".github/workflows/ci.yml",
+        "docs/RUNBOOK.md",
+        "scripts/product/test-integration.mjs"
+      ],
+      "patchSha256": "d5dd4cfd2caa4d89c2d164a5cd713e21e4b84ad340612a445ee922a5e5f58c11",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/869ef89b5ff497b529be379850fb964952fe93a9"
+    },
+    {
+      "hash": "972b879b4e9c34188eebd347418e05847f2085ca",
+      "subject": "Recover failed payment attempts through saved records",
+      "reason": "Adds safe failed-attempt retries, real saved-record integration and valid full addresses.",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/TESTING.md",
+        "docs/tasks/M2-core.md",
+        "package-lock.json",
+        "package.json",
+        "scripts/product/test-integration.mjs",
+        "src/components/payment-workspace.tsx",
+        "src/lib/midnight/payment-session.ts",
+        "src/lib/midnight/payments.ts",
+        "tests/integration/payment-records.test.ts",
+        "tests/unit/recipient.test.ts"
+      ],
+      "patchSha256": "7b5a6dad048c8383234a5444c8569c6f38bbe5bbe7a981b25ef03526dc1b9ca4",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/972b879b4e9c34188eebd347418e05847f2085ca"
+    },
+    {
+      "hash": "df2d7a4d792b81a0425838f2ff52e60ab0f79049",
+      "subject": "Patch dependency vulnerabilities and preserve issuer runtime identity",
+      "reason": "Patches vulnerable development dependencies while preserving issuer runtime closure.",
+      "paths": [
+        ".github/workflows/ci.yml",
+        "docs/RUNBOOK.md",
+        "docs/TOOLCHAIN.md",
+        "package-lock.json",
+        "package.json",
+        "scripts/deployment-dependencies.mjs",
+        "scripts/verify-boilerplate.mjs",
+        "scripts/verify-issuer.mjs",
+        "tests/boilerplate/deployment-dependencies.test.mjs"
+      ],
+      "patchSha256": "7eed83ef0d2114344b065720457a05ac9829229edbd24c173b2184bd2b0e7348",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/df2d7a4d792b81a0425838f2ff52e60ab0f79049"
+    },
+    {
+      "hash": "ac5566fa3fca5cb6bc47a8815674c29548089a50",
+      "subject": "Centralize reviewed public Preprod configuration",
+      "reason": "Centralizes and tests reviewed public Preprod configuration.",
+      "paths": [
+        ".env.example",
+        "config/preprod.json",
+        "docs/ARCHITECTURE.md",
+        "docs/RUNBOOK.md",
+        "scripts/local-config.mjs",
+        "scripts/product/preprod-observer.mjs",
+        "scripts/product/test-proving.mjs",
+        "scripts/product/verify-deployment.mjs",
+        "scripts/verify-browser-connectivity.mjs",
+        "scripts/verify-issuer.mjs",
+        "src/lib/midnight/issuer-deployment.ts",
+        "src/lib/midnight/issuer-issuance.ts",
+        "src/lib/midnight/payment-network.ts",
+        "src/lib/midnight/payment-session.ts",
+        "src/lib/server/security.ts",
+        "tests/boilerplate/public-config.test.mjs"
+      ],
+      "patchSha256": "3147ee66306a31457308c5659df1ea8efac44eeb1aeb312241418b108b838ce2",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/ac5566fa3fca5cb6bc47a8815674c29548089a50"
+    },
+    {
+      "hash": "85dd354d3dea6788e7ba63b8199ea05594afb8d7",
+      "subject": "Allow bounded WSL clean installs and report verification progress",
+      "reason": "Adds bounded WSL installation timing and actionable verification progress.",
+      "paths": [
+        "docs/RUNBOOK.md",
+        "scripts/verify-boilerplate.mjs"
+      ],
+      "patchSha256": "227ee5bd2a3f8f4e5108403e436c1ecccd35ba4b760fa8bb21dd2e939da80809",
+      "published": true,
+      "url": "https://github.com/ianpurif/MoneyMole/commit/85dd354d3dea6788e7ba63b8199ea05594afb8d7"
+    }
+  ]
+}
