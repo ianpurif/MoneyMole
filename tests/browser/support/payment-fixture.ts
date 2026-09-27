@@ -40,13 +40,13 @@ export async function installPaymentFixture(page: Page) {
     return route.fulfill({json:{jsonrpc:"2.0",id:1,result:method === "chain_getHeader" ? {number:"0x64"} : `0x${hash}`}});
   });
   await page.addInitScript(({asset,coinAddress,encAddress,nightAddress}) => {
-    Object.assign(window, { syntheticTransactionCalls:0, midnight:{synthetic:{
+    Object.assign(window, { syntheticNightBalance:"100000000", syntheticTransactionCalls:0, midnight:{synthetic:{
       name:"1AM",rdns:"com.midnight.1am",apiVersion:"4.0.1",icon:"",
       connect:async()=>({
         getConnectionStatus:async()=>({status:"connected",networkId:"preprod"}),
         getConfiguration:async()=>({networkId:"preprod"}),
         getShieldedAddresses:async()=>({shieldedAddress:"synthetic-browser-only",shieldedCoinPublicKey:coinAddress,shieldedEncryptionPublicKey:encAddress}),
-        getUnshieldedBalances:async()=>({[asset]:100000000n}),
+        getUnshieldedBalances:async()=>({[asset]:BigInt((window as unknown as {syntheticNightBalance:string}).syntheticNightBalance)}),
         getUnshieldedAddress:async()=>({unshieldedAddress:nightAddress}),
         getDustBalance:async()=>({balance:1n}),
         balanceUnsealedTransaction:async()=>{ (window as unknown as {syntheticTransactionCalls:number}).syntheticTransactionCalls++; throw new Error("Synthetic fixture never signs"); },

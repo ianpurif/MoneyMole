@@ -1,15 +1,35 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
-import { OneAmSession, WalletSessionInvalid, walletErrorMessage } from "@/lib/midnight/oneam";
+import { OneAmSession, WalletSessionInvalid, walletErrorMessage, walletName, type WalletBalances } from "@/lib/midnight/oneam";
 import { toast } from "sonner";
 
 function useWalletState() {
   const [connected, setConnected] = useState<OneAmSession | null>(null);
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState("Check for 1AM to connect on Preprod.");
+  const [message, setMessage] = useState("");
+  const [balances, setBalances] = useState<WalletBalances>({ night: null, dust: null });
   const session = useRef<OneAmSession | null>(null), generation = useRef(0);
+  const refreshId = useRef(0);
+
+  const refreshBalances = useCallback(async () => {
+    const current = session.current, id = ++refreshId.current;
+    if (!current) return;
+    try {
+      const next = await current.balances();
+      if (session.current !== current || id !== refreshId.current) return;
+      setBalances(next);
+      setMessage(next.night === null || next.dust === null ? "Balance temporarily unavailable. Retrying shortly." : "");
+    } catch (error) {
+      if (session.current !== current || id !== refreshId.current) return;
+      setBalances({ night: null, dust: null });
+      if (error instanceof WalletSessionInvalid) {
+        session.current = null; setConnected(null); toast.dismiss();
+        setMessage("Wallet invalidated this session or changed account/network. Connect again on Preprod.");
+      } else setMessage("Wallet temporarily unavailable. Connection retained; retrying shortly.");
+    }
+  }, []);
 
   useEffect(() => () => { generation.current++; session.current?.disconnect(); session.current = null; }, []);
   useEffect(() => {
@@ -18,21 +38,7 @@ function useWalletState() {
     const check = async () => {
       if (checking || stopped || document.visibilityState === "hidden") return;
       checking = true;
-      try {
-        await connected.check();
-        const dust = await connected.dustAvailable();
-        if (!stopped && session.current === connected) setMessage(dust === null
-          ? "Connected to Preprod. DUST balance is temporarily unavailable; checking again shortly."
-          : dust ? "Connected to Preprod. DUST is available; transaction fees have not been estimated."
-            : "Connected to Preprod. No DUST is currently available for fees.");
-      } catch (error) {
-        if (!stopped && session.current === connected) {
-          if (error instanceof WalletSessionInvalid) {
-            session.current = null; setConnected(null); toast.dismiss();
-            setMessage("1AM invalidated this session or changed account/network. Connect again on Preprod.");
-          } else setMessage("1AM is temporarily unavailable. Connection retained; checking again shortly. Actions require a fresh wallet check.");
-        }
-      } finally { checking = false; }
+      try { await refreshBalances(); } finally { checking = false; }
     };
     // Reading fee readiness is independent from accepting the authorized session.
     void check();
@@ -40,17 +46,17 @@ function useWalletState() {
     window.addEventListener("focus", check);
     document.addEventListener("visibilitychange", check);
     return () => { stopped = true; clearInterval(timer); window.removeEventListener("focus", check); document.removeEventListener("visibilitychange", check); };
-  }, [connected]);
+  }, [connected, refreshBalances]);
 
   async function connect(provider: InitialAPI) {
     const attempt = ++generation.current;
-    setBusy(true); setMessage("Approve the connection in 1AM.");
+    setBusy(true); setMessage(`Approve the connection in ${walletName(provider)}.`);
     try {
       const current = await OneAmSession.connect(provider);
       if (attempt !== generation.current) { current.disconnect(); return; }
       session.current = current; setConnected(current);
-      setMessage("Connected to Preprod. Checking DUST availability for fees.");
-      toast.success("1AM connected", { description: "Your wallet is on Preprod." });
+      setBalances({ night: null, dust: null }); setMessage("");
+      toast.success(`${current.name} connected`, { description: "Your wallet is on Preprod." });
     } catch (error) { if (attempt === generation.current) setMessage(walletErrorMessage(error)); }
     finally { if (attempt === generation.current) setBusy(false); }
   }
@@ -60,10 +66,10 @@ function useWalletState() {
   }
   function disconnect() {
     generation.current++; session.current?.disconnect(); session.current = null;
-    setConnected(null); setBusy(false); toast.dismiss();
-    setMessage("Browser session cleared. Revoke site permissions inside 1AM if needed.");
+    setConnected(null); setBalances({ night: null, dust: null }); setBusy(false); toast.dismiss();
+    setMessage("Browser session cleared.");
   }
-  return { connected, busy, message, setMessage, connect, cancel, disconnect };
+  return { connected, busy, message, setMessage, balances, refreshBalances, connect, cancel, disconnect };
 }
 const WalletContext = createContext<ReturnType<typeof useWalletState> | null>(null);
 /** Root-layout lifetime: client navigation keeps authorization in memory only.

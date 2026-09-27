@@ -1,6 +1,7 @@
 import { expect, it, vi } from "vitest";
 import type { ConnectedAPI, InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
-import { discoverOneAm, OneAmSession, WalletReadUnavailable, walletErrorMessage } from "../../src/lib/midnight/oneam";
+import { discoverOneAm, discoverMidnightWallets, OneAmSession, WalletReadUnavailable, walletErrorMessage } from "../../src/lib/midnight/oneam";
+import { nativeToken } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 
 function fixture(network = "preprod") {
   let address = "synthetic-shielded-address";
@@ -9,6 +10,7 @@ function fixture(network = "preprod") {
     getConfiguration: async () => ({ networkId: network }),
     getUnshieldedAddress: async () => ({ unshieldedAddress: address }),
     getDustBalance: async () => ({ balance: 1n, cap: 1n }),
+    getUnshieldedBalances: async () => ({ [nativeToken().raw]: 1234567n }),
   } as unknown as ConnectedAPI;
   const provider: InitialAPI = { name: "1AM", rdns: "com.midnight.1am", icon: "", apiVersion: "4.0.1", connect: async () => api };
   return { provider, api, changeAccount: () => { address = "another-synthetic-address"; } };
@@ -18,6 +20,40 @@ it("discovers supported 1AM APIs under opaque keys without connecting", () => {
   expect(discoverOneAm({ opaque: provider })).toEqual([provider]);
   expect(discoverOneAm({ opaque: { ...provider, apiVersion: "3.0.0" } })).toEqual([]);
   expect(discoverOneAm({ opaque: { ...provider, name: "Other", rdns: "other.wallet" } })).toEqual([]);
+});
+it("offers both supported wallets without connecting and excludes ambiguous brands", async () => {
+  const {provider} = fixture(), connect = vi.spyOn(provider, "connect");
+  const lace = {...provider, name:"Lace", rdns:"io.lace.wallet"};
+  expect(discoverMidnightWallets({opaque:lace, arbitrary:provider, alias:provider})).toEqual([provider,lace]);
+  expect(connect).not.toHaveBeenCalled();
+  expect(discoverMidnightWallets({a:provider,b:{...provider},lace})).toEqual([lace]);
+  expect(discoverMidnightWallets({a:lace,b:{...lace},provider})).toEqual([provider]);
+  expect(discoverMidnightWallets({a:{...lace,apiVersion:"3.0.0"},b:{...provider,connect:null},c:{...provider,rdns:null}})).toEqual([]);
+  const session = await OneAmSession.connect(lace);
+  expect(session.name).toBe("Lace");
+  await expect(session.check()).resolves.toBeUndefined();
+});
+it("reads exact wallet totals with separate NIGHT and DUST precision, never the DUST cap", async () => {
+  const f=fixture(), session=await OneAmSession.connect(f.provider);
+  vi.spyOn(f.api,"getDustBalance").mockResolvedValue({balance:1234567890123456n,cap:99999999999999999n});
+  expect(await session.balances()).toEqual({night:"1.234567",dust:"1.234567890123456"});
+  vi.spyOn(f.api,"getUnshieldedBalances").mockResolvedValue({[nativeToken().raw]:9007199254740993123456n});
+  expect((await session.balances()).night).toBe("9007199254740993.123456");
+});
+it("keeps unavailable totals distinct from zero and recovers independently", async () => {
+  const f=fixture(), session=await OneAmSession.connect(f.provider);
+  const dust=vi.spyOn(f.api,"getDustBalance").mockRejectedValue(new Error("temporary"));
+  expect(await session.balances()).toEqual({night:"1.234567",dust:null});
+  dust.mockResolvedValue({balance:0n,cap:100n});
+  vi.spyOn(f.api,"getUnshieldedBalances").mockResolvedValue({});
+  expect(await session.balances()).toEqual({night:"0",dust:"0"});
+  dust.mockResolvedValue({balance:-1n,cap:100n});
+  expect((await session.balances()).dust).toBeNull();
+});
+it("discards balance reads when the wallet changes during the request", async () => {
+  const f=fixture(), session=await OneAmSession.connect(f.provider);
+  vi.spyOn(f.api,"getDustBalance").mockImplementation(async()=>{f.changeAccount();return {balance:1n,cap:1n};});
+  await expect(session.balances()).rejects.toThrow("Reconnect");
 });
 it("recognizes exact 1AM names, deduplicates aliases and rejects ambiguity or Lace", () => {
   const { provider } = fixture();

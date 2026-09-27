@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { ShieldedCoinPublicKey, ShieldedEncryptionPublicKey, UnshieldedAddress } from "@midnight-ntwrk/wallet-sdk-address-format";
 
-test("synthetic wallet prepares real compiled NIGHT escrow locally and recovers without submission", async ({ page, request }) => {
+test("synthetic escrow recovers without submission and refreshes balances after a rejected approval", async ({ page, request }) => {
   test.setTimeout(90_000);
   const addresses = {
     unshieldedAddress: UnshieldedAddress.codec.encode("preprod", new UnshieldedAddress(Buffer.alloc(32, 3))).asString(),
@@ -10,15 +10,15 @@ test("synthetic wallet prepares real compiled NIGHT escrow locally and recovers 
     shieldedEncryptionPublicKey: ShieldedEncryptionPublicKey.codec.encode("preprod", ShieldedEncryptionPublicKey.fromHexString("02".repeat(32))).asString(),
   };
   await page.addInitScript(addresses => {
-    Object.assign(window, { transactionCalls: 0, midnight: { opaque: {
+    Object.assign(window, { syntheticDust: "2000000000000000", transactionCalls: 0, midnight: { opaque: {
       name: "1AM", rdns: "com.midnight.1am", apiVersion: "4.0.1", icon: "",
       connect: async () => ({
         getConnectionStatus: async () => ({ status: "connected", networkId: "preprod" }),
         getConfiguration: async () => ({ networkId: "preprod" }),
         getShieldedAddresses: async () => addresses,
         getUnshieldedAddress: async () => ({ unshieldedAddress: addresses.unshieldedAddress }),
-        getDustBalance: async () => ({ balance: 1n }),
-        balanceUnsealedTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; throw new Error("No synthetic signing allowed"); },
+        getDustBalance: async () => ({ balance: BigInt((window as unknown as {syntheticDust:string}).syntheticDust) }),
+        balanceUnsealedTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; (window as unknown as {syntheticDust:string}).syntheticDust="1500000000000000"; throw new Error("Synthetic rejection; no signing"); },
         submitTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; throw new Error("No synthetic submission allowed"); },
       }),
     } } });
@@ -26,8 +26,9 @@ test("synthetic wallet prepares real compiled NIGHT escrow locally and recovers 
   const writes: string[] = [];
   page.on("request", req => { if (req.method() !== "GET") writes.push(new URL(req.url()).pathname); });
   async function prepare() {
-    await page.getByRole("button", { name: "Check for 1AM" }).click();
-    await page.getByRole("button", { name: "Connect 1AM", exact: true }).click();
+    await page.getByRole("button", { name: "Connect" }).click();
+    await page.getByRole("button", { name: "1AM", exact: true }).click();
+    await page.getByRole("button", { name: "Open workspace tools" }).click();
     await page.getByText("Create / recover a payment escrow", { exact: true }).click();
     await page.locator("details").filter({has: page.getByText("Create / recover a payment escrow", {exact:true})}).getByLabel("Local recovery passphrase", { exact: true }).fill("synthetic browser unlock passphrase");
     await page.getByRole("button", { name: "Prepare / unlock escrow", exact: true }).click();
@@ -39,22 +40,30 @@ test("synthetic wallet prepares real compiled NIGHT escrow locally and recovers 
   expect(await page.getByText(/^Preprod escrow: /).textContent()).toBe(address);
   expect(await page.evaluate(() => (window as unknown as { transactionCalls: number }).transactionCalls)).toBe(0);
   expect(writes).toEqual([]);
+  await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("2");
+  await page.getByRole("button",{name:"Approve escrow deployment",exact:true}).click();
+  await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("1.5");
+  expect(await page.evaluate(() => (window as unknown as {transactionCalls:number}).transactionCalls)).toBe(1);
   expect((await request.get("/api/artifacts/night-payments/verifier/fund")).status()).toBe(200);
   expect((await request.get("/api/artifacts/night-payments/verifier/unknown")).status()).toBe(404);
   expect((await request.post("/api/artifacts/night-payments/verifier/fund", { data: "synthetic" })).status()).toBe(405);
 });
-test("Lace alone never becomes the primary wallet", async ({ page }) => {
+test("Lace is offered explicitly without automatically connecting", async ({ page }) => {
   await page.addInitScript(() => {
-    Object.assign(window, { midnight: { opaque: {
+    Object.assign(window, { laceCalls: 0, midnight: { opaque: {
       name: "Lace", rdns: "io.lace.wallet", apiVersion: "4.0.1", icon: "",
-      connect: async () => { throw new Error("Must not connect Lace"); },
+      connect: async () => { (window as unknown as {laceCalls:number}).laceCalls++; throw {code:"Rejected"}; },
     } } });
   });
   await page.goto("/");
-  await page.getByRole("button", { name: "Check for 1AM" }).click();
-  await expect(page.getByRole("button", { name: "Connect 1AM", exact: true })).toHaveCount(0);
-  await expect(page.locator(".connection-status")).toContainText("supported 1AM API v4 provider was not found");
+  await page.getByRole("button", { name: "Connect", exact:true }).click();
+  await expect(page.getByRole("button", { name: "1AM", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Lace", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => (window as unknown as {laceCalls:number}).laceCalls)).toBe(0);
+  await page.getByRole("button", { name: "Lace", exact: true }).click();
+  await expect(page.locator(".connection-status")).toContainText("declined");
 });
+
 test("disconnected visitor cannot start a payment", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -84,10 +93,10 @@ test("synthetic connector exercises explicit authorization without API requests"
   const apiRequests: string[] = [];
   page.on("request", request => { if (new URL(request.url()).pathname.startsWith("/api/")) apiRequests.push(request.method()); });
   await page.goto("/");
-  await page.getByRole("button", { name: "Check for 1AM" }).click();
+  await page.getByRole("button", { name: "Connect" }).click();
   expect(await page.evaluate(() => (window as unknown as { syntheticConnectCalls: number }).syntheticConnectCalls)).toBe(0);
-  await page.getByRole("button", { name: "Connect 1AM" }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Connected to Preprod" })).toBeVisible();
+  await page.getByRole("button", { name: "1AM" }).click();
+  await expect(page.getByText("1AM connected", {exact:true}).first()).toBeVisible();
   await expect(page.getByRole("button", { name: "Save payment draft" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Unlock payment workspace" })).toBeDisabled();
   expect(apiRequests).toEqual([]);
