@@ -11,7 +11,7 @@ try {
   stage = 'local production app and hydration';
   const response = await page.goto('http://localhost:3000', {timeout:30000});
   assert.equal(response.status(), 200);
-  await page.getByRole('button', {name:'Check for 1AM'}).waitFor();
+  await page.getByRole('button', {name:'Connect',exact:true}).waitFor();
   stage = 'browser CSP, prover CORS and read-only Preprod access';
   checks = await page.evaluate(async (config) => {
     const timeout = () => AbortSignal.timeout(20000);
