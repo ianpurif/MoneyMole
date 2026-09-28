@@ -127,7 +127,7 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 |---|---|
 | Same MVP extended and updated docs | Same implementation and acceptance limits as Level 5; [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [current audit](docs/LEVEL-AUDIT.md) document them. |
 | Users and feedback | The owner-supplied checklist asks for **70 total Preprod users**; [LAUNCH_USERS.md](LAUNCH_USERS.md) and [FEEDBACK.md](docs/FEEDBACK.md) are placeholders, not proof. The [public Rise In program page](https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight) instead describes **Mainnet launch and 20 real users** at Level 6. The applicable rubric needs organizer confirmation; neither target is claimed complete. |
-| Commits and CI | The stricter supplied submission checklist says **30 meaningful commits**; [commit audit](docs/evidence/commit-audit.json) reviewed 35 published substantive commits. Current-head CI remains failed. |
+| Commits and CI | The stricter supplied submission checklist says **30 meaningful commits**; [commit audit](docs/evidence/commit-audit.json) reviewed 35 published substantive commits. Run 36371511897 failed; inspect the live workflow for newer results. |
 | Mainnet/hosted demo, product X, video/screenshots | **Owner placeholders:** no Mainnet deployment, hosted URL, X profile, video or screenshots are claimed. |
 
 The [detailed current audit](docs/LEVEL-AUDIT.md) separates implementation, live
@@ -186,9 +186,9 @@ complete sequential manual flow and troubleshooting.
 |---|---|
 | .env.local | Public `PROOF_SERVER_PORT=6300` Compose setting; never wallet credentials |
 | [config/preprod.json](config/preprod.json) | Reviewed indexer/RPC/prover endpoints, default verified NIGHT escrow, NIGHT/unshielded/6 decimals/v2 metadata; historical issuer fields retained only for legacy verification |
-| Browser localStorage | Selected public NIGHT escrow, key moneymole/night-escrow/v2 |
+| Browser localStorage | Wallet-scoped public escrow selection, `moneymole/escrow/v3/<localIdentity>`; legacy `moneymole/night-escrow/v2` remains readable |
 | Encrypted IndexedDB | Wallet/contract/network/schema-v2 payment and deployment records; passphrase-derived keys never saved |
-| Public deployment export | Actual NIGHT address, identifier and source/build/toolchain hashes; save as reports/night-escrow.json for local verification |
+| Public deployment export | The committed default record is under deployments/preprod/; any new owner-approved escrow export can be saved separately and verified with `--record <path>` |
 | Encrypted exports | Private payment and escrow recovery; keep outside Git and never send to an agent |
 | deployments/preprod/test-asset-issuer.json | Original issuer record, not current NIGHT configuration |
 
@@ -219,8 +219,9 @@ No wallet, escrow deployment or transaction is created by this reset.
    The verified default escrow is already selected. Use **Tools → Create / recover a
    payment escrow** only to recover another compatible escrow or deliberately deploy
    a new one with explicit wallet approval.
-3. **Use escrow** with the verified address; recovered escrow state is shared across
-   Send, Receive, Activity and Tools. In **Send**, enter **1**
+3. The default verified escrow is shared across Send, Receive, Activity and Tools.
+   If deliberately using another compatible escrow, select **Use escrow** first.
+   In **Send**, enter **1**
    NIGHT and click **Send NIGHT**. The compact modal saves encrypted recovery, checks funds,
    and prepares the proof. Choose **Approve payment in wallet**, review in 1AM,
    and wait for confirmation in the same modal: A = A0 - 1; escrow +1.
