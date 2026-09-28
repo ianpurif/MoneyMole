@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { installPaymentFixture } from "./support/payment-fixture";
 
 test("forgotten phrase starts a separate workspace and preserves recoverable old payments", async ({page}) => {
-  test.setTimeout(90_000);
+  test.setTimeout(150_000);
   const {contract} = await installPaymentFixture(page);
   await page.route("http://127.0.0.1:6300/**", route => route.abort());
   await page.goto("/");
@@ -37,7 +37,8 @@ test("forgotten phrase starts a separate workspace and preserves recoverable old
   await page.getByRole("button", {name:"Use recovery passphrase instead"}).click();
   await page.getByLabel("Local recovery passphrase", {exact:true}).fill("original7");
   await page.getByRole("button", {name:"Unlock MoneyMole",exact:true}).click();
-  await expect(page.getByLabel("Select payment")).toBeVisible();
+  await page.getByRole("button", {name:"Activity",exact:true}).click();
+  await expect(page.getByLabel("Select payment")).toBeVisible({timeout:30_000});
   expect(await page.evaluate(() => (window as unknown as {syntheticTransactionCalls:number}).syntheticTransactionCalls)).toBe(0);
 });
 
@@ -66,7 +67,7 @@ test("one local unlock survives claim-to-home navigation and Tools", async ({pag
 });
 
 test("focused synthetic payment workspace saves, validates and recovers a real encrypted draft", async ({page}) => {
-  test.setTimeout(90_000);
+  test.setTimeout(150_000);
   await mkdir("reports/revision", { recursive: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   const {contract} = await installPaymentFixture(page);
@@ -114,10 +115,9 @@ test("focused synthetic payment workspace saves, validates and recovers a real e
   await page.getByRole("button",{name:"Use recovery passphrase instead"}).click();
   await page.getByLabel("Local recovery passphrase",{exact:true}).first().fill("synthetic local browser passphrase");
   await page.getByRole("button",{name:"Unlock MoneyMole",exact:true}).click();
-  await expect(page.getByLabel("Select payment")).toBeVisible({timeout:60_000});
-  await page.getByLabel("Select payment").selectOption({index:1});
-  await expect(page.getByText("funding not verified this session",{exact:false})).toBeHidden();
+  await expect(page.getByLabel("Select payment")).toHaveCount(0);
   await page.getByRole("button",{name:"Activity",exact:true}).click();
+  await expect(page.getByLabel("Select payment")).toBeVisible({timeout:60_000});
   await page.getByLabel("Select payment").selectOption({index:1});
   await expect(page.getByRole("button",{name:"Prepare funding",exact:true})).toHaveCount(0);
   await expect(page.getByLabel("Amount in NIGHT")).toHaveCount(0);

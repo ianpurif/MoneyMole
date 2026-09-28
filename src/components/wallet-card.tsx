@@ -15,6 +15,6 @@ export function WalletCard({ action, onAction, disabled, connected, balances, ba
       <span className="card-connection"><span className={connected ? "card-dot online" : "card-dot"} />{connected ? `${walletName} connected` : "Connect your wallet"}</span>
     </div><span className="card-chip" aria-hidden="true"><i /><i /><i /></span></div>
     <div className="card-controls">{controls ?? <span>Native NIGHT <span aria-hidden="true">·</span> DUST fees</span>}</div>
-    <div className="action-switch card-actions" role="group" aria-label="Payment action">{(["send", "receive", "activity"] as const).map((value, index) => <button key={value} disabled={disabled} aria-pressed={action === value} onClick={() => onAction(value)}><span aria-hidden="true">{["↗", "↙", "↺"][index]}</span>{value === "send" ? "Send" : value === "receive" ? "Receive" : "Activity"}</button>)}</div>
+    <div className="action-switch card-actions" role="group" aria-label="Payment action">{(["send", "receive", "activity"] as const).map((value, index) => <button className="embroidered-button" key={value} disabled={disabled} aria-pressed={action === value} onClick={() => onAction(value)}><span aria-hidden="true">{["↗", "↙", "↺"][index]}</span>{value === "send" ? "Send" : value === "receive" ? "Receive" : "Activity"}</button>)}</div>
   </div>;
 }

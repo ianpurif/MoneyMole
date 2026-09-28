@@ -13,7 +13,7 @@ export function BrandImage({ size, alt, priority = false }: { size: number; alt:
 }
 
 export function ProductHeader() {
-  return <header className="site-header"><Link href="/" className="wordmark" aria-label="MoneyMole home"><BrandImage size={36} alt="" priority />MoneyMole<span className="network-label">PREPROD</span></Link><nav aria-label="Main navigation"><Link href="/#how-it-works">How it works</Link><Link href="/#privacy">Privacy</Link><a className="header-action" href="#payment">Open app <span aria-hidden="true">↗</span></a></nav></header>;
+  return <header className="site-header"><Link href="/" className="wordmark" aria-label="MoneyMole home"><BrandImage size={36} alt="" priority />MoneyMole<span className="network-label">PREPROD</span></Link></header>;
 }
 
 export function ProductStory() {

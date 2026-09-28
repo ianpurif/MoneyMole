@@ -18,7 +18,7 @@ class FixtureKeys extends ZKConfigProvider<"fund" | "claim"> {
 
 /** Isolated synthetic chain/connector; real compiled initial state and browser encryption.
  * Never signs, submits, prepares live deployment, or reads owner records. */
-export async function installPaymentFixture(page: Page) {
+export async function installPaymentFixture(page: Page, enforceReadLimit = false) {
   setNetworkId("preprod");
   const asset = nativeToken().raw;
   const coin = "01".repeat(32), enc = "02".repeat(32);
@@ -39,20 +39,26 @@ export async function installPaymentFixture(page: Page) {
     const {method} = route.request().postDataJSON();
     return route.fulfill({json:{jsonrpc:"2.0",id:1,result:method === "chain_getHeader" ? {number:"0x64"} : `0x${hash}`}});
   });
-  await page.addInitScript(({asset,coinAddress,encAddress,nightAddress}) => {
-    Object.assign(window, { syntheticNightBalance:"100000000", syntheticTransactionCalls:0, midnight:{synthetic:{
+  await page.addInitScript(({asset,coinAddress,encAddress,nightAddress,enforceReadLimit}) => {
+    let reads: number[] = [];
+    const read = <T,>(value: () => T) => async () => {
+      reads = reads.filter(time => Date.now() - time < 10_000);
+      if (enforceReadLimit && reads.length >= 20) { (window as unknown as {syntheticRateLimits:number}).syntheticRateLimits++; throw {code:"InternalError", reason:"Rate limited"}; }
+      reads.push(Date.now()); return value();
+    };
+    Object.assign(window, { syntheticRateLimits:0, syntheticNightBalance:"100000000", syntheticTransactionCalls:0, midnight:{synthetic:{
       name:"1AM",rdns:"com.midnight.1am",apiVersion:"4.0.1",icon:"",
       connect:async()=>({
-        getConnectionStatus:async()=>({status:"connected",networkId:"preprod"}),
-        getConfiguration:async()=>({networkId:"preprod"}),
-        getShieldedAddresses:async()=>({shieldedAddress:"synthetic-browser-only",shieldedCoinPublicKey:coinAddress,shieldedEncryptionPublicKey:encAddress}),
-        getUnshieldedBalances:async()=>({[asset]:BigInt((window as unknown as {syntheticNightBalance:string}).syntheticNightBalance)}),
-        getUnshieldedAddress:async()=>({unshieldedAddress:nightAddress}),
-        getDustBalance:async()=>({balance:1n}),
+        getConnectionStatus:read(()=> ({status:"connected",networkId:"preprod"})),
+        getConfiguration:read(()=> ({networkId:"preprod"})),
+        getShieldedAddresses:read(()=> ({shieldedAddress:"synthetic-browser-only",shieldedCoinPublicKey:coinAddress,shieldedEncryptionPublicKey:encAddress})),
+        getUnshieldedBalances:read(()=> ({[asset]:BigInt((window as unknown as {syntheticNightBalance:string}).syntheticNightBalance)})),
+        getUnshieldedAddress:read(()=> ({unshieldedAddress:nightAddress})),
+        getDustBalance:read(()=> ({balance:1n})),
         balanceUnsealedTransaction:async()=>{ (window as unknown as {syntheticTransactionCalls:number}).syntheticTransactionCalls++; throw new Error("Synthetic fixture never signs"); },
         submitTransaction:async()=>{ throw new Error("Synthetic fixture never submits"); },
       }),
     }}});
-  }, {asset,nightAddress:UnshieldedAddress.codec.encode("preprod",new UnshieldedAddress(Buffer.alloc(32,3))).asString(),coinAddress:ShieldedCoinPublicKey.codec.encode("preprod",ShieldedCoinPublicKey.fromHexString(coin)).asString(),encAddress:ShieldedEncryptionPublicKey.codec.encode("preprod",ShieldedEncryptionPublicKey.fromHexString(enc)).asString()});
+  }, {asset,enforceReadLimit,nightAddress:UnshieldedAddress.codec.encode("preprod",new UnshieldedAddress(Buffer.alloc(32,3))).asString(),coinAddress:ShieldedCoinPublicKey.codec.encode("preprod",ShieldedCoinPublicKey.fromHexString(coin)).asString(),encAddress:ShieldedEncryptionPublicKey.codec.encode("preprod",ShieldedEncryptionPublicKey.fromHexString(enc)).asString()});
   return {contract};
 }

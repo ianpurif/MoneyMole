@@ -6,5 +6,5 @@ export function ContextSheet({ title, onClose, children, eyebrow = "Workspace to
   const titleId = useId();
   useEffect(() => { ref.current?.showModal(); }, []);
   function dismiss() { ref.current?.close(); onClose(); }
-  return <dialog ref={ref} className="context-sheet" aria-labelledby={titleId} onCancel={event => { event.preventDefault(); dismiss(); }} onClick={event => { if (event.target === event.currentTarget) dismiss(); }}><div className="sheet-content"><header><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h2 id={titleId}>{title}</h2></div><button className="icon-button" onClick={dismiss} aria-label={`Close ${title}`}>×</button></header>{children}</div></dialog>;
+  return <dialog ref={ref} className="context-sheet" aria-labelledby={titleId} onCancel={event => { event.preventDefault(); dismiss(); }} onClick={event => { if (event.target === event.currentTarget) dismiss(); }}><div className="sheet-content"><header><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h2 id={titleId}>{title}</h2></div><button className="embroidered-button embroidered-light icon-button" onClick={dismiss} aria-label={`Close ${title}`}>×</button></header>{children}</div></dialog>;
 }

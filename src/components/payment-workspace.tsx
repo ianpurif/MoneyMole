@@ -17,6 +17,7 @@ import { validPassphrase } from "@/lib/private-state/passphrase";
 import { RecoveryWorkspaceMismatch } from "@/lib/private-state/storage-identity";
 import { PaymentWizard } from "./payment-wizard";
 import { paymentErrorMessage } from "@/lib/midnight/payment-errors";
+const phaseLabel = (phase: PaymentView["phase"]) => ({ draft: "Not sent", prepared: "Ready for approval", authorization_requested: "Awaiting approval", outcome_unknown: "Checking confirmation", submitted: "Confirming", finalized: "Confirmed", failed: "Needs attention" })[phase];
 const night = (atomic: string) => formatAmount(BigInt(atomic), 6);
 export function PaymentWorkspace({
   session,
@@ -178,18 +179,18 @@ export function PaymentWorkspace({
         controls={
           <>
             <button
-              className="quiet-button"
+              className="embroidered-button embroidered-light quiet-button"
               onClick={() => setToolsOpen(true)}
               aria-label="Open workspace tools"
             >
               Tools
             </button>
             {recovery?.authenticated && (
-              <button className="quiet-button" onClick={lock}>
+              <button className="embroidered-button embroidered-light quiet-button" onClick={lock}>
                 Lock workspace
               </button>
             )}
-            <button className="quiet-button" onClick={onDisconnect}>
+            <button className="embroidered-button embroidered-light quiet-button" onClick={onDisconnect}>
               Disconnect
             </button>
           </>
@@ -240,7 +241,7 @@ export function PaymentWorkspace({
           <Button disabled={recovery.busy || !/^[a-f0-9]{64}$/.test(contract)} onClick={() => void recovery.selectEscrow(contract)}>Use escrow</Button>
           <p role="status" className="small-note">{recovery.message || "Use an existing escrow, or create / recover one in Tools."}</p>
         </div>}
-        {unlocked && recovery?.paymentFlow && <Button variant="outline" onClick={() => setWizardOpen(true)}>Resume payment</Button>}
+        {unlocked && recovery?.paymentFlow && recovery.paymentFlow.stage !== "success" && <Button variant="outline" onClick={() => setWizardOpen(true)}>Resume payment</Button>}
         {unlocked && (
           <div key={tab} className="state-view">
             {tab === "send" ? (
@@ -300,7 +301,7 @@ export function PaymentWorkspace({
                 </label>
                 <p className="mb-3 text-sm text-muted">
                   The link stays in this browser. If using a different escrow,
-                  lock and choose the address from the claim first.
+                  it will be selected automatically.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button
@@ -317,10 +318,10 @@ export function PaymentWorkspace({
                 </div>
               </div>
             ) : null}
-            {(tab === "activity" || visibleRecords.length > 0) && (
+            {tab === "activity" && (
               <div className="panel activity-panel">
                 <h2 className="section-heading">
-                  {tab === "activity" ? "Payment history" : tab === "send" ? "Saved sends" : "Saved claims"}
+                  Payment history
                 </h2>
                 {visibleRecords.length === 0 && (
                   <div className="empty-history">
@@ -352,7 +353,7 @@ export function PaymentWorkspace({
                       {visibleRecords.map((r) => (
                         <option key={r.id} value={r.id}>
                           {r.role === "sender" ? "Send" : "Receive"}{" "}
-                          {night(r.amount)} · {r.phase} · {r.id.slice(2, 10)}
+                          {night(r.amount)} · {phaseLabel(r.phase)} · {r.id.slice(2, 10)}
                         </option>
                       ))}
                     </select>
@@ -368,14 +369,14 @@ export function PaymentWorkspace({
                         {night(current.amount)} <small>NIGHT</small>
                       </strong>
                       <span className="phase-label">
-                        {current.phase.replaceAll("_", " ")}
+                        {phaseLabel(current.phase)}
                       </span>
                     </div>
                     {tab === "activity" && <details>
                       <summary>Transaction details</summary>
                       <p>
                         Saved failed attempts: {current.failedAttempts} ·
-                        Transaction: {current.phase} ·{" "}
+                        Transaction: {phaseLabel(current.phase)} ·{" "}
                         {current.funded
                           ? "funding verified"
                           : "funding not verified this session"}

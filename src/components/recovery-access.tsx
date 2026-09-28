@@ -22,7 +22,7 @@ export function RecoveryAccess({ security = false }: { security?: boolean }) {
       {security ? "Add a passkey" : recovery.existing ? "Login with Passkey" : "Continue with Passkey"}<span>Recommended</span>
     </Button>}
     {security && recovery.hasPasskey && <p className="small-note">Passkey enabled</p>}
-    <button className="quiet-button recovery-alternative" disabled={recovery.busy} onClick={() => { setAlternative(!alternative); setPassword(""); setError(""); }}>
+    <button className="embroidered-button embroidered-light quiet-button recovery-alternative" disabled={recovery.busy} onClick={() => { setAlternative(!alternative); setPassword(""); setError(""); }}>
       {security ? recovery.hasFallback ? "Update recovery passphrase" : "Add recovery passphrase" : "Use recovery passphrase instead"}
     </button>
     {alternative && <form onSubmit={event => {
@@ -39,11 +39,11 @@ export function RecoveryAccess({ security = false }: { security?: boolean }) {
       <Button disabled={recovery.busy} type="submit">{recovery.busy ? "Please wait…" : security ? "Save recovery passphrase" : recovery.existing ? "Unlock MoneyMole" : "Secure MoneyMole"}</Button>
     </form>}
     {!security && <>
-      <button className="quiet-button recovery-alternative" disabled={recovery.busy} onClick={() => { setForgot(!forgot); setPassword(""); setError(""); }}>Forgot recovery passphrase?</button>
+      <button className="embroidered-button embroidered-light quiet-button recovery-alternative" disabled={recovery.busy} onClick={() => { setForgot(!forgot); setPassword(""); setError(""); }}>Forgot recovery passphrase?</button>
       {(forgot || recovery.recoveryNeeded) && <ForgotRecovery />}
       {recovery.previousWorkspaces.length > 0 && <details className="forgot-recovery"><summary>Switch to a preserved workspace</summary>
         <p>Each workspace needs its own passkey or original passphrase. No records are deleted when switching.</p>
-        {recovery.previousWorkspaces.map(item => <button key={item.id} className="quiet-button preserved-workspace" disabled={recovery.busy} onClick={() => { void recovery.selectPreserved(item.id).catch(() => setError("Could not switch workspaces. Your records are preserved.")); }}>Workspace saved {new Date(item.createdAt).toLocaleString()}</button>)}
+        {recovery.previousWorkspaces.map(item => <button key={item.id} className="embroidered-button embroidered-light quiet-button preserved-workspace" disabled={recovery.busy} onClick={() => { void recovery.selectPreserved(item.id).catch(() => setError("Could not switch workspaces. Your records are preserved.")); }}>Workspace saved {new Date(item.createdAt).toLocaleString()}</button>)}
       </details>}
     </>}
     {security && !recovery.hasFallback && <p className="small-note">Add a recovery passphrase to restore exported backups on another device.</p>}

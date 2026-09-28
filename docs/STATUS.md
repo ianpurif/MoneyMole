@@ -1,5 +1,35 @@
 # Current execution state
 
+## 1AM read budget and compact payment UX — 2026-09-28
+
+Inspected the installed 1AM 6.3.11 connector implementation (packaged code only,
+no wallet storage). Its background limits read requests to 20 per 10 seconds.
+MoneyMole issued overlapping balance polls and repeated identity/readiness guards,
+exhausting that budget; the catch boundary incorrectly reported these failures
+as needing an unlock. One shared connector wrapper now paces reads at 16 per
+10.1 seconds, coalesces only in-flight reads, and performs one bounded cooldown
+on an explicit rate-limit response. Queue waiting is outside the eight-second
+response deadline. Changed accounts/networks still fail closed. Wallet approvals
+and submissions are never automatically repeated.
+
+A completed proof is saved before the follow-up wallet guard, preserving it if
+that guard fails temporarily. Existing encrypted namespaces, record formats,
+identifiers and confirmation semantics are retained. The separate draft UI is
+removed: Send NIGHT saves recovery internally, and Activity retains old unsent
+records under Not sent. The modal has three compact phases, with QR behind a
+local disclosure. All app buttons share a stitched fabric treatment. The three
+requested navbar links are removed and the hero is visible while disconnected.
+
+Validation: 23 wallet unit cases, 21 encrypted-record integration cases,
+TypeScript, targeted lint and requirements consistency passed. Fifteen browser
+scenarios passed across the focused runs, including mobile modal sizing, hero and
+button presentation, recovery/workspace preservation, and navigation. The actual
+local prover returned /check and /prove 200 under a synthetic connector enforcing
+1AM's read limit; the payment reached approval and reused the encrypted proof
+after reload. No real wallet approval, submission or deployment was performed.
+The dev server was restarted with WSL file polling after detecting stale compiled
+UI, and remains on http://localhost:3000.
+
 ## Resumable payment modal — 2026-09-28
 
 Replaced the separate save/prepare/approve/reconcile/share controls with one modal

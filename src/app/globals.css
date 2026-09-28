@@ -290,7 +290,6 @@ details[open] > summary::after { content: "−"; }
 .payment-app-disconnected { height: auto; min-height: 0; }
 .payment-app-disconnected .wallet-scroll { flex: none; overflow: visible; padding-block: 22px 6px; }
 .payment-app-disconnected .disconnected-action:empty { display: none; }
-.product-stage:has(.payment-app-disconnected) > h1 { display: none; }
 @media (forced-colors: active) {
   .wallet-card { background: Canvas; color: CanvasText; }
   .card-stitched-wordmark { background: none; color: CanvasText; filter: none; }
@@ -320,16 +319,48 @@ details[open] > summary::after { content: "−"; }
   .card-network { padding: 6px 8px; font-size: 7px; }
   .payment-app-disconnected { height: auto; }
 }
-.payment-wizard { display: grid; gap: 1.1rem; }
-.context-sheet:has(.payment-wizard) { margin: auto; width: min(520px, calc(100% - 24px)); height: auto; max-height: calc(100dvh - 32px); border-radius: 22px; box-shadow: 0 24px 100px #19132640; }
+/* Shared stitched fabric treatment for every app button, including quiet and icon actions. */
+.embroidered-button {
+  --button-top: #38385f; --button-bottom: #171c3b; --button-ink: #f5f0ff; --button-stitch: #c4b6f16b;
+  position: relative; isolation: isolate; border: 1px solid #a69bc580; border-radius: 13px;
+  background: repeating-linear-gradient(125deg, #ffffff09 0 1px, transparent 1px 3px), linear-gradient(145deg, var(--button-top), var(--button-bottom));
+  color: var(--button-ink); box-shadow: inset 0 1px 2px #ffffff38, 0 2px 4px #17133729;
+  text-shadow: 0 1px 1px #0004; text-decoration: none; font-weight: 550;
+}
+.embroidered-button::after { content: ""; position: absolute; inset: 3px; border: 1px dashed var(--button-stitch); border-radius: inherit; pointer-events: none; }
+.embroidered-button.embroidered-light, .embroidered-button[aria-pressed="true"] { --button-top: #f2edff; --button-bottom: #d6ceeb; --button-ink: #292446; --button-stitch: #8e83b978; text-shadow: 0 1px 0 #fff8; }
+.embroidered-button:hover:not(:disabled) { filter: brightness(1.08); background: repeating-linear-gradient(125deg, #ffffff09 0 1px, transparent 1px 3px), linear-gradient(145deg, var(--button-top), var(--button-bottom)); color: var(--button-ink); }
+.embroidered-button:disabled { opacity: .5; }
+.embroidered-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.embroidered-button.quiet-button { padding: 9px 12px; min-height: 34px; font-size: 11px; }
+.embroidered-button.icon-button { display: grid; place-items: center; flex: none; padding: 0; border-radius: 50%; }
+.card-controls { gap: 7px; flex-wrap: wrap; }
+.card-controls .embroidered-button { --button-top: #38385f; --button-bottom: #171c3b; --button-ink: #f5f0ff; --button-stitch: #c4b6f16b; padding: 7px 9px; font-size: 10px; }
+.card-actions .embroidered-button { background: repeating-linear-gradient(125deg, #ffffff09 0 1px, transparent 1px 3px), linear-gradient(145deg, var(--button-top), var(--button-bottom)); color: var(--button-ink); }
+.card-actions .embroidered-button::after { border-color: var(--button-stitch); }
+.wallet-choice.embroidered-button { border-radius: 15px; }
+.wallet-choice.embroidered-button small { color: #5e5676; }
+.payment-wizard { display: grid; gap: 14px; }
+.context-sheet:has(.payment-wizard) { margin: auto; width: min(440px, calc(100% - 24px)); height: fit-content; max-height: calc(100dvh - 24px); border-radius: 22px; box-shadow: 0 24px 100px #19132640; }
 .context-sheet:has(.payment-wizard)[open] { animation: none; }
-.wizard-amount { font-size: 2.25rem; font-weight: 600; letter-spacing: -.04em; }
-.wizard-amount span { font-size: .8rem; letter-spacing: .15em; color: var(--muted); }
-.wizard-steps { display: grid; gap: .7rem; padding: 0; list-style: none; }
-.wizard-steps li { display: flex; align-items: center; gap: .8rem; color: var(--muted); font-size: .875rem; }
-.wizard-steps li > span { display: grid; place-items: center; border: 1px solid currentColor; border-radius: 50%; width: 1.6rem; height: 1.6rem; font-size: .7rem; }
+.context-sheet:has(.payment-wizard) .sheet-content { padding: 22px; }
+.context-sheet:has(.payment-wizard) .sheet-content > header { margin-bottom: 12px; align-items: center; }
+.context-sheet:has(.payment-wizard) h2 { font-size: 22px; }
+.wizard-amount { font-size: 2rem; font-weight: 600; letter-spacing: -.04em; line-height: 1.2; }
+.wizard-amount span { font-size: .75rem; letter-spacing: .15em; color: var(--muted); }
+.wizard-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0; list-style: none; }
+.wizard-steps li { display: grid; gap: 7px; color: var(--muted); font-size: 10px; line-height: 1.4; }
+.wizard-steps li > span { display: block; height: 4px; border-radius: 3px; background: #e1dceb; }
 .wizard-steps li[aria-current="step"] { color: var(--foreground); font-weight: 600; }
-.wizard-steps li[data-complete="true"] { color: #a59aeb; }
-.wizard-status { min-height: 2.5rem; font-size: .9rem; }
-.wizard-share { display: grid; gap: .8rem; }
-.wizard-share img { max-width: 100%; height: auto; border-radius: 12px; }
+.wizard-steps li[aria-current="step"] > span, .wizard-steps li[data-complete="true"] > span { background: #8474b8; }
+.wizard-status { font-size: 12px; line-height: 1.55; }
+.wizard-status:empty { display: none; }
+.payment-wizard .recovery-error { margin: 0; line-height: 1.55; }
+.payment-wizard .field { margin: 0; }
+.payment-wizard > .small-note { line-height: 1.5; text-align: center; }
+.wizard-share { display: grid; gap: 12px; }
+.wizard-share img { max-width: 100%; height: auto; border-radius: 12px; margin: 10px auto 0; }
+@media (forced-colors: active) {
+  .embroidered-button { background: ButtonFace; color: ButtonText; border-color: ButtonText; text-shadow: none; }
+  .embroidered-button::after { border-color: ButtonText; }
+}

@@ -17,16 +17,16 @@ export function WalletConnectModal({ providers, busy, message, onSelect, onClose
     <div className="wallet-choice-list">{wallets.map(wallet => {
       const provider = providers.find(item => walletName(item) === wallet.name);
       return <div key={wallet.name} className="wallet-choice-row">
-        <button className="wallet-choice" aria-label={wallet.name} disabled={busy || !provider} onClick={() => { if (provider) onSelect(provider); }}>
+        <button className="embroidered-button embroidered-light wallet-choice" aria-label={wallet.name} disabled={busy || !provider} onClick={() => { if (provider) onSelect(provider); }}>
           {/* Provider-supplied brand image is rendered as an image, never markup. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={safeIcon(provider?.icon, wallet.icon)} alt="" width="40" height="40" referrerPolicy="no-referrer" onError={event => { if (!event.currentTarget.src.endsWith(wallet.icon)) event.currentTarget.src = wallet.icon; }} />
           <span>{wallet.name}<small>{provider ? "Connect" : "Not detected"}</small></span><span aria-hidden="true">↗</span>
         </button>
-        {!provider && <a href={wallet.url} target="_blank" rel="noreferrer" className="quiet-button">Get {wallet.name}</a>}
+        {!provider && <a href={wallet.url} target="_blank" rel="noreferrer" className="embroidered-button embroidered-light quiet-button">Get {wallet.name}</a>}
       </div>;
     })}</div>
     {message && <p role="status" className="recovery-status">{message}</p>}
-    <button className="quiet-button" disabled={busy} onClick={onRefresh}>Refresh wallets</button>
+    <button className="embroidered-button embroidered-light quiet-button" disabled={busy} onClick={onRefresh}>Refresh wallets</button>
   </ContextSheet>;
 }

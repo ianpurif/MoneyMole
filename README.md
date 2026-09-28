@@ -139,7 +139,7 @@ No wallet, escrow deployment or transaction is created by this reset.
    chain verified. Save public record and encrypted escrow recovery.
 3. **Use escrow** with the verified address; recovered escrow state is shared across
    Send, Receive, Activity and Tools. In **Send**, enter **1**
-   NIGHT and click **Send NIGHT**. The modal saves the encrypted draft, checks funds,
+   NIGHT and click **Send NIGHT**. The compact modal saves encrypted recovery, checks funds,
    and prepares the proof. Choose **Approve payment in wallet**, review in 1AM,
    and wait for confirmation in the same modal: A = A0 - 1; escrow +1.
 4. The confirmed modal shows the private claim link / QR. Share with B, then close

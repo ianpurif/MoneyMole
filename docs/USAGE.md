@@ -11,8 +11,9 @@
    then Check deployment. Save its public record and encrypted backup. Legacy
    issuer/test-token escrows cannot be reused as NIGHT escrows.
 4. Unlock MoneyMole once and select the confirmed NIGHT escrow. Enter an amount
-   with up to six decimals and choose **Send NIGHT**. One modal saves the encrypted
-   draft, checks NIGHT/DUST, prepares the proof and waits for your approval.
+   with up to six decimals and choose **Send NIGHT**. The compact modal shows
+   **Prepare payment → Approve in wallet → Confirm payment**. It checks NIGHT/DUST
+   and prepares the proof, saving encrypted recovery automatically in the background.
    Choose **Approve payment in wallet**, review in 1AM and stay in the modal for
    submission and confirmation. It shows a private link/QR only after finality.
 5. Share that link privately with B. B opens it, unlocks local recovery, and chooses
@@ -20,7 +21,7 @@
 6. B chooses **Approve claim in wallet** and waits for confirmation. B receives the
    exact escrowed NIGHT; no mint occurs. Check baseline + amount independently in 1AM.
    Close and **Resume payment**, or select a record in Activity and **Open payment**,
-   to resume. **Retry this step** preserves the draft/proof; **Check confirmation**
+   to resume. **Retry this step** preserves the payment/proof; **Check confirmation**
    only observes the saved transaction and never resubmits it. Encrypted exports
    and public receipts remain in Activity → Recovery & receipts.
 7. In the confirmed receive modal, B expands **Send received NIGHT**, enters A's unshielded NIGHT address,
@@ -60,9 +61,12 @@ even before local records are unlocked. Totals refresh every 15 seconds while vi
 on focus/return, during reconciliation and after payment or deployment operations.
 Temporary failed reads preserve last known totals with an updating label. Before
 the first reading the card shows an ellipsis, never a fabricated zero. Payment
-readiness always checks fresh balances, never the cached display.
+readiness always checks fresh balances, never the cached display. Wallet reads
+are paced together to respect 1AM limits; a brief queue wait advances automatically.
+There is no separate Draft action. Existing unsent payments remain in Activity
+with the label **Not sent**, and **Open payment** resumes them.
 
-Send and Receive open the shared payment modal. It owns draft saving, funding,
+Send and Receive open the shared payment modal. It saves recovery automatically and owns funding,
 claiming, sharing and optional sending of received NIGHT. Activity owns history, transaction details and
 receipts, with links back to the appropriate action. Tools contains escrow setup,
 encrypted payment import (after unlock) and workspace metadata. Recovery guidance
