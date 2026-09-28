@@ -9,7 +9,6 @@ import { PaymentKeys, verifiedPaymentState, observeTransaction } from "./payment
 import { verifyNightCall, verifyNightSpend } from "./night-settlement";
 import { parseAmount } from "../../domain/amount";
 import { PaymentError, paymentStep } from "./payment-errors";
-import { readWallet } from "./oneam";
 import { openStore, readRecord, writeRecord, paymentAsset, provePayment, submitPrepared, submitOnce, reconcileTx, validateTx, validateRecipient, recipientKey, NIGHT_DECIMALS, type WalletContext, type TxRecord } from "./payment-session";
 
 type FailedAttempt = { action: "fund" | "claim" | "spend"; transactionId: string; transactionHash: string; blockHash: string; blockHeight: number };
@@ -43,12 +42,12 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
     return found;
   }
   const view = (id: string, r: RecordData): PaymentView => ({ id, role: r.role, amount: r.payload.amount, phase: r.tx.phase, failedAttempts: r.failedAttempts?.length ?? 0, ...(r.tx.transactionId ? { transactionId: r.tx.transactionId } : {}), ...(r.tx.transactionHash ? { transactionHash: r.tx.transactionHash } : {}), ...(r.tx.blockHash ? { blockHash: r.tx.blockHash } : {}), ...(observations.get(id) ?? { funded: false, claimed: false, walletSynced: false, spent: false, spendVerified: false, claimRetryAvailable: false, spendRetryAvailable: false }), ...(r.spend ? { spendPhase: r.spend.phase } : {}), ...(r.spend?.transactionId ? { spendTransactionId: r.spend.transactionId } : {}) });
-  async function balance() { return paymentStep("wallet", async () => { await wallet.guard(); const balances = await readWallet(() => wallet.api.getUnshieldedBalances()); const value = balances[asset] ?? 0n; if (typeof value !== "bigint" || value < 0n) throw new PaymentError("wallet"); return value; }); }
+  async function balance() { return paymentStep("wallet", async () => { await wallet.guard(); const balances = await wallet.api.getUnshieldedBalances(); const value = balances[asset] ?? 0n; if (typeof value !== "bigint" || value < 0n) throw new PaymentError("wallet"); return value; }); }
   async function readiness(id: string) {
     const r = (await load(id)).value;
     const available = await balance();
     if (r.role === "sender" && available < BigInt(r.payload.amount)) throw new PaymentError("night");
-    const dust = await paymentStep("wallet", () => readWallet(() => wallet.api.getDustBalance()));
+    const dust = await paymentStep("wallet", () => wallet.api.getDustBalance());
     if (typeof dust.balance !== "bigint" || dust.balance <= 0n) throw new PaymentError("dust");
     return available;
   }
@@ -118,7 +117,10 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
       ? await createUnprovenCallTxFromInitialStates(new PaymentKeys(), { ...base, circuitId: "fund" }, wallet.encKey)
       : await createUnprovenCallTxFromInitialStates(new PaymentKeys(), { ...base, circuitId: "claim", args: [{ bytes: unhex(wallet.unshieldedKey, 32) }] }, wallet.encKey));
     r.tx = { phase: "prepared", transaction: await provePayment(call.private.unprovenTx) };
-    await wallet.guard(); found.revision = await writeRecord(store, id, r, found.revision); return view(id, r);
+    // A completed proof is recoverable even if the subsequent wallet read fails.
+    // Authorization still rechecks identity and current balances before signing.
+    found.revision = await writeRecord(store, id, r, found.revision);
+    await wallet.guard(); return view(id, r);
   }
   return {
     contract, asset, balance, readiness,

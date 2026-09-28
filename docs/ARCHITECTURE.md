@@ -136,6 +136,17 @@ the owner approves it. Public build/artifact fingerprints bind exported records.
 
 ## Configuration and legacy continuity
 
+The authorized connector is wrapped once in a shared read scheduler. Installed
+1AM 6.3.11 limits an origin to 20 reads per 10 seconds; repeated identity checks,
+balance polling and payment preparation previously exhausted that budget. Reads
+now run serially with a 16-per-10.1-second budget and share in-flight calls only.
+The eight-second response timeout starts after queue admission. An explicit rate
+limit gets one cooldown/retry; authorization and submission never do. There is no
+cached identity shortcut: network/account checks still precede wallet actions.
+Completed proofs are encrypted before the follow-up wallet check, so a temporary
+read failure cannot discard them or force reproving. Stored record versions and
+transaction identifiers are unchanged.
+
 Wallet startup uses only connector reads, Bech32m public-key decoding and WebCrypto
 hashing. It preserves the original SHA-256-of-coin-key-hex storage identity without
 loading ledger WebAssembly or transaction/prover modules. Wallet balances use the

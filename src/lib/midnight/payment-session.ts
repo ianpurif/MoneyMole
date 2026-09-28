@@ -12,7 +12,7 @@ import { PaymentKeys, observeTransaction } from "./payment-network";
 import { withLocalProver } from "./proof-lock";
 import { bech32m } from "@scure/base";
 import { PaymentError, paymentStep } from "./payment-errors";
-import { readWallet } from "./oneam";
+import { coordinateWalletReads, WalletSessionInvalid } from "./wallet-reads";
 
 export const ISSUER = preprod.issuerAddress;
 export function paymentAsset() { return nativeToken().raw; }
@@ -26,6 +26,7 @@ export function validateTx(value: TxRecord) {
   if (value.transaction && value.transaction.length > 1_800_000) throw new Error("Transaction recovery record too large");
 }
 export async function walletContext(api: ConnectedAPI, check: () => Promise<unknown>, localIdentity?: string) {
+  api = coordinateWalletReads(api);
   await check(); setNetworkId("preprod");
   const addresses = await api.getShieldedAddresses();
   const coinKey = ShieldedCoinPublicKey.codec.decode("preprod", MidnightBech32m.parse(addresses.shieldedCoinPublicKey)).toHexString();
@@ -33,7 +34,7 @@ export async function walletContext(api: ConnectedAPI, check: () => Promise<unkn
   const address = validateRecipient((await api.getUnshieldedAddress()).unshieldedAddress);
   const unshieldedKey = UnshieldedAddress.codec.decode("preprod", MidnightBech32m.parse(address)).hexString;
   const walletId = hex(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(coinKey))));
-  async function guard() { return paymentStep("wallet", async () => { await check(); if ((await readWallet(() => api.getConfiguration())).networkId !== "preprod" || (await readWallet(() => api.getShieldedAddresses())).shieldedAddress !== addresses.shieldedAddress || (await readWallet(() => api.getUnshieldedAddress())).unshieldedAddress !== address) throw new Error("Reconnect the original Preprod wallet"); }); }
+  async function guard() { return paymentStep("wallet", async () => { await check(); if ((await api.getConfiguration()).networkId !== "preprod" || (await api.getShieldedAddresses()).shieldedAddress !== addresses.shieldedAddress || (await api.getUnshieldedAddress()).unshieldedAddress !== address) throw new WalletSessionInvalid(); }); }
   return { api, coinKey, encKey, walletId: storageIdentity(walletId, localIdentity), guard, address, unshieldedKey };
 }
 export type WalletContext = Awaited<ReturnType<typeof walletContext>>;

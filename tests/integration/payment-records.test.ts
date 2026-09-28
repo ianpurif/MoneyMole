@@ -11,7 +11,7 @@ const h = vi.hoisted(() => ({
   spent: false, balance: 0n, nextId: "10".repeat(32), down: false,
   observations: new Map<string, unknown>(), beforeSubmit: undefined as undefined | (() => Promise<void>),
   loseResponse: false, guard: vi.fn(async () => {}), submit: vi.fn(), balanceTx: vi.fn(), transfer: vi.fn(),
-  proofFails: false, proofs: 0, notePresent: true,
+  proofFails: false, proofs: 0, notePresent: true, failGuardAfterProof: false,
 }));
 vi.mock("../../src/lib/midnight/payment-network", () => {
   return { PaymentKeys: class {},
@@ -28,7 +28,7 @@ vi.mock("@midnight-ntwrk/compact-runtime", async importOriginal => ({
   ...await importOriginal<object>(), ContractState: { deserialize: () => ({ data: {} }) },
 }));
 vi.mock("@midnight-ntwrk/midnight-js-contracts", () => ({ createUnprovenCallTxFromInitialStates: async (_: unknown, args: { initialPrivateState: { payload: ClaimPayload } }) => ({
-  private: { unprovenTx: { prove: async () => { h.proofs++; if (h.proofFails) throw new Error("synthetic proof unavailable"); return { serialize: () => new Uint8Array([0xaa, 0xbb]) }; } },
+  private: { unprovenTx: { prove: async () => { h.proofs++; if (h.failGuardAfterProof) h.guard.mockRejectedValue(new Error("synthetic throttled wallet")); if (h.proofFails) throw new Error("synthetic proof unavailable"); return { serialize: () => new Uint8Array([0xaa, 0xbb]) }; } },
     newCoins: [{ type: args.initialPrivateState.payload.asset, value: BigInt(args.initialPrivateState.payload.amount) }] },
 }) }));
 vi.mock("@midnight-ntwrk/midnight-js-protocol/ledger", async importOriginal => ({
@@ -68,7 +68,7 @@ beforeEach(() => {
   vi.stubGlobal("document", Object.assign(new EventTarget(), { visibilityState: "visible" }));
   vi.stubGlobal("navigator", { locks: { request: async (_: string, __: unknown, action: () => Promise<unknown>) => action() } });
   h.spent = false; h.balance = 0n; h.nextId = "10".repeat(32); h.down = false; h.loseResponse = false; h.beforeSubmit = undefined;
-  h.proofFails = false; h.proofs = 0; h.notePresent = true;
+  h.proofFails = false; h.failGuardAfterProof = false; h.proofs = 0; h.notePresent = true;
   h.observations.clear(); h.observations.set(fundingId, observation(fundingId));
   h.guard.mockResolvedValue(); h.balanceTx.mockResolvedValue({ tx: "ccdd" }); h.transfer.mockResolvedValue({ tx: "ccdd" });
   h.submit.mockImplementation(async () => { await h.beforeSubmit?.(); if (h.loseResponse) throw new Error("synthetic acknowledgment lost"); });
@@ -94,6 +94,16 @@ it("wizard preserves one encrypted draft through balance and proof retries, then
   flow.dispose(); c.lock();
   const recovered = await open(), reopened = new PaymentFlow(recovered); await reopened.resume(id);
   expect(reopened.stage).toBe("authorization"); expect(h.proofs).toBe(2); expect(h.balanceTx).not.toHaveBeenCalled(); reopened.dispose();
+});
+
+it("saves a finished proof before a follow-up wallet read fails and resumes without reproving", async () => {
+  h.balance = 2_000_000n; h.failGuardAfterProof = true;
+  const c = await open(), flow = new PaymentFlow(c);
+  await flow.start({amount:"1"}); const id = flow.payment!.id;
+  expect(flow.stage).toBe("prepare"); expect((await saved(id)).tx.phase).toBe("prepared");
+  expect(h.proofs).toBe(1); h.failGuardAfterProof = false; h.guard.mockResolvedValue(undefined);
+  await flow.retry(); expect(flow.stage).toBe("authorization"); expect(h.proofs).toBe(1);
+  expect(h.balanceTx).not.toHaveBeenCalled(); flow.dispose();
 });
 
 it("wizard recovers a lost submission response through confirmation without another approval or submission", async () => {

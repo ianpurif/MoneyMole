@@ -1,6 +1,9 @@
-export type PaymentErrorCode = "wallet" | "night" | "dust" | "network" | "artifacts" | "prover" | "prepare" | "storage" | "busy" | "pending" | "failed" | "approval" | "address" | "sync";
+import { WalletReadUnavailable, WalletSessionInvalid } from "./wallet-reads";
+export type PaymentErrorCode = "wallet" | "wallet-read" | "wallet-busy" | "night" | "dust" | "network" | "artifacts" | "prover" | "prepare" | "storage" | "busy" | "pending" | "failed" | "approval" | "address" | "sync";
 const messages: Record<PaymentErrorCode, string> = {
-  wallet: "Unlock your wallet and select the original Preprod account, then retry this step.",
+  wallet: "Your wallet account or network changed. Reconnect the original wallet on Preprod, then resume this payment.",
+  "wallet-read": "Your wallet has not answered yet. Open it and let it finish syncing, then retry. Your saved progress is safe.",
+  "wallet-busy": "Your wallet is receiving too many requests. Pause other wallet tabs, wait a moment, then retry.",
   night: "Your wallet needs more NIGHT for this amount. Add NIGHT or start a payment for a smaller amount.",
   dust: "Your wallet needs available DUST to pay fees. Wait for DUST to become available, then retry.",
   network: "The network could not confirm this payment yet. Check your connection and retry. Your saved progress is safe.",
@@ -19,7 +22,7 @@ export class PaymentError extends Error {
   constructor(readonly code: PaymentErrorCode) { super(messages[code]); }
 }
 export async function paymentStep<T>(code: PaymentErrorCode, action: () => Promise<T>): Promise<T> {
-  try { return await action(); } catch (error) { throw error instanceof PaymentError ? error : new PaymentError(code); }
+  try { return await action(); } catch (error) { throw error instanceof PaymentError ? error : error instanceof WalletSessionInvalid ? new PaymentError("wallet") : error instanceof WalletReadUnavailable ? new PaymentError(error.reason === "rate-limit" ? "wallet-busy" : "wallet-read") : new PaymentError(code === "wallet" ? "wallet-read" : code); }
 }
 export function paymentErrorMessage(error: unknown, fallback: PaymentErrorCode) {
   return error instanceof PaymentError ? error.message : messages[fallback];

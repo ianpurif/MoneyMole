@@ -76,7 +76,7 @@ it("reads exact wallet totals with separate NIGHT and DUST precision, never the 
   expect(await session.balances()).toEqual({night:"1.234567",dust:"1.234567890123456"});
   vi.spyOn(f.api,"getUnshieldedBalances").mockResolvedValue({[nativeToken().raw]:9007199254740993123456n});
   expect((await session.balances()).night).toBe("9007199254740993.123456");
-});
+}, 30_000);
 it("keeps unavailable totals distinct from zero and recovers independently", async () => {
   const f=fixture(), session=await OneAmSession.connect(f.provider);
   const dust=vi.spyOn(f.api,"getDustBalance").mockRejectedValue(new Error("temporary"));
@@ -86,7 +86,7 @@ it("keeps unavailable totals distinct from zero and recovers independently", asy
   expect(await session.balances()).toEqual({night:"0",dust:"0"});
   dust.mockResolvedValue({balance:-1n,cap:100n});
   expect((await session.balances()).dust).toBeNull();
-});
+}, 30_000);
 it("discards balance reads when the wallet changes during the request", async () => {
   const f=fixture(), session=await OneAmSession.connect(f.provider);
   vi.spyOn(f.api,"getDustBalance").mockImplementation(async()=>{f.changeAccount();return {balance:1n,cap:1n};});
@@ -126,7 +126,7 @@ it("retains authorization through transient status/address reads but blocks the 
     await expect(session.check()).resolves.toBeUndefined();
     spy.mockRestore();
   }
-});
+}, 30_000);
 it("DUST failure does not block connection or invalidate identity", async () => {
   const f = fixture(); vi.spyOn(f.api, "getDustBalance").mockRejectedValue(new Error("synchronizing"));
   const session = await OneAmSession.connect(f.provider);

@@ -1,5 +1,7 @@
 import "client-only";
 import type { InitialAPI, ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
+import { coordinateWalletReads, WalletReadUnavailable, WalletSessionInvalid } from "./wallet-reads";
+export { WalletReadUnavailable, WalletSessionInvalid } from "./wallet-reads";
 import { formatAmount } from "../../domain/amount";
 import { localWalletIdentity, NATIVE_NIGHT_ASSET } from "./wallet-public";
 
@@ -40,28 +42,16 @@ export function discoverOneAm(registry: unknown): InitialAPI[] {
   return matches.length === 1 ? matches : [];
 }
 
-export class WalletSessionInvalid extends Error {
-  constructor() { super("Wallet session invalidated. Reconnect your wallet on Preprod."); }
-}
-export class WalletReadUnavailable extends Error {
-  constructor() { super("Wallet is temporarily unavailable. Your connection is retained; try again shortly."); }
-}
 function isDisconnected(error: unknown): boolean {
   return !!error && typeof error === "object" && "type" in error && error.type === "DAppConnectorAPIError" && "code" in error && error.code === "Disconnected";
 }
-/** Bound read-only calls, never authorization or transaction requests. */
-export async function readWallet<T>(read: () => Promise<T>): Promise<T> {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  try { return await Promise.race([read(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new WalletReadUnavailable()), 8000); })]); }
-  finally { clearTimeout(timer); }
-}
 async function identity(api: ConnectedAPI) {
-  const status = await readWallet(() => api.getConnectionStatus());
+  const status = await api.getConnectionStatus();
   if (status.status === "disconnected" || (status.status === "connected" && status.networkId !== "preprod")) throw new WalletSessionInvalid();
   if (status.status !== "connected") throw new WalletReadUnavailable();
-  const config = await readWallet(() => api.getConfiguration());
+  const config = await api.getConfiguration();
   if (config.networkId !== "preprod") throw new WalletSessionInvalid();
-  const { unshieldedAddress } = await readWallet(() => api.getUnshieldedAddress());
+  const { unshieldedAddress } = await api.getUnshieldedAddress();
   if (!unshieldedAddress) throw new WalletReadUnavailable();
   return unshieldedAddress;
 }
@@ -74,7 +64,7 @@ export class OneAmSession {
   /** Call only from an explicit user gesture. This does not sign or submit transactions. */
   static async connect(provider: InitialAPI): Promise<OneAmSession> {
     if (discoverMidnightWallets({ provider }).length !== 1) throw new Error("A supported Midnight API v4 provider is required.");
-    const api = await provider.connect("preprod");
+    const api = coordinateWalletReads(await provider.connect("preprod"));
     // The extension can still be initializing immediately after approval. Retry
     // only reads on this authorized API; never invoke connect a second time.
     for (let attempt = 0; ; attempt++) {
@@ -101,14 +91,14 @@ export class OneAmSession {
       if (!this.#api || error instanceof WalletSessionInvalid || isDisconnected(error)) { this.disconnect(); throw new WalletSessionInvalid(); }
       // Transport/readiness errors do not revoke authorization. Operations still
       // fail closed because this check rejects until identity can be verified.
-      throw new WalletReadUnavailable();
+      throw error instanceof WalletReadUnavailable ? error : new WalletReadUnavailable();
     }
   }
   async dustAvailable(): Promise<boolean | null> {
     const api = this.#api;
     if (!api) throw new WalletSessionInvalid();
     try {
-      const dust = await readWallet(() => api.getDustBalance());
+      const dust = await api.getDustBalance();
       if (this.#api !== api) throw new WalletSessionInvalid();
       return typeof dust.balance === "bigint" && dust.balance >= 0n ? dust.balance > 0n : null;
     } catch (error) {
@@ -121,19 +111,19 @@ export class OneAmSession {
     const api = this.#api;
     if (!api) throw new WalletSessionInvalid();
     const values = await Promise.allSettled([
-      readWallet(() => api.getUnshieldedBalances()).then(balances => {
+      api.getUnshieldedBalances().then(balances => {
         const amount = balances[NATIVE_NIGHT_ASSET] ?? 0n;
         if (typeof amount !== "bigint") throw new WalletReadUnavailable();
         return formatAmount(amount, 6);
       }),
-      readWallet(() => api.getDustBalance()).then(({ balance }) => {
+      api.getDustBalance().then(({ balance }) => {
         if (typeof balance !== "bigint") throw new WalletReadUnavailable();
         // Midnight denominations: 1 DUST = 10^15 SPECK (docs.midnight.network/glossary).
         return formatAmount(balance, 15);
       }),
     ]);
     if (this.#api !== api) throw new WalletSessionInvalid();
-    if (values.some(value => value.status === "rejected" && isDisconnected(value.reason))) {
+    if (values.some(value => value.status === "rejected" && (value.reason instanceof WalletSessionInvalid || isDisconnected(value.reason)))) {
       this.disconnect(); throw new WalletSessionInvalid();
     }
     // Identity may change while balance reads are pending; never show another account's totals.
@@ -147,14 +137,14 @@ export class OneAmSession {
     const api = this.#api;
     if (!api) throw new WalletSessionInvalid();
     try {
-      const addresses = await readWallet(() => api.getShieldedAddresses());
+      const addresses = await api.getShieldedAddresses();
       const id = await localWalletIdentity(addresses.shieldedCoinPublicKey);
       await this.check();
       if (this.#api !== api) throw new WalletSessionInvalid();
       return id;
     } catch (error) {
       if (!this.#api || error instanceof WalletSessionInvalid || isDisconnected(error)) { this.disconnect(); throw new WalletSessionInvalid(); }
-      throw new WalletReadUnavailable();
+      throw error instanceof WalletReadUnavailable ? error : new WalletReadUnavailable();
     }
   }
   async prepareIssuer(password: string, localIdentity?: string) {
