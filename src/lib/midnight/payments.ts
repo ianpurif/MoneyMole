@@ -2,7 +2,7 @@ import "client-only";
 import { createUnprovenCallTxFromInitialStates } from "@midnight-ntwrk/midnight-js-contracts";
 import { Transaction } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { ContractState } from "@midnight-ntwrk/compact-runtime";
-import { encodeClaim, decodeClaim, hex, unhex, randomHex, type ClaimPayload } from "./payment-codec";
+import { encodeClaim, decodeClaim, hex, transactionIdentifier, unhex, randomHex, type ClaimPayload } from "./payment-codec";
 import { noteDigest, spentDigest } from "./payment-crypto";
 import { ledger, paymentContract } from "./payment-contract";
 import { PaymentKeys, verifiedPaymentState, observeTransaction } from "./payment-network";
@@ -35,7 +35,8 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
       if (!Array.isArray(r.failedAttempts)) throw new Error("Invalid attempt history");
       for (const attempt of r.failedAttempts) {
         if (!["fund", "claim", "spend"].includes(attempt.action) || !Number.isSafeInteger(attempt.blockHeight) || attempt.blockHeight < 0) throw new Error("Invalid failed attempt");
-        for (const field of [attempt.transactionId, attempt.transactionHash, attempt.blockHash]) unhex(field, 32);
+        transactionIdentifier(attempt.transactionId);
+        for (const field of [attempt.transactionHash, attempt.blockHash]) unhex(field, 32);
       }
     }
     if (id !== `${r.role === "sender" ? "s" : "r"}_${hex(noteDigest(r.payload))}`) throw new Error("Recovery payment identity mismatch");
@@ -58,7 +59,7 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
     if (!historical || !ledger(ContractState.deserialize(unhex(historical.state)).data).notes.findPathForLeaf(noteDigest(payload))) throw new Error("Funding transaction does not contain this note");
     verifyNightCall(tx, contract, "fund", BigInt(payload.amount));
     const current = await verifiedPaymentState(contract, asset);
-    if (!ledger(current.state.data).notes.findPathForLeaf(noteDigest(payload))) throw new Error("Payment note is absent");
+    if (!ledger(current.state.data).notes.findPathForLeaf(noteDigest(payload))) throw new PaymentError("pending");
     return { tx, current, spent: ledger(current.state.data).spent.member(spentDigest(payload)) };
   }
   async function reconcile(id: string) {
@@ -189,6 +190,7 @@ export async function openPayments(wallet: WalletContext, contract: string, pass
       await wallet.guard(); const tx = Transaction.deserialize("signature", "proof", "binding", unhex(made.tx));
       if ([...(tx.intents?.values() ?? [])].some(i => i.actions.length)) throw new Error("Unexpected contract action in wallet transfer");
       const identifier = tx.identifiers()[0]; if (!identifier) throw new Error("Missing spend identifier");
+      transactionIdentifier(identifier);
       verifyNightSpend({ raw: made.tx, identifiers: [identifier] }, wallet.unshieldedKey, recipientKey(recipient), BigInt(r.payload.amount));
       r.spend.transactionId = identifier; r.spend.phase = "outcome_unknown"; found.revision = await writeRecord(store, id, r, found.revision);
       onStage?.("submission");

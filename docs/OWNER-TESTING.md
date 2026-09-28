@@ -120,7 +120,7 @@ Save updated encrypted recovery and **Save public receipt**; keep funding ID.
 
 ## 5. Link, QR and receiver independence
 
-Choose **Show claim link / QR**. The private link contains /claim#mm2.…; its QR is
+Choose **Show claim link / QR**. New private links contain /claim#mm3.…; their QR is
 created on this device. Copy it privately into Brave/B. Do not paste it into chat,
 Git, a terminal, evidence reports or an online QR decoder. For optical QA, use a
 trusted local/offline scanner; confirm it decodes the exact same private link.

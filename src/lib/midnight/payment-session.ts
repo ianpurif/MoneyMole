@@ -7,7 +7,7 @@ import { httpClientProvingProvider } from "@midnight-ntwrk/midnight-js-http-clie
 import { setNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import { BrowserPrivateStore } from "../private-state/indexed-db";
 import { storageIdentity } from "../private-state/storage-identity";
-import { hex, unhex } from "./payment-codec";
+import { hex, transactionIdentifier, unhex } from "./payment-codec";
 import { PaymentKeys, observeTransaction } from "./payment-network";
 import { withLocalProver } from "./proof-lock";
 import { bech32m } from "@scure/base";
@@ -22,7 +22,7 @@ export type TxPhase = "draft" | "prepared" | "authorization_requested" | "outcom
 export type TxRecord = { phase: TxPhase; transaction?: string; transactionId?: string; transactionHash?: string; blockHash?: string; blockHeight?: number };
 export function validateTx(value: TxRecord) {
   if (!value || !["draft", "prepared", "authorization_requested", "outcome_unknown", "submitted", "finalized", "failed"].includes(value.phase)) throw new Error("Invalid recovery state");
-  if (["outcome_unknown", "submitted", "finalized", "failed"].includes(value.phase)) unhex(value.transactionId ?? "", 32);
+  if (["outcome_unknown", "submitted", "finalized", "failed"].includes(value.phase)) transactionIdentifier(value.transactionId ?? "");
   if (value.transaction && value.transaction.length > 1_800_000) throw new Error("Transaction recovery record too large");
 }
 export async function walletContext(api: ConnectedAPI, check: () => Promise<unknown>, localIdentity?: string) {
@@ -74,6 +74,7 @@ export async function submitPrepared(wallet: WalletContext, tx: TxRecord, persis
   const actions = [...(sealed.intents?.values() ?? [])].flatMap(i => i.actions).map(a => a.toString());
   if (JSON.stringify(actions) !== JSON.stringify(originalActions)) throw new Error("Wallet changed the reviewed contract action");
   const identifier = sealed.identifiers()[0]; if (!identifier) throw new Error("Missing transaction identifier");
+  transactionIdentifier(identifier);
   tx.transactionId = identifier; tx.phase = "outcome_unknown"; await persist();
   onStage?.("submission");
   // A missing acknowledgement is UNKNOWN, never a failed transfer. Stop waiting

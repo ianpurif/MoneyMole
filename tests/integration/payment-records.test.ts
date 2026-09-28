@@ -4,6 +4,8 @@ import { openPayments } from "../../src/lib/midnight/payments";
 import { paymentAsset, openStore, readRecord, submitOnce, type WalletContext } from "../../src/lib/midnight/payment-session";
 import { encodeClaim, type ClaimPayload } from "../../src/lib/midnight/payment-codec";
 import { PaymentFlow } from "../../src/lib/midnight/payment-flow";
+import { observeTransaction } from "../../src/lib/midnight/payment-network";
+import { PaymentError } from "../../src/lib/midnight/payment-errors";
 
 // Production controller + real AES-GCM/IndexedDB records. Only protocol/network,
 // proving and wallet boundaries are synthetic; this suite never proves settlement.
@@ -107,17 +109,32 @@ it("saves a finished proof before a follow-up wallet read fails and resumes with
 });
 
 it("wizard recovers a lost submission response through confirmation without another approval or submission", async () => {
-  h.balance = 2_000_000n; const c = await open(), flow = new PaymentFlow(c);
+  h.balance = 2_000_000n; h.nextId = "10".repeat(33); const c = await open(), flow = new PaymentFlow(c);
   await flow.start({amount:"1"}); const id = flow.payment!.id;
-  h.loseResponse = true; await Promise.all([flow.authorize(), flow.authorize()]);
-  expect(flow.stage).toBe("confirmation"); expect(flow.payment!.transactionId).toBe(h.nextId);
+  h.loseResponse = true; const approval = Promise.all([flow.authorize(), flow.authorize()]);
+  await vi.waitFor(() => expect(flow.stage).toBe("confirmation"));
+  expect(flow.payment!.transactionId).toBe(h.nextId);
   expect((await saved(id)).tx.phase).toBe("outcome_unknown");
-  flow.dispose(); c.lock(); h.loseResponse = false; h.observations.set(h.nextId, observation(h.nextId));
+  flow.dispose(); await approval; c.lock(); h.loseResponse = false; h.observations.set(h.nextId, observation(h.nextId));
   vi.stubGlobal("location", {origin:"http://localhost:3000"});
   const recovered = new PaymentFlow(await open()); await recovered.resume(id);
-  expect(recovered.stage).toBe("success"); expect(recovered.link).toContain("/claim#mm2.");
+  expect(recovered.stage).toBe("success"); expect(recovered.link).toContain("/claim#mm3.");
   expect(h.balanceTx).toHaveBeenCalledTimes(1); expect(h.submit).toHaveBeenCalledTimes(1); recovered.dispose();
 });
+
+it("keeps checking automatically after a temporary indexer failure", async () => {
+  h.balance = 2_000_000n; h.nextId = "11".repeat(33);
+  const c = await open(), flow = new PaymentFlow(c);
+  await flow.start({ amount: "1" });
+  h.observations.set(h.nextId, observation(h.nextId));
+  vi.mocked(observeTransaction).mockRejectedValueOnce(new PaymentError("network"));
+  vi.stubGlobal("location", { origin: "http://localhost:3000" });
+  await flow.authorize();
+  expect(flow.stage).toBe("success");
+  expect(flow.link).toContain("/claim#mm3.");
+  expect(h.submit).toHaveBeenCalledTimes(1);
+  flow.dispose();
+}, 10_000);
 
 it("archives only a confirmed complete failed funding attempt before allowing a fresh proof", async () => {
   h.balance = 2_000_000n; const c = await open(), draft = await c.create("1"); await c.prepare(draft.id); await c.approve(draft.id);
@@ -133,7 +150,7 @@ it("bounds a stalled submission acknowledgement without retrying the wallet call
   vi.useFakeTimers();
   try {
     h.submit.mockImplementationOnce(() => new Promise(() => {}));
-    const result = expect(submitOnce(wallet.api, "synthetic-transaction")).rejects.toThrow("Confirmation is still pending");
+    const result = expect(submitOnce(wallet.api, "synthetic-transaction")).rejects.toThrow("Waiting for final confirmation");
     await vi.advanceTimersByTimeAsync(30_001); await result;
     expect(h.submit).toHaveBeenCalledTimes(1);
   } finally { vi.useRealTimers(); }
@@ -145,9 +162,10 @@ it("wizard resumes an interrupted received-NIGHT transfer instead of declaring t
   const flow = new PaymentFlow(c); await flow.resume(id); expect(flow.stage).toBe("success");
   const { UnshieldedAddress } = await import("@midnight-ntwrk/wallet-sdk-address-format");
   const destination = UnshieldedAddress.codec.encode("preprod", new UnshieldedAddress(Buffer.alloc(32, 48))).asString();
-  h.nextId = "17".repeat(32); h.loseResponse = true; await flow.spend(destination);
+  h.nextId = "17".repeat(32); h.loseResponse = true; const spending = flow.spend(destination);
+  await vi.waitFor(() => expect(flow.stage).toBe("confirmation"));
   expect(flow.stage).toBe("confirmation"); expect(flow.payment?.spendTransactionId).toBe(h.nextId);
-  expect(flow.payment?.spendVerified).toBe(false); flow.dispose(); c.lock();
+  expect(flow.payment?.spendVerified).toBe(false); flow.dispose(); await spending; c.lock();
   h.loseResponse = false; h.observations.set(h.nextId, observation(h.nextId)); h.balance = 0n;
   const recovered = new PaymentFlow(await open()); await recovered.resume(id);
   expect(recovered.stage).toBe("success"); expect(recovered.payment?.spendVerified).toBe(true);

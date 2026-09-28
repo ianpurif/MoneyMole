@@ -3,9 +3,9 @@ import preprod from "../../../config/preprod.json";
 import { ContractState } from "@midnight-ntwrk/compact-runtime";
 import { Event, LedgerParameters, Transaction, ZswapChainState } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { ZKConfigProvider, createZKIR, createProverKey, createVerifierKey } from "@midnight-ntwrk/midnight-js-types";
-import { hex, unhex } from "./payment-codec";
+import { hex, transactionIdentifier, unhex } from "./payment-codec";
 import { ledger } from "../../../managed/night-payments/contract/index.js";
-import { paymentStep } from "./payment-errors";
+import { PaymentError, paymentStep } from "./payment-errors";
 
 export const INDEXER = preprod.indexerHttp;
 export type Block = { height: number; hash: string };
@@ -32,10 +32,11 @@ export async function finalized(block: Block) {
   const head = await rpc<string>("chain_getFinalizedHead", []);
   const header = await rpc<{ number: string }>("chain_getHeader", [head]);
   const canonical = await rpc<string>("chain_getBlockHash", [block.height]);
-  if (BigInt(header.number) < BigInt(block.height) || canonical.replace(/^0x/, "") !== block.hash) throw new Error("Indexer observation is not confirmed by the finalized node chain");
+  if (BigInt(header.number) < BigInt(block.height)) throw new PaymentError("pending");
+  if (canonical.replace(/^0x/, "") !== block.hash) throw new Error("Indexer observation disagrees with the finalized node chain");
 }
 export async function observeTransaction(identifier: string): Promise<ObservedTx | null> {
-  unhex(identifier, 32);
+  transactionIdentifier(identifier);
   const data = await query<{ transactions: ObservedTx[] }>(`query PaymentTransaction($offset: TransactionOffset!) { transactions(offset: $offset) { hash raw block { height hash } contractActions { address state } zswapLedgerEvents { raw } ... on RegularTransaction { identifiers transactionResult { status } } } }`, { offset: { identifier } });
   const tx = data.transactions.find(t => t.identifiers?.includes(identifier));
   if (!tx) return null;

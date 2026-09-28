@@ -4,6 +4,13 @@ import { decodeClaim, encodeClaim, extractClaim, MAX_AMOUNT, type ClaimPayload }
 
 // Synthetic data only. Never print a real bearer payload from browser storage.
 const opening = (amount = "10"): ClaimPayload => ({ version: 2, network: "preprod", contract: "01".repeat(32), asset: "00".repeat(32), nonce: "03".repeat(32), authority: "04".repeat(32), fundingId: "05".repeat(32), amount });
+it("round-trips a Preprod 33-byte funding identifier without changing older links", async () => {
+  const current = { ...opening(), fundingId: "00" + "05".repeat(32) };
+  const encoded = await encodeClaim(current);
+  expect(encoded).toMatch(/^mm3\./);
+  expect(await decodeClaim(encoded)).toEqual(current);
+  expect(await decodeClaim(await encodeClaim(opening()))).toEqual(opening());
+});
 describe("private bearer codec and local QR bounds", () => {
   it("round trips exact atomic STAR bounds without floating-point conversion", async () => {
     for (const amount of ["1", "10", MAX_AMOUNT.toString()]) {

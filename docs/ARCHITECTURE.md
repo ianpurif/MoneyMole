@@ -82,8 +82,10 @@ B's balance to return to its original baseline. DUST is accounted separately.
 
 ## Payload, recovery and deployment
 
-mm2 is a strict 210-byte payload / 284-character token with integrity checksum,
-version/network/deployment/native asset/atomic amount/nonce/authority/funding ID.
+New Preprod claims use mm3: a 211-byte payload / 286-character token with the
+33-byte transaction identifier. Existing mm2 links (210 bytes / 284 characters)
+remain readable. Both bind version/network/deployment/native asset/atomic
+amount/nonce/authority/funding ID with an integrity checksum.
 It is bearer authority, not encrypted and not recipient authentication. Keep it
 in a URL fragment, capture then scrub it; generate QR locally. Never publish a
 claim token or record it in test artifacts.

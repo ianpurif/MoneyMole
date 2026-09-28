@@ -46,7 +46,8 @@ lock the session. Private state locks on hidden tabs and after five minutes.
 
 ## Migration and acceptance
 
-Protocol v2 uses native NIGHT, mm2 fragments and schema-v2 encrypted namespaces.
+Protocol v2 uses native NIGHT, mm3 fragments for 33-byte Preprod transaction IDs,
+and schema-v2 encrypted namespaces. Existing mm2 fragments remain readable.
 Old mm1 tokens, issuer assets and old escrow verifier keys fail closed. Preserve
 legacy contracts, original deployment records and encrypted browser stores for
 historical recovery; never deploy the old issuer as part of NIGHT setup.

@@ -18,7 +18,7 @@ export async function finality(block) {
   assert(BigInt(header.number) >= BigInt(block.height)); assert.equal((await rpc("chain_getBlockHash", [block.height])).replace(/^0x/, ""), block.hash);
 }
 export async function transaction(id) {
-  assert.match(id, /^[a-f0-9]{64}$/);
+  assert.match(id, /^(?:[a-f0-9]{64}|[a-f0-9]{66})$/);
   const data = await query(`query($offset:TransactionOffset!){transactions(offset:$offset){hash raw block{height hash} contractActions{address state} zswapLedgerEvents{raw} ... on RegularTransaction{identifiers transactionResult{status}}}}`, { offset: { identifier: id } });
   const tx = data.transactions.find(t => t.identifiers?.includes(id)); assert(tx);
   assert(Transaction.deserialize("signature", "proof", "binding", Buffer.from(tx.raw, "hex")).identifiers().includes(id)); await finality(tx.block); return tx;

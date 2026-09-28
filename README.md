@@ -143,7 +143,7 @@ No wallet, escrow deployment or transaction is created by this reset.
    and prepares the proof. Choose **Approve payment in wallet**, review in 1AM,
    and wait for confirmation in the same modal: A = A0 - 1; escrow +1.
 4. The confirmed modal shows the private claim link / QR. Share with B, then close
-   A's session. B opens the mm2 fragment link (scrubbed locally), unlocks, and clicks
+   A's session. B opens the mm3 fragment link (scrubbed locally), unlocks, and clicks
    **Receive NIGHT**. The modal verifies and prepares the claim; B chooses
    **Approve claim in wallet** and waits for confirmation: B = B0 + 1.
 5. In the confirmed receive modal, B expands **Send received NIGHT** and enters

@@ -91,7 +91,13 @@ export class PaymentFlow {
     // Called only by the user's explicit confirmation in the modal.
     if (this.stage !== "authorization" || !this.payment || this.payment.transactionId) return Promise.resolve();
     return this.#run(async () => {
-      this.payment = await this.controller.approve(this.payment!.id, stage => { if (!this.#disposed) this.#step(stage); });
+      try { this.payment = await this.controller.approve(this.payment!.id, stage => { if (!this.#disposed) this.#step(stage); }); }
+      catch (error) {
+        // An acknowledgement can be lost after the transaction ID was saved.
+        // Observe that attempt automatically; never request a second submission.
+        await this.#load();
+        if (!this.payment?.transactionId) throw error;
+      }
       this.#assert(); await this.#confirm();
     });
   }
@@ -109,25 +115,34 @@ export class PaymentFlow {
     return this.#run(async () => {
       this.#step("balance"); await this.controller.readiness(this.payment!.id); this.#assert();
       this.#step("authorization");
-      this.payment = await this.controller.spend(this.payment!.id, recipient, stage => { if (!this.#disposed) this.#step(stage); });
+      try { this.payment = await this.controller.spend(this.payment!.id, recipient, stage => { if (!this.#disposed) this.#step(stage); }); }
+      catch (error) {
+        await this.#load();
+        if (!this.payment?.spendTransactionId) throw error;
+      }
       this.#assert(); await this.#confirm();
     });
   }
   async #confirm() {
     this.#step("confirmation");
-    for (let attempt = 0; attempt < 12; attempt++) {
+    while (!this.#disposed) {
       this.#assert();
-      this.payment = await this.controller.reconcile(this.payment!.id); this.#assert(); this.changed();
-      if (this.payment.phase === "failed" || this.payment.spendPhase === "failed") throw new PaymentError("failed");
-      if (this.payment.spendTransactionId ? this.payment.spendVerified : this.payment.role === "sender" ? this.payment.funded : this.payment.claimed) {
-        if (this.payment.role === "sender" && !this.payment.spent) { const link = await this.controller.share(this.payment.id); this.#assert(); this.link = link; }
-        this.#step("success"); return;
+      try {
+        this.payment = await this.controller.reconcile(this.payment!.id); this.#assert();
+        this.error = ""; this.changed();
+        if (this.payment.phase === "failed" || this.payment.spendPhase === "failed") throw new PaymentError("failed");
+        if (this.payment.spendTransactionId ? this.payment.spendVerified : this.payment.role === "sender" ? this.payment.funded : this.payment.claimed) {
+          if (this.payment.role === "sender" && !this.payment.spent) { const link = await this.controller.share(this.payment.id); this.#assert(); this.link = link; }
+          this.#step("success"); return;
+        }
+      } catch (error) {
+        if (!(error instanceof PaymentError) || !["network", "pending", "wallet-read", "wallet-busy"].includes(error.code)) throw error;
+        this.error = error.message; this.changed();
       }
-      if (attempt < 11) await new Promise<void>(resolve => {
+      await new Promise<void>(resolve => {
         const timer = setTimeout(() => { this.#wake = undefined; resolve(); }, 5000);
         this.#wake = () => { clearTimeout(timer); resolve(); };
       });
     }
-    throw new PaymentError("pending");
   }
 }
