@@ -22,6 +22,16 @@ the compatibility and disclosure changes. The current contract is
 nativeToken(), fund uses receiveUnshielded and claim uses sendUnshielded. Amounts
 use integer STAR: **1 NIGHT = 1,000,000 STAR**, with six decimal places in the UI.
 
+The verified Preprod NIGHT escrow is
+`685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63`.
+Its [public deployment record](deployments/preprod/night-payment-escrow.json)
+identifies transaction
+`0043457907ca3523d4aa6e1a570a2ecf5d0a5239f2a456d736442b10be9e660544`.
+Read-only checks found the finalized deployment, matching fund/claim verifier keys,
+two successful native NIGHT funding calls and one successful claim call. The app
+selects this escrow by default; a wallet's saved escrow choice or a claim link can
+select another compatible, independently verified escrow.
+
 Local checks and actual wallet acceptance are separate. See [current status](docs/STATUS.md)
 and [wallet/card verification](docs/evidence/wallet-card-verification.json). Synthetic
 contract/proving/integration/browser tests never establish a real Preprod payment.
@@ -33,9 +43,9 @@ has no passive restore API. Private records retain their separate automatic lock
 [Run 36319963556](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
 verified the preceding native migration. Publication and CI for this revision are
 tracked in [current status](docs/STATUS.md); the earlier run is historical evidence.
-A compatible NIGHT escrow and two-wallet payment/spend/recovery still require owner
-approval and observed receipts. No real 1AM stability or NIGHT E2E is claimed from
-synthetic tests. See [usage and origin recovery](docs/USAGE.md).
+Independent-wallet credit/spend/recovery and private-link delivery still require
+owner-observed evidence. Public chain calls do not prove who controlled either
+wallet or make native NIGHT amounts private. See [usage and origin recovery](docs/USAGE.md).
 
 The retained issuer at
 `47f3f2f299d79608cf8c0048e775391428d903ab2c7ef054f42ac294df366635`
@@ -53,7 +63,7 @@ is generated. Prior custom-token Level verdicts do not establish NIGHT acceptanc
 
 | Level | Current implementation / evidence | Still required for current NIGHT scope |
 |---|---|---|
-| 1 | Pinned toolchain, compiled NIGHT contract/keys, tests, idea/setup and meaningful Git history | Actual approved NIGHT deployment and verified address; old issuer is historical only |
+| 1 | Pinned toolchain, compiled NIGHT contract/keys, tests, verified Preprod NIGHT escrow and meaningful Git history | Independent owner-wallet acceptance remains separate; old issuer is historical only |
 | 2 | 1AM connection, fund/claim, private bearer witnesses, public NIGHT disclosure | Real frontend circuit finality and observed privacy behavior |
 | 3 | Recovery, negative cases, exact settlement checks and CI workflow | Working real NIGHT E2E; current revision CI is tracked in STATUS |
 | 4 | Current setup/usage/architecture, retained identities and reconciliation | Same real NIGHT MVP; current engineering CI is tracked in STATUS |
@@ -104,7 +114,7 @@ complete sequential manual flow and troubleshooting.
 | Location | Meaning |
 |---|---|
 | .env.local | Public `PROOF_SERVER_PORT=6300` Compose setting; never wallet credentials |
-| [config/preprod.json](config/preprod.json) | Reviewed indexer/RPC/prover endpoints; NIGHT/unshielded/6 decimals/v2 metadata; historical issuer fields retained only for legacy verification |
+| [config/preprod.json](config/preprod.json) | Reviewed indexer/RPC/prover endpoints, default verified NIGHT escrow, NIGHT/unshielded/6 decimals/v2 metadata; historical issuer fields retained only for legacy verification |
 | Browser localStorage | Selected public NIGHT escrow, key moneymole/night-escrow/v2 |
 | Encrypted IndexedDB | Wallet/contract/network/schema-v2 payment and deployment records; passphrase-derived keys never saved |
 | Public deployment export | Actual NIGHT address, identifier and source/build/toolchain hashes; save as reports/night-escrow.json for local verification |

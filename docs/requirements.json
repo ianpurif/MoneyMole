@@ -1454,11 +1454,11 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "53_utility_tests_and_source_consistency",
+          "scope": "53_utility_tests_and_source_consistency_reverified",
           "command": "npm run check:offline",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/night-escrow-verification.json",
+          "sha256": "561d84ca833e38afc182d229af23cfcf52a85dd354f6d1bb0ce49af1e586169c",
+          "observedAt": "2026-09-28T02:50:03.900Z",
           "subjects": [
             {
               "path": "scripts/offline.mjs",
@@ -1470,11 +1470,11 @@
             },
             {
               "path": "tests/boilerplate/public-config.test.mjs",
-              "sha256": "34d464e9518d4f7315af07dad90c58dbc353fb75a73fa0036f8163474ecf5146"
+              "sha256": "18c77c9d72e484c8fff0ae003ed54d58e123ca7125c65bd4c11ca3eee0b409ab"
             },
             {
               "path": "config/preprod.json",
-              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+              "sha256": "1d2fdd6d6b5e2c11ca2051758f132cc14ddd7c931f47630c2b9cc79376f3740a"
             }
           ]
         }
@@ -1858,11 +1858,11 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "pinned_local_prover_real_synthetic_proofs_and_browser_CORS",
-          "command": "npm run doctor; npm run test:proving; npm run verify:connectivity",
-          "path": "docs/evidence/ui-cleanup-verification.json",
-          "sha256": "2cb935d74524bc4dccf75b11bcefdf7e40c572969f3dced0ba9e28d0d916d053",
-          "observedAt": "2026-09-27T15:11:49.749894+00:00",
+          "scope": "pinned_local_prover_synthetic_proofs_and_browser_CORS",
+          "command": "npm run test:proving; npm run verify:connectivity",
+          "path": "docs/evidence/night-escrow-verification.json",
+          "sha256": "561d84ca833e38afc182d229af23cfcf52a85dd354f6d1bb0ce49af1e586169c",
+          "observedAt": "2026-09-28T02:50:03.900Z",
           "subjects": [
             {
               "path": "compose.yaml",
@@ -1870,7 +1870,7 @@
             },
             {
               "path": "config/preprod.json",
-              "sha256": "a8fb4423c0ce071b67d0ec86bdb74bb5445ae38e1faab635f910963022375320"
+              "sha256": "1d2fdd6d6b5e2c11ca2051758f132cc14ddd7c931f47630c2b9cc79376f3740a"
             },
             {
               "path": "tests/contracts/night-transaction.mjs",
@@ -1882,7 +1882,7 @@
             },
             {
               "path": "scripts/verify-browser-connectivity.mjs",
-              "sha256": "84775b8abe77da01861e94ee4943bf877118e7138896e9746ebaccc49516239e"
+              "sha256": "7aeb270369d8548870dfa8424ed193dd7b69e805f2396519bde613a39555cdbd"
             }
           ]
         }

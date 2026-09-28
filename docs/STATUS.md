@@ -1,5 +1,25 @@
 # Current execution state
 
+## Verified live NIGHT escrow — 2026-09-28
+
+Preprod escrow `685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63`
+was deployed in successful transaction
+`0043457907ca3523d4aa6e1a570a2ecf5d0a5239f2a456d736442b10be9e660544`
+at finalized block 2735496. Read-only indexer and node checks confirmed the
+ContractDeploy action, native NIGHT asset, and both local fund/claim verifier keys.
+Two later successful `fund` calls and one successful `claim` call moved native NIGHT
+through this address without minting. The public deployment identity is in
+deployments/preprod/night-payment-escrow.json; `npm run verify:deployment`
+passed. config/preprod.json now selects this escrow by default when a wallet has no
+saved choice. Existing saved escrows and claim-bound escrow selection are preserved.
+
+This is real contract usage, but read-only chain evidence cannot establish which
+people controlled the wallets, private-link delivery, or independent receiver
+spend/recovery. NIGHT amounts and addresses remain public; the user's new hidden
+amount/relationship requirement cannot be met by this unshielded NIGHT contract.
+Older sections below describe their historical checkpoint and are not the current
+deployment verdict.
+
 ## 1AM read budget and compact payment UX — 2026-09-28
 
 Inspected the installed 1AM 6.3.11 connector implementation (packaged code only,

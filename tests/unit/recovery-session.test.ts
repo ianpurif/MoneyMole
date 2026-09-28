@@ -5,6 +5,7 @@ import { RecoverySession } from "../../src/lib/private-state/recovery-session";
 import type { OneAmSession } from "../../src/lib/midnight/oneam";
 import { readAuth, packageRecovery, preservedWorkspaces } from "../../src/lib/private-state/local-auth";
 import { encodeClaim } from "../../src/lib/midnight/payment-codec";
+import preprod from "../../config/preprod.json";
 const walletId = "synthetic-wallet", address = "a".repeat(64), password = "existing synthetic local passphrase";
 const namespace = (contractAddress: string, identity = walletId) => ({ network: "preprod" as const, contractAddress, walletIdentity: identity, schemaVersion: 2 });
 beforeEach(() => {
@@ -30,6 +31,15 @@ function fakeWallet() {
   };
 }
 describe("shared recovery session with real encrypted local stores, synthetic wallet only", () => {
+  it("uses the verified public NIGHT escrow unless this wallet selected another escrow", async () => {
+    const recovery = new RecoverySession(fakeWallet() as unknown as OneAmSession, walletId);
+    await recovery.initialize();
+    expect(recovery.escrow).toBe(preprod.paymentEscrowAddress);
+    localStorage.setItem(`moneymole/escrow/v3/${walletId}`, address);
+    const returning = new RecoverySession(fakeWallet() as unknown as OneAmSession, walletId);
+    await returning.initialize();
+    expect(returning.escrow).toBe(address);
+  });
   it("keeps one unlocked session and wizard when a claim selects a different escrow", async () => {
     const target = "b".repeat(64);
     const payment = { id:"r_" + "1".repeat(64), role:"receiver", amount:"10", phase:"draft", funded:true, claimed:false, walletSynced:false, spent:false, spendVerified:false, claimRetryAvailable:false, spendRetryAvailable:false, failedAttempts:0 };

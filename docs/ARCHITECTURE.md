@@ -133,8 +133,12 @@ store consumers retain their original visibility/timer safeguards.
 A NIGHT escrow has its own code/verifier identity and schema-v2 public deployment
 record. No issuer address is a NIGHT escrow. Multiple senders may use the same
 compatible escrow, or create/reuse their own; claims bind the selected deployment.
-No automatic deployment occurs. The browser prepares an unsigned deployment and
-the owner approves it. Public build/artifact fingerprints bind exported records.
+The verified Preprod default is recorded in config/preprod.json and
+deployments/preprod/night-payment-escrow.json. A saved browser selection takes
+precedence, and every selected address is checked against live NIGHT contract state
+and verifier keys before payments open. No automatic deployment occurs. The browser
+prepares an unsigned deployment and the owner approves it. Public build/artifact
+fingerprints bind exported records.
 
 ## Configuration and legacy continuity
 

@@ -52,7 +52,8 @@ Old mm1 tokens, issuer assets and old escrow verifier keys fail closed. Preserve
 legacy contracts, original deployment records and encrypted browser stores for
 historical recovery; never deploy the old issuer as part of NIGHT setup.
 
-Native engineering checks and real wallet acceptance are distinct. Real NIGHT
-escrow deployment, independent-wallet credit/spend, optical QR, recovery and live
-privacy inspection remain pending until observed. Organizer requirements are
+Native engineering checks and real wallet acceptance are distinct. A real NIGHT
+escrow deployment and fund/claim calls are finalized on Preprod; independent-wallet
+credit/spend, optical QR, recovery and live privacy inspection remain pending until
+observed. Organizer requirements are
 preserved separately; a public NIGHT transfer does not satisfy hidden-amount claims.

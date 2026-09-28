@@ -1,0 +1,22 @@
+{
+  "scope": "verified_preprod_escrow_identity_and_local_engineering_checks",
+  "observedAt": "2026-09-28T02:50:03.900Z",
+  "network": "preprod",
+  "contractAddress": "685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63",
+  "deploymentTransactionId": "0043457907ca3523d4aa6e1a570a2ecf5d0a5239f2a456d736442b10be9e660544",
+  "checks": {
+    "deploymentAndVerifierKeys": "passed",
+    "nativeNightFundAndClaimObservations": "passed",
+    "syntheticProving": "passed",
+    "productionBuild": "passed",
+    "browserCorsAndReadOnlyPreprodConnectivity": "passed",
+    "dependencyFreeUtilityTests": "53 passed",
+    "recoverySessionTests": "11 passed",
+    "typecheck": "passed"
+  },
+  "environmentLimitations": [
+    "Doctor reports Codex CLI unavailable inside WSL; Docker, Compose, Compact, Node and npm checks passed.",
+    "No owner wallet approval or independent-wallet payment was performed by these checks.",
+    "Native NIGHT amounts and addresses are public on chain."
+  ]
+}

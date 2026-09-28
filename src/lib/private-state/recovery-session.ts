@@ -1,4 +1,5 @@
 import "client-only";
+import preprod from "../../../config/preprod.json";
 import type { OneAmSession } from "../midnight/oneam";
 import { BrowserPrivateStore } from "./indexed-db";
 import { requirePassphrase } from "./passphrase";
@@ -61,6 +62,7 @@ export class RecoverySession {
       this.existing = !!readAuth(this.walletId) || (await BrowserPrivateStore.namespaces(this.localIdentity)).length > 0;
       const saved = localStorage.getItem(`moneymole/escrow/v3/${this.localIdentity}`) ?? (this.localIdentity === this.walletId ? localStorage.getItem("moneymole/night-escrow/v2") : null);
       if (saved && /^[a-f0-9]{64}$/.test(saved)) this.escrow = saved;
+      else this.escrow = preprod.paymentEscrowAddress;
     } catch { this.existing = true; this.message = "Local authentication data is unavailable or damaged. Preserve this browser’s data and your recovery backup."; }
     this.changed();
   }

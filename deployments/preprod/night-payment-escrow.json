@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 2,
+  "network": "preprod",
+  "asset": "NIGHT",
+  "address": "685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63",
+  "transactionId": "0043457907ca3523d4aa6e1a570a2ecf5d0a5239f2a456d736442b10be9e660544",
+  "transactionHash": "6193dc4197853c41f1cb51a4e862072633925d0742d9bd99a8d2d54c56cc9257",
+  "finality": {
+    "block": "c2379a4010f2b5b533d50322a132476976de3c051bab8fc909f4b88712441e69",
+    "observed": true
+  },
+  "sourceHash": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450",
+  "buildHash": "caac07cb82da770aa3fa7c8fc8f93cfb37fbcb4705828d039ae89dea05987223",
+  "toolchainHash": "5fa24884c662dd63e289869260c5a89e8a427d8a235c0d5c78853339bfe8e7ab",
+  "observedAt": "2026-09-28T02:25:11Z"
+}
