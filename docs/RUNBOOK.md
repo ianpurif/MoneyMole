@@ -58,7 +58,7 @@ handle and shut it down deliberately when done.
 | `services:status` | `node scripts/services.mjs status` | Inspect project service through Docker Compose. |
 | `services:check` | `node scripts/services.mjs check` | Bounded local TCP check; deliberately blocked for full proof readiness. |
 | `deploy:preprod` | `node scripts/product.mjs deploy` | Writes a nonexecuting browser deployment plan and returns 2 for owner signing; never deploys from CLI. |
-| `verify:deployment` | `node scripts/product.mjs deployment` | Read-only escrow identity/finality check with --record; missing records block. |
+| `verify:deployment` | `node scripts/product.mjs deployment` | Read-only default escrow identity/finality check against `deployments/preprod/night-payment-escrow.json`; `--record <path>` verifies an explicitly selected compatible record. |
 | `requirements:report` | `node scripts/requirements.mjs --write` | Derives Markdown from authoritative JSON. |
 | `requirements:check` | `node scripts/requirements.mjs --check` | Checks graph, evidence digests and derived-report consistency. |
 | `evidence:participants` | `node scripts/participants.mjs` | Signed attestation integrity; optional --chain-manifest checks public activity references. Neither establishes humans; see EVIDENCE.md. |

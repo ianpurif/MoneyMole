@@ -92,7 +92,11 @@ Do not repeat completed research unless a version, source or relevant assumption
 - S36: https://1am.xyz/ — official site confirms Midnight DApp Connector v4 support. This supports retaining the pinned connector types; it does not verify the installed extension, exact provider metadata, proving configuration or live transactions.
 - S37: https://github.com/midnightntwrk/midnight-dapp-connector-api/blob/main/docs/api/_media/SPECIFICATION.md — provider metadata is self-reported and must not be treated as authenticated identity. Discover registry values, require supported API versions and explicit connection.
 
-The adapter recognizes exact 1AM brand names (1AM, 1AM.xyz, 1AM Wallet) or the existing local ecosystem integration's `com.midnight.1am` hint. These hints are not an official identity allowlist. Distinct duplicate matches fail closed; Lace is excluded and no fallback is selected. Actual installed 1AM behavior awaits owner authorization.
+The earlier adapter audit covered 1AM-only discovery. The current connection UI
+offers explicit supported 1AM and Lace choices with bundled icons; it never
+silently falls back from one to the other. Provider metadata remains self-reported,
+and real extension authorization is owner-operated. See `src/lib/midnight/oneam.ts`
+and `src/components/wallet-connect-modal.tsx` for the current implementation.
 
 ## Tooling recheck, 2026-09-27
 - https://learn.chatgpt.com/docs/app-server — read-only model/config/MCP inspection
@@ -190,3 +194,22 @@ imagery, third-party runtime resources, tracking, fonts or endorsement assets ad
   https://www.lace.io/favicon-32x32.png, referenced by their official websites.
   Installed connector data-image icons can be used safely as img sources; bundled
   official icons cover unavailable/remote assets without external tracking requests.
+
+## Builder Challenge rubric — checked 2026-09-28
+
+- https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight
+  is the public Rise In program page. It describes Levels 1–5 as contract setup,
+  frontend integration, tests/CI, Preprod MVP, and 50 Preprod users/feedback.
+  Its Level 6 summary says Mainnet launch and 20 real users. It does not publish
+  all detailed screenshot/video/commit checklist fields in the owner-pasted text.
+- The owner-pasted detailed Level 1–6 requirements in
+  `docs/LEVEL-AUDIT-SCOPE.md` specify 70 total Preprod users for Level 6 and a
+  stricter 30-commit submission checklist. They are treated as supplied rubric
+  text, not independent organizer confirmation of the conflicting Level 6 target.
+- https://github.com/ianpurif/MoneyMole/actions/runs/36319963556 passed on an
+  earlier native-NIGHT commit. Run 36371511897 for 8e12329,
+  https://github.com/ianpurif/MoneyMole/actions/runs/36371511897 completed with
+  failure at the browser security/synthetic authorization step. All earlier
+  steps in that run passed; the exact browser-log cause was not established by
+  the public jobs API. Inspect the live workflow for any newer run; these dated
+  results do not establish its outcome.

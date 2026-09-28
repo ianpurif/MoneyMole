@@ -1,4 +1,9 @@
-# Frontend revision
+# Frontend revision — historical checkpoint
+
+This records the local-only state on 2026-09-27. Its no-push statement below was
+true for that checkpoint, not for current `main`: later non-sensitive work was
+committed and published. For the current UI and evidence, use
+[STATUS](STATUS.md), [USAGE](USAGE.md) and the [README](../README.md).
 
 Scope: REVISION.md, 2026-09-27. Local-only redesign; no push, deployment,
 issuance or live wallet approval.

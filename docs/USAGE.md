@@ -3,14 +3,16 @@
 1. Run the production app at http://localhost:3000 and the local prover at port 6300.
    Use Node 22.16.0/npm 10.9.2 and config/preprod.json. .env.local only needs the
    public PROOF_SERVER_PORT=6300 setting. No wallet secret or issuer setup is needed.
-2. Chrome/A and Brave/B: click **Connect**, select a detected **1AM** or **Lace**
+2. Chrome/A and Brave/B: click **Connect Wallet**, select a detected **1AM** or **Lace**
    wallet, and manually approve Preprod. 1AM is listed first; selection is explicit.
    A needs NIGHT to send; both need available DUST for fees. B may already own NIGHT.
-3. A opens **Tools → Create / recover a payment escrow**. Prepare / unlock escrow with a
-   private local passphrase, approve a new NIGHT deployment only if none exists,
-   then Check deployment. Save its public record and encrypted backup. Legacy
+3. Unlock MoneyMole once with an enrolled passkey or the local app recovery
+   passphrase. The verified NIGHT escrow is selected by default. Use **Tools →
+   Create / recover a payment escrow** only to recover a different compatible
+   escrow or deliberately prepare a new deployment with explicit wallet approval.
+   Save its public record and encrypted backup if one is created. Legacy
    issuer/test-token escrows cannot be reused as NIGHT escrows.
-4. Unlock MoneyMole once and select the confirmed NIGHT escrow. Enter an amount
+4. Enter an amount
    with up to six decimals and choose **Send NIGHT**. The compact modal shows
    **Prepare payment → Approve in wallet → Confirm payment**. It checks NIGHT/DUST
    and prepares the proof, saving encrypted recovery automatically in the background.

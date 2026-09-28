@@ -1,0 +1,16 @@
+{
+  "result": "passed",
+  "scope": "native_NIGHT_proposal_and_public_deployment_documentation_consistency_only",
+  "observedAt": "2026-09-28T03:40:05Z",
+  "checks": {
+    "proposalStatesPublicNativeNightAmountAndAddresses": true,
+    "proposalDoesNotClaimOrganizerApprovalOrIndependentWalletAcceptance": true,
+    "contractUsesNativeUnshieldedFundAndClaim": true,
+    "defaultConfigMatchesPublicDeploymentRecord": true,
+    "readOnlyDeploymentVerifier": "passed"
+  },
+  "limitations": [
+    "This source review is not organizer idea approval.",
+    "It is not real-wallet frontend, independent-receiver, user or feedback evidence."
+  ]
+}

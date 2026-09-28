@@ -1,0 +1,29 @@
+{
+  "result": "passed",
+  "scope": "read_only_finalized_Preprod_native_NIGHT_escrow_deployment_and_contract_calls",
+  "observedAt": "2026-09-28T03:53:40Z",
+  "network": "preprod",
+  "asset": "NIGHT",
+  "address": "685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63",
+  "deployment": {
+    "transactionId": "0043457907ca3523d4aa6e1a570a2ecf5d0a5239f2a456d736442b10be9e660544",
+    "status": "SUCCESS",
+    "finalizedBlockHeight": 2735496,
+    "sourceBuildAndFundClaimVerifierKeysMatch": true
+  },
+  "observedContractCalls": [
+    { "kind": "fund", "transactionId": "00a9c82b3cad1746ca59694c02277a08b33467e552b47a6e041ab8a5743812d7ea", "status": "SUCCESS", "finalizedBlockHeight": 2740102 },
+    { "kind": "fund", "transactionId": "001698b4461a86443e98bc8c56665bd6060f17c379c3274cc4a5c313d48e3841a0", "status": "SUCCESS", "finalizedBlockHeight": 2740449 },
+    { "kind": "claim", "transactionId": "0081cd30c7c4be517d5b80b1efea012aa224b3cfaeda4c524a33745703c32a5601", "status": "SUCCESS", "finalizedBlockHeight": 2740505 }
+  ],
+  "checks": [
+    "npm run verify:deployment passed against the official Preprod indexer and finalized node state.",
+    "Read-only transaction queries rechecked all three call identifiers, SUCCESS and canonical finalized blocks.",
+    "Native transaction effects were inspected separately: funding input and claim output move NIGHT without minting."
+  ],
+  "limitations": [
+    "No owner wallet was connected or authorized by this verification.",
+    "Public chain activity does not prove frontend origin, independent-wallet ownership, private link delivery, receiver spendability or encrypted recovery.",
+    "NIGHT amounts and unshielded addresses are public."
+  ]
+}

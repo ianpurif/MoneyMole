@@ -40,7 +40,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L1-CONTRACT | Payment-relevant Compact contract | verified | None | Current native NIGHT escrow and retained legacy contracts compile with the pinned compiler. Live conservation/disclosure acceptance remains separate. |
 | L1-TESTS | Passing contract tests | verified | L1-CONTRACT | Meaningful compiled-contract positive and negative tests pass. |
 | L1-MANAGED | Generated circuits and keys | verified | L1-CONTRACT | Compiler-generated contract, circuits and proving/verification material exist with source/output hashes. |
-| L1-DEPLOY | Verified deployment address | owner_pending | L1-MANAGED | Durable Preview or Preprod deployment record binds address, finality and build to observed chain data. |
+| L1-DEPLOY | Verified deployment address | verified | L1-MANAGED | Durable Preview or Preprod deployment record binds address, finality and build to observed chain data. |
 | L1-DOCS | Initial technical README | implemented | L1-CONTRACT | Setup, initial payment idea and accurate privacy explanation match implemented behavior. |
 | L1-COMMITS | Five meaningful owner commits | verified | None | Inspect at least 5 substantive authorized development commits; do not fabricate history. |
 
@@ -52,7 +52,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L2-CIRCUIT | Real frontend circuit invocation | implemented | L2-WALLET, L1-DEPLOY | Frontend circuit call is authorized, submitted and finalized on the correct contract. |
 | L2-PRIVACY | Observable documented privacy | implemented | CORE-PRIVACY, L2-CIRCUIT | Inspect public data for the actual circuit and document precisely what remains visible. |
 | L2-STATE | Persistent private state | implemented | CORE-STATE | Encrypted state survives reload and wallet reconnect without crossing namespaces. |
-| L2-PREPROD | Verified Preprod address | owner_pending | L1-DEPLOY | Observed deployment is Preprod, not merely Preview. |
+| L2-PREPROD | Verified Preprod address | verified | L1-DEPLOY | Observed deployment is Preprod, not merely Preview. |
 | L2-COMMITS | Eight meaningful owner commits | verified | None | Inspect at least 8 substantive authorized development commits. |
 
 ## Level 3
@@ -74,7 +74,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L4-MVP | Working Preprod MVP | owner_pending | L3-APP, L2-PREPROD | Independent funded, claimed and spendable payment is verified on Preprod. |
 | L4-DOCS | Setup and implemented usage documentation | implemented | L1-DOCS | Documentation matches actual wallet, link, claim and recovery behavior. |
 | L4-PIPELINE | Product repository pipeline | implemented | L3-CI | Successful actual run in the supplied product repository is recorded. |
-| L4-ADDRESS | Verified product address | owner_pending | L2-PREPROD | Current address matches finalized deployed source/build and outstanding-payment history. |
+| L4-ADDRESS | Verified product address | verified | L2-PREPROD | Current default NIGHT escrow address matches finalized deployed source/build and observed contract calls; independent payment history/recovery acceptance is separate. |
 | L4-X | Owner-supplied product X reference | owner_pending | None | Record only a supplied and externally checked product profile reference. |
 | L4-COMMITS | Fifteen meaningful owner commits | verified | None | Inspect at least 15 substantive authorized development commits. |
 
@@ -106,9 +106,9 @@ Engineering readiness and challenge qualification are separate. No score is infe
 
 ## Source conflicts and external decisions
 
-- **NETWORK-L6:** Use Preprod, not a sample Mainnet heading. Status: resolved_from_supplied_requirements.
-- **PEOPLE-L6:** 70 total real participants; ignore conflicting sample table of 20. Status: resolved_from_supplied_requirements.
-- **COMMITS-L6:** Use 30 from the stricter supplied checklist; 35 meaningful published commits were reviewed. Status: resolved_conservatively.
+- **NETWORK-L6:** Owner-supplied detailed checklist says Preprod; public Rise In Level 6 summary says Mainnet launch. Applicable organizer rubric is unresolved. Status: organizer_pending.
+- **PEOPLE-L6:** Owner-supplied detailed checklist says 70 total Preprod users; public Rise In summary says 20 real users with Mainnet launch. No cohort is verified. Status: organizer_pending.
+- **COMMITS-L6:** Use 30 meaningful commits from the stricter supplied checklist; an older audit reviewed 35 substantive published commits on an ancestor of current main. Status: resolved_conservatively.
 - **ELIGIBILITY:** Payment links remain the product; related Private Payroll / Splits wording does not establish approval. Status: owner_pending.
 - **NATIVE-NIGHT:** Owner replaced shielded issuer token with native unshielded Preprod NIGHT, six decimals; DUST fees only. Public amounts/addresses cannot satisfy an earlier hidden-amount criterion. Legacy evidence is not NIGHT acceptance. Status: owner_directed_scope_change.
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "source": "Owner-provided Level 1–6 requirements, 2026-09-27; exact text and scoped exclusions in docs/LEVEL-AUDIT-SCOPE.md.",
+  "source": "Owner-supplied detailed Level 1–6 checklist in docs/LEVEL-AUDIT-SCOPE.md; public Rise In program summary also reviewed. Current submission audit is docs/LEVEL-AUDIT.md; embedded levelAudit is a historical pre-NIGHT snapshot.",
   "qualificationStatus": "owner_pending",
   "requirements": [
     {
@@ -2166,15 +2166,49 @@
       "level": "Level 1",
       "title": "Verified deployment address",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L1-MANAGED"
       ],
       "acceptance": "Durable Preview or Preprod deployment record binds address, finality and build to observed chain data.",
       "commands": [
-        "npm run verify:issuer"
+        "npm run verify:deployment"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "read_only_finalized_Preprod_native_NIGHT_escrow_deployment_and_contract_calls",
+          "command": "npm run verify:deployment; read-only finalized transaction queries",
+          "path": "docs/evidence/native-night-level-verification.json",
+          "sha256": "daed50356504c238a3ab63d188e92bbc6718212339a6c3df52a59196bec84f0a",
+          "observedAt": "2026-09-28T03:53:40Z",
+          "subjects": [
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "1d2fdd6d6b5e2c11ca2051758f132cc14ddd7c931f47630c2b9cc79376f3740a"
+            },
+            {
+              "path": "deployments/preprod/night-payment-escrow.json",
+              "sha256": "39409d0b610c43b60553c1503ec3bd8a03c786a7c0c11714667bd86462115192"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "951546dd230fae25edb2cc109e10eeb8d118afc644fad77fb7f7f5a3ff43fffc"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "84c46a186cd04ee3e08a5050985368ce4f973be42f0ac9b9264938f98d35f8b0"
+            }
+          ]
+        }
+      ],
+      "note": "Verified native NIGHT payment escrow; independent-wallet frontend acceptance remains separate.",
+      "progress": "real_Preprod_payment_escrow_deployment_verified_not_full_two_wallet_acceptance",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "existing_separate_Preprod_issuer_deployment_only_not_payment_escrow",
@@ -2197,10 +2231,7 @@
             }
           ]
         }
-      ],
-      "note": "Separate issuer deployment verified against the real Preprod indexer and local verifier. Payment escrow deployment and full payment acceptance remain pending.",
-      "progress": "existing_separate_Preprod_issuer_deployment_only_not_payment_escrow",
-      "migrationNote": "Original issuer remains historical. A new native NIGHT escrow deployment must be approved and verified."
+      ]
     },
     {
       "id": "L1-DOCS",
@@ -2425,15 +2456,49 @@
       "level": "Level 2",
       "title": "Verified Preprod address",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L1-DEPLOY"
       ],
       "acceptance": "Observed deployment is Preprod, not merely Preview.",
       "commands": [
-        "npm run verify:issuer"
+        "npm run verify:deployment"
       ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "read_only_finalized_Preprod_native_NIGHT_escrow_deployment_and_contract_calls",
+          "command": "npm run verify:deployment; read-only finalized transaction queries",
+          "path": "docs/evidence/native-night-level-verification.json",
+          "sha256": "daed50356504c238a3ab63d188e92bbc6718212339a6c3df52a59196bec84f0a",
+          "observedAt": "2026-09-28T03:53:40Z",
+          "subjects": [
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "1d2fdd6d6b5e2c11ca2051758f132cc14ddd7c931f47630c2b9cc79376f3740a"
+            },
+            {
+              "path": "deployments/preprod/night-payment-escrow.json",
+              "sha256": "39409d0b610c43b60553c1503ec3bd8a03c786a7c0c11714667bd86462115192"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "951546dd230fae25edb2cc109e10eeb8d118afc644fad77fb7f7f5a3ff43fffc"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "84c46a186cd04ee3e08a5050985368ce4f973be42f0ac9b9264938f98d35f8b0"
+            }
+          ]
+        }
+      ],
+      "progress": "real_Preprod_payment_escrow_deployment_verified_not_full_two_wallet_acceptance",
+      "note": "Verified native NIGHT payment escrow; independent-wallet frontend acceptance remains separate.",
+      "historicalEvidence": [
         {
           "result": "passed",
           "scope": "existing_separate_issuer_on_Preprod_not_functional_payment_MVP",
@@ -2452,9 +2517,7 @@
             }
           ]
         }
-      ],
-      "progress": "existing_separate_issuer_on_Preprod_not_functional_payment_MVP",
-      "migrationNote": "Original issuer remains historical. A new native NIGHT escrow deployment must be approved and verified."
+      ]
     },
     {
       "id": "L2-COMMITS",
@@ -5584,15 +5647,27 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "current_native_NIGHT_documentation_or_stack_consistency_not_live_acceptance",
-          "command": "Source/UI/config review and local verification",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "scope": "native_NIGHT_proposal_and_public_deployment_documentation_consistency_only",
+          "command": "Source/config/privacy review; npm run verify:deployment",
+          "path": "docs/evidence/level-doc-audit.json",
+          "sha256": "416d0d7ae6dada381495346a0c6c68f453c5fdf4e902822cd026c9412f2be04c",
+          "observedAt": "2026-09-28T03:40:05Z",
           "subjects": [
             {
               "path": "PROPOSAL.md",
-              "sha256": "913b31ce402f274204ca1fb7d94bc9011231879003276b07cff70bbb34dd3068"
+              "sha256": "5e233890b9b579f5b29281d9542920214275dc2d9da30158bc911d10c29b982f"
+            },
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "1d2fdd6d6b5e2c11ca2051758f132cc14ddd7c931f47630c2b9cc79376f3740a"
+            },
+            {
+              "path": "deployments/preprod/night-payment-escrow.json",
+              "sha256": "39409d0b610c43b60553c1503ec3bd8a03c786a7c0c11714667bd86462115192"
             }
           ]
         }
@@ -7401,13 +7476,49 @@
       "level": "Level 4",
       "title": "Verified product address",
       "owner": "engineer",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [
         "L2-PREPROD"
       ],
-      "acceptance": "Current address matches finalized deployed source/build and outstanding-payment history.",
-      "commands": [],
+      "acceptance": "Current default NIGHT escrow address matches finalized deployed source/build and observed contract calls; independent payment history/recovery acceptance is separate.",
+      "commands": [
+        "npm run verify:deployment"
+      ],
       "evidence": [
+        {
+          "result": "passed",
+          "scope": "read_only_finalized_Preprod_native_NIGHT_escrow_deployment_and_contract_calls",
+          "command": "npm run verify:deployment; read-only finalized transaction queries",
+          "path": "docs/evidence/native-night-level-verification.json",
+          "sha256": "daed50356504c238a3ab63d188e92bbc6718212339a6c3df52a59196bec84f0a",
+          "observedAt": "2026-09-28T03:53:40Z",
+          "subjects": [
+            {
+              "path": "contracts/night-payments.compact",
+              "sha256": "caa5df80372ad50086284d706f6771f850ed03f149d1cbd9055a66a16c95b450"
+            },
+            {
+              "path": "config/preprod.json",
+              "sha256": "1d2fdd6d6b5e2c11ca2051758f132cc14ddd7c931f47630c2b9cc79376f3740a"
+            },
+            {
+              "path": "deployments/preprod/night-payment-escrow.json",
+              "sha256": "39409d0b610c43b60553c1503ec3bd8a03c786a7c0c11714667bd86462115192"
+            },
+            {
+              "path": "scripts/product/verify-deployment.mjs",
+              "sha256": "951546dd230fae25edb2cc109e10eeb8d118afc644fad77fb7f7f5a3ff43fffc"
+            },
+            {
+              "path": "scripts/product/preprod-observer.mjs",
+              "sha256": "84c46a186cd04ee3e08a5050985368ce4f973be42f0ac9b9264938f98d35f8b0"
+            }
+          ]
+        }
+      ],
+      "progress": "real_Preprod_payment_escrow_deployment_verified_not_full_two_wallet_acceptance",
+      "note": "Verified native NIGHT payment escrow; independent-wallet frontend acceptance remains separate.",
+      "historicalEvidence": [
         {
           "result": "partial",
           "scope": "implementation_and_static_checks_only_not_requirement_acceptance",
@@ -7415,8 +7526,7 @@
           "sha256": "a5f9b25f7d3a89355e570b90c68047e69278006170495bf9564d9437551c290f",
           "observedAt": "2026-09-26T12:06:21.777Z"
         }
-      ],
-      "progress": "Native NIGHT implementation and local automated checks present; full live acceptance remains owner-pending."
+      ]
     },
     {
       "id": "L4-X",
@@ -8999,17 +9109,17 @@
   "conflicts": [
     {
       "id": "NETWORK-L6",
-      "decision": "Use Preprod, not a sample Mainnet heading.",
-      "status": "resolved_from_supplied_requirements"
+      "decision": "Owner-supplied detailed checklist says Preprod; public Rise In Level 6 summary says Mainnet launch. Applicable organizer rubric is unresolved.",
+      "status": "organizer_pending"
     },
     {
       "id": "PEOPLE-L6",
-      "decision": "70 total real participants; ignore conflicting sample table of 20.",
-      "status": "resolved_from_supplied_requirements"
+      "decision": "Owner-supplied detailed checklist says 70 total Preprod users; public Rise In summary says 20 real users with Mainnet launch. No cohort is verified.",
+      "status": "organizer_pending"
     },
     {
       "id": "COMMITS-L6",
-      "decision": "Use 30 from the stricter supplied checklist; 35 meaningful published commits were reviewed.",
+      "decision": "Use 30 meaningful commits from the stricter supplied checklist; an older audit reviewed 35 substantive published commits on an ancestor of current main.",
       "status": "resolved_conservatively"
     },
     {
@@ -9031,18 +9141,10 @@
   },
   "auditScope": {
     "source": "docs/LEVEL-AUDIT-SCOPE.md",
-    "excluded": [
-      "demo video",
-      "hosted/live application link",
-      "screenshots",
-      "users",
-      "user feedback",
-      "product X profile (owner deferred on 2026-09-27)",
-      "organizer approval evidence not provided (owner excluded for current submission pass)"
-    ],
+    "excluded": [],
     "acceptedWallet": "1AM (owner confirms judge acceptance)",
     "level6CommitMinimum": 30,
-    "notes": "Current owner authorizes non-sensitive commits and pushes to ianpurif/MoneyMole. Public source, actual passing CI and real Preprod wallet/payment/privacy evidence remain required. Excluded/deferred items are not verified.",
+    "notes": "No submission item is excluded from the current documentation map. Videos, hosted URL, screenshots, X, users/wallet evidence, feedback and organizer approval are pending owner placeholders. Run 36371511897 for 8e12329 failed at its browser step; older passing CI is historical. Inspect newer runs separately. The embedded levelAudit is pre-NIGHT and not the current verdict. Non-sensitive commits/pushes are authorized; live wallet actions remain owner-operated.",
     "publicationAuthorization": {
       "repository": "https://github.com/ianpurif/MoneyMole",
       "authorized": true,

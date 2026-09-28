@@ -1,4 +1,8 @@
-# Preparation report
+# Preparation report — historical checkpoint
+
+This report captures its original preparation date. Deployment, wallet and CI
+statements below are historical; see [STATUS](STATUS.md) and the
+[current Level audit](LEVEL-AUDIT.md) for native NIGHT evidence.
 
 Historical initial snapshot. Follow `STATUS.md` and `docs/evidence/M0-toolchain.json`
 for subsequent installation and execution results; statements below describe the

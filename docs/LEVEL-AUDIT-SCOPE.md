@@ -1,19 +1,25 @@
-# Level audit authority — 2026-09-27
+# Level audit sources and owner-supplied checklist — 2026-09-28
 
-Source: the owner supplied the attached Level 1–6 requirements in this conversation.
-The text below is preserved for exact traceability. This audit excludes demo videos,
-hosted/live application links, screenshots, users, and user feedback as directed.
-1AM is accepted in place of Lace on the owner's judge-confirmed instruction.
-Wallet functionality, public GitHub access, passing remote CI, organizer idea
-approval, a product X profile and real Preprod operation remain in scope.
-Owner follow-up: verify https://github.com/ianpurif/MoneyMole. Defer the product X
-profile to the owner and exclude it from this audit's verdict for now. The full
-Level 4 submission checklist still needs that profile when the owner provides it.
-Use the stricter Level 6 checklist threshold of 30 meaningful commits; local
-history and published history are distinct. Do not manufacture commits or evidence.
-Earlier audit restrictions: no push and no deployment, issuance or live
-transaction without explicit owner approval. Public account creation/publication
-and missing account authorization cannot be silently substituted with local files.
+The detailed Level 1–6 checklist below was supplied by the owner in the pasted
+team prompt. It is reproduced for traceability, not treated as a command to
+scaffold sample apps, install a separate MCP, redeploy, submit transactions or
+fabricate checklist artifacts. [Rise In's public program page](https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight)
+confirms the six stages but does not publish all the granular checklist fields
+below. In particular, the owner-supplied Level 6 text says **70 total Preprod
+users**, whereas the public page says **Mainnet launch and 20 real users**. The
+owner-supplied text itself also has a 20-commit requirement and a stricter
+30-commit submission checklist. The [current audit](LEVEL-AUDIT.md) shows both
+interpretations and uses 30 for the commit threshold without claiming an
+organizer decision on the network/user conflict.
+
+No video, screenshot, live deployment link, X profile, wallet/user roster or
+feedback is counted without actual evidence. The owner requested placeholders
+for these items; they remain submission requirements where the rubric calls for
+them. 1AM is the primary wallet, and the owner reports judge acceptance in place
+of Lace. Actual extension acceptance still needs observation. Published history
+and real Preprod contract activity are checked separately from synthetic tests.
+Non-sensitive commits and pushes are owner-authorized; wallet approvals, issuance
+and new live transactions remain owner actions.
 
 ## Owner-provided requirements
 
@@ -128,19 +134,12 @@ Demo video showing full MVP functionality, Minimum 30 meaningful commits.]
 ﻿
 
 
-## Current owner directive — publish verified submission work (2026-09-27)
+## Reading this checklist
 
-The owner explicitly authorizes committing and pushing all completed non-sensitive
-work to https://github.com/ianpurif/MoneyMole, then verifying public content and
-GitHub Actions. This supersedes earlier no-push instructions for this repository.
-Do not rewrite history, force-push, publish secrets or approve wallet prompts.
-Update the README with a judge-friendly Level 1–6 evidence map, deployment identity,
-setup/usage, privacy, recovery/security, CI and meaningful history. Rerun all checks.
-Exclude videos, hosted website, screenshots, users/feedback, X, Lace branding and
-unsupplied organizer approval evidence from the current scoped Level verdicts.
-A real working payment escrow and wallet/circuit evidence are still required.
-Prepare 1AM operations up to their approval screen; the owner personally confirms
-connections, unlocks private recovery and signs transactions. Do not redeploy the
-existing issuer or invent private recovery material. Continue all independent work
-before returning an exact manual action. The friend's README is presentation
-reference only; its contracts, counts and acceptance claims are not MoneyMole evidence.
+The current NIGHT escrow is deployed and has successful fund/claim calls; see
+[the deployment record](../deployments/preprod/night-payment-escrow.json). The
+historical issuer is a different contract. The present [README evidence map](../README.md#level-1-evidence)
+and [audit](LEVEL-AUDIT.md) map these criteria without promoting contract activity
+to a proven two-wallet frontend journey. New deployment, issuance and transfers
+still require explicit wallet approval. Never publish a live bearer link, seed,
+private key, witness or encrypted recovery material as submission evidence.

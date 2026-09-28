@@ -7,7 +7,7 @@ are Route Handlers under src/app/api/**/route.ts. src/lib/server/ modules import
 "server-only". Use Server Actions only for justified, authorized non-secret mutations.
 No Express, NestJS, Fastify or separate application backend is required.
 
-The browser owns 1AM connection, authorization, claim parsing, SDK transactions,
+The browser owns the explicitly selected supported wallet connection, authorization, claim parsing, SDK transactions,
 witnesses and encrypted IndexedDB. Next.js serves UI, public generated artifacts
 and build fingerprints only. Never send wallet secrets, claim fragments, decrypted
 state or witnesses through API routes, actions, server components or logs.
@@ -59,7 +59,8 @@ new funding attempt. The old attempt is atomically archived. Partial/unknown
 outcomes never authorize another submission. This is an ordered, resumable UX,
 not a claim that browser actions and network settlement form one atomic transaction.
 
-oneam.ts discovers the real 1AM provider and requires an explicit connection.
+oneam.ts discovers supported 1AM/Lace providers and requires an explicit
+selection and connection; 1AM remains primary with no silent Lace fallback.
 payment-session.ts binds shielded SDK keys plus the unshielded NIGHT address to
 Preprod and the current account. getUnshieldedBalances supplies native NIGHT;
 getDustBalance supplies fees. NIGHT payment amounts never use shielded balances.

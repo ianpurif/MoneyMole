@@ -15,12 +15,15 @@ npm run verify:artifacts
 npm run test:contracts
 ```
 
-managed/night-payments contains current generated code/keys. Legacy
+managed/night-payments contains reproducible generated code/keys after compilation;
+these large outputs are ignored in Git. The [current Preprod escrow](../deployments/preprod/night-payment-escrow.json)
+is already deployed and uses the current fund/claim verifier keys. Legacy
 private-payments.compact and issuance/test-asset.compact retain their original
 identities and compile into separate directories; the original 1,000,000-unit
 issuer is not the payment asset. Never edit generated artifacts or redeploy a
-historical contract on restart. Product deployment needs new NIGHT verifier keys
-and explicit owner approval. Probe contracts are diagnostics: never deploy/fund.
+historical contract on restart. Any **new** product deployment needs the matching
+NIGHT verifier keys and explicit owner approval; the existing escrow can be reused.
+Probe contracts are diagnostics: never deploy/fund.
 
 Generated tests execute 12 NIGHT cases plus 13 legacy regression cases. Local
 proving additionally constructs and proves real SDK fund/claim transactions over

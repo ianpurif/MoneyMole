@@ -7,13 +7,15 @@ Wallet A escrows NIGHT, shares a bearer link or local QR, and independent Wallet
 claims the same NIGHT. DUST pays transaction fees only. No custom token, mint on
 claim, wrapping, exchange rate or mainnet money is involved.
 
+## What This Product Does
+
 The product idea is a funded payment capability: a client deposits NIGHT and sends
 its claim to a freelancer, who can redeem without the sender being online. NIGHT
 amounts and addresses are public. The private part is bearer authorization and
 client-side recovery, not anonymous or shielded value transfer. Anyone with the
 link, including its sender, can claim. There is no expiry or refund.
 
-## Current evidence and limits
+## Contract Address
 
 The owner changed the payment asset from the historical shielded test token to
 native NIGHT on 2026-09-27. [ADR 007](docs/adr/007-native-night-payments.md) records
@@ -32,17 +34,32 @@ two successful native NIGHT funding calls and one successful claim call. The app
 selects this escrow by default; a wallet's saved escrow choice or a claim link can
 select another compatible, independently verified escrow.
 
+| Network | Payment contract | Deployment transaction ID |
+|---|---|---|
+| Preprod | `685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63` | `0043457907ca3523d4aa6e1a570a2ecf5d0a5239f2a456d736442b10be9e660544` |
+
+## Live Demo
+
+**Owner placeholder:** no hosted/Vercel URL has been supplied or verified. Run
+locally at http://localhost:3000 using the setup below.
+
+## Current evidence and limits
+
 Local checks and actual wallet acceptance are separate. See [current status](docs/STATUS.md)
 and [wallet/card verification](docs/evidence/wallet-card-verification.json). Synthetic
 contract/proving/integration/browser tests never establish a real Preprod payment.
 The current revision fixes temporary-read disconnects, retains 1AM authorization
 across client navigation, and uses a centered, fixed-height wallet card with internal
-scrolling. Full reloads still need an explicit Connect action because connector v4
+scrolling. Full reloads still need an explicit **Connect Wallet** action because connector v4
 has no passive restore API. Private records retain their separate automatic lock.
 
 [Run 36319963556](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
-verified the preceding native migration. Publication and CI for this revision are
-tracked in [current status](docs/STATUS.md); the earlier run is historical evidence.
+passed on an earlier native-NIGHT revision. [Run 36371511897 for commit
+8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897) failed at
+the browser security/synthetic authorization step; it is **not** a passing run
+for that source revision. Check the live CI badge for newer commits. Local build,
+proving, browser connectivity and read-only deployment
+checks passed in [the scoped verification record](docs/evidence/night-escrow-verification.json).
 Independent-wallet credit/spend/recovery and private-link delivery still require
 owner-observed evidence. Public chain calls do not prove who controlled either
 wallet or make native NIGHT amounts private. See [usage and origin recovery](docs/USAGE.md).
@@ -55,25 +72,79 @@ are **historical test-token evidence, not a NIGHT escrow**. Its original
 [record](deployments/preprod/test-asset-issuer.json), source and read-only verifier
 remain intact. Do not redeploy or issue that asset for NIGHT testing.
 
-## Level 1–6 evidence map
+## Level 1 Evidence
 
-The exact owner-supplied criteria remain in [LEVEL-AUDIT-SCOPE.md](docs/LEVEL-AUDIT-SCOPE.md).
-[requirements.json](docs/requirements.json) owns states; [REQUIREMENTS.md](docs/REQUIREMENTS.md)
-is generated. Prior custom-token Level verdicts do not establish NIGHT acceptance.
+| Requirement | Evidence and status |
+|---|---|
+| Node 22, Docker, Compact compile | Pinned versions and commands in [TOOLCHAIN](docs/TOOLCHAIN.md), [RUNBOOK](docs/RUNBOOK.md) and [CI](.github/workflows/ci.yml); current contract source is [night-payments.compact](contracts/night-payments.compact). Local build/proving passed in the [verification record](docs/evidence/night-escrow-verification.json). |
+| Passing tests and generated circuits/keys | [Contract tests](tests/contracts/night-runtime.mjs), [integration tests](tests/integration/payment-records.test.ts), [test matrix](docs/TESTING.md), and `npm run compile:contracts && npm run verify:artifacts`. Generated `managed/night-payments/` exists after compilation and in CI, but is ignored in Git; only [managed/README.md](managed/README.md) is committed. |
+| Deployed Preview/Preprod contract and visible address | **Verified on Preprod:** the NIGHT escrow address and deployment transaction above, with the [public record](deployments/preprod/night-payment-escrow.json) and [read-only verification](docs/evidence/native-night-level-verification.json). No Preview deployment is claimed. |
+| Initial product idea | The funded bearer-link idea is the opening paragraph above. |
+| At least 5 meaningful commits and public README/setup | [Commit audit](docs/evidence/commit-audit.json) reviewed 35 substantive published commits on an ancestor of current `main`; see [history](https://github.com/ianpurif/MoneyMole/commits/main/) and [setup](#setup). |
+| Compile/deployment screenshots | **Owner placeholder:** add sanitized screenshots; the files/commands above are the current technical evidence. |
 
-| Level | Current implementation / evidence | Still required for current NIGHT scope |
-|---|---|---|
-| 1 | Pinned toolchain, compiled NIGHT contract/keys, tests, verified Preprod NIGHT escrow and meaningful Git history | Independent owner-wallet acceptance remains separate; old issuer is historical only |
-| 2 | 1AM connection, fund/claim, private bearer witnesses, public NIGHT disclosure | Real frontend circuit finality and observed privacy behavior |
-| 3 | Recovery, negative cases, exact settlement checks and CI workflow | Working real NIGHT E2E; current revision CI is tracked in STATUS |
-| 4 | Current setup/usage/architecture, retained identities and reconciliation | Same real NIGHT MVP; current engineering CI is tracked in STATUS |
-| 5 | Domain binding, destination-bound payout, retries, strict payload and encrypted recovery | Actual independent wallet credit/spend and live security/privacy observations |
-| 6 | Regression suites, source-bound evidence and meaningful engineering history | Full current acceptance matrix, live recovery and truthful submission review |
+## Level 2 Evidence
 
-Videos, hosted links, screenshots, users/feedback, X, Lace branding and unsupplied
-organizer approval are excluded from the owner's scoped audit. Exclusion is not
-a verification result. Hidden NIGHT amounts cannot be claimed: the native asset
-is unshielded. External qualification remains separate from implementation.
+| Requirement | Evidence and status |
+|---|---|
+| Wallet connect/disconnect | [Wallet adapter](src/lib/midnight/oneam.ts) and [picker](src/components/wallet-connect-modal.tsx) implement explicit 1AM/Lace selection and disconnect. The owner reports 1AM is accepted in place of Lace; real extension behavior still needs owner-observed evidence. |
+| Successful frontend circuit call | [Payment controller](src/lib/midnight/payments.ts) calls `fund`/`claim`; the verified escrow has two successful fund calls and one claim on Preprod ([public identifiers](docs/LEVEL-AUDIT.md#evidence-that-can-be-checked-now)). Their originating frontend/wallet session is **not independently established** by the read-only chain check. |
+| Observable privacy behavior | [Compact source](contracts/night-payments.compact) and [privacy boundary](docs/PRIVACY.md) show a private bearer authority and public commitment/nullifier. Local proofs pass; a real-wallet public-transcript disclosure review remains pending. NIGHT amounts and addresses are public. |
+| Preprod address and 8 meaningful commits | Same [deployment record](deployments/preprod/night-payment-escrow.json) and [commit audit](docs/evidence/commit-audit.json). |
+| Live demo and wallet/circuit video | **Owner placeholders:** live URL and demo video have not been supplied. |
+
+## Level 3 Evidence
+
+| Requirement | Evidence and status |
+|---|---|
+| Functional privacy dApp | Send/Receive/Activity, encrypted recovery and single-use claim logic are implemented in [payments.ts](src/lib/midnight/payments.ts) and the [architecture](docs/ARCHITECTURE.md). Independent-wallet credit, spendability, replay rejection and live privacy observation remain pending; do not infer full MVP acceptance from synthetic checks. |
+| At least 3 passing tests | Local contract, unit and saved-record integration suites are documented in [TESTING](docs/TESTING.md) and [verification evidence](docs/evidence/night-escrow-verification.json). |
+| CI/CD | [Workflow](.github/workflows/ci.yml); [earlier passing run](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556); [failed run for 8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897). Check the live badge for newer commits; the failed run does not establish a passing current pipeline. |
+| Approved idea and 10 meaningful commits | [Proposal](PROPOSAL.md) exists but submission/organizer approval is **not evidenced**. The [commit audit](docs/evidence/commit-audit.json) exceeds 10 substantive published commits. |
+| Live URL, test screenshot, one-minute video | **Owner placeholders:** add the actual URL, screenshot and video when available. |
+
+## Level 4 Evidence
+
+| Requirement | Evidence and status |
+|---|---|
+| Working Preprod MVP | [Deployed escrow](deployments/preprod/night-payment-escrow.json) and successful on-chain fund/claim calls are real. An independently observed two-wallet link/QR claim, receiver credit/spend and recovery are still required by the [acceptance matrix](docs/TESTING.md). |
+| README, setup, usage | This README, [USAGE](docs/USAGE.md), [RUNBOOK](docs/RUNBOOK.md) and [architecture](docs/ARCHITECTURE.md). |
+| Product-repo CI and 15 meaningful commits | [Workflow](.github/workflows/ci.yml) and [commit audit](docs/evidence/commit-audit.json); run 36371511897 failed as noted above. Check any newer run separately. |
+| Hosted Preprod demo, product X profile, MVP video | **Owner placeholders:** no URL, profile or video is claimed. |
+
+## Level 5 Evidence
+
+| Requirement | Evidence and status |
+|---|---|
+| Same MVP extended | Recovery, safe retry, QR, destination-bound claim and receipt controls extend the [same NIGHT flow](docs/ARCHITECTURE.md); the Level 4 independent-wallet acceptance gap carries forward. |
+| 50 verifiable Preprod users | **Owner placeholder:** [USERS.md](USERS.md) has no asserted user count or wallet list. Wallet control and unique humans require separate evidence. |
+| Feedback loop and updated documentation | **Owner placeholder:** [FEEDBACK.md](docs/FEEDBACK.md) is ready for real reports and change links. Current technical docs are linked above; no user feedback is invented. |
+| At least 20 meaningful commits, live link and demo video | [Commit audit](docs/evidence/commit-audit.json) exceeds 20; **owner placeholders** remain for URL and video. |
+
+## Level 6 Evidence
+
+| Requirement | Evidence and status |
+|---|---|
+| Same MVP extended and updated docs | Same implementation and acceptance limits as Level 5; [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [current audit](docs/LEVEL-AUDIT.md) document them. |
+| Users and feedback | The owner-supplied checklist asks for **70 total Preprod users**; [LAUNCH_USERS.md](LAUNCH_USERS.md) and [FEEDBACK.md](docs/FEEDBACK.md) are placeholders, not proof. The [public Rise In program page](https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight) instead describes **Mainnet launch and 20 real users** at Level 6. The applicable rubric needs organizer confirmation; neither target is claimed complete. |
+| Commits and CI | The stricter supplied submission checklist says **30 meaningful commits**; [commit audit](docs/evidence/commit-audit.json) reviewed 35 published substantive commits. Current-head CI remains failed. |
+| Mainnet/hosted demo, product X, video/screenshots | **Owner placeholders:** no Mainnet deployment, hosted URL, X profile, video or screenshots are claimed. |
+
+The [detailed current audit](docs/LEVEL-AUDIT.md) separates implementation, live
+chain observation, owner evidence and missing submission items. The pasted detailed
+checklist is recorded in [LEVEL-AUDIT-SCOPE](docs/LEVEL-AUDIT-SCOPE.md); Rise In's
+public [program page](https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight)
+confirms the six-stage journey but differs on Level 6. The generated
+[REQUIREMENTS.md](docs/REQUIREMENTS.md) tracks source-bound engineering evidence;
+its older Level audit snapshot is historical. Neither local proofs nor public NIGHT
+calls establish hidden-amount privacy or organizer eligibility.
+
+## Tech Stack
+
+Next.js App Router, TypeScript, Tailwind CSS, Midnight Compact/Midnight.js,
+supported browser wallet connectors and a trusted loopback proof server. The
+browser owns wallet authorization, witnesses and encrypted local records; the
+Next.js server exposes only public application resources. See [architecture](docs/ARCHITECTURE.md).
 
 ## Setup
 
@@ -94,7 +165,7 @@ npm run verify:artifacts
 npm run services:up
 npm run test:proving
 npm run build
-npm run start -- --port 3000
+npm run start
 ```
 
 The installer command explicitly executes the repository-reviewed pinned installer;
@@ -121,7 +192,8 @@ complete sequential manual flow and troubleshooting.
 | Encrypted exports | Private payment and escrow recovery; keep outside Git and never send to an agent |
 | deployments/preprod/test-asset-issuer.json | Original issuer record, not current NIGHT configuration |
 
-There is no global NIGHT escrow hardcoded in env. An owner may deploy/reuse a
+The verified default NIGHT escrow is in config/preprod.json, not an environment
+secret. An owner may deploy/reuse a
 compatible escrow; multiple senders can share one. Claims bind the specific
 address in their link. The browser validates its verifier keys and native asset.
 Changing a public prover endpoint requires the reviewed config/CSP and Compose
@@ -144,9 +216,9 @@ No wallet, escrow deployment or transaction is created by this reset.
    **MoneyMole** once with a passkey or local recovery passphrase (at least 7 characters).
    Existing users enter their original app passphrase once, then add a passkey in
    **Tools → Security**. Passkey users add a recovery passphrase for portable backups.
-   Open **Tools → Create / recover a payment escrow**. Approve a new NIGHT
-   deployment only if no compatible v2 record exists; **Check deployment** until
-   chain verified. Save public record and encrypted escrow recovery.
+   The verified default escrow is already selected. Use **Tools → Create / recover a
+   payment escrow** only to recover another compatible escrow or deliberately deploy
+   a new one with explicit wallet approval.
 3. **Use escrow** with the verified address; recovered escrow state is shared across
    Send, Receive, Activity and Tools. In **Send**, enter **1**
    NIGHT and click **Send NIGHT**. The compact modal saves encrypted recovery, checks funds,
@@ -180,7 +252,7 @@ funding/sharing; Receive contains claims; Activity contains history, receipts an
 encrypted exports. Escrow setup and encrypted imports live in Tools. See
 [usage](docs/USAGE.md) for recovery and balance availability behavior.
 
-## Privacy, recovery and architecture
+## Privacy Model
 
 | Data | Boundary |
 |---|---|
@@ -205,7 +277,7 @@ the trusted local prover directly. CSP, fragment scrubbing and local QR avoid
 server handling of bearer data. See [privacy](docs/PRIVACY.md) and
 [disclosure audit](docs/disclosure-audit.md) for limitations.
 
-## Verification and history
+## Run Tests
 
 ```sh
 npm run check:offline
@@ -222,15 +294,18 @@ npm run test:browser
 npm run requirements:check
 npm run verify:connectivity
 npm run verify:issuer
-npm run verify:deployment -- --record reports/night-escrow.json
+npm run verify:deployment
 npm run test:preprod -- --manifest reports/preprod-manifest.json
 ```
 
-The final two require actual owner-approved NIGHT records. Exit 2 is blocked,
+`test:preprod` requires owner-reviewed NIGHT transaction records; `verify:deployment`
+now defaults to the committed escrow record and is read-only. Exit 2 is blocked,
 never passed. verify:issuer is read-only historical continuity. Connectivity checks
 need the running app/prover. Full verify:product also requires the complete hashed
 owner-reviewed [acceptance matrix](docs/TESTING.md). CI installs/compiles/tests/builds
 from the locked graph; it cannot approve wallets or establish live Preprod payments.
+
+## CI/CD and meaningful history
 
 Meaningful local commits cover decisions, circuits, wallet/recovery and native
 verification separately; publication and remote CI must be observed independently.

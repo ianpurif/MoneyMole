@@ -31,7 +31,7 @@ payment acceptance. `tests/unit` is the installed Vitest execution layer;
 | T21 | State migration/concurrent tab | unit, integration | Atomic writes and safe old-version isolation/recovery; no lost funded intent. |
 | T22 | Old deployment continuity | integration, live | NIGHT deployments remain usable after reload; legacy token stores are preserved and rejected by v2, with historical revision retained for their recovery. |
 | T23 | CI source/artifact identity | local, actual remote CI | Pinned graph, compiled outputs and tested source hashes match real run. |
-| T24 | Participation evidence | local trusted review | Local attestation verification and wallet/human distinction; real participants are excluded from current scoped audit. |
+| T24 | Participation evidence | local trusted review | Local attestation verification and wallet/human distinction; real participants and feedback remain unverified owner placeholders. |
 
 ## Layer boundaries
 Deterministic tests may mock adapters only within test fixtures. Contract tests

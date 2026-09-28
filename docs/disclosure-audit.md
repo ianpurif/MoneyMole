@@ -26,8 +26,10 @@ domain separation, not network authentication: wallet and transaction network
 checks remain required. Public state is authenticated against native serialization,
 indexer identity and canonical finalized node blocks.
 
-Remaining live review: owner-approved NIGHT deployment and two-wallet fund/claim/
-spend, real output amounts/addresses, failed replay/concurrent claim behavior,
+The NIGHT escrow deployment is finalized and read-only checks observed two `fund`
+calls and one `claim` call on Preprod. Their public effects do not establish the
+frontend or wallet identities. Remaining live review: owner-observed two-wallet
+fund/claim/spend, real output amounts/addresses, failed replay/concurrent claim behavior,
 recovery after reload/import, fragment/QR leakage and installed-wallet behavior.
 No hidden-amount or unlinkability claim may be inferred from those results.
 

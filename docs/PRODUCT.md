@@ -23,8 +23,10 @@ Never reinterpret earlier zero-decimal issuer tokens as NIGHT.
 
 ## Required behavior
 
-Connect 1AM on Preprod, select a verified NIGHT escrow, unlock local recovery,
-save a draft, prepare a proof, approve funding, observe canonical finality, and
+Connect an explicitly selected supported wallet on Preprod. The verified NIGHT
+escrow in config/preprod.json is selected by default unless a saved compatible
+choice or claim link overrides it. Unlock local recovery once, enter **Send NIGHT**,
+prepare a proof in the resumable modal, approve funding, observe canonical finality, and
 only then share the claim link/QR. The receiver verifies funding, saves the claim,
 prepares a proof, approves, reconciles finality and checks the NIGHT balance delta.
 A separately approved controlled spend to another wallet establishes spendability.
@@ -38,11 +40,13 @@ secret itself allows choosing a recipient. The sender can also claim their link.
 No recipient identity restriction, expiry or refund is implemented. Lost recovery
 and lost bearer authority can make funds permanently inaccessible.
 
-Persist intent before proving/signing and identifiers before submission. Unknown
+Persist intent internally before proving/signing and identifiers before submission;
+there is no separate Draft action. Unknown
 or partial outcomes permit reconciliation only. Confirmed wholly failed claims
 and spends can be reset after fresh chain checks; retain failed attempt history.
 Imported/reloaded records are unverified until reconciled. Account/network changes
-lock the session. Private state locks on hidden tabs and after five minutes.
+lock the session. Private state locks on explicit disconnect, page close and after
+five minutes without interaction; a brief wallet/passkey prompt does not discard it.
 
 ## Migration and acceptance
 
@@ -55,5 +59,6 @@ historical recovery; never deploy the old issuer as part of NIGHT setup.
 Native engineering checks and real wallet acceptance are distinct. A real NIGHT
 escrow deployment and fund/claim calls are finalized on Preprod; independent-wallet
 credit/spend, optical QR, recovery and live privacy inspection remain pending until
-observed. Organizer requirements are
-preserved separately; a public NIGHT transfer does not satisfy hidden-amount claims.
+observed. The owner-supplied Level 6 Preprod/70-user checklist conflicts with the
+public Rise In Mainnet/20-user summary; see LEVEL-AUDIT-SCOPE.md. A public NIGHT
+transfer does not satisfy hidden-amount claims or organizer eligibility by itself.

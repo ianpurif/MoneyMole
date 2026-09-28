@@ -1,9 +1,12 @@
 # Owner-controlled meaningful milestones
 
-These are proposed messages, not commits already made. Use only for real, substantive
-changes under the standing local-commit authorization; combine or revise when the actual work
+These are historical proposed messages, not proof that a milestone occurred. Use
+only for real, substantive changes; combine or revise when the actual work
 differs. Never split empty changes or alter history to meet a number. Targets are
-5/8/10/15/20/30 by Levels 1–6; 30 is conservative pending organizer confirmation.
+5/8/10/15/20/30 by the owner-supplied Levels 1–6 checklist; 30 is the stricter
+Level 6 submission threshold. [Commit audit](evidence/commit-audit.json) reviewed
+35 substantive published commits on an ancestor of current `main`; current Git
+history, not this suggested list, determines the actual count.
 
 1. `chore: establish reviewed toolchain and real dependency lock`
 2. `chore: validate project-scoped Codex routing and skills`
@@ -44,4 +47,5 @@ private keys, claim secrets, coin openings or private state in logs, APIs, artif
 or tool output. Deployment, asset issuance and every live transaction require
 explicit owner approval before execution. Connection/signing prompts are manual
 owner actions. Commit every meaningful codebase change separately with a clear,
-concise message; local commits are authorized, pushes and history rewrites are not.
+concise message. Non-sensitive commits and pushes to ianpurif/MoneyMole are now
+owner-authorized; force-pushes and history rewrites are not.

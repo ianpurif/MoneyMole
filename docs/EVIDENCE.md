@@ -6,23 +6,33 @@ subjects. The validator checks those references and detects changes. This preven
 an old pass from automatically surviving source edits; it is not a substitute for
 technical review of what the command actually proved.
 
-Technical readiness does not establish eligibility, public repository availability,
-actual remote pipeline success, meaningful owner commits or real-human participation.
-Organizer approval remains unverified and is owner-excluded from the current pass.
-The strict current audit applies 30 for
-Level 6 and verifies 35 substantive published commits. Public repository access
-and successful CI run 36295888117 at 1b3ed38 were independently checked after the
-owner supplied the repository URL. See LEVEL-AUDIT.md, evidence/commit-audit.json,
-evidence/github-verification.json and evidence/level-verification.json. Other
-public metadata fields remain null until supplied and checked. Current audit
-exclusions are authoritative in requirements.json.auditScope; excluded items are
-not silently marked verified. The owner now authorizes publication; fresh checks and actual replacement CI are recorded in evidence/submission-verification.json and evidence/publication-verification.json.
+Technical readiness does not establish organizer eligibility, wallet control,
+unique humans or user feedback. The current [Level audit](LEVEL-AUDIT.md) applies
+the owner-supplied detailed checklist, uses the stricter 30-commit Level 6
+threshold and distinguishes its Preprod/70-user wording from Rise In's public
+Mainnet/20-user summary. [Commit audit](evidence/commit-audit.json) reviewed 35
+substantive published commits on an ancestor of current `main`. The [public
+repository](https://github.com/ianpurif/MoneyMole) and an [older passing CI run](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
+are verifiable; [run 36371511897 for 8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897)
+failed at its browser security/synthetic authorization step. Check newer runs
+through the live workflow; the older pass does not prove a newer commit is green.
+Videos, hosted URL, screenshots, X,
+users/wallet roster, feedback and idea approval are unfilled requirements or owner
+placeholders, not exclusions that can be called passed. `requirements.json`'s
+embedded `levelAudit` is a historical pre-NIGHT snapshot; its engineering
+requirement states remain source-bound and are distinct from this submission audit.
 
 ## Current NIGHT evidence boundary
 
-Earlier CI, counts and issuer observations above are historical. Current native
-engineering evidence is docs/evidence/night-verification.json; no real NIGHT
-deployment, wallet credit or privacy acceptance follows from legacy receipts.
+The [native escrow deployment record](../deployments/preprod/night-payment-escrow.json)
+and [read-only Level evidence](evidence/native-night-level-verification.json) establish a
+finalized Preprod NIGHT contract with matching fund/claim keys. Read-only indexer
+and node checks observed two successful native funding calls and one claim call.
+They do **not** establish the app/browser origin of those transactions, independent
+Wallet B credit/spend, claim-link delivery, live recovery or hidden value. The
+historical issuer and its tests are a separate asset and cannot substitute for
+the NIGHT escrow. The current NIGHT asset is unshielded: amount and address data
+are public. See [privacy](PRIVACY.md) and [acceptance](TESTING.md).
 
 ## Local participant attestation validator
 `npm run evidence:participants -- <records.json> <trusted-public.pem>` verifies
@@ -69,9 +79,11 @@ amounts and the attested address against native input/output ownership. Only agg
 attester key remain mandatory. Public chain data binds an unshielded address, not an independent person; human
 identity remains a separate trusted private attestation. Keep the manifest outside Git. Missing or failed checks do not count.
 Owner/organizer approval of this trust basis remains pending. Retain the explicit
-wallet/human distinction. The Level 5 target is 50 real Preprod participants; Level 6
-is 70 total, not invented additional people. Neither row is completed by this
-utility alone. Never disclose private payment relationships to meet an evidence target.
+wallet/human distinction. The supplied Level 5 target is 50 real Preprod
+participants and the supplied Level 6 target is 70 total; Rise In's public Level 6
+description differs. Neither target is completed by this utility alone. See
+[USERS.md](../USERS.md) and [LAUNCH_USERS.md](../LAUNCH_USERS.md) placeholders.
+Never disclose private payment relationships to meet an evidence target.
 
 ## Meaningful history
 `history:inspect` reads existing Git history only. Planned milestones in `COMMITS.md`

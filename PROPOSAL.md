@@ -8,8 +8,8 @@ The owner excludes unsupplied organizer approval from the current scoped Level
 submission pass. This does not turn this draft into an approved proposal.
 
 ## Problem and intended users
-A sender should be able to pre-fund a transferable claim without exposing payment
-amounts or a direct participant mapping in ordinary public application state.
+A sender should be able to pre-fund a transferable claim without handing its bearer
+authority or local recovery data to an application server.
 People sending funds, freelancers receiving client payments and small businesses
 are the intended users. This is a product hypothesis, not measured market evidence.
 
@@ -23,11 +23,12 @@ NIGHT is unshielded: public amounts/addresses are an explicit owner-directed
 scope change (ADR 007). Bearer authorization remains private.
 
 ## Technical distinction and validation
-Private authority plus audited public commitment/nullifier state aim to authorize
-single use while avoiding raw amount and sender-receiver disclosure. This construction
-is conditional on the funding/qualification/claim feasibility slice, generated
-transcript audit and independent-wallet acceptance. The protocol is not claimed
-anonymous or amount-private: the underlying NIGHT transfer is public.
+Private authority plus public commitment/nullifier state authorize single use.
+The finalized Preprod escrow has two observed funding calls and one claim call;
+their frontend origin, independent wallet control and full recipient spendability
+are not established by read-only chain data. The protocol is not anonymous or
+amount-private: the underlying NIGHT transfer publicly discloses amount and
+unshielded addresses and may expose sender–receiver relationships.
 
 ## Delivery and risks
 M0 establishes tools and dependency compatibility; M1 proves actual cross-wallet
@@ -41,8 +42,10 @@ No organizer approval or verifiable idea-list entry has been supplied for this
 payment product. This file is a draft; it does not establish submission or approval.
 The owner must submit it and provide the organizer's decision and applicable
 idea-list reference. Do not change the product to imply eligibility.
-The current Level audit excludes users and feedback and conservatively uses the
-stricter Level 6 checklist threshold of 30 meaningful commits.
+The current Level audit includes user and feedback requirements as unfilled owner
+placeholders. Its Level 6 network/user criteria conflict with the public program
+page; no organizer ruling is inferred. The stricter supplied 30-commit threshold
+is used for the history check.
 
 ## Stack contract
 
