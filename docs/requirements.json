@@ -1454,15 +1454,15 @@
       "evidence": [
         {
           "result": "passed",
-          "scope": "53_utility_tests_and_source_consistency_reverified",
-          "command": "npm run check:offline",
-          "path": "docs/evidence/night-escrow-verification.json",
-          "sha256": "561d84ca833e38afc182d229af23cfcf52a85dd354f6d1bb0ce49af1e586169c",
-          "observedAt": "2026-09-28T02:50:03.900Z",
+          "scope": "dependency_free_utility_tests_and_tracked_source_foundation",
+          "command": "npm run test:boilerplate; node --check scripts/offline.mjs; git ls-files",
+          "path": "docs/evidence/ci-source-foundation-verification.json",
+          "sha256": "b5769c23b281e0e18dfd941063c64345d77b6cf450b1727389213b53d8f160be",
+          "observedAt": "2026-09-29T12:30:09.522Z",
           "subjects": [
             {
               "path": "scripts/offline.mjs",
-              "sha256": "e61725c01eb26e602992136d8a2662dbcc3e1225d2026f764e848fcecb8422f1"
+              "sha256": "328c962de266a5c83513687492930c6fbaff8a6afeacbb9ddaea7fc4b5c15e3d"
             },
             {
               "path": "scripts/requirements.mjs",
