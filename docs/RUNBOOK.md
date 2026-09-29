@@ -38,6 +38,7 @@ handle and shut it down deliberately when done.
 | `lint` | `eslint . --max-warnings=0` | ESLint strict; warnings are failures. |
 | `typecheck` | `tsc --noEmit` | Full project TypeScript, requires installed packages. |
 | `build` | `next build --webpack` | Next production build with browser WebAssembly; no simulated product acceptance. |
+| `test` | `vitest run` | Standard Vitest run of the existing unit and integration projects; no live wallet or network payment. |
 | `test:unit` | `vitest run --project unit` | Installed Vitest deterministic suite; no empty test pass. |
 | `compile:probe` | `node scripts/compile.mjs --probe` | Compiler-only nonpayment witness probe; no product qualification. |
 | `compile:coin-probe` | `node scripts/compile.mjs --coin-probe` | M1 private shielded I/O compiler diagnostic; lacks authorization, never deploy/fund. |

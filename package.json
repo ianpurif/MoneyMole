@@ -23,6 +23,7 @@
     "typecheck": "tsc --noEmit",
     "prebuild": "node scripts/prepare-build.mjs",
     "build": "next build --webpack",
+    "test": "vitest run",
     "test:unit": "vitest run --project unit",
     "compile:probe": "node scripts/compile.mjs --probe",
     "compile:coin-probe": "node scripts/compile.mjs --coin-probe",

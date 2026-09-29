@@ -286,9 +286,8 @@ npm run doctor
 npm run audit:deps
 npm run lint
 npm run typecheck
-npm run test:unit
+npm test
 npm run test:contracts
-npm run test:integration
 npm run test:proving
 npm run build
 npm run test:browser
@@ -299,7 +298,8 @@ npm run verify:deployment
 npm run test:preprod -- --manifest reports/preprod-manifest.json
 ```
 
-`test:preprod` requires owner-reviewed NIGHT transaction records; `verify:deployment`
+`npm test` runs the existing unit and integration projects with Vitest's standard
+reporter. `test:preprod` requires owner-reviewed NIGHT transaction records; `verify:deployment`
 now defaults to the committed escrow record and is read-only. Exit 2 is blocked,
 never passed. verify:issuer is read-only historical continuity. Connectivity checks
 need the running app/prover. Full verify:product also requires the complete hashed
