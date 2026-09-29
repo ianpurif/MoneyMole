@@ -1,6 +1,9 @@
 # Based on the published schema checked 2026-09-26. Installed-client validation is pending.
-model = "gpt-6-astra"
-model_reasoning_effort = "medium"
+
+model = "gpt-6-sol"
+model_reasoning_effort = "xhigh"
+plan_mode_reasoning_effort = "xhigh"
+
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 
@@ -14,4 +17,6 @@ enabled = true
 required = false
 startup_timeout_sec = 20
 tool_timeout_sec = 60
-# Use the client's normal approval policy. This is a documentation-only server.
+
+# Use the client's normal approval policy.
+# This is a documentation-only server.

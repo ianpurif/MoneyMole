@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from "vitest";
-import { nativeToken, type Effects } from "@midnight-ntwrk/midnight-js-protocol/ledger";
+import { nativeToken, addressFromKey, sampleSigningKey, signatureVerifyingKey, type Effects } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { verifyNightCall, verifyNightSpend } from "../../src/lib/midnight/night-settlement";
 // Decoded native transaction boundary is synthetic; assertions exercise production validation.
 const h = vi.hoisted(() => ({ intents: new Map(), ids: ["01".repeat(32)], Call: class {} }));
@@ -38,13 +38,14 @@ it("rejects raw transaction identity mismatches", () => {
   call("fund"); h.ids = [sender]; expect(() => verifyNightCall(tx, contract, "fund", amount)).toThrow();
 });
 it("verifies NIGHT spend debit, destination credit and sender change", () => {
-  const intent = { actions: [], guaranteedUnshieldedOffer: { inputs: [{ owner: sender, type: nativeToken().raw, value: 110n }], outputs: [{ owner: sender, type: nativeToken().raw, value: 100n }, { owner: recipient, type: nativeToken().raw, value: 10n }] } };
-  h.intents.set(0, intent); expect(() => verifyNightSpend(tx, sender, recipient, amount)).not.toThrow();
-  intent.guaranteedUnshieldedOffer.inputs[0]!.owner = recipient;
-  expect(() => verifyNightSpend(tx, sender, recipient, amount)).toThrow();
+  const key = signatureVerifyingKey(sampleSigningKey()), owner = addressFromKey(key);
+  const intent = { actions: [], guaranteedUnshieldedOffer: { inputs: [{ owner: key, type: nativeToken().raw, value: 110n }], outputs: [{ owner, type: nativeToken().raw, value: 100n }, { owner: recipient, type: nativeToken().raw, value: 10n }] } };
+  h.intents.set(0, intent); expect(() => verifyNightSpend(tx, owner, recipient, amount)).not.toThrow();
+  intent.guaranteedUnshieldedOffer.inputs[0]!.owner = signatureVerifyingKey(sampleSigningKey());
+  expect(() => verifyNightSpend(tx, owner, recipient, amount)).toThrow();
 });
 it("rejects a transfer with unexpected outputs or non-NIGHT inputs", () => {
-  const intent = { actions: [], guaranteedUnshieldedOffer: { inputs: [{ owner: sender, type: nativeToken().raw, value: 10n }], outputs: [{ owner: recipient, type: nativeToken().raw, value: 10n }] } };
+  const intent = { actions: [], guaranteedUnshieldedOffer: { inputs: [{ owner: signatureVerifyingKey(sampleSigningKey()), type: nativeToken().raw, value: 10n }], outputs: [{ owner: recipient, type: nativeToken().raw, value: 10n }] } };
   h.intents.set(0, intent); intent.guaranteedUnshieldedOffer.inputs[0]!.type = "ff".repeat(32);
   expect(() => verifyNightSpend(tx, sender, recipient, amount)).toThrow();
 });

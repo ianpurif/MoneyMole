@@ -28,7 +28,9 @@ export async function installPaymentFixture(page: Page, enforceReadLimit = false
     CompiledContract.withCompiledFileAssets("night-payments"),
   );
   const deployment = await createUnprovenDeployTxFromVerifierKeys(new FixtureKeys(), coin, { compiledContract, initialPrivateState: {}, signingKey: sampleSigningKey() }, enc);
-  const contract = deployment.public.contractAddress;
+  // The app now verifies and selects the published default escrow on unlock.
+  // Keep the synthetic state isolated while exercising that current selection path.
+  const contract = preprod.paymentEscrowAddress;
   const hash = "03".repeat(32);
   const state = Buffer.from(deployment.public.initialContractState.serialize()).toString("hex");
   await page.route(preprod.indexerHttp, route => route.fulfill({json:{data:{contractAction:{

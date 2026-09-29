@@ -1,5 +1,5 @@
 import "client-only";
-import { ContractCall, Transaction, nativeToken, type Effects, type TokenType } from "@midnight-ntwrk/midnight-js-protocol/ledger";
+import { ContractCall, Transaction, nativeToken, addressFromKey, type Effects, type TokenType } from "@midnight-ntwrk/midnight-js-protocol/ledger";
 import { unhex } from "./payment-codec";
 import type { ObservedTx } from "./payment-network";
 
@@ -36,7 +36,7 @@ export function verifyNightSpend(tx: NativeTx, sender: string, recipient: string
   const offers = intents.flatMap(i => [i.guaranteedUnshieldedOffer, i.fallibleUnshieldedOffer]);
   const inputs = offers.flatMap(o => o?.inputs ?? []);
   const outputs = offers.flatMap(o => o?.outputs ?? []);
-  if (!inputs.length || inputs.some(i => i.type !== nativeToken().raw || i.owner !== sender) || outputs.some(o => o.type !== nativeToken().raw || ![sender, recipient].includes(o.owner))) throw new Error("Unexpected NIGHT transfer participants");
+  if (!inputs.length || inputs.some(i => i.type !== nativeToken().raw || addressFromKey(i.owner) !== sender) || outputs.some(o => o.type !== nativeToken().raw || ![sender, recipient].includes(o.owner))) throw new Error("Unexpected NIGHT transfer participants");
   const debit = inputs.reduce((sum, i) => sum + i.value, 0n) - nightOutput(tx, sender);
   if (debit !== amount) throw new Error("NIGHT transfer debit mismatch");
 }

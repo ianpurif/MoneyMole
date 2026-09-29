@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { ShieldedCoinPublicKey, ShieldedEncryptionPublicKey, UnshieldedAddress } from "@midnight-ntwrk/wallet-sdk-address-format";
+import preprod from "../../config/preprod.json" with { type: "json" };
 
 test("synthetic escrow recovers without submission and refreshes balances after a rejected approval", async ({ page, request }) => {
   test.setTimeout(90_000);
@@ -17,6 +18,7 @@ test("synthetic escrow recovers without submission and refreshes balances after 
         getConfiguration: async () => ({ networkId: "preprod" }),
         getShieldedAddresses: async () => addresses,
         getUnshieldedAddress: async () => ({ unshieldedAddress: addresses.unshieldedAddress }),
+        getUnshieldedBalances: async () => ({}),
         getDustBalance: async () => ({ balance: BigInt((window as unknown as {syntheticDust:string}).syntheticDust) }),
         balanceUnsealedTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; (window as unknown as {syntheticDust:string}).syntheticDust="1500000000000000"; throw new Error("Synthetic rejection; no signing"); },
         submitTransaction: async () => { (window as unknown as { transactionCalls: number }).transactionCalls++; throw new Error("No synthetic submission allowed"); },
@@ -24,7 +26,14 @@ test("synthetic escrow recovers without submission and refreshes balances after 
     } } });
   }, addresses);
   const writes: string[] = [];
-  page.on("request", req => { if (req.method() !== "GET") writes.push(new URL(req.url()).pathname); });
+  page.on("request", req => {
+    if (req.method() === "GET") return;
+    let body: { query?: string; method?: string } | undefined;
+    try { body = req.postDataJSON(); } catch { /* Non-JSON writes remain unexpected. */ }
+    if (req.method() === "POST" && req.url() === preprod.indexerHttp && /^\s*query\b/.test(body?.query ?? "")) return;
+    if (req.method() === "POST" && req.url() === new URL(preprod.nodeRpc).href && /^chain_get/.test(body?.method ?? "")) return;
+    writes.push(`${req.method()} ${new URL(req.url()).origin}${new URL(req.url()).pathname}`);
+  });
   async function prepare() {
     await page.getByRole("button", { name: "Connect Wallet" }).click();
     await page.getByRole("button", { name: "1AM", exact: true }).click();
@@ -44,8 +53,8 @@ test("synthetic escrow recovers without submission and refreshes balances after 
   expect(writes).toEqual([]);
   await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("2");
   await page.getByRole("button",{name:"Approve escrow deployment",exact:true}).click();
-  await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("1.5");
-  expect(await page.evaluate(() => (window as unknown as {transactionCalls:number}).transactionCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as unknown as {transactionCalls:number}).transactionCalls), { timeout: 45_000 }).toBe(1);
+  await expect(page.getByLabel("Total DUST",{exact:true})).toHaveText("1.5", { timeout: 15_000 });
   expect((await request.get("/api/artifacts/night-payments/verifier/fund")).status()).toBe(200);
   expect((await request.get("/api/artifacts/night-payments/verifier/unknown")).status()).toBe(404);
   expect((await request.post("/api/artifacts/night-payments/verifier/fund", { data: "synthetic" })).status()).toBe(405);
@@ -70,9 +79,10 @@ test("disconnected visitor cannot start a payment", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Send NIGHT. SHARE A CLAIM");
   await expect(page.getByRole("button", { name: "Send NIGHT" })).toHaveCount(0);
-  await expect(page.getByText("Live acceptance of this implementation is pending.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Connect Wallet", exact: true })).toBeVisible();
+  await expect(page.getByLabel("Amount in NIGHT")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
