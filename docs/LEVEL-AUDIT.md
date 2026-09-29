@@ -18,7 +18,7 @@ description. **No complete Level 1–6 submission verdict is claimed.**
 | Public repository and meaningful history | [Repository](https://github.com/ianpurif/MoneyMole), [35 reviewed substantive published commits](evidence/commit-audit.json), [current history](https://github.com/ianpurif/MoneyMole/commits/main/). | A raw total alone is not a meaningful-commit count. The 35-commit audit covers an ancestor of current `main`. |
 | CI | [Workflow](../.github/workflows/ci.yml), [passing earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551), [latest checked failed run](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199). | Run 36555725199 for `3682a78` failed at “Check preparation utilities and evidence references.” No current-head green CI is claimed. |
 | Submission links supplied 2026-09-29 | [Hosted app](https://moneymole.vercel.app/), [@moneymolepay](https://x.com/moneymolepay), [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing). | Each page returned HTTP 200. Hosted wallet/payment function, X account control and video duration/content were not independently reviewed. |
-| Local owner-supplied media and survey | `docs/evidence/images/{compile,contract,test-ss}.png`; local feedback CSV named `MoneyMole User Feedback & Review (Responses) - Form Responses 1.csv`. | Images were visually inspected; they and the CSV are untracked and absent from the public repository. The CSV contains 70 rows and 70 distinct Preprod-formatted wallet strings with nonblank feedback, not 70 verified users. Keep names/emails/responses private pending consent and review. |
+| Owner-supplied media and survey | [Compile](evidence/images/compile.png), [contract](evidence/images/contract.png) and [test](evidence/images/test-ss.png) screenshots; local feedback CSV named `MoneyMole User Feedback & Review (Responses) - Form Responses 1.csv`. | Images were visually inspected and committed as public evidence. The CSV remains untracked/private. Its 70 rows and 70 distinct Preprod-formatted wallet strings with nonblank feedback are not 70 verified users. Keep names/emails/responses private pending consent and review. |
 
 For direct Preprod interaction lookup, finalized successful funding transaction
 identifiers are `00a9c82b3cad1746ca59694c02277a08b33467e552b47a6e041ab8a5743812d7ea`
@@ -37,10 +37,10 @@ Node 22/npm, Docker, Compact 0.31.1, current NIGHT source, local generated
 fund/claim circuits/keys, tests, a finalized Preprod deployment, initial idea,
 public README/setup and more than five reviewed meaningful commits have evidence
 above and in [TOOLCHAIN](TOOLCHAIN.md). The generated files are reproducible rather
-than tracked. Owner-supplied local `compile.png` shows both circuits and exit 0;
-`contract.png` shows the Preprod 1AM Explorer contract page but not the deployment
-transaction. Both images need public publication before they serve as submission
-links. The [deployment record](../deployments/preprod/night-payment-escrow.json)
+than tracked. The published [compile screenshot](evidence/images/compile.png) shows
+both circuits and exit 0; the [contract screenshot](evidence/images/contract.png)
+shows the Preprod 1AM Explorer contract page but not the deployment transaction.
+The [deployment record](../deployments/preprod/night-payment-escrow.json)
 provides the exact finalized transaction independently of the screenshot.
 
 ## Level 2 — frontend and privacy observation incomplete
@@ -66,7 +66,7 @@ payment, receiver spend, replay rejection, recovery and disclosure observation i
 not evidenced. Current-head CI failed as shown above. [PROPOSAL.md](../PROPOSAL.md)
 is a draft; no organizer idea-list submission or approval is evidenced. The
 10-commit threshold is met. The [live URL](https://moneymole.vercel.app/) is reachable;
-the local `test-ss.png` shows 111 passing Vitest cases at capture but is not public.
+the [test screenshot](evidence/images/test-ss.png) shows 111 passing Vitest cases at capture.
 The [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) is reachable; one-minute length and full flow are unreviewed.
 
 ## Level 4 — real escrow activity, MVP proof incomplete
@@ -101,7 +101,7 @@ The reviewed 35 substantive published commits exceed the stricter supplied
 commit threshold; no verified user cohort, feedback-to-change loop or Mainnet
 deployment is claimed. [LAUNCH_USERS.md](../LAUNCH_USERS.md) records the local
 CSV's limits. The [live link](https://moneymole.vercel.app/), [product X](https://x.com/moneymolepay) and
-[video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are supplied and reachable. Screenshots remain local/unpublished.
+[video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are supplied and reachable. The three technical screenshots are published above.
 
 ## Privacy and next independent observations
 

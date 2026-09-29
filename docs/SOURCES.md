@@ -145,8 +145,8 @@ are scope instructions, not independently sourced organizer approval of the idea
   narrowly scoped build loader removes the latter; the normal CSS pipeline and
   client-only Toaster preserve the nonce CSP without unsafe-inline.
 
-The only image is the owner's supplied public/images/moneymole_logo.png. No stock
-imagery, third-party runtime resources, tracking, fonts or endorsement assets added.
+The only product artwork image is the owner's supplied public/images/moneymole_logo.png.
+No stock imagery, third-party runtime resources, tracking, fonts or endorsement assets added.
 
 ## Native NIGHT migration — checked 2026-09-27
 
@@ -228,13 +228,16 @@ imagery, third-party runtime resources, tracking, fonts or endorsement assets ad
   returned HTTP 200 with the page title `moneymole_demovid.mp4 - Google Drive`.
   Video playback, duration and depicted actions were not reviewed.
 - https://explorer.1am.xyz/contract/685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63
-  returned HTTP 200. The supplied local `contract.png` shows that 1AM Explorer
+  returned HTTP 200. The supplied [contract screenshot](evidence/images/contract.png)
+  shows that 1AM Explorer
   contract page on Preprod, including a claim action; the read-only deployment
   record and chain verifier remain the source for finalized deployment identity.
-- Local, untracked `docs/evidence/images/compile.png` was inspected and shows
+- [Compile screenshot](evidence/images/compile.png) was inspected and shows
   successful direct Compact compilation of the current `claim`/`fund` circuits
-  and listed verifier files. `test-ss.png` shows 111 passing Vitest tests at
-  capture. None of these images is yet a public repository link.
+  and listed verifier files. The [test screenshot](evidence/images/test-ss.png)
+  shows 111 passing Vitest tests at capture. All three owner-supplied technical
+  screenshots are now tracked and public; their scope remains limited to what
+  is actually visible.
 - The untracked local owner-supplied feedback CSV has 70 rows, 70 distinct
   `mn_addr_preprod1`-prefixed wallet strings and 70 nonblank feedback fields.
   Syntax and survey data do not prove chain activity, independent people,

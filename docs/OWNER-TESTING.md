@@ -94,8 +94,8 @@ deploy check do not prove the full two-wallet journey.
 Only completed observations count. The [README evidence map](../README.md#level-1-evidence)
 now links the supplied hosted app, X profile and video page. Verify the hosted
 wallet/prover/payment journey and review the video against each claimed Level;
-page reachability alone does not pass acceptance. Three locally inspected
-screenshots still need publication. The local feedback CSV needs consented,
+page reachability alone does not pass acceptance. Three technical screenshots
+are [published](evidence/images/compile.png). The local feedback CSV needs consented,
 independently checked user evidence and feedback-to-change attribution before a
 50/70-user or completed-loop claim. The latest checked
 [CI run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)

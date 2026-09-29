@@ -49,9 +49,10 @@ These pages returned HTTP 200 on 2026-09-29. That establishes reachable links,
 not a working hosted payment: the browser still needs an approved 1AM wallet,
 Preprod NIGHT/DUST and a trusted proof server. The video's duration and depicted
 wallet/chain actions have not been independently reviewed. The three supplied
-compile/deployment/test screenshots were inspected locally under
-`docs/evidence/images/`, but are **not tracked in Git** and therefore are not
-public submission links yet. The owner-supplied feedback CSV is also local and
+[compile](docs/evidence/images/compile.png),
+[contract](docs/evidence/images/contract.png) and
+[test](docs/evidence/images/test-ss.png) screenshots were visually inspected and
+are committed as public evidence. The owner-supplied feedback CSV is local and
 untracked; its names, emails, wallet strings and responses are not published here.
 
 ## Current evidence and limits
@@ -87,14 +88,14 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 
 | Requirement | Direct evidence and remaining limit |
 |---|---|
-| Toolchain and successful `compact compile` | [Pinned tools](docs/TOOLCHAIN.md), [exact command](docs/RUNBOOK.md), [current Compact source](contracts/night-payments.compact) and [scoped local verification](docs/evidence/night-escrow-verification.json). The supplied local `compile.png` shows `claim` and `fund`, exit 0. |
-| Passing test suite | [Contract tests](tests/contracts/night-runtime.mjs), [integration tests](tests/integration/payment-records.test.ts) and [verification record](docs/evidence/night-escrow-verification.json). The supplied local `test-ss.png` shows 111 passing Vitest tests at capture time; this is local/synthetic evidence, not live payment acceptance. |
+| Toolchain and successful `compact compile` | [Pinned tools](docs/TOOLCHAIN.md), [exact command](docs/RUNBOOK.md), [current Compact source](contracts/night-payments.compact) and [scoped local verification](docs/evidence/night-escrow-verification.json). The [compile screenshot](docs/evidence/images/compile.png) shows `claim` and `fund`, exit 0. |
+| Passing test suite | [Contract tests](tests/contracts/night-runtime.mjs), [integration tests](tests/integration/payment-records.test.ts) and [verification record](docs/evidence/night-escrow-verification.json). The [test screenshot](docs/evidence/images/test-ss.png) shows 111 passing Vitest tests at capture time; this is local/synthetic evidence, not live payment acceptance. |
 | Generated `managed/` circuits and keys | `npm run compile:contracts && npm run verify:artifacts`; [artifact instructions](managed/README.md). Generated `managed/night-payments/` contains fund/claim material locally and in CI, but is intentionally ignored by Git. |
-| Deployed contract and visible address | Preprod escrow `685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63`: [deployment record](deployments/preprod/night-payment-escrow.json), [finality check](docs/evidence/native-night-level-verification.json), [1AM Explorer](https://explorer.1am.xyz/contract/685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63). Supplied local `contract.png` shows the Explorer page, but not the full deployment transaction. |
+| Deployed contract and visible address | Preprod escrow `685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63`: [deployment record](deployments/preprod/night-payment-escrow.json), [finality check](docs/evidence/native-night-level-verification.json), [1AM Explorer](https://explorer.1am.xyz/contract/685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63) and [Explorer screenshot](docs/evidence/images/contract.png). The screenshot shows the contract page, not the full deployment transaction. |
 | Initial product idea | [What This Product Does](#what-this-product-does) is the one-paragraph idea. |
 | At least 5 meaningful commits | [Commit audit](docs/evidence/commit-audit.json) reviewed 35 substantive published commits on an earlier head; inspect [public history](https://github.com/ianpurif/MoneyMole/commits/main/). |
 | Public README and local setup | [Public repository](https://github.com/ianpurif/MoneyMole), this README and [Setup](#setup). |
-| Compile, deployment and test screenshots | Three supplied images were visually inspected at `docs/evidence/images/{compile,contract,test-ss}.png`; **publication pending** because none is tracked. Their content is bounded as described above. |
+| Compile, deployment and test screenshots | [Compile](docs/evidence/images/compile.png), [contract page](docs/evidence/images/contract.png) and [tests](docs/evidence/images/test-ss.png) are committed. The contract screenshot does not show the deployment transaction; use the record above for that identifier. |
 | Public state versus private witness | [Privacy Model](#privacy-model) and [disclosure audit](docs/disclosure-audit.md) distinguish public NIGHT metadata/commitments from private bearer authority and nonce. |
 
 ## Level 2 Evidence
@@ -114,12 +115,12 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 | Requirement | Evidence and status |
 |---|---|
 | Functional privacy dApp | [Send/claim controller](src/lib/midnight/payments.ts), [architecture](docs/ARCHITECTURE.md) and [acceptance matrix](docs/TESTING.md) show implemented flow. Independent-wallet credit/spend, replay, recovery and live disclosure acceptance remain pending. |
-| At least 3 passing tests | [Local verification](docs/evidence/night-escrow-verification.json) and supplied local `test-ss.png` (111 passing tests at capture). Screenshot publication is pending. |
+| At least 3 passing tests | [Local verification](docs/evidence/night-escrow-verification.json) and [test screenshot](docs/evidence/images/test-ss.png) (111 passing tests at capture). |
 | CI/CD workflow and passing run | [Workflow](.github/workflows/ci.yml) and [earlier passing run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551). [Latest checked run](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199) failed; current-head CI is **not green**. |
 | Approved idea from provided list | [Payment proposal](PROPOSAL.md) is a draft. Idea-list submission and organizer approval are **not evidenced**. |
 | At least 10 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
 | Public README and live URL | [Repository](https://github.com/ianpurif/MoneyMole), [hosted app](https://moneymole.vercel.app/) and [Setup](#setup); hosted payment acceptance unverified. |
-| Test-output screenshot | Supplied local `docs/evidence/images/test-ss.png` is visually reviewed but not published in Git. |
+| Test-output screenshot | [Public test screenshot](docs/evidence/images/test-ss.png), visually reviewed at its stated local/synthetic scope. |
 | One-minute full-function video | [Owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) is reachable; duration and full flow unreviewed. |
 | Observer privacy explanation | [Privacy Model](#privacy-model) says what is visible and what remains client-side. |
 

@@ -75,12 +75,13 @@ reload/import recovery and public-transcript disclosure review. The owner suppli
 a [hosted app](https://moneymole.vercel.app/), [X profile](https://x.com/moneymolepay),
 and [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing); all returned HTTP 200 on 2026-09-29.
 That does not verify the hosted wallet/prover/payment journey or the video's
-content. Three local screenshots were inspected but are untracked. An untracked
+content. Three [technical screenshots](evidence/images/compile.png) were inspected
+and committed as public evidence. An untracked
 owner-supplied CSV has 70 rows, distinct Preprod-formatted wallet strings and
 nonblank feedback fields; it does not verify 70 people or chain activity, and
 private responses/identities must not be published without consent. See
 [USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md). Organizer idea approval,
-public screenshot publication, verified user cohort and a documented
+verified user cohort and a documented
 feedback-to-change loop remain pending. Rise In's public
 Level 6 Mainnet/20-user summary conflicts with the supplied Preprod/70-user
 checklist; see [scope](LEVEL-AUDIT-SCOPE.md).

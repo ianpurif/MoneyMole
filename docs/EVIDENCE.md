@@ -19,8 +19,9 @@ failed at “Check preparation utilities and evidence references.” A past pass
 not make current-head CI green. The owner-supplied [hosted URL](https://moneymole.vercel.app/),
 [X profile](https://x.com/moneymolepay) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing)
 returned HTTP 200 on 2026-09-29. Their deeper functional/content requirements
-remain unreviewed. Three inspected screenshots and a 70-row feedback CSV are
-local, untracked and not public proof of 50/70 qualifying users. Idea approval
+remain unreviewed. Three inspected [screenshots](evidence/images/compile.png)
+are committed; the 70-row feedback CSV is local and untracked. Neither is proof
+of 50/70 qualifying users. Idea approval
 is still unsupplied. `requirements.json`'s embedded `levelAudit` is a historical
 pre-NIGHT snapshot; its engineering
 requirement states remain source-bound and are distinct from this submission audit.
