@@ -21,6 +21,7 @@
     "start": "next start --hostname localhost --port 3000",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
+    "prebuild": "node scripts/prepare-build.mjs",
     "build": "next build --webpack",
     "test:unit": "vitest run --project unit",
     "compile:probe": "node scripts/compile.mjs --probe",
