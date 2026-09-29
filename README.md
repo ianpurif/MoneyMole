@@ -40,8 +40,19 @@ select another compatible, independently verified escrow.
 
 ## Live Demo
 
-**Owner placeholder:** no hosted/Vercel URL has been supplied or verified. Run
-locally at http://localhost:3000 using the setup below.
+[Hosted MoneyMole app](https://moneymole.vercel.app/) ·
+[Product X profile](https://x.com/moneymolepay) ·
+[Owner-supplied demo video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) ·
+[Public repository](https://github.com/ianpurif/MoneyMole)
+
+These pages returned HTTP 200 on 2026-09-29. That establishes reachable links,
+not a working hosted payment: the browser still needs an approved 1AM wallet,
+Preprod NIGHT/DUST and a trusted proof server. The video's duration and depicted
+wallet/chain actions have not been independently reviewed. The three supplied
+compile/deployment/test screenshots were inspected locally under
+`docs/evidence/images/`, but are **not tracked in Git** and therefore are not
+public submission links yet. The owner-supplied feedback CSV is also local and
+untracked; its names, emails, wallet strings and responses are not published here.
 
 ## Current evidence and limits
 
@@ -53,11 +64,11 @@ across client navigation, and uses a centered, fixed-height wallet card with int
 scrolling. Full reloads still need an explicit **Connect Wallet** action because connector v4
 has no passive restore API. Private records retain their separate automatic lock.
 
-[Run 36319963556](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
-passed on an earlier native-NIGHT revision. [Run 36371511897 for commit
-8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897) failed at
-the browser security/synthetic authorization step; it is **not** a passing run
-for that source revision. Check the live CI badge for newer commits. Local build,
+[Run 36528158551](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551)
+passed for an earlier revision. The latest checked
+[run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
+for `3682a78` **failed** at “Check preparation utilities and evidence references”;
+the current published head therefore has no passing CI claim. Local build,
 proving, browser connectivity and read-only deployment
 checks passed in [the scoped verification record](docs/evidence/night-escrow-verification.json).
 Independent-wallet credit/spend/recovery and private-link delivery still require
@@ -74,61 +85,76 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 
 ## Level 1 Evidence
 
-| Requirement | Evidence and status |
+| Requirement | Direct evidence and remaining limit |
 |---|---|
-| Node 22, Docker, Compact compile | Pinned versions and commands in [TOOLCHAIN](docs/TOOLCHAIN.md), [RUNBOOK](docs/RUNBOOK.md) and [CI](.github/workflows/ci.yml); current contract source is [night-payments.compact](contracts/night-payments.compact). Local build/proving passed in the [verification record](docs/evidence/night-escrow-verification.json). |
-| Passing tests and generated circuits/keys | [Contract tests](tests/contracts/night-runtime.mjs), [integration tests](tests/integration/payment-records.test.ts), [test matrix](docs/TESTING.md), and `npm run compile:contracts && npm run verify:artifacts`. Generated `managed/night-payments/` exists after compilation and in CI, but is ignored in Git; only [managed/README.md](managed/README.md) is committed. |
-| Deployed Preview/Preprod contract and visible address | **Verified on Preprod:** the NIGHT escrow address and deployment transaction above, with the [public record](deployments/preprod/night-payment-escrow.json) and [read-only verification](docs/evidence/native-night-level-verification.json). No Preview deployment is claimed. |
-| Initial product idea | The funded bearer-link idea is the opening paragraph above. |
-| At least 5 meaningful commits and public README/setup | [Commit audit](docs/evidence/commit-audit.json) reviewed 35 substantive published commits on an ancestor of current `main`; see [history](https://github.com/ianpurif/MoneyMole/commits/main/) and [setup](#setup). |
-| Compile/deployment screenshots | **Owner placeholder:** add sanitized screenshots; the files/commands above are the current technical evidence. |
+| Toolchain and successful `compact compile` | [Pinned tools](docs/TOOLCHAIN.md), [exact command](docs/RUNBOOK.md), [current Compact source](contracts/night-payments.compact) and [scoped local verification](docs/evidence/night-escrow-verification.json). The supplied local `compile.png` shows `claim` and `fund`, exit 0. |
+| Passing test suite | [Contract tests](tests/contracts/night-runtime.mjs), [integration tests](tests/integration/payment-records.test.ts) and [verification record](docs/evidence/night-escrow-verification.json). The supplied local `test-ss.png` shows 111 passing Vitest tests at capture time; this is local/synthetic evidence, not live payment acceptance. |
+| Generated `managed/` circuits and keys | `npm run compile:contracts && npm run verify:artifacts`; [artifact instructions](managed/README.md). Generated `managed/night-payments/` contains fund/claim material locally and in CI, but is intentionally ignored by Git. |
+| Deployed contract and visible address | Preprod escrow `685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63`: [deployment record](deployments/preprod/night-payment-escrow.json), [finality check](docs/evidence/native-night-level-verification.json), [1AM Explorer](https://explorer.1am.xyz/contract/685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63). Supplied local `contract.png` shows the Explorer page, but not the full deployment transaction. |
+| Initial product idea | [What This Product Does](#what-this-product-does) is the one-paragraph idea. |
+| At least 5 meaningful commits | [Commit audit](docs/evidence/commit-audit.json) reviewed 35 substantive published commits on an earlier head; inspect [public history](https://github.com/ianpurif/MoneyMole/commits/main/). |
+| Public README and local setup | [Public repository](https://github.com/ianpurif/MoneyMole), this README and [Setup](#setup). |
+| Compile, deployment and test screenshots | Three supplied images were visually inspected at `docs/evidence/images/{compile,contract,test-ss}.png`; **publication pending** because none is tracked. Their content is bounded as described above. |
+| Public state versus private witness | [Privacy Model](#privacy-model) and [disclosure audit](docs/disclosure-audit.md) distinguish public NIGHT metadata/commitments from private bearer authority and nonce. |
 
 ## Level 2 Evidence
 
 | Requirement | Evidence and status |
 |---|---|
-| Wallet connect/disconnect | [Wallet adapter](src/lib/midnight/oneam.ts) and [picker](src/components/wallet-connect-modal.tsx) implement explicit 1AM/Lace selection and disconnect. The owner reports 1AM is accepted in place of Lace; real extension behavior still needs owner-observed evidence. |
-| Successful frontend circuit call | [Payment controller](src/lib/midnight/payments.ts) calls `fund`/`claim`; the verified escrow has two successful fund calls and one claim on Preprod ([public identifiers](docs/LEVEL-AUDIT.md#evidence-that-can-be-checked-now)). Their originating frontend/wallet session is **not independently established** by the read-only chain check. |
-| Observable privacy behavior | [Compact source](contracts/night-payments.compact) and [privacy boundary](docs/PRIVACY.md) show a private bearer authority and public commitment/nullifier. Local proofs pass; a real-wallet public-transcript disclosure review remains pending. NIGHT amounts and addresses are public. |
-| Preprod address and 8 meaningful commits | Same [deployment record](deployments/preprod/night-payment-escrow.json) and [commit audit](docs/evidence/commit-audit.json). |
-| Live demo and wallet/circuit video | **Owner placeholders:** live URL and demo video have not been supplied. |
+| Lace connect/disconnect requirement | The [wallet picker](src/components/wallet-connect-modal.tsx) and [adapter](src/lib/midnight/oneam.ts) offer explicit connect/disconnect; **1AM is the primary wallet**. Owner reports 1AM may substitute for Lace, but organizer acceptance and real extension behavior are unverified. |
+| Frontend circuit call | [Payment controller](src/lib/midnight/payments.ts) invokes `fund`/`claim`; [read-only chain evidence](docs/evidence/native-night-level-verification.json) shows two successful funds and one claim. Their MoneyMole frontend/wallet origin is unverified. |
+| Observable privacy behavior | [Compact source](contracts/night-payments.compact), [privacy explanation](docs/PRIVACY.md) and [disclosure audit](docs/disclosure-audit.md) show private bearer authority and public commitment/nullifier. Real-wallet transcript review remains pending; NIGHT amounts/addresses are public. |
+| Preprod contract address | [Deployment record](deployments/preprod/night-payment-escrow.json) and [1AM Explorer](https://explorer.1am.xyz/contract/685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63). |
+| At least 8 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
+| Public README and live demo link | [Repository](https://github.com/ianpurif/MoneyMole) and [hosted app](https://moneymole.vercel.app/) are reachable; full hosted 1AM/prover/payment flow is unverified. |
+| Wallet/circuit demo video | [Owner-supplied video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) is reachable; its content has not been reviewed against this criterion. |
 
 ## Level 3 Evidence
 
 | Requirement | Evidence and status |
 |---|---|
-| Functional privacy dApp | Send/Receive/Activity, encrypted recovery and single-use claim logic are implemented in [payments.ts](src/lib/midnight/payments.ts) and the [architecture](docs/ARCHITECTURE.md). Independent-wallet credit, spendability, replay rejection and live privacy observation remain pending; do not infer full MVP acceptance from synthetic checks. |
-| At least 3 passing tests | Local contract, unit and saved-record integration suites are documented in [TESTING](docs/TESTING.md) and [verification evidence](docs/evidence/night-escrow-verification.json). |
-| CI/CD | [Workflow](.github/workflows/ci.yml); [earlier passing run](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556); [failed run for 8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897). Check the live badge for newer commits; the failed run does not establish a passing current pipeline. |
-| Approved idea and 10 meaningful commits | [Proposal](PROPOSAL.md) exists but submission/organizer approval is **not evidenced**. The [commit audit](docs/evidence/commit-audit.json) exceeds 10 substantive published commits. |
-| Live URL, test screenshot, one-minute video | **Owner placeholders:** add the actual URL, screenshot and video when available. |
+| Functional privacy dApp | [Send/claim controller](src/lib/midnight/payments.ts), [architecture](docs/ARCHITECTURE.md) and [acceptance matrix](docs/TESTING.md) show implemented flow. Independent-wallet credit/spend, replay, recovery and live disclosure acceptance remain pending. |
+| At least 3 passing tests | [Local verification](docs/evidence/night-escrow-verification.json) and supplied local `test-ss.png` (111 passing tests at capture). Screenshot publication is pending. |
+| CI/CD workflow and passing run | [Workflow](.github/workflows/ci.yml) and [earlier passing run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551). [Latest checked run](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199) failed; current-head CI is **not green**. |
+| Approved idea from provided list | [Payment proposal](PROPOSAL.md) is a draft. Idea-list submission and organizer approval are **not evidenced**. |
+| At least 10 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
+| Public README and live URL | [Repository](https://github.com/ianpurif/MoneyMole), [hosted app](https://moneymole.vercel.app/) and [Setup](#setup); hosted payment acceptance unverified. |
+| Test-output screenshot | Supplied local `docs/evidence/images/test-ss.png` is visually reviewed but not published in Git. |
+| One-minute full-function video | [Owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) is reachable; duration and full flow unreviewed. |
+| Observer privacy explanation | [Privacy Model](#privacy-model) says what is visible and what remains client-side. |
 
 ## Level 4 Evidence
 
 | Requirement | Evidence and status |
 |---|---|
-| Working Preprod MVP | [Deployed escrow](deployments/preprod/night-payment-escrow.json) and successful on-chain fund/claim calls are real. An independently observed two-wallet link/QR claim, receiver credit/spend and recovery are still required by the [acceptance matrix](docs/TESTING.md). |
-| README, setup, usage | This README, [USAGE](docs/USAGE.md), [RUNBOOK](docs/RUNBOOK.md) and [architecture](docs/ARCHITECTURE.md). |
-| Product-repo CI and 15 meaningful commits | [Workflow](.github/workflows/ci.yml) and [commit audit](docs/evidence/commit-audit.json); run 36371511897 failed as noted above. Check any newer run separately. |
-| Hosted Preprod demo, product X profile, MVP video | **Owner placeholders:** no URL, profile or video is claimed. |
+| Working Preprod MVP and address | [Verified escrow](deployments/preprod/night-payment-escrow.json) and [observed fund/claim IDs](docs/evidence/native-night-level-verification.json) prove contract activity. The full independent Wallet A→B app flow remains unverified. |
+| README, setup and usage | This README, [Setup](#setup), [USAGE](docs/USAGE.md) and [RUNBOOK](docs/RUNBOOK.md). |
+| Product-repo CI | [Workflow](.github/workflows/ci.yml); [passing earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551); [latest checked run failed](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199). |
+| Product X profile | [@moneymolepay](https://x.com/moneymolepay) returned a page titled “MoneyMole (@moneymolepay) / X”; account control/content is not independently established. |
+| At least 15 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
+| Hosted demo and MVP video | [Hosted app](https://moneymole.vercel.app/) and [owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable; complete live flow and video content remain unreviewed. |
 
 ## Level 5 Evidence
 
 | Requirement | Evidence and status |
 |---|---|
-| Same MVP extended | Recovery, safe retry, QR, destination-bound claim and receipt controls extend the [same NIGHT flow](docs/ARCHITECTURE.md); the Level 4 independent-wallet acceptance gap carries forward. |
-| 50 verifiable Preprod users | **Owner placeholder:** [USERS.md](USERS.md) has no asserted user count or wallet list. Wallet control and unique humans require separate evidence. |
-| Feedback loop and updated documentation | **Owner placeholder:** [FEEDBACK.md](docs/FEEDBACK.md) is ready for real reports and change links. Current technical docs are linked above; no user feedback is invented. |
-| At least 20 meaningful commits, live link and demo video | [Commit audit](docs/evidence/commit-audit.json) exceeds 20; **owner placeholders** remain for URL and video. |
+| Same MVP extended | [Architecture](docs/ARCHITECTURE.md) and [USAGE](docs/USAGE.md) describe NIGHT recovery, retries, QR and receipts; live Level 4 acceptance still carries forward. |
+| 50 verifiable Preprod users and wallet-address list | An owner-supplied local CSV has 70 rows and 70 distinct Preprod-formatted wallet strings, but it is untracked and no consent, chain activity, wallet control or unique-human check is established. [USERS.md](USERS.md) records the gap; **50 verified users are not claimed**. |
+| Feedback loop | The same local CSV has 70 nonblank feedback fields. [FEEDBACK.md](docs/FEEDBACK.md) records this aggregate and the missing consented themes, product-change links and publication review. |
+| Updated documentation | [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [current audit](docs/LEVEL-AUDIT.md). |
+| At least 20 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
+| Live link and full-MVP video | [Hosted app](https://moneymole.vercel.app/) and [owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable; functional content remains unverified. |
 
 ## Level 6 Evidence
 
 | Requirement | Evidence and status |
 |---|---|
-| Same MVP extended and updated docs | Same implementation and acceptance limits as Level 5; [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [current audit](docs/LEVEL-AUDIT.md) document them. |
-| Users and feedback | The owner-supplied checklist asks for **70 total Preprod users**; [LAUNCH_USERS.md](LAUNCH_USERS.md) and [FEEDBACK.md](docs/FEEDBACK.md) are placeholders, not proof. The [public Rise In program page](https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight) instead describes **Mainnet launch and 20 real users** at Level 6. The applicable rubric needs organizer confirmation; neither target is claimed complete. |
-| Commits and CI | The stricter supplied submission checklist says **30 meaningful commits**; [commit audit](docs/evidence/commit-audit.json) reviewed 35 published substantive commits. Run 36371511897 failed; inspect the live workflow for newer results. |
-| Mainnet/hosted demo, product X, video/screenshots | **Owner placeholders:** no Mainnet deployment, hosted URL, X profile, video or screenshots are claimed. |
+| Same MVP extended | [Architecture](docs/ARCHITECTURE.md) and [USAGE](docs/USAGE.md); independent-wallet acceptance is still pending. |
+| 70 verifiable Preprod users and wallet-address list | Local CSV has 70 distinct submitted Preprod-formatted strings. [LAUNCH_USERS.md](LAUNCH_USERS.md) explains why that is **not 70 verified users** and why names/emails/addresses are withheld pending consent and independent chain/person review. |
+| Feedback loop and updated documentation | [FEEDBACK.md](docs/FEEDBACK.md) distinguishes collected raw responses from reviewed themes and shipped changes; [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [audit](docs/LEVEL-AUDIT.md) are current technical docs. |
+| At least 20 meaningful commits; stricter checklist asks for 30 | [35 substantive published commits reviewed](docs/evidence/commit-audit.json) on an earlier head; inspect [public history](https://github.com/ianpurif/MoneyMole/commits/main/). |
+| Public repository, live link and full-MVP video | [Repository](https://github.com/ianpurif/MoneyMole), [hosted app](https://moneymole.vercel.app/) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable; end-to-end content is not independently validated. |
+| Level 6 network/user rubric | Supplied checklist specifies **70 total Preprod users**; [Rise In public page](https://www.risein.com/programs/new-moon-to-full-monthly-moonshots-on-midnight) describes **Mainnet launch and 20 real users**. [Scope note](docs/LEVEL-AUDIT-SCOPE.md) records the conflict. There is no claimed Mainnet deployment or organizer ruling. |
 
 The [detailed current audit](docs/LEVEL-AUDIT.md) separates implementation, live
 chain observation, owner evidence and missing submission items. The pasted detailed
