@@ -1,6 +1,6 @@
 # MoneyMole Level 1–6 evidence audit
 
-Observed 2026-09-28. This is the current native-NIGHT audit. The earlier issuer-era
+Observed 2026-09-29. This is the current native-NIGHT audit. The earlier issuer-era
 Level verdict and `requirements.json`'s embedded `levelAudit` are historical
 snapshots; neither proves the current payment flow. The [README](../README.md#level-1-evidence)
 maps every supplied requirement. [LEVEL-AUDIT-SCOPE.md](LEVEL-AUDIT-SCOPE.md)
@@ -15,8 +15,10 @@ description. **No complete Level 1–6 submission verdict is claimed.**
 | Meaningful contract use | Read-only Preprod indexer/RPC verification found two successful `fund` calls and one successful `claim` call, with native NIGHT unshielded effects and no mint. [Scoped evidence](evidence/night-escrow-verification.json). | The chain alone cannot establish which frontend or independent people controlled the wallets, delivery of a claim link, receiver spendability, or origin recovery. |
 | Client wiring | [Default escrow](../config/preprod.json), [recovery session](../src/lib/private-state/recovery-session.ts), [payments](../src/lib/midnight/payments.ts), [wallet authorization](../src/lib/midnight/payment-session.ts). | Send funds and Receive claims; Activity reconciles read-only. Card balances are wallet reads. A post-claim transfer is a separate wallet action. |
 | Compiled contract, circuits, tests | [Compact source](../contracts/night-payments.compact), [generated-artifact instructions](../managed/README.md), [contract tests](../tests/contracts/night-runtime.mjs), [acceptance matrix](TESTING.md), [local verification](evidence/night-escrow-verification.json). | Generated circuits/keys are ignored build output, not checked-in files. Local and synthetic tests are not owner-wallet acceptance. |
-| Public repository and meaningful history | [Repository](https://github.com/ianpurif/MoneyMole), [35 reviewed substantive published commits](evidence/commit-audit.json), [current history](https://github.com/ianpurif/MoneyMole/commits/main/). | At least 110 total local commits preceded this documentation change; a raw total alone is not a meaningful-commit count. The 35-commit audit covers an ancestor of current `main`. |
-| CI | [Workflow](../.github/workflows/ci.yml), [older successful run](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556), [failed run for 8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897). | Run 36371511897 failed in its browser security/synthetic authorization step. Its earlier steps passed; inspect the live workflow for newer commits. The exact log-level cause is not asserted here. |
+| Public repository and meaningful history | [Repository](https://github.com/ianpurif/MoneyMole), [35 reviewed substantive published commits](evidence/commit-audit.json), [current history](https://github.com/ianpurif/MoneyMole/commits/main/). | A raw total alone is not a meaningful-commit count. The 35-commit audit covers an ancestor of current `main`. |
+| CI | [Workflow](../.github/workflows/ci.yml), [passing earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551), [latest checked failed run](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199). | Run 36555725199 for `3682a78` failed at “Check preparation utilities and evidence references.” No current-head green CI is claimed. |
+| Submission links supplied 2026-09-29 | [Hosted app](https://moneymole.vercel.app/), [@moneymolepay](https://x.com/moneymolepay), [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing). | Each page returned HTTP 200. Hosted wallet/payment function, X account control and video duration/content were not independently reviewed. |
+| Local owner-supplied media and survey | `docs/evidence/images/{compile,contract,test-ss}.png`; local feedback CSV named `MoneyMole User Feedback & Review (Responses) - Form Responses 1.csv`. | Images were visually inspected; they and the CSV are untracked and absent from the public repository. The CSV contains 70 rows and 70 distinct Preprod-formatted wallet strings with nonblank feedback, not 70 verified users. Keep names/emails/responses private pending consent and review. |
 
 For direct Preprod interaction lookup, finalized successful funding transaction
 identifiers are `00a9c82b3cad1746ca59694c02277a08b33467e552b47a6e041ab8a5743812d7ea`
@@ -35,8 +37,11 @@ Node 22/npm, Docker, Compact 0.31.1, current NIGHT source, local generated
 fund/claim circuits/keys, tests, a finalized Preprod deployment, initial idea,
 public README/setup and more than five reviewed meaningful commits have evidence
 above and in [TOOLCHAIN](TOOLCHAIN.md). The generated files are reproducible rather
-than tracked. **Owner placeholder:** compile and deployment screenshots. The
-submission checklist remains incomplete until those are supplied and reviewed.
+than tracked. Owner-supplied local `compile.png` shows both circuits and exit 0;
+`contract.png` shows the Preprod 1AM Explorer contract page but not the deployment
+transaction. Both images need public publication before they serve as submission
+links. The [deployment record](../deployments/preprod/night-payment-escrow.json)
+provides the exact finalized transaction independently of the screenshot.
 
 ## Level 2 — frontend and privacy observation incomplete
 
@@ -45,8 +50,10 @@ The explicit [1AM/Lace picker](../src/components/wallet-connect-modal.tsx) and
 owner reports 1AM acceptance in place of the supplied Lace wording. Contract
 fund/claim calls exist, but read-only chain records do not identify the originating
 frontend session. Private bearer authority, public note/nullifier and local proofs
-are inspectable; a real wallet/public-transcript observation is pending. **Owner
-placeholders:** hosted link and connection/circuit video. Native NIGHT amounts and
+are inspectable; a real wallet/public-transcript observation is pending. The
+[hosted link](https://moneymole.vercel.app/) and
+[video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing)
+are reachable, but their actual wallet/circuit content is unreviewed. Native NIGHT amounts and
 addresses are public; no hidden-value claim is made. The 8-commit threshold is met
 by the older reviewed history.
 
@@ -58,8 +65,9 @@ pass locally, and an older remote CI run passed. A complete independent-wallet
 payment, receiver spend, replay rejection, recovery and disclosure observation is
 not evidenced. Current-head CI failed as shown above. [PROPOSAL.md](../PROPOSAL.md)
 is a draft; no organizer idea-list submission or approval is evidenced. The
-10-commit threshold is met. **Owner placeholders:** live URL, test screenshot and
-one-minute video.
+10-commit threshold is met. The [live URL](https://moneymole.vercel.app/) is reachable;
+the local `test-ss.png` shows 111 passing Vitest cases at capture but is not public.
+The [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) is reachable; one-minute length and full flow are unreviewed.
 
 ## Level 4 — real escrow activity, MVP proof incomplete
 
@@ -67,17 +75,21 @@ The deployed Preprod escrow and fund/claim actions are real. This does not yet
 establish the complete live MVP: independent Wallet B credit/spend, link/QR
 delivery, reload/import and replay checks remain in the [acceptance matrix](TESTING.md).
 README, [setup](RUNBOOK.md) and [usage](USAGE.md) exist. The CI workflow exists,
-but run 36371511897 failed; check newer runs separately. The 15-commit threshold
-is met. **Owner placeholders:**
-hosted Preprod demo, product X profile and MVP video.
+but the latest checked run 36555725199 failed; check newer runs separately. The
+15-commit threshold is met. The [hosted app](https://moneymole.vercel.app/),
+[X profile](https://x.com/moneymolepay) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable, but reachability
+does not establish a working hosted Preprod MVP or that the video shows it.
 
 ## Level 5 — user and feedback evidence pending
 
 The same NIGHT flow has recovery, QR, destination-binding, receipt and safe-retry
 extensions. Its Level 4 live-acceptance gap carries forward. The 20-commit threshold
-is met. [USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md) are empty evidence
-templates: no 50-user count, verifiable wallet roster, feedback loop or change
-attribution is claimed. **Owner placeholders:** hosted URL and demo video.
+is met. The owner-supplied local CSV contains 70 rows, 70 distinct submitted
+Preprod-formatted wallet strings and 70 nonblank feedback fields. It does not prove
+wallet activity, independent people, consent to public roster release or a
+feedback-to-shipped-change loop. [USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md)
+record those boundaries. The [hosted URL](https://moneymole.vercel.app/) and
+[video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are supplied and reachable; their full-MVP content is unreviewed.
 
 ## Level 6 — rubric conflict and external evidence pending
 
@@ -86,9 +98,10 @@ meaningful commits. The public [Rise In program page](https://www.risein.com/pro
 describes a Mainnet launch and 20 real users instead. Organizer confirmation is
 needed before treating either user/network interpretation as the final rubric.
 The reviewed 35 substantive published commits exceed the stricter supplied
-commit threshold; no user cohort, feedback loop, Mainnet deployment or hosted
-launch is claimed. [LAUNCH_USERS.md](../LAUNCH_USERS.md) is a placeholder. **Owner
-placeholders:** live link, product X, screenshots and video.
+commit threshold; no verified user cohort, feedback-to-change loop or Mainnet
+deployment is claimed. [LAUNCH_USERS.md](../LAUNCH_USERS.md) records the local
+CSV's limits. The [live link](https://moneymole.vercel.app/), [product X](https://x.com/moneymolepay) and
+[video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are supplied and reachable. Screenshots remain local/unpublished.
 
 ## Privacy and next independent observations
 

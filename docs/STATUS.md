@@ -1,4 +1,4 @@
-# Current MoneyMole status — 2026-09-28
+# Current MoneyMole status — 2026-09-29
 
 This page describes the native NIGHT application on current `main`. Older
 issuer-era status reports, UX checkpoints and their bounded checks remain in Git
@@ -63,19 +63,25 @@ approval. `npm run doctor` reported the auxiliary Codex CLI unavailable inside
 WSL while Node, npm, Docker, Compose and Compact checks passed; this is not a
 payment failure.
 
-The published [engineering workflow](../.github/workflows/ci.yml) has an
-[earlier successful run](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556).
-Its [run 36371511897 for 8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897)
-**failed in the browser security/synthetic authorization step** after earlier
-steps passed. Check the live workflow for newer commits before calling CI green.
-The exact log-level cause is not established by the public jobs summary.
+The published [engineering workflow](../.github/workflows/ci.yml) has a
+[successful earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551).
+The latest checked [run 36555725199 for `3682a78`](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
+**failed** at “Check preparation utilities and evidence references.” The current
+published head has no passing-CI claim. Check later runs separately.
 
 Unobserved acceptance: actual 1AM approval from two independent wallets,
 MoneyMole-origin funding/claim, receiver credit/spendability, failed replay,
-reload/import recovery and public-transcript disclosure review. External
-submission items are also pending: organizer idea approval, hosted demo, video,
-screenshots, product X profile, consented user/wallet evidence and actual user
-feedback. Their [placeholders](../USERS.md) are not verification. Rise In's public
+reload/import recovery and public-transcript disclosure review. The owner supplied
+a [hosted app](https://moneymole.vercel.app/), [X profile](https://x.com/moneymolepay),
+and [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing); all returned HTTP 200 on 2026-09-29.
+That does not verify the hosted wallet/prover/payment journey or the video's
+content. Three local screenshots were inspected but are untracked. An untracked
+owner-supplied CSV has 70 rows, distinct Preprod-formatted wallet strings and
+nonblank feedback fields; it does not verify 70 people or chain activity, and
+private responses/identities must not be published without consent. See
+[USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md). Organizer idea approval,
+public screenshot publication, verified user cohort and a documented
+feedback-to-change loop remain pending. Rise In's public
 Level 6 Mainnet/20-user summary conflicts with the supplied Preprod/70-user
 checklist; see [scope](LEVEL-AUDIT-SCOPE.md).
 
