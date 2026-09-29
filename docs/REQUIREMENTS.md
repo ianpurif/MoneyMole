@@ -75,7 +75,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | L4-DOCS | Setup and implemented usage documentation | implemented | L1-DOCS | Documentation matches actual wallet, link, claim and recovery behavior. |
 | L4-PIPELINE | Product repository pipeline | implemented | L3-CI | Successful actual run in the supplied product repository is recorded. |
 | L4-ADDRESS | Verified product address | verified | L2-PREPROD | Current default NIGHT escrow address matches finalized deployed source/build and observed contract calls; independent payment history/recovery acceptance is separate. |
-| L4-X | Owner-supplied product X reference | owner_pending | None | Record only a supplied and externally checked product profile reference. |
+| L4-X | Owner-supplied product X reference | verified | None | Record only a supplied and externally checked product profile reference. |
 | L4-COMMITS | Fifteen meaningful owner commits | verified | None | Inspect at least 15 substantive authorized development commits. |
 
 ## Level 5
@@ -102,7 +102,7 @@ Engineering readiness and challenge qualification are separate. No score is infe
 | ID | Requirement | State | Dependencies | Acceptance |
 |---|---|---|---|---|
 | META-PUBLIC-REPO | Public repository | implemented | None | Owner-supplied repository URL is independently checked for public access. |
-| META-APP-URL | Verified application URL when supplied | owner_pending | None | Only record an actual supplied and checked application URL. |
+| META-APP-URL | Verified application URL when supplied | verified | None | Only record an actual supplied and checked application URL. |
 
 ## Source conflicts and external decisions
 

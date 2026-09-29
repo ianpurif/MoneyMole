@@ -7533,12 +7533,29 @@
       "level": "Level 4",
       "title": "Owner-supplied product X reference",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Record only a supplied and externally checked product profile reference.",
-      "commands": [],
-      "evidence": [],
-      "progress": "Owner deferred on 2026-09-27; excluded from current audit verdict, not satisfied for a complete future submission."
+      "commands": [
+        "GET https://x.com/moneymolepay and inspect HTTP status and page title"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "owner_supplied_X_profile_URL_reachability_and_page_title_only",
+          "command": "GET https://x.com/moneymolepay and inspect HTTP status and page title",
+          "path": "docs/evidence/submission-urls-2026-09-29.json",
+          "sha256": "33d2e8db8d64d6b1819013d7d61f7c9181a39f16d265f8073f9fc901cd00df72",
+          "observedAt": "2026-09-29T11:15:32Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/submission-urls-2026-09-29.json",
+              "sha256": "33d2e8db8d64d6b1819013d7d61f7c9181a39f16d265f8073f9fc901cd00df72"
+            }
+          ]
+        }
+      ],
+      "progress": "Owner supplied X URL; HTTP 200 and matching MoneyMole page title checked on 2026-09-29. Account control and profile content are outside this narrow result."
     },
     {
       "id": "L4-COMMITS",
@@ -9051,11 +9068,29 @@
       "level": "External metadata",
       "title": "Verified application URL when supplied",
       "owner": "owner",
-      "status": "owner_pending",
+      "status": "verified",
       "dependsOn": [],
       "acceptance": "Only record an actual supplied and checked application URL.",
-      "commands": [],
-      "evidence": []
+      "commands": [
+        "GET https://moneymole.vercel.app/ and inspect HTTP status and page title"
+      ],
+      "evidence": [
+        {
+          "result": "passed",
+          "scope": "owner_supplied_hosted_application_URL_reachability_and_page_title_only",
+          "command": "GET https://moneymole.vercel.app/ and inspect HTTP status and page title",
+          "path": "docs/evidence/submission-urls-2026-09-29.json",
+          "sha256": "33d2e8db8d64d6b1819013d7d61f7c9181a39f16d265f8073f9fc901cd00df72",
+          "observedAt": "2026-09-29T11:15:32Z",
+          "subjects": [
+            {
+              "path": "docs/evidence/submission-urls-2026-09-29.json",
+              "sha256": "33d2e8db8d64d6b1819013d7d61f7c9181a39f16d265f8073f9fc901cd00df72"
+            }
+          ]
+        }
+      ],
+      "progress": "Owner supplied hosted URL; HTTP 200 and matching MoneyMole page title checked on 2026-09-29. Hosted wallet/prover/payment function remains unverified."
     },
     {
       "id": "ARCH-STACK",

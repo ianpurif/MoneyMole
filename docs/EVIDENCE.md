@@ -25,9 +25,14 @@ of 50/70 qualifying users. Idea approval
 is still unsupplied. `requirements.json`'s embedded `levelAudit` is a historical
 pre-NIGHT snapshot; its engineering
 requirement states remain source-bound and are distinct from this submission audit.
-The generated [REQUIREMENTS.md](REQUIREMENTS.md) still reflects older
-`owner_pending` metadata for the hosted URL and X; it cannot be manually amended
-without changing its JSON source, which this Markdown-only pass does not do.
+The generated [REQUIREMENTS.md](REQUIREMENTS.md) now records the owner-supplied
+hosted URL and X reference as **verified only for HTTP reachability and matching
+page title**, using [dated URL evidence](evidence/submission-urls-2026-09-29.json).
+This does not verify hosted wallet/payment behavior or X account control.
+Fresh [Compact compile](evidence/submission-compact-revalidation.json) and
+[proposal/deployment](evidence/submission-proposal-revalidation.json) records
+replace stale subject bindings in the authoritative JSON; local
+`requirements:check` and `check:offline` pass after that revalidation.
 
 ## Current NIGHT evidence boundary
 

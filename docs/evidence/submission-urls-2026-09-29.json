@@ -1,0 +1,22 @@
+{
+  "result": "passed",
+  "scope": "owner_supplied_public_URL_reachability_and_page_identity_only",
+  "observedAt": "2026-09-29T11:15:32Z",
+  "method": "HTTP GET with redirects; inspect response status and HTML title",
+  "checks": [
+    {
+      "url": "https://moneymole.vercel.app/",
+      "status": 200,
+      "title": "MoneyMole | Private payments"
+    },
+    {
+      "url": "https://x.com/moneymolepay",
+      "status": 200,
+      "title": "MoneyMole (@moneymolepay) / X"
+    }
+  ],
+  "limitations": [
+    "Reachability and page title do not verify a working hosted 1AM/prover/NIGHT payment flow.",
+    "The X page title does not independently establish account control, ongoing availability or organizer eligibility."
+  ]
+}
