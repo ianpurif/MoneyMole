@@ -16,7 +16,7 @@ description. **No complete Level 1–6 submission verdict is claimed.**
 | Client wiring | [Default escrow](../config/preprod.json), [recovery session](../src/lib/private-state/recovery-session.ts), [payments](../src/lib/midnight/payments.ts), [wallet authorization](../src/lib/midnight/payment-session.ts). | Send funds and Receive claims; Activity reconciles read-only. Card balances are wallet reads. A post-claim transfer is a separate wallet action. |
 | Compiled contract, circuits, tests | [Compact source](../contracts/night-payments.compact), [generated-artifact instructions](../managed/README.md), [contract tests](../tests/contracts/night-runtime.mjs), [acceptance matrix](TESTING.md), [local verification](evidence/night-escrow-verification.json). | Generated circuits/keys are ignored build output, not checked-in files. Local and synthetic tests are not owner-wallet acceptance. |
 | Public repository and meaningful history | [Repository](https://github.com/ianpurif/MoneyMole), [35 reviewed substantive published commits](evidence/commit-audit.json), [current history](https://github.com/ianpurif/MoneyMole/commits/main/). | A raw total alone is not a meaningful-commit count. The 35-commit audit covers an ancestor of current `main`. |
-| CI | [Workflow](../.github/workflows/ci.yml), [passing earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551), [latest checked failed run](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199). | Run 36555725199 for `3682a78` failed at “Check preparation utilities and evidence references.” No current-head green CI is claimed. |
+| CI | [Workflow](../.github/workflows/ci.yml), [passing run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680), [fresh evidence bindings](evidence/submission-compact-revalidation.json). | Run 36560770680 passed for `f30cfbb`, including artifacts, preparation/evidence, lint/typecheck, deterministic/contract/integration, build, browser and requirement consistency. It does not prove live 1AM acceptance. |
 | Submission links supplied 2026-09-29 | [Hosted app](https://moneymole.vercel.app/), [@moneymolepay](https://x.com/moneymolepay), [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing). | Each page returned HTTP 200. Hosted wallet/payment function, X account control and video duration/content were not independently reviewed. |
 | Owner-supplied media and survey | [Compile](evidence/images/compile.png), [contract](evidence/images/contract.png) and [test](evidence/images/test-ss.png) screenshots; local feedback CSV named `MoneyMole User Feedback & Review (Responses) - Form Responses 1.csv`. | Images were visually inspected and committed as public evidence. The CSV remains untracked/private. Its 70 rows and 70 distinct Preprod-formatted wallet strings with nonblank feedback are not 70 verified users. Keep names/emails/responses private pending consent and review. |
 
@@ -63,7 +63,7 @@ Send/Receive/Activity, encrypted recovery, safe retries and the one-time claim
 circuits are implemented. More than three deterministic/contract/integration tests
 pass locally, and an older remote CI run passed. A complete independent-wallet
 payment, receiver spend, replay rejection, recovery and disclosure observation is
-not evidenced. Current-head CI failed as shown above. [PROPOSAL.md](../PROPOSAL.md)
+not evidenced. The product-repo CI run passed as shown above. [PROPOSAL.md](../PROPOSAL.md)
 is a draft; no organizer idea-list submission or approval is evidenced. The
 10-commit threshold is met. The [live URL](https://moneymole.vercel.app/) is reachable;
 the [test screenshot](evidence/images/test-ss.png) shows 111 passing Vitest cases at capture.
@@ -74,9 +74,9 @@ The [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUK
 The deployed Preprod escrow and fund/claim actions are real. This does not yet
 establish the complete live MVP: independent Wallet B credit/spend, link/QR
 delivery, reload/import and replay checks remain in the [acceptance matrix](TESTING.md).
-README, [setup](RUNBOOK.md) and [usage](USAGE.md) exist. The CI workflow exists,
-but the latest checked run 36555725199 failed; check newer runs separately. The
-15-commit threshold is met. The [hosted app](https://moneymole.vercel.app/),
+README, [setup](RUNBOOK.md) and [usage](USAGE.md) exist. The CI workflow and
+[passing run](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680)
+are public. The 15-commit threshold is met. The [hosted app](https://moneymole.vercel.app/),
 [X profile](https://x.com/moneymolepay) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable, but reachability
 does not establish a working hosted Preprod MVP or that the video shows it.
 

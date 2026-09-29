@@ -64,10 +64,10 @@ WSL while Node, npm, Docker, Compose and Compact checks passed; this is not a
 payment failure.
 
 The published [engineering workflow](../.github/workflows/ci.yml) has a
-[successful earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551).
-The latest checked [run 36555725199 for `3682a78`](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
-**failed** at “Check preparation utilities and evidence references.” The current
-published head has no passing-CI claim. Check later runs separately.
+[passing run 36560770680 for `f30cfbb`](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680).
+Its Compact/artifact, evidence, lint/typecheck, unit/contract/integration,
+production build, browser and requirement-consistency steps all passed.
+This is engineering CI, not owner-wallet payment acceptance.
 
 Unobserved acceptance: actual 1AM approval from two independent wallets,
 MoneyMole-origin funding/claim, receiver credit/spendability, failed replay,

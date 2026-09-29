@@ -97,8 +97,8 @@ wallet/prover/payment journey and review the video against each claimed Level;
 page reachability alone does not pass acceptance. Three technical screenshots
 are [published](evidence/images/compile.png). The local feedback CSV needs consented,
 independently checked user evidence and feedback-to-change attribution before a
-50/70-user or completed-loop claim. The latest checked
-[CI run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
-failed; inspect any later run before claiming a passing current pipeline.
+50/70-user or completed-loop claim. [CI run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680)
+passed for `f30cfbb`; it is engineering verification, not a two-wallet Preprod
+payment observation.
 The [Level audit](LEVEL-AUDIT.md) lists the remaining evidence without assuming
 organizer approval.

@@ -244,8 +244,14 @@ No stock imagery, third-party runtime resources, tracking, fonts or endorsement 
   consent to publish or feedback-driven product changes. No raw personal data
   was copied into the public docs.
 - https://github.com/ianpurif/MoneyMole/actions/runs/36528158551 passed on
-  `5523e4f`. The latest checked run,
+  `5523e4f`. A later run,
   https://github.com/ianpurif/MoneyMole/actions/runs/36555725199, completed with
   failure for `3682a78`; GitHub's public jobs API identifies “Check preparation
   utilities and evidence references” as the failed step. Neither run proves a
   later documentation commit's CI outcome.
+- https://github.com/ianpurif/MoneyMole/actions/runs/36560770680 completed
+  successfully for `f30cfbb` after the stale Compact/proposal evidence bindings
+  were revalidated. GitHub's public jobs API shows passed artifact, evidence,
+  lint/typecheck, deterministic/contract/integration, build, browser and
+  requirement-consistency steps. This remains synthetic engineering CI, not
+  live owner-wallet acceptance.

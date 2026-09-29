@@ -13,10 +13,8 @@ the owner-supplied detailed checklist, uses the stricter 30-commit Level 6
 threshold and distinguishes its Preprod/70-user wording from Rise In's public
 Mainnet/20-user summary. [Commit audit](evidence/commit-audit.json) reviewed 35
 substantive published commits on an ancestor of current `main`. The [public
-repository](https://github.com/ianpurif/MoneyMole) and a [passing earlier CI run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551)
-are verifiable; [latest checked run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
-failed at “Check preparation utilities and evidence references.” A past pass does
-not make current-head CI green. The owner-supplied [hosted URL](https://moneymole.vercel.app/),
+repository](https://github.com/ianpurif/MoneyMole) and [passing CI run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680)
+for `f30cfbb` are verifiable. The owner-supplied [hosted URL](https://moneymole.vercel.app/),
 [X profile](https://x.com/moneymolepay) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing)
 returned HTTP 200 on 2026-09-29. Their deeper functional/content requirements
 remain unreviewed. Three inspected [screenshots](evidence/images/compile.png)

@@ -65,11 +65,11 @@ across client navigation, and uses a centered, fixed-height wallet card with int
 scrolling. Full reloads still need an explicit **Connect Wallet** action because connector v4
 has no passive restore API. Private records retain their separate automatic lock.
 
-[Run 36528158551](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551)
-passed for an earlier revision. The latest checked
-[run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
-for `3682a78` **failed** at “Check preparation utilities and evidence references”;
-the current published head therefore has no passing CI claim. Local build,
+[Run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680)
+**passed** for published commit `f30cfbb`, including Compact artifacts, the
+evidence ledger, lint, typecheck, deterministic/contract/integration suites,
+production build and browser security/synthetic authorization. It does not
+establish owner-wallet payment acceptance. Local build,
 proving, browser connectivity and read-only deployment
 checks passed in [the scoped verification record](docs/evidence/night-escrow-verification.json).
 Independent-wallet credit/spend/recovery and private-link delivery still require
@@ -116,7 +116,7 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 |---|---|
 | Functional privacy dApp | [Send/claim controller](src/lib/midnight/payments.ts), [architecture](docs/ARCHITECTURE.md) and [acceptance matrix](docs/TESTING.md) show implemented flow. Independent-wallet credit/spend, replay, recovery and live disclosure acceptance remain pending. |
 | At least 3 passing tests | [Local verification](docs/evidence/night-escrow-verification.json) and [test screenshot](docs/evidence/images/test-ss.png) (111 passing tests at capture). |
-| CI/CD workflow and passing run | [Workflow](.github/workflows/ci.yml) and [earlier passing run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551). [Latest checked run](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199) failed; current-head CI is **not green**. |
+| CI/CD workflow and passing run | [Workflow](.github/workflows/ci.yml) and [passed run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680) for `f30cfbb`; synthetic CI is separate from owner-wallet acceptance. |
 | Approved idea from provided list | [Payment proposal](PROPOSAL.md) is a draft. Idea-list submission and organizer approval are **not evidenced**. |
 | At least 10 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
 | Public README and live URL | [Repository](https://github.com/ianpurif/MoneyMole), [hosted app](https://moneymole.vercel.app/) and [Setup](#setup); hosted payment acceptance unverified. |
@@ -130,7 +130,7 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 |---|---|
 | Working Preprod MVP and address | [Verified escrow](deployments/preprod/night-payment-escrow.json) and [observed fund/claim IDs](docs/evidence/native-night-level-verification.json) prove contract activity. The full independent Wallet A→B app flow remains unverified. |
 | README, setup and usage | This README, [Setup](#setup), [USAGE](docs/USAGE.md) and [RUNBOOK](docs/RUNBOOK.md). |
-| Product-repo CI | [Workflow](.github/workflows/ci.yml); [passing earlier run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551); [latest checked run failed](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199). |
+| Product-repo CI | [Workflow](.github/workflows/ci.yml) and [passed run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680) for `f30cfbb`. |
 | Product X profile | [@moneymolepay](https://x.com/moneymolepay) returned a page titled “MoneyMole (@moneymolepay) / X”; account control/content is not independently established. |
 | At least 15 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
 | Hosted demo and MVP video | [Hosted app](https://moneymole.vercel.app/) and [owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable; complete live flow and video content remain unreviewed. |
