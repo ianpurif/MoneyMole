@@ -215,3 +215,34 @@ imagery, third-party runtime resources, tracking, fonts or endorsement assets ad
   steps in that run passed; the exact browser-log cause was not established by
   the public jobs API. Inspect the live workflow for any newer run; these dated
   results do not establish its outcome.
+
+## Owner-supplied submission resources — checked 2026-09-29
+
+- https://moneymole.vercel.app/ returned HTTP 200 with the title “MoneyMole |
+  Private payments.” This checks a reachable hosted page, not wallet/prover access
+  or an end-to-end NIGHT transfer there.
+- https://x.com/moneymolepay returned HTTP 200 with the title “MoneyMole
+  (@moneymolepay) / X.” This does not independently establish account control or
+  any particular profile content.
+- https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing
+  returned HTTP 200 with the page title `moneymole_demovid.mp4 - Google Drive`.
+  Video playback, duration and depicted actions were not reviewed.
+- https://explorer.1am.xyz/contract/685d5f51be99ac8cb2f56d82c806aa92bcbd93ffe74137b409efd5724b9adc63
+  returned HTTP 200. The supplied local `contract.png` shows that 1AM Explorer
+  contract page on Preprod, including a claim action; the read-only deployment
+  record and chain verifier remain the source for finalized deployment identity.
+- Local, untracked `docs/evidence/images/compile.png` was inspected and shows
+  successful direct Compact compilation of the current `claim`/`fund` circuits
+  and listed verifier files. `test-ss.png` shows 111 passing Vitest tests at
+  capture. None of these images is yet a public repository link.
+- The untracked local owner-supplied feedback CSV has 70 rows, 70 distinct
+  `mn_addr_preprod1`-prefixed wallet strings and 70 nonblank feedback fields.
+  Syntax and survey data do not prove chain activity, independent people,
+  consent to publish or feedback-driven product changes. No raw personal data
+  was copied into the public docs.
+- https://github.com/ianpurif/MoneyMole/actions/runs/36528158551 passed on
+  `5523e4f`. The latest checked run,
+  https://github.com/ianpurif/MoneyMole/actions/runs/36555725199, completed with
+  failure for `3682a78`; GitHub's public jobs API identifies “Check preparation
+  utilities and evidence references” as the failed step. Neither run proves a
+  later documentation commit's CI outcome.

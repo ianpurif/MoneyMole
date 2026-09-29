@@ -42,8 +42,9 @@ No organizer approval or verifiable idea-list entry has been supplied for this
 payment product. This file is a draft; it does not establish submission or approval.
 The owner must submit it and provide the organizer's decision and applicable
 idea-list reference. Do not change the product to imply eligibility.
-The current Level audit includes user and feedback requirements as unfilled owner
-placeholders. Its Level 6 network/user criteria conflict with the public program
+The current [Level audit](docs/LEVEL-AUDIT.md) records the newly supplied survey
+as raw, private evidence, without treating it as verified users or a shipped
+feedback loop. Its Level 6 network/user criteria conflict with the public program
 page; no organizer ruling is inferred. The stricter supplied 30-commit threshold
 is used for the history check.
 

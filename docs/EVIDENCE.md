@@ -7,20 +7,26 @@ an old pass from automatically surviving source edits; it is not a substitute fo
 technical review of what the command actually proved.
 
 Technical readiness does not establish organizer eligibility, wallet control,
-unique humans or user feedback. The current [Level audit](LEVEL-AUDIT.md) applies
+unique humans or a completed feedback loop. The current
+[Level audit](LEVEL-AUDIT.md) applies
 the owner-supplied detailed checklist, uses the stricter 30-commit Level 6
 threshold and distinguishes its Preprod/70-user wording from Rise In's public
 Mainnet/20-user summary. [Commit audit](evidence/commit-audit.json) reviewed 35
 substantive published commits on an ancestor of current `main`. The [public
-repository](https://github.com/ianpurif/MoneyMole) and an [older passing CI run](https://github.com/ianpurif/MoneyMole/actions/runs/36319963556)
-are verifiable; [run 36371511897 for 8e12329](https://github.com/ianpurif/MoneyMole/actions/runs/36371511897)
-failed at its browser security/synthetic authorization step. Check newer runs
-through the live workflow; the older pass does not prove a newer commit is green.
-Videos, hosted URL, screenshots, X,
-users/wallet roster, feedback and idea approval are unfilled requirements or owner
-placeholders, not exclusions that can be called passed. `requirements.json`'s
-embedded `levelAudit` is a historical pre-NIGHT snapshot; its engineering
+repository](https://github.com/ianpurif/MoneyMole) and a [passing earlier CI run](https://github.com/ianpurif/MoneyMole/actions/runs/36528158551)
+are verifiable; [latest checked run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
+failed at “Check preparation utilities and evidence references.” A past pass does
+not make current-head CI green. The owner-supplied [hosted URL](https://moneymole.vercel.app/),
+[X profile](https://x.com/moneymolepay) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing)
+returned HTTP 200 on 2026-09-29. Their deeper functional/content requirements
+remain unreviewed. Three inspected screenshots and a 70-row feedback CSV are
+local, untracked and not public proof of 50/70 qualifying users. Idea approval
+is still unsupplied. `requirements.json`'s embedded `levelAudit` is a historical
+pre-NIGHT snapshot; its engineering
 requirement states remain source-bound and are distinct from this submission audit.
+The generated [REQUIREMENTS.md](REQUIREMENTS.md) still reflects older
+`owner_pending` metadata for the hosted URL and X; it cannot be manually amended
+without changing its JSON source, which this Markdown-only pass does not do.
 
 ## Current NIGHT evidence boundary
 
@@ -81,8 +87,9 @@ identity remains a separate trusted private attestation. Keep the manifest outsi
 Owner/organizer approval of this trust basis remains pending. Retain the explicit
 wallet/human distinction. The supplied Level 5 target is 50 real Preprod
 participants and the supplied Level 6 target is 70 total; Rise In's public Level 6
-description differs. Neither target is completed by this utility alone. See
-[USERS.md](../USERS.md) and [LAUNCH_USERS.md](../LAUNCH_USERS.md) placeholders.
+description differs. The 70 submitted wallet strings in the local CSV were not
+run through this validator and are not a verified cohort. See [USERS.md](../USERS.md)
+and [LAUNCH_USERS.md](../LAUNCH_USERS.md).
 Never disclose private payment relationships to meet an evidence target.
 
 ## Meaningful history

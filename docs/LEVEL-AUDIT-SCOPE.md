@@ -1,4 +1,4 @@
-# Level audit sources and owner-supplied checklist — 2026-09-28
+# Level audit sources and owner-supplied checklist — 2026-09-29
 
 The detailed Level 1–6 checklist below was supplied by the owner in the pasted
 team prompt. It is reproduced for traceability, not treated as a command to
@@ -12,11 +12,13 @@ owner-supplied text itself also has a 20-commit requirement and a stricter
 interpretations and uses 30 for the commit threshold without claiming an
 organizer decision on the network/user conflict.
 
-No video, screenshot, live deployment link, X profile, wallet/user roster or
-feedback is counted without actual evidence. The owner requested placeholders
-for these items; they remain submission requirements where the rubric calls for
-them. 1AM is the primary wallet, and the owner reports judge acceptance in place
-of Lace. Actual extension acceptance still needs observation. Published history
+The owner has now supplied a hosted link, X profile, video page, three local
+screenshots and a local 70-response CSV. Reachable URLs, images and submitted
+wallet strings are recorded at their actual scope in the [audit](LEVEL-AUDIT.md);
+none by itself proves a working hosted payment, a complete demo, 50/70 users or
+consent to publish personal data. 1AM is the primary wallet, and the owner reports
+judge acceptance in place of Lace. Actual extension acceptance still needs
+observation. Published history
 and real Preprod contract activity are checked separately from synthetic tests.
 Non-sensitive commits and pushes are owner-authorized; wallet approvals, issuance
 and new live transactions remain owner actions.

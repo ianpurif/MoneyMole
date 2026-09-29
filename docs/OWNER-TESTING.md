@@ -91,9 +91,14 @@ deploy check do not prove the full two-wallet journey.
 
 ## Submission boundary
 
-Only completed observations count. Add hosted-demo, screenshots, video, product
-X, user/wallet roster and feedback links to the [README evidence map](../README.md#level-1-evidence)
-after the owner supplies and reviews them. Run 36371511897 failed in its browser
-step; inspect any newer workflow run before claiming a passing pipeline. The
-[Level audit](LEVEL-AUDIT.md)
-lists the remaining evidence without assuming organizer approval.
+Only completed observations count. The [README evidence map](../README.md#level-1-evidence)
+now links the supplied hosted app, X profile and video page. Verify the hosted
+wallet/prover/payment journey and review the video against each claimed Level;
+page reachability alone does not pass acceptance. Three locally inspected
+screenshots still need publication. The local feedback CSV needs consented,
+independently checked user evidence and feedback-to-change attribution before a
+50/70-user or completed-loop claim. The latest checked
+[CI run 36555725199](https://github.com/ianpurif/MoneyMole/actions/runs/36555725199)
+failed; inspect any later run before claiming a passing current pipeline.
+The [Level audit](LEVEL-AUDIT.md) lists the remaining evidence without assuming
+organizer approval.
