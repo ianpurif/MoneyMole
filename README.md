@@ -1,6 +1,6 @@
 # MoneyMole
 
-[![Engineering verification](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml/badge.svg)](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml)
+[![CI: Engineering verification](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml/badge.svg)](https://github.com/ianpurif/MoneyMole/actions/workflows/ci.yml)
 
 **Sender-funded native NIGHT payment links on Midnight Preprod, using 1AM.**
 Wallet A escrows NIGHT, shares a bearer link or local QR, and independent Wallet B
