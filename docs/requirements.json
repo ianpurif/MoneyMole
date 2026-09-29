@@ -1457,7 +1457,7 @@
           "scope": "dependency_free_utility_tests_and_tracked_source_foundation",
           "command": "npm run test:boilerplate; node --check scripts/offline.mjs; git ls-files",
           "path": "docs/evidence/ci-source-foundation-verification.json",
-          "sha256": "b5769c23b281e0e18dfd941063c64345d77b6cf450b1727389213b53d8f160be",
+          "sha256": "12302298369091378ce951a35a4227d6a4ce2e74a9d45884b47a5f4e9aaca015",
           "observedAt": "2026-09-29T12:30:09.522Z",
           "subjects": [
             {
