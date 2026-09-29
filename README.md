@@ -98,6 +98,10 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 | Compile, deployment and test screenshots | [Compile](docs/evidence/images/compile.png), [contract page](docs/evidence/images/contract.png) and [tests](docs/evidence/images/test-ss.png) are committed. The contract screenshot does not show the deployment transaction; use the record above for that identifier. |
 | Public state versus private witness | [Privacy Model](#privacy-model) and [disclosure audit](docs/disclosure-audit.md) distinguish public NIGHT metadata/commitments from private bearer authority and nonce. |
 
+![Compact compile output listing the claim and fund circuits](docs/evidence/images/compile.png)
+
+![Preprod NIGHT escrow contract page in 1AM Explorer](docs/evidence/images/contract.png)
+
 ## Level 2 Evidence
 
 | Requirement | Evidence and status |
@@ -123,6 +127,8 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 | Test-output screenshot | [Public test screenshot](docs/evidence/images/test-ss.png), visually reviewed at its stated local/synthetic scope. |
 | One-minute full-function video | [Owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) is reachable; duration and full flow unreviewed. |
 | Observer privacy explanation | [Privacy Model](#privacy-model) says what is visible and what remains client-side. |
+
+![Vitest output showing 111 passing tests at capture](docs/evidence/images/test-ss.png)
 
 ## Level 4 Evidence
 
