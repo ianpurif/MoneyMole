@@ -18,8 +18,10 @@ for `f30cfbb` are verifiable. The owner-supplied [hosted URL](https://moneymole.
 [X profile](https://x.com/moneymolepay) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing)
 returned HTTP 200 on 2026-09-29. Their deeper functional/content requirements
 remain unreviewed. Three inspected [screenshots](evidence/images/compile.png)
-are committed; the 70-row feedback CSV is local and untracked. Neither is proof
-of 50/70 qualifying users. Idea approval
+are committed; [USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md) now publish
+the owner-supplied wallet strings, names, emails and feedback under the owner's
+consent statement. The 70-row source CSV stays local. None of these submissions proves
+50/70 qualifying users. Idea approval
 is still unsupplied. `requirements.json`'s embedded `levelAudit` is a historical
 pre-NIGHT snapshot; its engineering
 requirement states remain source-bound and are distinct from this submission audit.

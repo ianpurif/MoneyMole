@@ -76,11 +76,11 @@ a [hosted app](https://moneymole.vercel.app/), [X profile](https://x.com/moneymo
 and [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing); all returned HTTP 200 on 2026-09-29.
 That does not verify the hosted wallet/prover/payment journey or the video's
 content. Three [technical screenshots](evidence/images/compile.png) were inspected
-and committed as public evidence. An untracked
-owner-supplied CSV has 70 rows, distinct Preprod-formatted wallet strings and
-nonblank feedback fields; it does not verify 70 people or chain activity, and
-private responses/identities must not be published without consent. See
-[USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md). Organizer idea approval,
+and committed as public evidence. The owner reports respondent consent for
+public disclosure; [USERS.md](../USERS.md) lists 70 submitted Preprod-formatted
+wallet strings and [FEEDBACK.md](FEEDBACK.md) lists their names, emails and feedback.
+The raw CSV remains local. These submissions do not verify 70 people,
+wallet control or chain activity. Organizer idea approval,
 verified user cohort and a documented
 feedback-to-change loop remain pending. Rise In's public
 Level 6 Mainnet/20-user summary conflicts with the supplied Preprod/70-user

@@ -14,9 +14,11 @@ organizer decision on the network/user conflict.
 
 The owner has now supplied a hosted link, X profile, video page, three local
 screenshots and a local 70-response CSV. Reachable URLs, images and submitted
-wallet strings are recorded at their actual scope in the [audit](LEVEL-AUDIT.md);
-none by itself proves a working hosted payment, a complete demo, 50/70 users or
-consent to publish personal data. 1AM is the primary wallet, and the owner reports
+wallet strings are recorded at their actual scope in the [audit](LEVEL-AUDIT.md).
+The owner reports that respondents consented to publication; their submitted
+wallet strings, names, emails and feedback now appear in the public docs. These
+entries do not prove a working hosted payment, a complete demo or 50/70
+independently verified users. 1AM is the primary wallet, and the owner reports
 judge acceptance in place of Lace. Actual extension acceptance still needs
 observation. Published history
 and real Preprod contract activity are checked separately from synthetic tests.

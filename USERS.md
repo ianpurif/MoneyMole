@@ -83,7 +83,7 @@ on-chain, so the verified qualifying count remains zero.
 Current count: 0 / 50 independently verified users.
 Submitted form wallet strings: 70 distinct Preprod-formatted addresses.
 
-Names, emails and individual feedback are handled in the source CSV and
-[feedback log](docs/FEEDBACK.md); the organizer wallet table has no email column.
+Names, emails and individual feedback appear in the [feedback log](docs/FEEDBACK.md).
+The organizer wallet table has no email column.
 Do not treat the submitted strings as verified users without consented activity
 and person-level review. See the [evidence policy](docs/EVIDENCE.md).

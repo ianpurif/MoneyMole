@@ -240,9 +240,11 @@ No stock imagery, third-party runtime resources, tracking, fonts or endorsement 
   is actually visible.
 - The untracked local owner-supplied feedback CSV has 70 rows, 70 distinct
   `mn_addr_preprod1`-prefixed wallet strings and 70 nonblank feedback fields.
-  Syntax and survey data do not prove chain activity, independent people,
-  consent to publish or feedback-driven product changes. No raw personal data
-  was copied into the public docs.
+  The owner stated that respondents consented to public disclosure. Their
+  submitted wallet strings, names, emails and feedback appear in [USERS.md](../USERS.md)
+  and [FEEDBACK.md](FEEDBACK.md) in the organizer's format; the raw CSV stays
+  local. Syntax and survey data do not prove chain activity,
+  independent people or feedback-driven product changes.
 - https://github.com/ianpurif/MoneyMole/actions/runs/36528158551 passed on
   `5523e4f`. A later run,
   https://github.com/ianpurif/MoneyMole/actions/runs/36555725199, completed with

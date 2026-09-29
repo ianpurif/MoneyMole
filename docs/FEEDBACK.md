@@ -4,7 +4,8 @@
 
 The owner supplied a local CSV export of form responses dated 2026-09-28 to
 2026-09-29. All 70 rows contain a name, email, wallet string and feedback. The
-organizer template has no email column, so each email appears beside the name in the existing User cell.
+organizer template has no email column, so each email appears beside the name in
+the existing User cell.
 The log preserves each response as submitted; it does not independently verify
 respondent identity, MoneyMole usage or an on-chain transaction.
 

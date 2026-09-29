@@ -18,7 +18,7 @@ description. **No complete Level 1–6 submission verdict is claimed.**
 | Public repository and meaningful history | [Repository](https://github.com/ianpurif/MoneyMole), [35 reviewed substantive published commits](evidence/commit-audit.json), [current history](https://github.com/ianpurif/MoneyMole/commits/main/). | A raw total alone is not a meaningful-commit count. The 35-commit audit covers an ancestor of current `main`. |
 | CI | [Workflow](../.github/workflows/ci.yml), [passing run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680), [fresh evidence bindings](evidence/submission-compact-revalidation.json). | Run 36560770680 passed for `f30cfbb`, including artifacts, preparation/evidence, lint/typecheck, deterministic/contract/integration, build, browser and requirement consistency. It does not prove live 1AM acceptance. |
 | Submission links supplied 2026-09-29 | [Hosted app](https://moneymole.vercel.app/), [@moneymolepay](https://x.com/moneymolepay), [demo-video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing). | Each page returned HTTP 200. Hosted wallet/payment function, X account control and video duration/content were not independently reviewed. |
-| Owner-supplied media and survey | [Compile](evidence/images/compile.png), [contract](evidence/images/contract.png) and [test](evidence/images/test-ss.png) screenshots; local feedback CSV named `MoneyMole User Feedback & Review (Responses) - Form Responses 1.csv`. | Images were visually inspected and committed as public evidence. The CSV remains untracked/private. Its 70 rows and 70 distinct Preprod-formatted wallet strings with nonblank feedback are not 70 verified users. Keep names/emails/responses private pending consent and review. |
+| Owner-supplied media and survey | [Compile](evidence/images/compile.png), [contract](evidence/images/contract.png) and [test](evidence/images/test-ss.png) screenshots; [submitted wallet roster](../USERS.md), [feedback log](FEEDBACK.md); local source CSV. | Images, submitted wallet strings, names, emails and feedback are in the public docs following the owner's statement of respondent consent. The raw CSV remains local. The 70 submitted strings are not 70 independently verified users. |
 
 For direct Preprod interaction lookup, finalized successful funding transaction
 identifiers are `00a9c82b3cad1746ca59694c02277a08b33467e552b47a6e041ab8a5743812d7ea`
@@ -85,10 +85,11 @@ does not establish a working hosted Preprod MVP or that the video shows it.
 The same NIGHT flow has recovery, QR, destination-binding, receipt and safe-retry
 extensions. Its Level 4 live-acceptance gap carries forward. The 20-commit threshold
 is met. The owner-supplied local CSV contains 70 rows, 70 distinct submitted
-Preprod-formatted wallet strings and 70 nonblank feedback fields. It does not prove
-wallet activity, independent people, consent to public roster release or a
-feedback-to-shipped-change loop. [USERS.md](../USERS.md) and [FEEDBACK.md](FEEDBACK.md)
-record those boundaries. The [hosted URL](https://moneymole.vercel.app/) and
+Preprod-formatted wallet strings and 70 nonblank feedback fields. The owner
+affirmed public-disclosure consent, and [USERS.md](../USERS.md) and
+[FEEDBACK.md](FEEDBACK.md) now list the submitted data in the organizer's tables.
+This does not prove wallet activity, independent people or a
+feedback-to-shipped-change loop. The [hosted URL](https://moneymole.vercel.app/) and
 [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are supplied and reachable; their full-MVP content is unreviewed.
 
 ## Level 6 — rubric conflict and external evidence pending
@@ -100,7 +101,8 @@ needed before treating either user/network interpretation as the final rubric.
 The reviewed 35 substantive published commits exceed the stricter supplied
 commit threshold; no verified user cohort, feedback-to-change loop or Mainnet
 deployment is claimed. [LAUNCH_USERS.md](../LAUNCH_USERS.md) records the local
-CSV's limits. The [live link](https://moneymole.vercel.app/), [product X](https://x.com/moneymolepay) and
+CSV's limits; [USERS.md](../USERS.md) publishes the submitted wallet strings.
+The [live link](https://moneymole.vercel.app/), [product X](https://x.com/moneymolepay) and
 [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are supplied and reachable. The three technical screenshots are published above.
 
 ## Privacy and next independent observations

@@ -95,8 +95,10 @@ Only completed observations count. The [README evidence map](../README.md#level-
 now links the supplied hosted app, X profile and video page. Verify the hosted
 wallet/prover/payment journey and review the video against each claimed Level;
 page reachability alone does not pass acceptance. Three technical screenshots
-are [published](evidence/images/compile.png). The local feedback CSV needs consented,
-independently checked user evidence and feedback-to-change attribution before a
+are [published](evidence/images/compile.png). The owner reports respondent
+consent and the submitted [wallet roster](../USERS.md) and [feedback log](FEEDBACK.md)
+are now public. Independent user/activity evidence and feedback-to-change
+attribution are still needed before a
 50/70-user or completed-loop claim. [CI run 36560770680](https://github.com/ianpurif/MoneyMole/actions/runs/36560770680)
 passed for `f30cfbb`; it is engineering verification, not a two-wallet Preprod
 payment observation.

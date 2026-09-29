@@ -52,8 +52,11 @@ wallet/chain actions have not been independently reviewed. The three supplied
 [compile](docs/evidence/images/compile.png),
 [contract](docs/evidence/images/contract.png) and
 [test](docs/evidence/images/test-ss.png) screenshots were visually inspected and
-are committed as public evidence. The owner-supplied feedback CSV is local and
-untracked; its names, emails, wallet strings and responses are not published here.
+are committed as public evidence. The owner-supplied CSV remains local and
+untracked. With the owner's statement that respondents consented to public
+disclosure, [USERS.md](USERS.md) now lists their submitted wallet strings and
+[FEEDBACK.md](docs/FEEDBACK.md) lists names, emails and feedback in the
+organizer's four-column raw log; each email appears in the User cell.
 
 ## Current evidence and limits
 
@@ -146,8 +149,8 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 | Requirement | Evidence and status |
 |---|---|
 | Same MVP extended | [Architecture](docs/ARCHITECTURE.md) and [USAGE](docs/USAGE.md) describe NIGHT recovery, retries, QR and receipts; live Level 4 acceptance still carries forward. |
-| 50 verifiable Preprod users and wallet-address list | An owner-supplied local CSV has 70 rows and 70 distinct Preprod-formatted wallet strings, but it is untracked and no consent, chain activity, wallet control or unique-human check is established. [USERS.md](USERS.md) records the gap; **50 verified users are not claimed**. |
-| Feedback loop | The same local CSV has 70 nonblank feedback fields. [FEEDBACK.md](docs/FEEDBACK.md) records this aggregate and the missing consented themes, product-change links and publication review. |
+| 50 verifiable Preprod users and wallet-address list | [USERS.md](USERS.md) now lists 70 distinct owner-supplied Preprod-formatted wallet strings with form dates. The owner reports public-disclosure consent. Chain activity, wallet control, MoneyMole use and unique people remain unverified; **50 verified users are not claimed**. |
+| Feedback loop | [FEEDBACK.md](docs/FEEDBACK.md) now contains the 70 owner-supplied names, emails and feedback entries in the organizer's raw-log format. Reviewed themes and feedback-to-change commit links remain pending. |
 | Updated documentation | [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [current audit](docs/LEVEL-AUDIT.md). |
 | At least 20 meaningful commits | [35-commit audit](docs/evidence/commit-audit.json), bound to an earlier published head. |
 | Live link and full-MVP video | [Hosted app](https://moneymole.vercel.app/) and [owner-supplied video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable; functional content remains unverified. |
@@ -157,7 +160,7 @@ remain intact. Do not redeploy or issue that asset for NIGHT testing.
 | Requirement | Evidence and status |
 |---|---|
 | Same MVP extended | [Architecture](docs/ARCHITECTURE.md) and [USAGE](docs/USAGE.md); independent-wallet acceptance is still pending. |
-| 70 verifiable Preprod users and wallet-address list | Local CSV has 70 distinct submitted Preprod-formatted strings. [LAUNCH_USERS.md](LAUNCH_USERS.md) explains why that is **not 70 verified users** and why names/emails/addresses are withheld pending consent and independent chain/person review. |
+| 70 verifiable Preprod users and wallet-address list | [USERS.md](USERS.md) publishes 70 submitted Preprod-formatted strings; [LAUNCH_USERS.md](LAUNCH_USERS.md) records the Level 6 qualification gap. They are **not 70 verified users** without independent chain, wallet and person-level evidence. Respondent emails appear in [FEEDBACK.md](docs/FEEDBACK.md). |
 | Feedback loop and updated documentation | [FEEDBACK.md](docs/FEEDBACK.md) distinguishes collected raw responses from reviewed themes and shipped changes; [USAGE](docs/USAGE.md), [PRIVACY](docs/PRIVACY.md) and [audit](docs/LEVEL-AUDIT.md) are current technical docs. |
 | At least 20 meaningful commits; stricter checklist asks for 30 | [35 substantive published commits reviewed](docs/evidence/commit-audit.json) on an earlier head; inspect [public history](https://github.com/ianpurif/MoneyMole/commits/main/). |
 | Public repository, live link and full-MVP video | [Repository](https://github.com/ianpurif/MoneyMole), [hosted app](https://moneymole.vercel.app/) and [video page](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) are reachable; end-to-end content is not independently validated. |
