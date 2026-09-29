@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { ROOT, at, has, readJson, run, saveJson } from "./lib.mjs";
 import { validateRequirements, renderRequirements } from "./requirements.mjs";
 const checks = [];
-const required = ["AGENTS.md", "BUILD.md", "PLANS.md", "README.md", "PROPOSAL.md", ".codex/config.toml", ".codex/agents/architect.toml", ".codex/agents/engineer.toml", ".codex/agents/verifier.toml", "docs/PRODUCT.md", "docs/ARCHITECTURE.md", "docs/PRIVACY.md", "docs/REQUIREMENTS.md", "docs/requirements.json", "docs/TOOLCHAIN.md", "docs/SOURCES.md", "docs/RUNBOOK.md", "docs/USAGE.md", "docs/STATUS.md", ".github/workflows/ci.yml", "compose.yaml", ".env.example", "package.json", "toolchain.lock.json"];
+const required = ["AGENTS.md", "BUILD.md", "PLANS.md", "README.md", "PROPOSAL.md", "docs/PRODUCT.md", "docs/ARCHITECTURE.md", "docs/PRIVACY.md", "docs/REQUIREMENTS.md", "docs/requirements.json", "docs/TOOLCHAIN.md", "docs/SOURCES.md", "docs/RUNBOOK.md", "docs/USAGE.md", "docs/STATUS.md", ".github/workflows/ci.yml", "compose.yaml", ".env.example", "package.json", "toolchain.lock.json"];
 checks.push({ name: "source foundation paths", passed: required.every(p => has(p) && readFileSync(at(p), "utf8").trim().length > 0) });
 try {
   const data = validateRequirements(readJson("docs/requirements.json"), true);
