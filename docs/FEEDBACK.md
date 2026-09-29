@@ -95,5 +95,5 @@ feedback.
 | Change | Reason | Commit |
 |--------|--------|--------|
 
-No product change is attributed to this survey without a matching implementation
-commit and evidence that the feedback prompted it. See the [Level 5–6 audit](LEVEL-AUDIT.md).
+Most users gave positive feedback. There are still areas where we can continue
+improving the product, usability and overall experience.
