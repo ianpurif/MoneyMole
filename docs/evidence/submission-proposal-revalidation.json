@@ -1,0 +1,21 @@
+{
+  "result": "passed",
+  "scope": "native_NIGHT_proposal_and_public_deployment_documentation_consistency_only",
+  "observedAt": "2026-09-29T11:13:36Z",
+  "sourceRevision": "98d1b6278077a84e7a51e06a01be8b4ff600df84",
+  "checks": {
+    "proposalStatesPublicNativeNightAmountsAndAddresses": true,
+    "proposalDoesNotClaimOrganizerApprovalOrIndependentWalletAcceptance": true,
+    "contractUsesNativeUnshieldedFundAndClaim": true,
+    "defaultConfigMatchesPublicDeploymentRecord": true,
+    "readOnlyDeploymentVerifier": {
+      "command": "npm run verify:deployment",
+      "exitCode": 0,
+      "reportSha256": "77b6ef1cce69b5fbae8487184020832d531f94aabd3acc6356b1053a7136593b"
+    }
+  },
+  "limitations": [
+    "This source review and read-only chain check are not organizer idea approval.",
+    "No owner wallet or independent receiver was connected or authorized."
+  ]
+}

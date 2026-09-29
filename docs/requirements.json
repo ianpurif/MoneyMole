@@ -1962,9 +1962,9 @@
           "result": "passed",
           "scope": "native_NIGHT_and_legacy_contract_compilation",
           "command": "npm run compile:contracts; npm run compile:legacy; npm run compile:issuance",
-          "path": "docs/evidence/night-verification.json",
-          "sha256": "9609a7f7aa9dd4475e32b9b359618f980d046b6fc1e97c8b81d570836344f4a6",
-          "observedAt": "2026-09-27T12:58:05.366004+00:00",
+          "path": "docs/evidence/submission-compact-revalidation.json",
+          "sha256": "5c3b0057310758a389a921cd52aa082bcf69c3a58a03192e74cbbfd53fc310cd",
+          "observedAt": "2026-09-29T11:13:36Z",
           "subjects": [
             {
               "path": "contracts/night-payments.compact",
@@ -1980,7 +1980,7 @@
             },
             {
               "path": "scripts/compile.mjs",
-              "sha256": "a8c01c15470ef208cbc124784bbfeed7e712e5991da63f298e79f7e5e92b127d"
+              "sha256": "28f8cee310ad16a0ce18c6fc68da4fbf8e366c1c15a12e0ce34825728567690a"
             },
             {
               "path": "toolchain.lock.json",
@@ -5649,13 +5649,13 @@
           "result": "passed",
           "scope": "native_NIGHT_proposal_and_public_deployment_documentation_consistency_only",
           "command": "Source/config/privacy review; npm run verify:deployment",
-          "path": "docs/evidence/level-doc-audit.json",
-          "sha256": "416d0d7ae6dada381495346a0c6c68f453c5fdf4e902822cd026c9412f2be04c",
-          "observedAt": "2026-09-28T03:40:05Z",
+          "path": "docs/evidence/submission-proposal-revalidation.json",
+          "sha256": "bb04074329e7bd82c37e0d851c93d4b93c1aecf0ac3c62d1d7e3e9aeafb1ac64",
+          "observedAt": "2026-09-29T11:13:36Z",
           "subjects": [
             {
               "path": "PROPOSAL.md",
-              "sha256": "5e233890b9b579f5b29281d9542920214275dc2d9da30158bc911d10c29b982f"
+              "sha256": "ae43abfd7c0931db3cd1802768db3f4575ab51600b2f5b038726fa26c4b1d5bb"
             },
             {
               "path": "contracts/night-payments.compact",

@@ -1,0 +1,32 @@
+{
+  "result": "passed",
+  "scope": "native_NIGHT_and_legacy_contract_compilation_not_live_payment_acceptance",
+  "observedAt": "2026-09-29T11:13:36Z",
+  "sourceRevision": "98d1b6278077a84e7a51e06a01be8b4ff600df84",
+  "checks": [
+    {
+      "command": "npm run compile:contracts",
+      "exitCode": 0,
+      "observed": "Compiled contracts/night-payments.compact; circuits: claim, fund"
+    },
+    {
+      "command": "npm run compile:legacy",
+      "exitCode": 0,
+      "observed": "Compiled contracts/private-payments.compact; circuits: claim, fund"
+    },
+    {
+      "command": "npm run compile:issuance",
+      "exitCode": 0,
+      "observed": "Compiled contracts/issuance/test-asset.compact; circuit: issue"
+    },
+    {
+      "command": "npm run verify:artifacts",
+      "exitCode": 0,
+      "reportSha256": "c330f9dd0a917e11d0d24c36e459fe1cdbb6efed25b62738e85c93cf81bb805e"
+    }
+  ],
+  "limitations": [
+    "Compilation and artifact verification do not approve wallets or establish a live NIGHT payment.",
+    "The legacy and issuance compiles are regression checks, not current payment issuance."
+  ]
+}
