@@ -1,6 +1,7 @@
 # Primary-source research ledger
 
-Access date for the sources below: **2026-09-26**. These are documentation/source
+Access date for the initial sources below: **2026-09-26**; later entries state
+their own dates. These are documentation/source
 observations, not installed-client or live-network validation. The current runtime
 could browse sources but could not resolve registry/download hosts for installation.
 No original team sample or full organizer document was separately supplied beyond
@@ -42,6 +43,7 @@ assuming the published website describes every existing client release.
 | S23 | https://docs.midnight.network/relnotes/dapp-connector-api | Connector 4.0.1 | Release/source cross-check for the connector component; not proof of a connected wallet. |
 | S24 | https://docs.midnight.network/ai-integration/midnight-expert | Tooling concepts | Adapt doctor, compiler validation and privacy review into native skills; do not assume another client's commands work. |
 | S25 | https://github.com/midnightntwrk/compact/releases/tag/compact-v0.5.1 | Devtools release | Release exists; exact installer asset, checksum and invocation review remain pending. |
+| S36 | https://docs.midnight.network/guides/compact-javascript-runtime | Compact compilation, checked 2026-09-29 | Official syntax is `compact compile <source> <target-directory>` and output includes `contract/`, `keys/`, `zkir/`, and `compiler/`. `compact:compile` is a repository npm alias, not a Midnight-provided command. |
 
 ## Frontend and test tooling
 

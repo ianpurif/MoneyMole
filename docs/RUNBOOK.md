@@ -41,6 +41,7 @@ handle and shut it down deliberately when done.
 | `test:unit` | `vitest run --project unit` | Installed Vitest deterministic suite; no empty test pass. |
 | `compile:probe` | `node scripts/compile.mjs --probe` | Compiler-only nonpayment witness probe; no product qualification. |
 | `compile:coin-probe` | `node scripts/compile.mjs --coin-probe` | M1 private shielded I/O compiler diagnostic; lacks authorization, never deploy/fund. |
+| `compact:compile` | `compact compile contracts/night-payments.compact managed/night-payments` | Direct official Compact CLI invocation for the native NIGHT escrow. Does not write the repository's artifact-hash report. |
 | `compile:contracts` | `node scripts/compile.mjs --product` | Native NIGHT escrow compilation (fund/claim). |
 | `compile:legacy` | `node scripts/compile.mjs --legacy` | Preserve historical shielded contract artifacts; not the NIGHT payment asset. |
 | `compile:issuance` | `node scripts/compile.mjs --issuance` | Legacy issuer regression only; never needed to pay NIGHT. |

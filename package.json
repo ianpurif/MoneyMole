@@ -26,6 +26,7 @@
     "test:unit": "vitest run --project unit",
     "compile:probe": "node scripts/compile.mjs --probe",
     "compile:coin-probe": "node scripts/compile.mjs --coin-probe",
+    "compact:compile": "compact compile contracts/night-payments.compact managed/night-payments",
     "compile:contracts": "node scripts/compile.mjs --product",
     "compile:legacy": "node scripts/compile.mjs --legacy",
     "compile:issuance": "node scripts/compile.mjs --issuance",
