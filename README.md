@@ -40,9 +40,9 @@ select another compatible, independently verified escrow.
 
 ## Live Demo
 
-[System: https://moneymole.vercel.app/](https://moneymole.vercel.app/) ·
-[Product X profile: https://x.com/moneymolepay](https://x.com/moneymolepay) ·
-[Demo video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) ·
+System: [https://moneymole.vercel.app/](https://moneymole.vercel.app/) ·  
+Product X profile: [https://x.com/moneymolepay](https://x.com/moneymolepay) ·  
+[Demo video](https://drive.google.com/file/d/13UA_JUO9VrcOQFvnCMzpRd1Z_H6BUKVl/view?usp=sharing) ·  
 [Public repository](https://github.com/ianpurif/MoneyMole)
 
 These pages returned HTTP 200 on 2026-09-29. That establishes reachable links,
