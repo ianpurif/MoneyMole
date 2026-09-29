@@ -6,6 +6,8 @@ test-results/
 playwright-report/
 reports/
 .local/
+/.agent/
+/.codex/
 .env*
 !.env.example
 *.log
